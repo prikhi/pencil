@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
+<?xml-stylesheet href="../Styles/Dialog.css" type="text/css"?>
+<dialog id="pencilMessageDialog" title="New Page"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        buttonlabelcancel="Cancel"
+        persist=""
+        ondialogcancel="return handleDialogCancel();">
+
+<script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/Util.js"/>
+<script src="../Common/ProgressDialog.js"/>
+    <commandset>
+    </commandset>
+    <keyset>
+    </keyset>
+    <hbox class="Body" style="min-width: 35em;">
+        <vbox flex="1">
+            <description id="titleText">a</description>
+            <progressmeter id="percent" mode="determined" value="0"/>
+            <description id="detailText">a</description>
+        </vbox>
+    </hbox>
+</dialog>

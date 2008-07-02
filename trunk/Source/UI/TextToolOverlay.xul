@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<overlay id="textToolOverlay"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <toolbox id="mainToolbox">
+        <commandset>
+            <command id="editBoldCommand" oncommand="OnScreenTextEditor._runEditorCommand('bold');"/>
+            <command id="editItalicCommand" oncommand="OnScreenTextEditor._runEditorCommand('italic');"/>
+            <command id="editUnderlineCommand" oncommand="OnScreenTextEditor._runEditorCommand('underline');"/>
+            <command id="editStrikeCommand" oncommand="OnScreenTextEditor._runEditorCommand('strikethrough');"/>
+        
+            <command id="editLeftCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifyleft');"/>
+            <command id="editCenterCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifycenter');"/>
+            <command id="editRightCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifyright');"/>
+            <command id="editFullCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifyfull');"/>
+        
+            <command id="editBulletedListCommand" oncommand="OnScreenTextEditor._runEditorCommand('insertunorderedlist');"/>
+            <command id="editNumberedListCommand" oncommand="OnScreenTextEditor._runEditorCommand('insertorderedlist');"/>
+            <command id="editIndentCommand" oncommand="OnScreenTextEditor._runEditorCommand('indent');"/>
+            <command id="editOutdentCommand" oncommand="OnScreenTextEditor._runEditorCommand('outdent');"/>
+        
+            <command id="editStrikeCommand" oncommand="OnScreenTextEditor._runEditorCommand('strikethrough');"/>
+            <command id="editSuperScriptCommand" oncommand="OnScreenTextEditor._runEditorCommand('superscript');"/>
+            <command id="editSubScriptCommand" oncommand="OnScreenTextEditor._runEditorCommand('subscript');"/>
+        
+            <command id="editHorzRuleCommmand" oncommand="OnScreenTextEditor._runEditorCommand('inserthorizontalrule');"/>
+            <command id="editInsertLinkCommand" oncommand="OnScreenTextEditor._runEditorCommand('createlink', '#');"/>
+            
+            <command id="quitCommand" oncommand="OnScreenTextEditor._hide();"/>
+        </commandset>
+        <toolbar id="richTextEditorToolbar">
+            <menulist class="PropertyList" id="blockList">
+                <menupopup>
+                    <menuitem value="---" label="Block format" class="NameItem"/>
+                    <menuitem value="" label="Normal" />
+                    <menuitem value="p" label="Paragraph" />
+                    <menuitem value="h1" label="Heading 1 " />
+                    <menuitem value="h2" label="Heading 2 " />
+                    <menuitem value="h3" label="Heading 3 " />
+                    <menuitem value="h4" label="Heading 4 " />
+                    <menuitem value="h5" label="Heading 5 " />
+                    <menuitem value="h6" label="Heading 6 " />
+                    <menuitem value="address" label="Address " />
+                    <menuitem value="pre" label="Formatted " />
+                </menupopup>
+            </menulist>
+            <menulist class="PropertyList" id="edSizeList">
+                <menupopup>
+                    <menuitem label="Size" value="---" class="NameItem"/>
+                    <menuitem label="Default" value=""/>
+                    <menuitem label="1" value="1"/>
+                    <menuitem label="2" value="2"/>
+                    <menuitem label="3" value="3"/>
+                    <menuitem label="4" value="4"/>
+                    <menuitem label="5" value="5"/>
+                    <menuitem label="6" value="6"/>
+                </menupopup>
+            </menulist>
+            <toolbarseparator/>
+            <menulist class="PropertyList" id="fontList">
+                <menupopup id="fontPopup">
+                    <menuitem label="Text font" value="" class="NameItem"/>
+                </menupopup>
+            </menulist>
+            <textbox type="number" min="5" max="100" size="3" increment="1" id="pixelFontSize"/>
+            <toolbarseparator/>
+            <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-bold?size=menu" id="edBoldButton" tooltiptext="Bold"/>
+            <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-italic?size=menu" class="ed-toolbar-button" id="edItalicButton" tooltiptext="Italic"/>
+            <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-underline?size=menu" class="ed-toolbar-button" id="edUnderlineButton" tooltiptext="Underline"/>
+            <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-strikethrough?size=menu" class="ed-toolbar-button" id="edStrikeButton" tooltiptext="Strike through"/>
+            <toolbarseparator/>
+            <toolbarbutton type="checkbox" image="Icons/Editor/bulleted-list.png" class="ed-toolbar-button" id="edBulletedListButton" tooltiptext="Unordered list"/>
+            <toolbarbutton type="checkbox" image="Icons/Editor/numbered-list.png" class="ed-toolbar-button" id="edNumberedListButton" tooltiptext="Ourdered list"/>
+            <toolbarbutton image="moz-icon://stock/format-indent-more?size=menu" class="ed-toolbar-button" id="edIndentButton" tooltiptext="Indent"/>
+            <toolbarbutton image="moz-icon://stock/format-indent-less?size=menu" class="ed-toolbar-button" id="edOutdentButton" tooltiptext="Outdent"/>
+            <toolbarseparator/>
+            <toolbarbutton image="moz-icon://stock/edit-clear?size=menu" class="ed-toolbar-button" id="clearButton" tooltiptext="Clear format"/>
+            <toolbarbutton image="moz-icon://stock/insert-link?size=menu" class="ed-toolbar-button" id="insertLinkButton" tooltiptext="Insert link"/>
+        </toolbar>
+    </toolbox>
+    <stack flex="1" id="mainBoxStack">
+        <vbox id="richTextEditorPane" top="0" left="0" width="1" height="1" style="border: dashed 1px highlight; background: #fff;">
+            <editor id="richTextEditor" type="html" flex="1" src="editor-blank.html"/>
+        </vbox>
+    </stack>
+</overlay>
+
