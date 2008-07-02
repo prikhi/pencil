@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<overlay id="textToolOverlay"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <toolbar id="nav-toolbar">
+        <toolbarseparator/>
+        <vbox pack="center">
+            <label value="Color:"/>
+        </vbox>
+        <pcolorbutton id="textColorButton" tooltiptext="Change text color" image="moz-icon://stock/stock_text_color_foreground?size=menu"/>
+        <pcolorbutton id="hilightColorButton" tooltiptext="Change text highlight color" image="moz-icon://stock/stock_text_color_hilight?size=menu"/>
+        <pcolorbutton id="strokeColorButton" tooltiptext="Change stroke color" image="Icons/color-stroke.png"/>
+        <pcolorbutton id="fillColorButton" tooltiptext="Change background fill color" image="Icons/color-fill.png"/>
+    </toolbar>
+</overlay>
+

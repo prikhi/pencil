@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+          >
+    <binding id="collectionPane">
+        <implementation>
+            <constructor>
+            <![CDATA[
+                this.contentBox = document.getAnonymousElementByAttribute(this, "aid", "contentBox");
+                this.popup = document.getAnonymousElementByAttribute(this, "aid", "contextPopup");
+                this.hideMenuItem = document.getAnonymousElementByAttribute(this, "aid", "hideMenuItem");
+                this.uninstallMenuItem = document.getAnonymousElementByAttribute(this, "aid", "uninstallMenuItem");
+                this.installMenuItem = document.getAnonymousElementByAttribute(this, "aid", "installMenuItem");
+                this.showHiddenMenu = document.getAnonymousElementByAttribute(this, "aid", "showHiddenMenu");
+                this.aboutMenuItem = document.getAnonymousElementByAttribute(this, "aid", "aboutMenuItem");
+
+                var id = "popup" + Math.round(1000 * Math.random());
+                this.popup.setAttribute("id", id);
+                this.contentBox.setAttribute("context", id);
+                var thiz = this;
+
+                this.addEventListener("click", function (event) {
+                    if (event.button != 0) return;
+                    var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
+                    if (defNode) {
+                        var e = document.createEvent("Events");
+                        e.initEvent("ShapeSelected", false, false);
+                        e.shapeDef = defNode._def;
+                        this.dispatchEvent(e);
+                    }
+                    
+                    var header = Dom.findUpward(event.originalTarget, function (node) { return node._isHeader; });
+                    if (header) {
+                        collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
+                        if (collection) {
+                            var collapsed = collection.getAttribute("pcollapsed");
+                            collapsed = (collapsed == "true");
+                            collection.setAttribute("pcollapsed", !collapsed);
+                            CollectionManager.setCollectionCollapsed(collection._collection, !collapsed);
+                        }
+                    }
+                }, false);
+                this.contentBox.addEventListener("contextmenu", function (event) {
+                    var collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
+                    var hasCollection = false;
+                    if (collection) {
+                        hasCollection = true;
+                        thiz.currentCollection = collection;
+                    }
+                    thiz.hideMenuItem.disabled = !hasCollection;
+                    thiz.uninstallMenuItem.disabled = !hasCollection || !collection._collection.userDefined
+                                                                        || !collection._collection.installDirPath;
+                    thiz.aboutMenuItem.disabled = !hasCollection;
+                    if (hasCollection) {
+                        thiz.aboutMenuItem.setAttribute("label", "About " + collection._collection.displayName + "...");
+                    }
+                    
+                    //setup hidden collection
+                    var hasHiddenCollections = false;
+                    Dom.empty(thiz.showHiddenMenu.firstChild);
+                    for (i in CollectionManager.shapeDefinition.collections) {
+                        var collection = CollectionManager.shapeDefinition.collections[i];
+                        if (!CollectionManager.isCollectionVisible(collection)) {
+                            hasHiddenCollections = true;
+                            var menuItem = document.createElementNS(PencilNamespaces.xul, "menuitem");
+                            menuItem._hiddenCollection = collection;
+                            menuItem.setAttribute("label", collection.displayName);
+                            thiz.showHiddenMenu.firstChild.appendChild(menuItem);
+                        }
+                    }
+                    thiz.showHiddenMenu.disabled = !hasHiddenCollections;
+                }, false);
+                this.hideMenuItem.addEventListener("command", function (event) {
+                    if (thiz.currentCollection) {
+                        CollectionManager.setCollectionVisible(thiz.currentCollection._collection, false);
+                        thiz.reloadCollections();
+                    }
+                }, false);
+                this.showHiddenMenu.addEventListener("command", function (event) {
+                    var menuitem = Dom.findUpward(event.originalTarget, function (node) { return node._hiddenCollection; });
+                    if (menuitem) {
+                        CollectionManager.setCollectionVisible(menuitem._hiddenCollection, true);
+                        thiz.reloadCollections();
+                    }
+                }, false);
+                this.aboutMenuItem.addEventListener("command", function (event) {
+                    if (thiz.currentCollection) {
+                        var collection = thiz.currentCollection._collection;
+                        var detail = "<div>" + Dom.htmlEncode(collection.description) + "</div><ul>";
+                        if (collection.author) {
+                            detail += "<li><strong>Author</strong>: " + Dom.htmlEncode(collection.author) + "</li>";
+                        }
+                        if (collection.author) {
+                            detail += "<li><strong>More information</strong>: <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
+                        }
+                        detail += "</ul>"
+                        debug(collection.displayName);
+                        debug(collection);
+                        Util.info(collection.displayName, new RichText(detail));
+                    }
+                }, false);
+                this.installMenuItem.addEventListener("command", function (event) {
+                    CollectionManager.installNewCollection();
+                }, false);
+                this.uninstallMenuItem.addEventListener("command", function (event) {
+                    var collection = thiz.currentCollection._collection;
+                    CollectionManager.uninstallCollection(collection);
+                }, false);
+            ]]>
+            </constructor>
+            <method name="addShapeCollection">
+                <parameter name="collection"/>
+                <body>
+                <![CDATA[
+                    var collectionBox = document.createElementNS(PencilNamespaces.xul, "vbox");
+                    
+                    collectionBox._collection = collection;
+                    collectionBox.setAttribute("id", collection.id);
+                    collectionBox.setAttribute("class", "Collection");
+                    collectionBox.setAttribute("pcollapsed", CollectionManager.isCollectionCollapsed(collection));
+                    this.contentBox.appendChild(collectionBox);
+
+                    var hbox = document.createElementNS(PencilNamespaces.xul, "hbox");
+                    collectionBox.appendChild(hbox);
+                    hbox._isHeader = true;
+                    
+                    var button = document.createElementNS(PencilNamespaces.xul, "button");
+                    hbox.appendChild(button);
+                    button.setAttribute("type", "checkbox");
+                    
+                    var div = document.createElementNS(PencilNamespaces.html, "div");
+                    hbox.appendChild(div);
+                    div.setAttribute("flex", "1");
+                    
+                    var h4 = document.createElementNS(PencilNamespaces.html, "h4");
+                    div.appendChild(h4);
+                    h4.appendChild(document.createTextNode(collection.displayName));
+                    
+                    if (collection.description) {
+                        var p = document.createElementNS(PencilNamespaces.html, "p");
+                        div.appendChild(p);
+                        p.appendChild(document.createTextNode(collection.description));
+                    }
+                    
+                    div = document.createElementNS(PencilNamespaces.html, "div");
+                    collectionBox.appendChild(div);
+
+                    div.setAttribute("class", "Content");
+
+                    var thiz = this;
+                    for (var i in collection.shapeDefs) {
+                        var def = collection.shapeDefs[i];
+                        if (def.system) continue;
+                        var button = document.createElementNS(PencilNamespaces.html, "div");
+                        button._def = def;
+                        div.appendChild(button);
+                        
+                        button.addEventListener("draggesture", function (event) {
+                            thiz.handleDragStart(event);
+                        }, false);
+                        
+                        var image = document.createElementNS(PencilNamespaces.html, "img");
+                        image.setAttribute("src", def.iconPath);
+                        button.appendChild(image);
+                        
+                        var label = document.createElementNS(PencilNamespaces.html, "label");
+                        label.appendChild(document.createTextNode(def.displayName));
+                        button.appendChild(label);
+                    }
+                ]]>
+                </body>
+            </method>
+            <method name="reloadCollections">
+                <body>
+                <![CDATA[
+                    Dom.empty(this.contentBox);
+                    for (i in CollectionManager.shapeDefinition.collections) {
+                        var collection = CollectionManager.shapeDefinition.collections[i];
+                        if (!CollectionManager.isCollectionVisible(collection)) continue;
+                        this.addShapeCollection(collection);
+                    }
+                ]]>
+                </body>
+            </method>
+            <method name="handleDragStart">
+                <parameter name="event"/>
+                <body>
+                <![CDATA[
+                    try {
+                        var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
+                        nsDragAndDrop.startDrag(event, {
+                            onDragStart: function (evt, transferData, action) {
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                transferData.data = new TransferData();
+                                transferData.data.addDataForFlavour("pencil/def", defNode._def.id);
+                                transferData.data.addDataForFlavour("text/unicode", defNode._def.displayName);
+                            }
+                        });
+                    } catch (e) { alert(e); }
+                ]]>
+                </body>
+            </method>
+        </implementation>
+        <handlers>
+        </handlers>
+        <xbl:content xmlns:xbl="http://www.mozilla.org/xbl"
+                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+            <vbox flex="1">
+                <vbox flex="1" aid="contentBox">
+                </vbox>
+            </vbox>
+            <popupset>
+                <popup aid="contextPopup">
+                    <menuitem aid="hideMenuItem" label="Hide this collection" />
+                    <menuitem aid="uninstallMenuItem" label="Uninstall this collection" />
+                    <menuitem aid="aboutMenuItem" label="About..." />
+                    <menuseparator/>
+                    <menuitem aid="installMenuItem" label="Install new collection..." />
+                    <menu aid="showHiddenMenu" label="Show hidden collections"><menupopup/></menu>
+                </popup>
+            </popupset>
+        </xbl:content>
+    </binding>
+</bindings>
+

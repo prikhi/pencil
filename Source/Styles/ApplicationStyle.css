@@ -1,0 +1,68 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+tabbox > tabs > tab {
+    min-height: 2.2em;
+}
+tabbox > tabs > tab label {
+    padding-left: .7em;
+    padding-right: .7em;
+}
+
+.colorpickertile[selected="true"] {
+    border-style: solid;
+    border-color: highlight;
+}
+
+toolbar[mode='icons'] toolbarbutton label {
+    display: none;
+}
+toolbar[mode='icons'] toolbarbutton image {
+    margin-right: 0px;
+}
+
+dialog#propertyEditorDialog > *,
+dialog#propertyEditorDialog > .dialog-button-box button {
+    font-size: .9em;
+}
+
+toolbar *.ToolbarSection {
+    margin-left: .3em;
+    margin-right: .3em;
+}
+toolbar *.ToolbarSection > hbox > label {
+    margin: 0px;
+    margin-right: .5em;
+    font-size: .9em;
+    font-weight: bold;
+}
+
+toolbar pfonteditor > * > * > label {
+    display: none;
+}
+toolbar pfonteditor *[aid="fontList"] {
+    width: 15em;
+}
+toolbar pfonteditor > hbox > vbox + vbox {
+    margin-left: 0em;
+}
+
+toolbar pfonteditor menulist,
+toolbar pfonteditor textbox,
+toolbar pfonteditor button {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+html|a {
+    color: rgb(0, 0, 208);
+    text-decoration: underline;
+}
+
+
+toolbar * {
+    -moz-user-focus: ignore !important;
+}
+toolbar label {
+    font-weight: bold;
+    font-size: .9em;
+}

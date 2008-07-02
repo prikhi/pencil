@@ -1,0 +1,18 @@
+function StrokeStyle(w, array) {
+    this.w = w ? w : 1;
+    this.array = array ? array : null;
+}
+StrokeStyle.REG_EX = /^([0-9]+)\|([0-9 \,]*)$/;
+StrokeStyle.fromString = function(literal) {
+    var style = new StrokeStyle();
+    if (literal.match(StrokeStyle.REG_EX)) {
+        style.w = parseInt(RegExp.$1);
+        style.array = RegExp.$2;
+    }
+    
+    return style;
+};
+
+StrokeStyle.prototype.toString = function () {
+    return this.w + "|" + this.array;
+};

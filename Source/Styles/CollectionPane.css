@@ -1,0 +1,178 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+
+pcollectionpane {
+    -moz-binding: url(../UI/CollectionPane.xbl#collectionPane);
+    padding: 0em;
+    
+    margin: 0em;
+}
+
+pcollectionpane:focus,
+pcollectionpane:hover {
+}
+pcollectionpane > vbox {
+}
+pcollectionpane hbox.Heading {
+    -moz-box-align: center;
+}
+pcollectionpane label.Title,
+pcollectionpane hbox.Heading button {
+    -moz-appearance: none;
+    padding: .2em 0px !important;
+    height: 2em;
+    max-height: 2em;
+    min-height: 2em;
+    background: transparent !important;
+}
+
+pcollectionpane label.Title {
+    font-weight: bold;
+    margin: 0px;
+}
+pcollectionpane hbox.Heading button label {
+    margin: 0px;
+}
+pcollectionpane hbox.Heading:hover toolbarbutton {
+    opacity: 1;
+}
+
+pcollectionpane vbox[aid="contentBox"] {
+    overflow: auto;
+    background-color: #ccc;
+    border: solid 1px;
+    border-color: threedshadow;
+}
+pcollectionpane .Collection {
+    padding: 0px;
+}
+pcollectionpane .Collection + .Collection {
+    margin-top: 2em;
+    border-top: solid 1px threedshadow;
+}
+pcollectionpane *[pcollapsed='true'].Collection + .Collection {
+    margin-top: 0em;
+}
+pcollectionpane .Collection > hbox:first-child {
+    -moz-box-align: start;
+    background-color: threedface;
+    color: buttontext;
+    padding: .3em;
+    cursor: default;
+}
+pcollectionpane .Collection > hbox:first-child > button {
+    -moz-appearance: none;
+    border: none;
+    padding: 0px;
+    width: 9px;
+    height: 9px;
+    min-width: 0px;
+    min-height: 0px;
+    margin: 2px;
+    margin-right: 5px;
+    background: url(../UI/Icons/twisty.png) 0% 0% no-repeat transparent;
+    opacity: .3;
+}
+pcollectionpane .Collection > hbox:first-child:hover > button {
+    opacity: 1;
+}
+pcollectionpane .Collection > hbox:first-child:hover div h4 {
+    color: highlight;
+}
+pcollectionpane .Collection > hbox:first-child > button image {
+    margin: 0px;
+}
+pcollectionpane .Collection > hbox:first-child div > * {
+    margin: 0px;
+}
+pcollectionpane .Collection > hbox:first-child div > p {
+    font-size: .95em;
+    opacity: .5;
+    width: 100%;
+}
+pcollectionpane .Collection > hbox:first-child div {
+}
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child > button {
+    background-position: -9px 0px;
+}
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div {
+    opacity: .3;
+}
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div > p,
+pcollectionpane *[pcollapsed='true'].Collection .Content {
+    display: none;
+}
+pcollectionpane .Collection .Content {
+    padding: .3em;
+    min-width: 8em;
+    margin: 0px auto;
+}
+pcollectionpane .Collection .Content > div {
+    border: none;
+    background: transparent;
+    text-align: center;
+    display: inline-block;
+    width: 5.5em;
+
+    padding: .3em;
+
+    vertical-align: top;
+
+}
+pcollectionpane .Collection .Content > div:hover {
+    background-color: highlight;
+    color: highlighttext;
+}
+pcollectionpane .Collection .Content > div img {
+    opacity: .7;
+}
+pcollectionpane .Collection .Content > div:hover img {
+    opacity: 1;
+}
+pcollectionpane .Collection .Content > div label {
+    display: block;
+    font-size: .9em;
+}
+
+
+
+
+
+
+
+
+
+
+
+pcollectionpane button {
+    min-width: 4.5em;
+    min-height: 4em;
+
+    -moz-appearance: none !important;
+    border: solid 1px transparent;
+    -moz-border-top-colors: transparent;
+    -moz-border-right-colors: transparent;
+    -moz-border-bottom-colors: transparent;
+    -moz-border-left-colors: transparent;
+    padding: .6em;
+
+    margin: .2em;
+}
+pcollectionpane button:hover {
+    background-color: highlight;
+    color: highlighttext;
+}
+pcollectionpane button:focus label {
+    text-decoration: underline;
+}
+pcollectionpane button:hover label,
+pcollectionpane button:active label {
+    text-decoration: none;
+}
+pcollectionpane button:active {
+    border-width: 2px 0px 0px 2px;
+}
+pcollectionpane button .button-icon {
+}
+pcollectionpane button .button-box {
+    -moz-box-orient: vertical;
+}

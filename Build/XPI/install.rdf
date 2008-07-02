@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="pencil@evolus.vn"
+                   em:name="%name%"
+                   em:version="%version%"
+                   em:description="Sketching, simplified"
+                   em:creator="%author%"
+                   em:homepageURL="http://www.evolus.vn/Pencil/"
+                   em:updateURL="http://www.evolus.vn/Pencil/update.rdf"
+                   em:iconURL="chrome://pencil/content/Icons/pencil-icon.png"
+                   em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCm7qykW4KgFRgHrJfNeMjcLSfKKRq2nQfCOQOR9JB/5jy5r/i15xTynyzAXJbmHQSjGlOfehTBjxuPODznqnGt/Xuvi2iWXp3WTZ9WRxrX9jQq6umcXc0Nzb90DCEr5gdvv9lzINbJJBR/NpsQMM4pTUEO/1RRsL5jZHy9HG1yPwIDAQAB">
+    <em:targetApplication RDF:resource="rdf:firefox"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:firefox"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="3.0b3"
+                   em:maxVersion="3.0" />
+</RDF:RDF>

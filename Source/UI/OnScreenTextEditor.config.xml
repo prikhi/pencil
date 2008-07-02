@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<p:Config xmlns="http://www.w3.org/2000/svg"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:html="http://www.w3.org/1999/xhtml" 
+	      xmlns:svg="http://www.w3.org/2000/svg"
+	      xmlns:xlink="http://www.w3.org/1999/xlink"
+	      xmlns:p="http://www.evolus.vn/Namespace/Pencil">
+    <g class="OnScreenTextEditor">
+        <defs>
+            <style type="text/css"><![CDATA[
+                @namespace p url(http://www.evolus.vn/Namespace/Pencil);
+                @namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+                
+                g.OnScreenTextEditor input[p|name='TextEditor'] {
+                    -moz-appearance: none;
+                    -moz-box-sizing: border-box;
+                    border: dotted 1px #000;
+                    background-color: #fff;
+                    color: #000;
+                    padding: 0px !important;
+                    line-height: 1.2em !important;
+                }
+            ]]></style>
+        </defs>
+        <foreignObject x="0" y="0" width="200" height="350" p:name="FOPane">
+            <input xmlns="http://www.w3.org/1999/xhtml" p:name="TextEditor"/>
+        </foreignObject>
+    </g>
+</p:Config>
