@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="pencil@evolus.vn"
                    em:name="%name%"
-                   em:version="%version%"
+                   em:version="%version%.%build%"
                    em:description="Sketching, simplified"
                    em:creator="%author%"
                    em:homepageURL="http://www.evolus.vn/Pencil/"
@@ -16,6 +16,6 @@
   </RDF:Description>
   <RDF:Description RDF:about="rdf:firefox"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="3.0b3"
-                   em:maxVersion="3.0" />
+                   em:minVersion="%fxminver%"
+                   em:maxVersion="%fxmaxver%" />
 </RDF:RDF>

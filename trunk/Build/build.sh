@@ -1,9 +1,12 @@
 #!/bin/sh
 export NAME='Pencil'
 export VERSION='1.0'
-export BUILD='1'
+export BUILD='2'
 export AUTHOR='Duong Thanh An; an.duong@evolus.vn'
-
+export XPINAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
+export FXMINVER='3.0b3'
+export FXMMAXVER='3.0.*'
+rm -Rf ./Outputs/
 mkdir -p ./Outputs
 
 echo "Building XPI..."
@@ -11,6 +14,7 @@ rm -Rf ./Outputs/XPI/
 mkdir ./Outputs/XPI/
 cp -R ./XPI/* ./Outputs/XPI/
 cp -R ../Source/* ./Outputs/XPI/chrome/content/
+find ./Outputs/XPI/ -name .svn | xargs -i rm -Rf {}
 
 ./replacer.sh ./Outputs/XPI/install.rdf
 ./replacer.sh ./Outputs/XPI/chrome/content/UI/Window.xul
@@ -18,9 +22,15 @@ cp -R ../Source/* ./Outputs/XPI/chrome/content/
 
 echo "Compressing XPI file..."
 cd ./Outputs/XPI/
-rm -f ../Pencil-$VERSION-$BUILD-fx.xpi
-zip -r ../Pencil-$VERSION-$BUILD-fx.xpi * > /dev/null
+rm -f ../$XPINAME
+zip -r ../$XPINAME * > /dev/null
+export XPIHASH=`sha1sum ../$XPINAME | sed -e s^..../$XPINAME^^`
+echo 'XPI SHA1 hash: '$XPIHASH
 cd ../../
+
+echo "Creating Update manifest..."
+cp -R ./XPI/update.rdf ./Outputs/
+./replacer.sh ./Outputs/update.rdf
 
 rm -Rf ./Outputs/XPI/
 
