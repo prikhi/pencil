@@ -37,6 +37,7 @@ TargetSetXferHelper.prototype.handleData = function (data, length) {
     this.canvas.run( function () {    
         for (i in shapes) {
             shape = this.canvas.ownerDocument.importNode(shapes[i], true);
+            Dom.renewId(shape);
             this.canvas.drawingLayer.appendChild(shape);
             importedShapes.push(shape);
         }
