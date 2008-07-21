@@ -5,7 +5,7 @@ export BUILD='2'
 export AUTHOR='Duong Thanh An; an.duong@evolus.vn'
 export XPINAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
 export FXMINVER='3.0b3'
-export FXMMAXVER='3.0.*'
+export FXMAXVER='3.0.*'
 rm -Rf ./Outputs/
 mkdir -p ./Outputs
 
