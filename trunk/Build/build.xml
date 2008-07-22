@@ -1,0 +1,109 @@
+<project name="Pencil" default="pencil" basedir=".">
+    <description>
+        Ant build script for Pencil project
+    </description>
+    
+    <property name="BUILD" value="2" />
+    <property name="NAME" value="Pencil" />
+    <property name="VERSION" value="1.0" />
+    <property name="AUTHOR" value="Duong Thanh An; an.duong@evolus.vn" />
+    <property name="XPINAME" value="Pencil-${VERSION}-${BUILD}-fx.xpi" />
+    <property name="FXMINVER" value="3.0b3" />
+    <property name="FXMAXVER" value="3.0.*" />
+
+    <property name="OUTPUTS" location="Outputs"/>
+    <property name="WIN32" location="${OUTPUTS}/Win32"/>
+    <property name="LINUX"  location="${OUTPUTS}/Linux"/>
+
+    <target name="xpi">
+        <delete dir="${OUTPUTS}" />
+        <mkdir dir="${OUTPUTS}" />
+        <echo message="Building XPI..." />
+        <mkdir dir="${OUTPUTS}/XPI" />
+        <copy todir="${OUTPUTS}/XPI">
+            <fileset dir="XPI" />
+        </copy>
+        <copy todir="${OUTPUTS}/XPI/chrome/content">
+            <fileset dir="../Source" />
+        </copy>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/XPI/install.rdf" />
+        </antcall>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/XPI/chrome/content/Common/Pencil.js" />
+        </antcall>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/XPI/chrome/content/UI/Window.xul" />
+        </antcall>
+        <echo message="Compressing XPI file..." />
+        <zip destfile="${OUTPUTS}/${XPINAME}" basedir="${OUTPUTS}/XPI" />
+        <checksum file="${OUTPUTS}/${XPINAME}" property="XPIHASH" algorithm="SHA" />
+        <echo message="XPI SHA1 hash: ${XPIHASH}" />
+        <echo message="Creating Update manifest..." />
+        <copy todir="${OUTPUTS}" file="./XPI/update.rdf" />
+        <replace file="${OUTPUTS}/update.rdf">
+             <replacefilter token="%xpihash%" value="${XPIHASH}" />
+        </replace>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/update.rdf" />
+        </antcall>
+        <delete dir="${OUTPUTS}/XPI" />
+    </target>
+
+    <target name="xulrunner">
+        <echo message="------------------------------" />
+        <echo message="${message}" />
+        <mkdir dir="${OUTPUTS}/${PLATFORM}" />
+        <copy todir="${OUTPUTS}/${PLATFORM}" failonerror="false" >
+            <fileset dir="./${PLATFORM}/xulrunner" />
+        </copy>
+        <copy todir="${OUTPUTS}/${PLATFORM}/chrome/pencil@evolus.vn">
+            <fileset dir="../Source" />
+        </copy>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/${PLATFORM}/application.ini" />
+        </antcall>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/${PLATFORM}/chrome/pencil@evolus.vn/Common/Pencil.js" />
+        </antcall>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/${PLATFORM}/chrome/pencil@evolus.vn/UI/Window.xul" />
+        </antcall>
+    </target>
+
+    <target name="pencil" depends="xpi">
+        <antcall target="xulrunner">
+            <param name="message" value="Building Linux GTK+ version..." />
+            <param name="PLATFORM" value="Linux" />
+        </antcall>
+        <echo message="Compressing..." />
+        <tar destfile="${OUTPUTS}/Pencil-${VERSION}-${BUILD}-linux-gtk.tar.gz" basedir="${LINUX}" compression="gzip" />
+        <delete dir="${LINUX}" />
+        <antcall target="xulrunner">
+            <param name="message" value="Building Win32 version..." />
+            <param name="PLATFORM" value="Win32" />
+        </antcall>
+        <echo message="Compressing..." />
+        <zip destfile="${OUTPUTS}/Pencil-${VERSION}-${BUILD}-win32.zip" basedir="${WIN32}" />
+        <delete dir="${WIN32}" />
+        <echo message="Done!" />
+    </target>
+
+    <target name="clean" description="clean up" >
+        <delete dir="${OUTPUTS}"/>
+    </target>
+
+    <target name="replacer">
+        <echo message="Processing ${filename}..." />
+        <replace file="${filename}">
+            <replacefilter token="%version%" value="${VERSION}" />
+            <replacefilter token="%build%" value="${BUILD}" />
+            <replacefilter token="%name%" value="${NAME}" />
+            <replacefilter token="%author%" value="${AUTHOR}" />
+            <replacefilter token="%xpiname%" value="${XPINAME}" />
+            <replacefilter token="%fxminver%" value="${FXMINVER}" />
+            <replacefilter token="%fxmaxver%" value="${FXMAXVER}" />
+        </replace>
+    </target>
+
+</project>
