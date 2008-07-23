@@ -1,4 +1,6 @@
 var relativeHRefHook = {
+    missedFilePaths: [],
+    badImageDataFound: false,
     onDomSerialization: function (dom) {
         var thiz = this;
         
@@ -39,9 +41,13 @@ var relativeHRefHook = {
         var xpath = "//svg:g[@p:type='Shape' and @p:def='Evolus.Common:Bitmap']//p:property[@name='imageData']";
         Dom.workOn(xpath, page.contentNode, function (property) {
             var imageData = ImageData.fromString(property.textContent);
+            if (!imageData.data) {
+                thiz.badImageDataFound = true;
+                return;
+            }
             if (imageData.data.match(/^[a-z]+:.*$/)) return;
             
-            imageData.data = thiz.relativeToURI(imageData.data);
+            imageData.data = thiz.relativeToURI(imageData.data, true);
             Dom.empty(property);
             property.appendChild(property.ownerDocument.createCDATASection(imageData.toString()));
         });
@@ -55,15 +61,32 @@ var relativeHRefHook = {
             return null;
         }
     },
-    relativeToURI: function (relativeFileURI) {
+    relativeToURI: function (relativeFileURI, logError) {
         var file = XMLDocumentPersister.currentFile.parent;
         
         var hrefFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
         hrefFile.setRelativeDescriptor(file, relativeFileURI);
         
-        if (!hrefFile.exists()) return null;
+        if (!hrefFile.exists()) {
+            if (logError) {
+                this.missedFilePaths.push(relativeFileURI);
+            } else {
+                return null;
+            }
+        }
         
         return ImageData.ios.newFileURI(hrefFile).spec;
+    },
+    onLoad: function (doc) {
+        if (this.missedFilePaths.length > 0) {
+            alert("The following external resources are missing when loading the document: \n\t● " + this.missedFilePaths.join("\n\t● ")
+            + "\n\nPlease verify if these resources have been moved or deleted.");
+            this.missedFilePaths = [];
+        }
+        if (this.badImageDataFound) {
+            alert("Error: bad image data was found in the document. The document seems to be modified externally.");
+            this.badImageDataFound = false;
+        }
     }
 }
 
