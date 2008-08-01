@@ -127,6 +127,7 @@ FileDragObserver.fileTypeHandler = {
         }
     },
     png: function (canvas, url, loc) {
+        debug(url);
         this._handleImageFile(canvas, url, loc, "transparent");
     },
     jpg: function (canvas, url, loc) {

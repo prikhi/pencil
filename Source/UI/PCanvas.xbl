@@ -1202,6 +1202,12 @@
                 ]]>
                 </body>
             </method>
+            <method name="ensureControllerInView">
+                <body>
+                <![CDATA[
+                ]]>
+                </body>
+            </method>
             <method name="doUnGroup">
                 <body>
                 <![CDATA[

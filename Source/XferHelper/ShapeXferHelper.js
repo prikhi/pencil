@@ -38,6 +38,7 @@ ShapeXferHelper.prototype.handleData = function (data, length) {
         this.canvas.selectShape(shape);
     
         this.canvas.currentController.moveBy(dx, dy);
+        this.canvas.ensureControllerInView();
     }, this);
     this.canvas.invalidateEditors();
 };

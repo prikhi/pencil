@@ -43,7 +43,7 @@ TargetSetXferHelper.prototype.handleData = function (data, length) {
         }
         this.canvas.selectMultiple(importedShapes)
         
-        this.canvas.currentController.moveBy(dx, dy);
+        this.canvas.ensureControllerInView();
     }, this);
     
     this.canvas.invalidateEditors();

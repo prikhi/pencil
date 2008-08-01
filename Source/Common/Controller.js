@@ -441,8 +441,16 @@ Controller.prototype._modifyPageProperties = function (page, data) {
     }
     
     page._view.header.setAttribute("label", data.title);
-    page._view.canvas.setSize(20, 20);
-    page._view.canvas.setSize(data.width, data.height);
+    
+    try {
+        this.mainViewPanel.setAttributeNS(PencilNamespaces.p, "p:resizing", "true");
+        page._view.canvas.setSize(data.width, data.height);
+        
+        this.mainViewPanel.removeAttributeNS(PencilNamespaces.p, "resizing");
+        
+    } catch (e) {
+        Console.dumpError(e, "sasd");
+    }
     page.rasterizeDataCache = null;
 };
 Controller.prototype._deletePage = function (page) {

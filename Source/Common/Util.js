@@ -408,6 +408,9 @@ Util.enumInterfaces = function (object) {
 Util.handleTempImageLoad = function () {
     if (Util.handleTempImageLoadImpl) Util.handleTempImageLoadImpl();
 };
+Util.ios = Components.classes["@mozilla.org/network/io-service;1"]
+                        .getService(Components.interfaces.nsIIOService);
+                        
 Util.getClipboardImage = function (clipData, length, handler) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     
