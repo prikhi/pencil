@@ -1402,6 +1402,69 @@
                 ]]>
                 </body>
             </method>
+            <method name="sizeToContent">
+                <parameter name="hPadding"/>
+                <parameter name="vPadding"/>
+                <body>
+                <![CDATA[
+                    this.zoomTo(1.0);
+                    
+                    var thiz = this;
+                    var maxBox = null;
+                    Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
+                        try {
+                            var controller = thiz.createControllerFor(node);
+                            var bbox = controller.getBoundingRect();
+                            var box = {
+                                x1: bbox.x,
+                                y1: bbox.y,
+                                x2: bbox.x + bbox.width,
+                                y2: bbox.y + bbox.height
+                            };
+                            if (maxBox == null) {
+                                maxBox = box;
+                            } else {
+                                maxBox = {
+                                    x1: Math.min(maxBox.x1, box.x1),
+                                    y1: Math.min(maxBox.y1, box.y1),
+                                    x2: Math.max(maxBox.x2, box.x2),
+                                    y2: Math.max(maxBox.y2, box.y2)
+                                };
+                            }
+                        } catch (e) {
+                            alert(e);
+                        }
+                    });
+                    if (maxBox == null) {
+                        alert("The current document is empty, sizing is failed!");
+                        return;
+                    }
+                    
+                    var width = maxBox.x2 - maxBox.x1;
+                    var height = maxBox.y2 - maxBox.y1;
+                    
+                    //moving
+                    var dx = 0 - maxBox.x1;
+                    var dy = 0 - maxBox.y1;
+                    
+                    Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
+                        try {
+                            var controller = thiz.createControllerFor(node);
+                            var bbox = controller.getBoundingRect();
+                            controller.moveBy(dx, dy);
+                        } catch (e) {
+                            alert(e);
+                        }
+                    });
+                    
+                    this.setSize(width, height);
+                    
+                    this.selectNone();
+                    
+                    return {width: width, height: height};
+                ]]>
+                </body>
+            </method>
         </implementation>
         <handlers>
             <handler event="dragover">

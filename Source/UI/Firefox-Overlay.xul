@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!DOCTYPE overlay SYSTEM "chrome://helloworld/locale/overlay.dtd">
 <overlay id="pencil-overlay"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     
@@ -14,7 +13,5 @@
             <menupopup id="pencil_sendToMenuPopup">
             </menupopup>
         </menu>
-        <menuitem id="pencil-test" label="Pencil test..."
-            oncommand="PencilOverlay.test();"/>
     </menupopup>
 </overlay>

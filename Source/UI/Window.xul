@@ -94,6 +94,7 @@
         <command id="saveDocumentCommand" oncommand="Pencil.controller.saveDocument();"/>
         <command id="rasterizeCommand" oncommand="Pencil.controller.rasterizeCurrentPage();"/>
         <command id="rasterizeAllCommand" oncommand="Pencil.controller.rasterizeDocument();"/>
+        <command id="sizeToContentCommand" oncommand="Pencil.controller.sizeToContent();"/>
         
         <command id="reorderPagesCommand" oncommand="Pencil.controller.reorderPages();"/>
 
@@ -282,6 +283,7 @@
             <menuitem class="menuitem-iconic" image="moz-icon://stock/add?size=menu" label="New Page..." id="newPageMenuItem" command="newPageCommand"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/remove?size=menu" label="Delete" id="deletePageMenuItem"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/document-properties?size=menu" label="Properties" id="pagePropertiesMenuItem"/>
+            <menuitem label="Resize to fit contents" id="sizeToContentMenuItem" command="sizeToContentCommand"/>
             <menuseparator/>
             <menu id="gotoTabMenu" label="Goto..."><menupopup/></menu>
             <menuitem label="Re-order Pages..." id="reorderPageMenuItem" command="reorderPagesCommand" style="display: none;"/>

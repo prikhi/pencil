@@ -646,7 +646,17 @@ Controller.prototype._rasterizePage = function (page, path, callback) {
     Pencil.rasterizer.rasterizeDOM(svg, path, callback);
     
 };
+Controller.prototype.sizeToContent = function (passedPage) {
+    var page = passedPage ? passedPage : this.getCurrentPage();
+    var canvas = page._view.canvas;
+    if (!canvas) return;
 
+    var newSize = canvas.sizeToContent(0, 0);
+    if (newSize) {
+        page.properties.width = newSize.width;
+        page.properties.height = newSize.height;
+    }
+};
 
 
 
