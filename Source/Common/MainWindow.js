@@ -34,23 +34,25 @@ Pencil.postBoot = function() {
     
     if (window.arguments) {
         var cmdLine = window.arguments[0];
-        cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
-        
-        var filePath = ""
-        var i = 0;
-        while (true) {
-            try {
-                var part = cmdLine.getArgument(i);
-                if (!part) break;
-                if (filePath.length > 0) filePath += " ";
-                filePath += part;
-                i ++;
-            } catch (e) { break; }
-        }
-        if (filePath) {
-            window.setTimeout(function () {
-                Pencil.controller.loadDocument(filePath);
-            }, 100);
+        if (cmdLine) {
+            cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
+            
+            var filePath = ""
+            var i = 0;
+            while (true) {
+                try {
+                    var part = cmdLine.getArgument(i);
+                    if (!part) break;
+                    if (filePath.length > 0) filePath += " ";
+                    filePath += part;
+                    i ++;
+                } catch (e) { break; }
+            }
+            if (filePath) {
+                window.setTimeout(function () {
+                    Pencil.controller.loadDocument(filePath);
+                }, 100);
+            }
         }
     }
     
