@@ -1440,12 +1440,12 @@
                         return;
                     }
                     
-                    var width = maxBox.x2 - maxBox.x1;
-                    var height = maxBox.y2 - maxBox.y1;
+                    var width = maxBox.x2 - maxBox.x1 + 2 * hPadding;
+                    var height = maxBox.y2 - maxBox.y1 + 2 * vPadding;
                     
                     //moving
-                    var dx = 0 - maxBox.x1;
-                    var dy = 0 - maxBox.y1;
+                    var dx = 0 - maxBox.x1 + hPadding;
+                    var dy = 0 - maxBox.y1 + vPadding;
                     
                     Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
                         try {

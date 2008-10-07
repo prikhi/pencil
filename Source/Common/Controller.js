@@ -646,12 +646,20 @@ Controller.prototype._rasterizePage = function (page, path, callback) {
     Pencil.rasterizer.rasterizeDOM(svg, path, callback);
     
 };
-Controller.prototype.sizeToContent = function (passedPage) {
+Controller.prototype.sizeToContent = function (passedPage, askForPadding) {
     var page = passedPage ? passedPage : this.getCurrentPage();
     var canvas = page._view.canvas;
     if (!canvas) return;
+    
+    var padding = 0;
+    if (askForPadding) {
+        var paddingString = window.prompt("Please enter the padding:", "0");
+        if (!paddingString) return null;
+        var padding = parseInt(paddingString, 10);
+        if (!padding) padding = 0;
+    }
 
-    var newSize = canvas.sizeToContent(0, 0);
+    var newSize = canvas.sizeToContent(padding, padding);
     if (newSize) {
         page.properties.width = newSize.width;
         page.properties.height = newSize.height;
