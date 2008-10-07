@@ -82,8 +82,11 @@ Shape.prototype.applyBehaviorForProperty = function (name) {
                     args.push(arg.literal);
                 }
             }
-            
-            item.handler.apply(target, args);
+            try {
+                item.handler.apply(target, args);
+            } catch (e) {
+                Console.dumpError(e);
+            }
         }
     }    
 };
@@ -95,7 +98,9 @@ Shape.prototype.evalExpression = function (expression, value) {
     if (!expression) return defaultValue;
     if (!this._evalContext) throw "Please prepare by calling prepareExpressionEvaluation() first."
     try {
-        return eval("" + expression, this._evalContext);
+        with (this._evalContext) {
+            return eval("" + expression);
+        }
     } catch (e) {
         return defaultValue;
     }
@@ -321,7 +326,9 @@ Shape.prototype.getTextEditingInfo = function () {
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.Font) {
                                 var fontArg = b.items[j].args[0];
-                                font = eval("" + fontArg.literal, obj);
+                                with (obj) {
+                                    font = eval("" + fontArg.literal);
+                                }
                                 break;
                             }
                         }
@@ -329,8 +336,10 @@ Shape.prototype.getTextEditingInfo = function () {
                         var align = null;
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.BoxFit) {
-                                bound = eval("" + b.items[j].args[0].literal, obj);
-                                align = eval("" + b.items[j].args[1].literal, obj);
+                                with (obj) {
+                                    bound = eval("" + b.items[j].args[0].literal);
+                                    align = eval("" + b.items[j].args[1].literal);
+                                }
                                 break;
                             }
                         }
@@ -358,7 +367,9 @@ Shape.prototype.getTextEditingInfo = function () {
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.Font) {
                                 var fontArg = b.items[j].args[0];
-                                font = eval("" + fontArg.literal, obj);
+                                with (obj) {
+                                    font = eval("" + fontArg.literal);
+                                }
                                 break;
                             }
                         }
@@ -366,15 +377,19 @@ Shape.prototype.getTextEditingInfo = function () {
                         var bound = null;
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.Bound) {
-                                bound = eval("" + b.items[j].args[0].literal, obj);
+                                with (obj) {
+                                    bound = eval("" + b.items[j].args[0].literal);
+                                }
                                 break;
                             }
                         }
                         if (bound == null) {
                             for (j in b.items) {
                                 if (b.items[j].handler == Pencil.behaviors.BoxFit) {
-                                    bound = eval("" + b.items[j].args[0].literal, obj);
-                                    align = eval("" + b.items[j].args[1].literal, obj);
+                                    with (obj) {
+                                        bound = eval("" + b.items[j].args[0].literal);
+                                        align = eval("" + b.items[j].args[1].literal);
+                                    }
                                     break;
                                 }
                             }
