@@ -369,7 +369,7 @@ Console.dumpError = function (exception, toConsole) {
         "Stacktrace:\n\t" + (exception.stack ? exception.stack.replace(/\n/g, "\n\t") : "<empty stack trace>")
     ].join("\n");
     
-    if (toConsole) {
+    if (true) {
         debug(s);
     } else {
         alert(s);
