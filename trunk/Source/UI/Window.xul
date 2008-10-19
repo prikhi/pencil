@@ -22,6 +22,7 @@
 <script src="../Common/IO.js"/>
 
 <script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/Config.js"/>
 
 <script src="../CanvasHelper/CanvasCareTaker.js"/>
 <script src="../CanvasHelper/CanvasMemento.js"/>
@@ -33,7 +34,7 @@
 <script src="../Definition/ShapeDefCollectionParser.js"/>
 <script src="../Definition/CollectionManager.js"/>
 
-<script src="../Common/Config.js"/>
+
 <script src="../Common/Pencil.js"/>
 <script src="../Common/Controller.js"/>
 <script src="../Common/MainWindow.js"/>
