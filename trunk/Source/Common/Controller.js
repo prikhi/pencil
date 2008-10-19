@@ -565,12 +565,24 @@ Controller.prototype.rasterizeDocument = function () {
                     }
                     var page = thiz.doc.pages[pageIndex];
 
+                    if (Config.get("document.SaveWithPrefixNumber") == null){
+                        Config.set("document.SaveWithPrefixNumber",false);
+                    }
                     //signal progress
-                    var task = "Exporting page " + page.properties.name + "..."
+                    var withPrefix = Config.get("document.SaveWithPrefixNumber")
+                    if(withPrefix)
+                        var task = "Exporting page " + (pageIndex +1 )+ '_' + page.properties.name + "...";
+                    else
+                        var task = "Exporting page " + page.properties.name + "...";
+                    
                     listener.onProgressUpdated(task, pageIndex + 1, thiz.doc.pages.length);
                         
                     if (pageIndex > 0) dir = dir.parent;
+                    if(withPrefix)
+                        var fileName = (pageIndex +1 )+ '_' + page.properties.name.replace(/[\/!\\'"]/g, "_");
+                    else
                     var fileName = page.properties.name.replace(/[\/!\\'"]/g, "_");
+                        
                     dir.append(fileName + ".png");
                     
                     var pagePath = dir.path;
