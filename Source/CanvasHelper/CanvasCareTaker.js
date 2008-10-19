@@ -2,7 +2,10 @@ function CanvasCareTaker(canvas) {
     this.canvas = canvas;
     this.reset();
 }
-CanvasCareTaker.LIMIT = 10;
+if (!Config.get("view.undoLevel")){
+    Config.set("view.undoLevel",10);
+}
+CanvasCareTaker.LIMIT = Config.get("view.undoLevel");
 CanvasCareTaker.prototype.reset = function() {
     this.mementos = [this.canvas.getMemento()];
     this.index = 0;
