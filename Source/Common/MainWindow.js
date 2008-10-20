@@ -52,6 +52,10 @@ Pencil.postBoot = function() {
                 window.setTimeout(function () {
                     Pencil.controller.loadDocument(filePath);
                 }, 100);
+            } else {
+                window.setTimeout(function() {
+                        Pencil.controller.newDocument();
+                }, 100);
             }
         }
     }
