@@ -206,15 +206,3 @@ window.addEventListener("close", function (event) {
         if (!Pencil.controller._confirmAndSaveDocument()) event.preventDefault();
     }
 }, false);
-
-
-
-
-
-
-
-
-
-
-
-

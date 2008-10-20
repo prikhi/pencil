@@ -26,13 +26,20 @@ ShapeXferHelper.prototype.handleData = function (data, length) {
     
     shape = this.canvas.ownerDocument.importNode(shape, true);
     Dom.renewId(shape);
+    if (Config.get("edit.cutAndPasteAtTheSamePlace") == null ){
+        Config.set("edit.cutAndPasteAtTheSamePlace",false);
+    }
+    if (!Config.get("edit.cutAndPasteAtTheSamePlace")) {
     var grid = Pencil.getGridSize()
     var dx = Math.round(Math.random() * 50);
     dx = dx - (dx % grid.w);
     
     var dy = Math.round(Math.random() * 50);
     dy = dy - (dy % grid.h);
-    
+    } else {
+        dx = 0;
+        dy = 0;
+    }
     this.canvas.run(function() {
         this.canvas.drawingLayer.appendChild(shape);
         this.canvas.selectShape(shape);
