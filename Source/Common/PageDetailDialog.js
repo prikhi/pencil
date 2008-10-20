@@ -129,7 +129,7 @@ function handleDialogAccept() {
         Config.set("lastSize", [data.width, data.height].join("x"))
         return true;
     } catch (e) {
-        alert(e);
+        Console.dumpError(e);
         return false;
     }
 }
