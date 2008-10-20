@@ -30,12 +30,12 @@ ShapeXferHelper.prototype.handleData = function (data, length) {
         Config.set("edit.cutAndPasteAtTheSamePlace",false);
     }
     if (!Config.get("edit.cutAndPasteAtTheSamePlace")) {
-    var grid = Pencil.getGridSize()
-    var dx = Math.round(Math.random() * 50);
-    dx = dx - (dx % grid.w);
+        var grid = Pencil.getGridSize()
+        var dx = Math.round(Math.random() * 50);
+        dx = dx - (dx % grid.w);
     
-    var dy = Math.round(Math.random() * 50);
-    dy = dy - (dy % grid.h);
+        var dy = Math.round(Math.random() * 50);
+        dy = dy - (dy % grid.h);
     } else {
         dx = 0;
         dy = 0;
