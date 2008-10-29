@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#List of available setting in Pencil.
 
 = List of available setting in Pencil =
 
