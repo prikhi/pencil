@@ -138,6 +138,7 @@ Pencil.setupCommands = function () {
     Pencil._enableCommand("newPageCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("duplicatePageCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("saveDocumentCommand", Pencil.controller.hasDoc());
+    Pencil._enableCommand("saveDocumentAsCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("rasterizeCommand", canvas != null);
     
     Pencil._enableCommand("zoomInCommand", canvas != null);

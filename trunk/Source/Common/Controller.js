@@ -251,6 +251,10 @@ Controller.prototype.newPage = function () {
     this._setSelectedPageIndex(this.doc.pages.length - 1);
     this.markDocumentModified();    
 };
+Controller.prototype.saveDocumentAs = function () {
+    this.filePath = null;
+    this.saveDocument();
+}
 Controller.prototype.saveDocument = function () {
     var currentPath = this.filePath ? this.filePath : null;
     try {
