@@ -10,6 +10,13 @@ GeometryEditor.prototype.install = function (canvas) {
     this.canvas.onScreenEditors.push(this);
     this.svgElement = canvas.ownerDocument.importNode(Dom.getSingle("/p:Config/svg:g", GeometryEditor.configDoc), true);
     
+    this.shapeWidth = document.getElementById("shapeWidth");
+    this.shapeHeight = document.getElementById("shapeHeight");
+    this.shapeX = document.getElementById("shapeX");
+    this.shapeY = document.getElementById("shapeY"); 
+    this.shapeA = document.getElementById("shapeAngle");
+    
+    
     this.svgElement.style.visibility = "hidden";
     canvas.installControlSVGElement(this.svgElement);
     
@@ -72,6 +79,41 @@ GeometryEditor.prototype.install = function (canvas) {
         }
         thiz.handleMouseMove(ev);
     }, false);
+    thiz.shapeWidth.addEventListener("change", function(event) {
+        if (thiz.passivated) {
+            thiz.shapeWidth.removeEventListener("change", arguments.callee, false);
+            return;
+        }
+        thiz.applyGeo('w');
+    }, false);
+    thiz.shapeHeight.addEventListener("change", function(event) {
+        if (thiz.passivated) {
+            thiz.shapeHeight.removeEventListener("change", arguments.callee, false);
+            return;
+        }
+        thiz.applyGeo('h');
+    }, false);
+    thiz.shapeX.addEventListener("change", function(event) {
+        if (thiz.passivated) {
+            thiz.shapeX.removeEventListener("change", arguments.callee, false);
+            return;
+        }
+        thiz.applyGeo('x');
+    }, false);
+    thiz.shapeY.addEventListener("change", function(event) {
+        if (thiz.passivated) {
+            thiz.shapeY.removeEventListener("change", arguments.callee, false);
+            return;
+        }
+        thiz.applyGeo('y');
+    }, false);
+    thiz.shapeA.addEventListener("change", function(event) {
+        if (thiz.passivated) {
+            thiz.shapeA.removeEventListener("change", arguments.callee, false);
+            return;
+        }
+        thiz.applyGeo('a');
+    }, false);
     
 };
 GeometryEditor.prototype.attach = function (targetObject) {
@@ -81,6 +123,14 @@ GeometryEditor.prototype.attach = function (targetObject) {
     }
     this.setTool("scale");
     this.targetObject = targetObject;
+    
+    var locking = this.getLockingPolicy();
+    //enabled geometry toolbar
+    this.shapeX.disabled=false;
+    this.shapeY.disabled=false;
+    this.shapeA.disabled = true //!locking.lockRatio ?false:true;
+    this.shapeWidth.disabled = !locking.width ?false:true;
+    this.shapeHeight.disabled = !locking.height ?false:true;;
     
     var geo = this.canvas.getZoomedGeo(targetObject);
     this.setEditorGeometry(geo);
@@ -97,6 +147,13 @@ GeometryEditor.prototype.attach = function (targetObject) {
 GeometryEditor.prototype.dettach = function () {
     this.targetObject = null;
     this.svgElement.style.visibility = "hidden";
+    //disabled geometry toolbar
+    this.shapeX.disabled=true;
+    this.shapeY.disabled=true;
+    //this.shapeA.disabled=true;
+    this.shapeWidth.disabled=true;
+    this.shapeHeight.disabled=true;
+    
 };
 GeometryEditor.prototype.invalidate = function () {
     if (!this.targetObject) return;
@@ -105,7 +162,11 @@ GeometryEditor.prototype.invalidate = function () {
 };
 
 GeometryEditor.prototype.setEditorGeometry = function (geo) {
-
+    this.shapeX.value=geo.ctm.e / this.canvas.zoom
+    this.shapeY.value=geo.ctm.f / this.canvas.zoom
+    this.shapeWidth.value=geo.dim.w / this.canvas.zoom
+    this.shapeHeight.value=geo.dim.h / this.canvas.zoom
+    this.shapeA.value = Svg.getAngle(geo.ctm.a,geo.ctm.b);
     //transformation
     Svg.ensureCTM(this.svgElement, geo.ctm);
 
@@ -229,6 +290,36 @@ GeometryEditor.prototype.handleMouseUp = function (event) {
             this.canvas.setZoomedGeo(this.targetObject, this.geo);
             this.canvas.invalidateEditors(this);
         }
+    } finally {
+        this.currentAnchor = null;
+    }
+};
+GeometryEditor.prototype.applyGeo = function (type) {
+    try {
+        var newGeo = new Geometry();
+        newGeo.ctm = this.oGeo.ctm.translate(0,0)
+        mdx = 0
+        mdy = 0
+        if(type == 'x' ||  type=='y'){
+            mdx = Math.round(this.shapeX.value *this.canvas.zoom - newGeo.ctm.e);
+            mdy = Math.round(this.shapeY.value *this.canvas.zoom - newGeo.ctm.f);
+            var matrix = this.oGeo.ctm.inverse();
+            dx = matrix.a * mdx + matrix.c * mdy;
+            dy = matrix.b * mdx + matrix.d * mdy ;
+            //translate
+            newGeo.ctm = this.oGeo.ctm.translate(dx, dy);
+        }
+        //rotate
+        //if(type == 'a') {
+        //    matrix = this.borderRect.ownerSVGElement.createSVGTransform().matrix;
+        //    matrix = matrix.rotate(this.shapeA.value / 180 * Math.PI);
+        //    newGeo.ctm = newGeo.ctm.multiply(matrix);
+        //}
+        //change dimension
+        newGeo.dim = new Dimension(this.shapeWidth.value*this.canvas.zoom, this.shapeHeight.value *this.canvas.zoom);
+        this.setEditorGeometry(newGeo);
+        this.canvas.setZoomedGeo(this.targetObject, this.geo);
+        this.canvas.invalidateEditors(this);
     } finally {
         this.currentAnchor = null;
     }
@@ -454,6 +545,7 @@ GeometryEditor.prototype.rotate = function (from, to, event) {
         var step = this.getRotationStep();
         a = Math.round(a / step) * step;
     }
+    this.shapeA.value=a;
         
     var matrix = Svg.rotateMatrix(a, center, this.borderRect);
     var newGeo = new Geometry();
