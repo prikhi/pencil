@@ -131,6 +131,9 @@
         <command id="undoCommand" oncommand="Pencil.activeCanvas.careTaker.undo()"/>
         <command id="redoCommand" oncommand="Pencil.activeCanvas.careTaker.redo()"/>
 
+        <command id="moveLeftCommand" oncommand="Pencil.controller.pageMoveLeft()"/>
+        <command id="moveRightCommand" oncommand="Pencil.controller.pageMoveRight()"/>
+
         <command id="newWindowCommand" oncommand="window.open('Window.xul', '_blank', 'chrome')"/>
     </commandset>
     <keyset>
@@ -176,6 +179,10 @@
 
         <key id="undoKey" command="undoCommand" modifiers="control" key="Z"/>
         <key id="redoKey" command="redoCommand" modifiers="control" key="Y"/>
+        
+        <key id="moveLeftKey"  command="moveLeftCommand" modifiers="control shift" keycode="VK_PAGE_UP"/>
+        <key id="moveRightKey" command="moveRightCommand" modifiers="control shift" keycode="VK_PAGE_DOWN"/>
+        
     </keyset>
     <keyset>
         <key id="editBoldKey" key="B" modifiers="control" command="editBoldCommand"/>
@@ -315,6 +322,9 @@
             <menuitem class="menuitem-iconic" image="moz-icon://stock/add?size=menu" label="New Page..." id="newPageMenuItem" command="newPageCommand"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/duplicate?size=menu" label="Duplicate" id="pageDuplicateMenuItem" command="duplicatePageCommand"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/remove?size=menu" label="Delete" id="deletePageMenuItem"/>
+            <menuitem class="menuitem-iconic" image="moz-icon://stock/left?size=menu" label="move left" id="pageMoveLeftMenuItem" command="moveLeftCommand"/>
+            <menuitem class="menuitem-iconic" image="moz-icon://stock/right?size=menu" label="move right" id="pageMoveRightMenuItem" command="moveRightCommand"/>
+            <menuseparator/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/document-properties?size=menu" label="Properties" id="pagePropertiesMenuItem"/>
             <menuitem label="Resize to fit contents..." id="sizeToContentMenuItem" command="sizeToContentCommand"/>
             <menuseparator/>

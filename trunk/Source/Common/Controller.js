@@ -8,6 +8,8 @@ function Controller(win) {
     this.mainViewPanel = this.window.ownerDocument.getElementById("mainViewPanel");
     this.pagePropertiesMenuItem = this.window.ownerDocument.getElementById("pagePropertiesMenuItem");
     this.deletePageMenuItem = this.window.ownerDocument.getElementById("deletePageMenuItem");
+    this.pageMoveLeftMenuItem = this.window.ownerDocument.getElementById("pageMoveLeftMenuItem");
+    this.pageMoveRightMenuItem = this.window.ownerDocument.getElementById("pageMoveRightMenuItem");
     this.gotoTabMenu = this.window.ownerDocument.getElementById("gotoTabMenu");
     var tabScrollBox = this.window.ownerDocument.getElementById("tabScrollBox");
     this.tabScrollBox = tabScrollBox;
@@ -59,7 +61,93 @@ function Controller(win) {
             }
         }
     }, false);
-
+}
+Controller.prototype.pageMoveRight = function () {
+        if(!this.doc.pages[this.mainView.selectedIndex+1]){
+            return
+        }
+        try {
+            var i = this.mainView.selectedIndex;
+            var right = this.doc.pages[i+1];
+            //moving tabpanel
+            var tabpanels =this.mainViewPanel.getElementsByTagName("tabpanel")
+            var pcanvas =this.mainViewPanel.getElementsByTagName("pcanvas")
+            var right_nodes = []
+            while (pcanvas[i+1].drawingLayer.hasChildNodes())
+                right_nodes.push(pcanvas[i+1].drawingLayer.removeChild(pcanvas[i+1].drawingLayer.firstChild));
+            while (pcanvas[i].drawingLayer.hasChildNodes()) 
+                    pcanvas[i+1].drawingLayer.appendChild(pcanvas[i].drawingLayer.firstChild);
+            while (right_nodes.length){
+                    pcanvas[i].drawingLayer.appendChild(right_nodes.shift());
+            }
+            //moving tab
+            var tabs =this.mainViewHeader.getElementsByTagName("tab")
+            var nextTab =  tabs[i+1].getAttribute("label");
+            tabs[i+1].setAttribute("label",tabs[i].getAttribute("label"));
+            tabs[i].setAttribute("label",nextTab);
+            //moving page
+            this.doc.pages[i+1] = this.doc.pages[i];
+            this.doc.pages[i] = right;
+            //update tab
+            tabs[i+1]._page = this.doc.pages[i+1];
+            tabs[i]._page = this.doc.pages[i];
+            //update view
+            this.doc.pages[i+1]._view = {header: tabs[i+1], body: tabpanels[i+1], canvas: pcanvas[i+1]};
+            this.doc.pages[i]._view = {header: tabs[i], body: tabpanels[i], canvas: pcanvas[i]};
+            //update tabpanel
+            tabpanels[i+1]._canvas = pcanvas[i+1];
+            tabpanels[i]._canvas = pcanvas[i];
+            
+            this._setSelectedPageIndex(i+1);
+            this.markDocumentModified();
+            this._ensureAllBackgrounds();
+        } catch (e) {
+            Console.dumpError(e);
+        }
+}
+Controller.prototype.pageMoveLeft = function (i) {
+        if(!this.doc.pages[this.mainView.selectedIndex-1]){
+            return
+        }
+        try {
+            var i = this.mainView.selectedIndex;
+            var left = this.doc.pages[i-1];
+            //moving tabpanel
+            var tabpanels =this.mainViewPanel.getElementsByTagName("tabpanel")
+            var pcanvas =this.mainViewPanel.getElementsByTagName("pcanvas")
+            
+            var left_nodes = []
+            while (pcanvas[i-1].drawingLayer.hasChildNodes())
+                left_nodes.push(pcanvas[i-1].drawingLayer.removeChild(pcanvas[i-1].drawingLayer.firstChild));
+            while (pcanvas[i].drawingLayer.hasChildNodes()) 
+                    pcanvas[i-1].drawingLayer.appendChild(pcanvas[i].drawingLayer.firstChild);
+            while (left_nodes.length){
+                    pcanvas[i].drawingLayer.appendChild(left_nodes.shift());
+            }
+            //moving tab
+            var tabs =this.mainViewHeader.getElementsByTagName("tab")
+            var previousTab =  tabs[i-1].getAttribute("label");
+            tabs[i-1].setAttribute("label",tabs[i].getAttribute("label"));
+            tabs[i].setAttribute("label",previousTab);
+            //moving page
+            this.doc.pages[i-1] = this.doc.pages[i];
+            this.doc.pages[i] = left;
+            //update tab
+            tabs[i-1]._page = this.doc.pages[i-1];
+            tabs[i]._page = this.doc.pages[i];
+            //update view
+            this.doc.pages[i-1]._view = {header: tabs[i-1], body: tabpanels[i-1], canvas: pcanvas[i-1]};
+            this.doc.pages[i]._view = {header: tabs[i], body: tabpanels[i], canvas: pcanvas[i]};
+            //update tabpanel
+            tabpanels[i-1]._canvas = pcanvas[i-1];
+            tabpanels[i]._canvas = pcanvas[i];
+            
+            this._setSelectedPageIndex(i-1);
+            this.markDocumentModified();
+            this._ensureAllBackgrounds();
+        } catch (e) {
+            Console.dumpError(e);
+        }
 }
 Controller.prototype.gotoPage = function (page) {
     var tab = page._view.header;
