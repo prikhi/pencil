@@ -239,13 +239,15 @@ Controller.prototype.loadDocument = function (uri) {
     } else {
         try {
             //assume uri is a nsILocalFile
+            //don't know when use ?
             file = uri.QueryInterface(Components.interfaces.nsILocalFile);
         } catch (e1) {
-            if (typeof(uri) == "string") {
+            try {//MRU OR double clic on explorer
                 //assume uri is an absolute path
                 file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
                 file.initWithPath("" + uri);
-            } else {
+            } catch (e){
+                //case drag'n drop ep file
                 //assume uri is a real uri
                 file = fileHandler.getFileFromURLSpec(uri).QueryInterface(Components.interfaces.nsILocalFile);
             }
