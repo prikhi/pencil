@@ -142,6 +142,7 @@
         <key id="newPageKey" command="newPageCommand" modifiers="control shift" key="N"/>
         <key id="loadDocumentKey" command="loadDocumentCommand" modifiers="control" key="O"/>
         <key id="saveDocumentKey" command="saveDocumentCommand" modifiers="control" key="S"/>
+        <key id="saveDocumentAsKey" command="saveDocumentCommand" modifiers="control shift" key="S"/>
 
         <key id="zoomInKey" command="zoomInCommand" modifiers="control" key="+"/>
         <key id="zoomInKey2" command="zoomInCommand" modifiers="control shift" key="+"/>
@@ -207,6 +208,7 @@
                     <menuitem class="menuitem-iconic" label="New Document" command="newDocumentCommand" key="newDocumentKey" image="moz-icon://stock/document-new?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Open..." command="loadDocumentCommand" key="loadDocumentKey" image="moz-icon://stock/document-open?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Save" command="saveDocumentCommand" key="saveDocumentKey" image="moz-icon://stock/document-save?size=menu"/>
+                    <menuitem class="menuitem-iconic" label="Save as" command="saveDocumentAsCommand" key="saveDocumentAsKey" image="moz-icon://stock/document-save?size=menu"/>
                     <menuseparator/>
                     <menu label="Recent Documents">
                         <menupopup id="recentDocumentMenu">
