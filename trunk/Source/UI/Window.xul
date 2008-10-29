@@ -275,6 +275,30 @@
                 <toolbarbutton image="Icons/down.png" label="Send Backward" tooltiptext="Send Backward" command="sendBackwardCommand"/>
                 <toolbarbutton image="Icons/bottom.png" label="Send to Back" tooltiptext="Send to Back" command="sendToBackCommand"/>
             </hbox>
+            <toolbarseparator/>
+            <hbox id="dimension" class="ToolbarSection">
+                <vbox pack="center">
+                    <label value="X:"/>
+                </vbox>
+                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeX" disabled="true" />
+                <vbox pack="center">
+                    <label value="Y:"/>
+                </vbox>
+                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeY"  disabled="true"/>
+                <vbox pack="center">
+                    <label value="Width:"/>
+                </vbox>
+                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeWidth"  disabled="true"/>
+                <vbox pack="center">
+                    <label value="Height:"/>
+                </vbox>
+                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeHeight"  disabled="true"/>
+                <vbox pack="center">
+                    <label value="Angle:"/>
+                </vbox>
+                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeAngle"  disabled="true"/>
+            </hbox>
+            
             <!--
             <textbox id="foo" size="20" onkeypress="if (event.keyCode == event.DOM_VK_RETURN) { var x = eval(document.getElementById('foo').value, window); if (x) alert(x); this.focus(); this.select();}"/>
             <button default="true" label="Evaluate..." oncommand="var x = eval(document.getElementById('foo').value, window); if (x) alert(x);"/>
