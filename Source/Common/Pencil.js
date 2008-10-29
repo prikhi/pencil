@@ -136,6 +136,7 @@ Pencil.setupCommands = function () {
     var target = canvas ? canvas.currentController : null;
     
     Pencil._enableCommand("newPageCommand", Pencil.controller.hasDoc());
+    Pencil._enableCommand("duplicatePageCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("saveDocumentCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("rasterizeCommand", canvas != null);
     

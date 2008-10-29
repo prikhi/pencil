@@ -91,6 +91,7 @@
     <commandset>
         <command id="newDocumentCommand" oncommand="Pencil.controller.newDocument();"/>
         <command id="newPageCommand" oncommand="Pencil.controller.newPage();"/>
+        <command id="duplicatePageCommand" oncommand="Pencil.controller.duplicatePage();"/>
         <command id="loadDocumentCommand" oncommand="Pencil.controller.loadDocument();"/>
         <command id="saveDocumentCommand" oncommand="Pencil.controller.saveDocument();"/>
         <command id="rasterizeCommand" oncommand="Pencil.controller.rasterizeCurrentPage();"/>
@@ -282,6 +283,7 @@
     <popupset>
         <popup id="pageTabContextMenu">
             <menuitem class="menuitem-iconic" image="moz-icon://stock/add?size=menu" label="New Page..." id="newPageMenuItem" command="newPageCommand"/>
+            <menuitem class="menuitem-iconic" image="moz-icon://stock/duplicate?size=menu" label="Duplicate" id="pageDuplicateMenuItem" command="duplicatePageCommand"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/remove?size=menu" label="Delete" id="deletePageMenuItem"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/document-properties?size=menu" label="Properties" id="pagePropertiesMenuItem"/>
             <menuitem label="Resize to fit contents..." id="sizeToContentMenuItem" command="sizeToContentCommand"/>
