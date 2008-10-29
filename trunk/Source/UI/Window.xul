@@ -36,6 +36,7 @@
 
 
 <script src="../Common/Pencil.js"/>
+<script src="../Common/pImageLoader.js"/>
 <script src="../Common/Controller.js"/>
 <script src="../Common/MainWindow.js"/>
 
