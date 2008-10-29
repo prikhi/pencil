@@ -95,6 +95,7 @@
         <command id="duplicatePageCommand" oncommand="Pencil.controller.duplicatePage();"/>
         <command id="loadDocumentCommand" oncommand="Pencil.controller.loadDocument();"/>
         <command id="saveDocumentCommand" oncommand="Pencil.controller.saveDocument();"/>
+        <command id="saveDocumentAsCommand" oncommand="Pencil.controller.saveDocumentAs();"/>
         <command id="rasterizeCommand" oncommand="Pencil.controller.rasterizeCurrentPage();"/>
         <command id="rasterizeAllCommand" oncommand="Pencil.controller.rasterizeDocument();"/>
         <command id="sizeToContentCommand" oncommand="Pencil.controller.sizeToContent(null, true);"/>
