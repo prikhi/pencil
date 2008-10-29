@@ -106,21 +106,44 @@ FileDragObserver.SVG_SHAPE_DEF_ID = "Evolus.Common:SVGImage";
 FileDragObserver.fileTypeHandler = {
     _handleImageFile: function (canvas, url, loc, transparent) {
         try {
-            var def = CollectionManager.shapeDefinition.locateDefinition(PNGImageXferHelper.SHAPE_DEF_ID);
-            if (!def) return;
-            
-            canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
-            if (canvas.currentController) {
-                var controller = canvas.currentController;
-                Pencil.rasterizer.getImageDataFromUrl(url, function (imageData) {
-                    var dim = new Dimension(imageData.w, imageData.h);
-                    controller.setProperty("imageData", imageData);
-                    controller.setProperty("box", dim);
-                    if (transparent) {
-                        controller.setProperty("fillColor", Color.fromString("#ffffff00"));
+            if (Config.get("document.EmbedImages") == null){
+                Config.set("document.EmbedImages",false);
+            }
+            var EmbedImages = Config.get("document.EmbedImages")
+            if(!EmbedImages){
+                var def = CollectionManager.shapeDefinition.locateDefinition(PNGImageXferHelper.SHAPE_DEF_ID);
+                if (!def) return;
+                
+                canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
+                if (canvas.currentController) {
+                    var controller = canvas.currentController;
+                    Pencil.rasterizer.getImageDataFromUrl(url, function (imageData) {
+                        var dim = new Dimension(imageData.w, imageData.h);
+                        controller.setProperty("imageData", imageData);
+                        controller.setProperty("box", dim);
+                        if (transparent) {
+                            controller.setProperty("fillColor", Color.fromString("#ffffff00"));
+                        }
+                    });
+                    canvas.invalidateEditors();
+                }
+            } else {
+                var def = CollectionManager.shapeDefinition.locateDefinition("Evolus.Common:Bitmap_handler");
+                if (!def)return;
+                var loader = new pImageLoader(url,function listener(aImageData){ 
+                    canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
+                    if (canvas.currentController) {
+                        g = canvas.getSelectedTargets()[0].svg
+                        g.getElementsByTagName("image")[0].setAttribute("xlink:href", aImageData);
+                        Pencil.rasterizer.getImageDataFromUrl(url, function (imageData) {
+                            g.getElementsByTagName("image")[0].setAttribute("width", imageData.w);
+                            g.getElementsByTagName("image")[0].setAttribute("height", imageData.h);
+                            canvas.selectShape(g);
+                        });
+                        canvas.invalidateEditors();
                     }
                 });
-                canvas.invalidateEditors();
+                loader.load();
             }
         } catch (e) {
             Console.dumpError(e);
