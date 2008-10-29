@@ -124,6 +124,24 @@ Controller.prototype.newDocument = function () {
     this.modified = false;
     this._setupTitle();
 };
+Controller.prototype.duplicatePage = function () {
+ 
+    var page = this.getCurrentPage();
+    
+    var name = page.properties.name;
+    var width = page.properties.width;
+    var height = page.properties.height;
+    var background = page.properties.background;
+    var dimBackground = page.properties.dimBackground;
+
+    var id = this._generateId();
+    
+    this._addPage(name, id, width, height, background, dimBackground);
+    this._setSelectedPageIndex(this.doc.pages.length - 1);
+    
+    this.markDocumentModified();
+    this.doc.pages[this.doc.pages.length-1].contentNode = page._view.canvas.drawingLayer;
+};
 Controller.prototype.newPage = function () {
     var returnValueHolder = {};
     var dialog = window.openDialog("PageDetailDialog.xul", "pageDetailDialog", "modal,centerscreen", 
@@ -581,7 +599,7 @@ Controller.prototype.rasterizeDocument = function () {
                     if(withPrefix)
                         var fileName = (pageIndex +1 )+ '_' + page.properties.name.replace(/[\/!\\'"]/g, "_");
                     else
-                    var fileName = page.properties.name.replace(/[\/!\\'"]/g, "_");
+                        var fileName = page.properties.name.replace(/[\/!\\'"]/g, "_");
                         
                     dir.append(fileName + ".png");
                     
