@@ -161,6 +161,11 @@
         <key id="sendToBackKey" command="sendToBackCommand" modifiers="control shift" keycode="["/>
         <key id="sendToBackKey2" command="sendToBackCommand" modifiers="control shift" keycode="{"/>
 
+        <key id="bringToFrontKey3" command="bringToFrontCommand" modifiers="control shift" keycode="VK_HOME"/>
+        <key id="bringForwardKey3" command="bringForwardCommand" modifiers="control"         keycode="VK_HOME"/>
+        <key id="sendBackwardKey3" command="sendBackwardCommand" modifiers="control"         keycode="VK_END"/>
+        <key id="sendToBackKey3" command="sendToBackCommand" modifiers="control shift"     keycode="VK_END"/>
+
         <key id="copyKey" command="copyCommand" modifiers="control" key="C"/>
         <key id="cutKey" command="cutCommand" modifiers="control" key="X"/>
         <key id="pasteKey" command="pasteCommand" modifiers="control" key="V"/>
