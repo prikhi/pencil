@@ -129,7 +129,7 @@ GeometryEditor.prototype.attach = function (targetObject) {
     this.shapeX.disabled=false;
     this.shapeY.disabled=false;
     this.shapeA.disabled = true //!locking.lockRatio ?false:true;
-    this.shapeWidth.disabled = !locking.width ?false:true;
+    this.shapeWidth.disabled  = !locking.width ?false:true;
     this.shapeHeight.disabled = !locking.height ?false:true;;
     
     var geo = this.canvas.getZoomedGeo(targetObject);
@@ -141,6 +141,8 @@ GeometryEditor.prototype.attach = function (targetObject) {
         this.svgElement.removeAttributeNS(PencilNamespaces.p, "nobox");
     } else {
         this.svgElement.setAttributeNS(PencilNamespaces.p, "p:nobox", true);
+        this.shapeWidth.disabled  = true;
+        this.shapeHeight.disabled = true;
     }
 };
 
