@@ -150,76 +150,81 @@
     </Shape>
 
     <Shape id="RectWithGradient" displayName="Gradient Rectangle" icon="Icons/rectangle-grad.png">
-        <Properties>
+                <Properties>
 
-            <PropertyGroup>
-                <Property name="box" type="Dimension">200,58</Property>
-            </PropertyGroup>
+                        <PropertyGroup>
+                                <Property name="box" type="Dimension">200,58</Property>
+                                <Property name="withBlur" type="Bool" displayName="With Shadow">false</Property>
+                        </PropertyGroup>
 
-            <PropertyGroup name="Handles">
-                <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2">0,0</Property>
-                <Property name="textPadding" displayName="Text Padding" type="Handle" p:lockX="true" p:minY="0" p:maxY="$box.w / 2">0,5</Property>
+                        <PropertyGroup name="Handles">
+                                <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2">0,0</Property>
+                                <Property name="textPadding" displayName="Text Padding" type="Handle" p:lockX="true" p:minY="0" p:maxY="$box.w / 2">0,5</Property>
+                                
+                                <Property name="textPadding" displayName="Text Padding" type="Handle" p:lockX="true" p:minY="0" p:maxY="$box.w / 2">0,5</Property>
+                        </PropertyGroup>
 
-                <Property name="textPadding" displayName="Text Padding" type="Handle" p:lockX="true" p:minY="0" p:maxY="$box.w / 2">0,5</Property>
-            </PropertyGroup>
+                        <PropertyGroup name="Background">
+                            <Property name="startFillColor" displayName="Start Color" type="Color">#336699ff</Property>
+                            <Property name="endFillColor" displayName="End Color" type="Color">#ffffffff</Property>
+                        </PropertyGroup>
+                        <PropertyGroup name="Border">
+                                <Property name="strokeColor" displayName="Color" type="Color">#000000ff</Property>
+                                <Property name="strokeStyle" displayName="Style" type="StrokeStyle">1|</Property>
+                        </PropertyGroup>
+                        <PropertyGroup name="Text">
+                            <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
+                            <Property name="textFont" displayName="Default Font" type="Font">Arial|normal|normal|12px</Property>
+                            <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
+                            <Property name="textAlign" displayName="Alignment" type="Alignment">1,1</Property>
+                        </PropertyGroup>
 
-            <PropertyGroup name="Background">
-                <Property name="startFillColor" displayName="Start Color" type="Color">#336699ff</Property>
-                <Property name="endFillColor" displayName="End Color" type="Color">#ffffffff</Property>
-            </PropertyGroup>
-            <PropertyGroup name="Border">
-                <Property name="strokeColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="strokeStyle" displayName="Style" type="StrokeStyle">1|</Property>
-            </PropertyGroup>
-            <PropertyGroup name="Text">
-                <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
-                <Property name="textFont" displayName="Default Font" type="Font">Arial|normal|normal|12px</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textAlign" displayName="Alignment" type="Alignment">1,1</Property>
-            </PropertyGroup>
-
-        </Properties>
-        <Behaviors>
-            <For ref="stop1">
-                <StopColor>$startFillColor</StopColor>
-                <Offset>0</Offset>
-            </For>
-            <For ref="stop2">
-                <StopColor>$endFillColor</StopColor>
-                <Offset>1</Offset>
-            </For>
-            <For ref="rrRect">
-                <Box>$box.narrowed($strokeStyle.w % 2 == 0 ? 0 : 1)</Box>
-                <Transform>[translate(($strokeStyle.w % 2 == 0 ? 0 : 0.5), ($strokeStyle.w % 2 == 0 ? 0 : 0.5))]</Transform>
-                <StrokeColor>$strokeColor</StrokeColor>
-                <StrokeStyle>$strokeStyle</StrokeStyle>
-                <Radius>
-                    <Arg>$radius.x</Arg>
-                    <Arg>$radius.x</Arg>
-                </Radius>
-            </For>
-            <For ref="text">
-                <TextContent>$textContent</TextContent>
-                <Font>$textFont</Font>
-                <Color>$textColor</Color>
-                <BoxFit>
-                    <Arg>Bound.fromBox($box, $textPadding.y)</Arg>
-                    <Arg>$textAlign</Arg>
-                </BoxFit>
-            </For>
-        </Behaviors>
-        <Actions>
-            <Action id="removeBorder" displayName="Remove Border">
-                <Impl>
+                </Properties>
+                <Behaviors>
+                    <For ref="stop1">
+                        <StopColor>$startFillColor</StopColor>
+                        <Offset>0</Offset>
+                    </For>
+                    <For ref="stop2">
+                        <StopColor>$endFillColor</StopColor>
+                        <Offset>1</Offset>
+                    </For>
+                    <For ref="rrRect">
+                        <Box>$box.narrowed($strokeStyle.w % 2 == 0 ? 0 : 1)</Box>
+                        <Transform>[translate(($strokeStyle.w % 2 == 0 ? 0 : 0.5), ($strokeStyle.w % 2 == 0 ? 0 : 0.5))]</Transform>
+                        <StrokeColor>$strokeColor</StrokeColor>
+                        <StrokeStyle>$strokeStyle</StrokeStyle>
+                        <Radius>
+                            <Arg>$radius.x</Arg>
+                            <Arg>$radius.x</Arg>
+                        </Radius>
+                    </For>
+                    <For ref="text">
+                        <TextContent>$textContent</TextContent>
+                        <Font>$textFont</Font>
+                        <Color>$textColor</Color>
+                        <BoxFit>
+                            <Arg>Bound.fromBox($box, $textPadding.y)</Arg>
+                            <Arg>$textAlign</Arg>
+                        </BoxFit>
+                    </For>
+                    <For ref="bgCopy">
+                        <ApplyFilter>$withBlur</ApplyFilter>
+                        <Visibility>$withBlur</Visibility>
+                    </For>
+                </Behaviors>
+                <Actions>
+                    <Action id="removeBorder" displayName="Remove Border">
+                        <Impl>
                         <![CDATA[
                             var strokeStyle = this.getProperty("strokeStyle");
                             strokeStyle.w = 0;
                             this.setProperty("strokeStyle", strokeStyle);
                         ]]>
                         </Impl>
-            </Action>
-            <Action id="makeSquares" displayName="Make Squared">
-                <Impl>
+                    </Action>
+                    <Action id="makeSquares" displayName="Make Squared">
+                        <Impl>
                         <![CDATA[
                             var box = this.getProperty("box");
                             box.w = Math.max(box.w, box.h);
@@ -227,22 +232,42 @@
                             this.setProperty("box", box);
                         ]]>
                         </Impl>
-            </Action>
-        </Actions>
-        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+                    </Action>
+                </Actions>
+                <p:Content    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                                        xmlns="http://www.w3.org/2000/svg">
 
-            <defs>
-                <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="linearFill">
-                    <stop style="stop-color:#165C80;stop-opacity:1" offset="0" id="stop1"/>
-                    <stop style="stop-color:#165C80;stop-opacity:1" offset="1" id="stop2"/>
-                </linearGradient>
-            </defs>
-            <rect width="61" height="24" rx="3" ry="3" x="0" y="0" style="stroke-width: 1px; fill: url(#linearFill)" id="rrRect" />
-            <foreignObject x="0" y="0" width="200" height="150" id="text">
-                <div xmlns="http://www.w3.org/1999/xhtml"></div>
-            </foreignObject>
-        </p:Content>
-    </Shape>
+                        <defs>
+                            <linearGradient x1="0%" y1="0%" x2="0%" y2="100%" id="linearFill">
+                                <stop style="stop-color:#165C80;stop-opacity:1" offset="0" id="stop1"/>
+                                <stop style="stop-color:#165C80;stop-opacity:1" offset="1" id="stop2"/>
+                            </linearGradient>
+                            <rect
+                                width="61"
+                                height="24"
+                                rx="3"
+                                ry="3"
+                                x="0"
+                                y="0"
+                                style="stroke-width: 1px; fill: url(#linearFill)"
+                                id="rrRect" />
+                            <filter
+                               id="shadingFilter"
+                               height="1.2558399"
+                               y="-0.12792"
+                               width="1.06396"
+                               x="-0.03198">
+                                <feGaussianBlur stdDeviation="1" in="SourceAlpha"/>
+                            </filter>            
+                        </defs>
+                        <use xlink:href="#rrRect" id="bgCopy" transform="translate(2, 2)" p:filter="url(#shadingFilter)" style="opacity:0.5;" p:heavy="true"/>
+                        <use xlink:href="#rrRect" />
+                        <foreignObject x="0" y="0" width="200" height="150" id="text">
+                                <div xmlns="http://www.w3.org/1999/xhtml">
+                                </div>
+                        </foreignObject>
+                </p:Content>
+        </Shape>
     <Shape id="Bitmap" displayName="Bitmap Image" icon="Icons/bitmap.png">
         <Properties>
             <PropertyGroup>
@@ -365,6 +390,35 @@
             <rect id="bgRect" style="fill: #000000; fill-opacity: 0; stroke: none;" x="0" y="0"/>
             <path style="fill:none; stroke: #ACA899; stroke-width: 1px;" d="M 0,0 L 4,4 L 0,8 z" id="line1"/>
         </p:Content>
+    </Shape>
+    <Shape id="Triangle" displayName="Triangle" icon="Icons/triangle.png">
+        <Properties>
+                <PropertyGroup>
+                    <Property name="a" displayName="Inner Top" type="Handle" >0,0</Property>
+                    <Property name="b" displayName="Inner Top" type="Handle"  >90,0</Property>
+                    <Property name="c" displayName="Inner Top" type="Handle">0,90</Property>
+                </PropertyGroup>
+                <PropertyGroup name="Background">
+                    <Property name="fillColor" displayName="Color" type="Color">#E4EBF6FF</Property>
+                </PropertyGroup>
+                <PropertyGroup name="Border">
+                    <Property name="strokeColor" displayName="Line Color" type="Color">#99BBE8ff</Property>
+                    <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">1|</Property>
+                </PropertyGroup>
+            </Properties>
+            <Behaviors>
+                <For ref="path">
+                    <Transform>[translate(($strokeStyle.w % 2) / 2, ($strokeStyle.w % 2) / 2)]</Transform>
+                    <StrokeColor>$strokeColor</StrokeColor>
+                    <StrokeStyle>$strokeStyle</StrokeStyle>
+                    <D>[M($a.x, $a.y), L($b.x, $b.y), L($c.x, $c.y),z]</D>
+                    <Fill>$fillColor</Fill>
+                </For>
+            </Behaviors>
+            <p:Content    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                                        xmlns="http://www.w3.org/2000/svg">
+                <path id="path" fill="none" style="stroke-linejoin: round;"/>
+            </p:Content>
     </Shape>
     <Shape id="SVGImage" system="true" displayName="SVG Image" icon="Icons/bitmap.png" xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink">
         <Properties>
