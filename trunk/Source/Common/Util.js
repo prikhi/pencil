@@ -173,7 +173,9 @@ Dom.htmlEncode = function (text) {
 Dom.renewId = function (shape) {
     var seed = Math.round(Math.random() * 1000);
     Dom.workOn(".//*/@id", shape, function (node) {
+        debug(" -> working on node.value = " + node.value + ", seed: " + seed);
         node.value = node.value + seed;
+        debug(" -> working on node.value = " + node.value);
     });
     Dom.resolveIdRef(shape, seed);
 };

@@ -10,6 +10,7 @@ function Controller(win) {
     this.deletePageMenuItem = this.window.ownerDocument.getElementById("deletePageMenuItem");
     this.pageMoveLeftMenuItem = this.window.ownerDocument.getElementById("pageMoveLeftMenuItem");
     this.pageMoveRightMenuItem = this.window.ownerDocument.getElementById("pageMoveRightMenuItem");
+    this.pageDuplicateMenuItem = this.window.ownerDocument.getElementById("pageDuplicateMenuItem");
     this.gotoTabMenu = this.window.ownerDocument.getElementById("gotoTabMenu");
     var tabScrollBox = this.window.ownerDocument.getElementById("tabScrollBox");
     this.tabScrollBox = tabScrollBox;
@@ -61,93 +62,63 @@ function Controller(win) {
             }
         }
     }, false);
+
+}
+Controller.prototype._movePage = function (index, forward) {
+    debug("Moving: " + [index, forward]);
+    try {
+        if (index < 0 || index >= this.doc.pages.length) return;
+        var otherIndex = index + (forward ? 1 : -1);
+        if (otherIndex < 0 || otherIndex >= this.doc.pages.length) return;
+        
+        var page = this.doc.pages[index];
+        var otherPage = this.doc.pages[otherIndex];
+        
+        if (!page || !otherPage) return;
+        
+        debug("swapping: " + [index, otherIndex]);
+        
+        this.doc.pages[index] = otherPage;
+        this.doc.pages[otherIndex] = page;
+
+        this._updatePageFromView();
+        this._clearView();
+        this._pageSetupCount = 0;
+        var thiz = this;
+        
+        this.markDocumentModified();
+        
+        for (p in this.doc.pages) {
+            this._createPageView(this.doc.pages[p], function () {
+                thiz._pageSetupCount ++;
+                if (thiz._pageSetupCount == thiz.doc.pages.length) {
+                    thiz._ensureAllBackgrounds(function () {});
+                }
+            });
+            this._setSelectedPageIndex(otherIndex);
+        }
+    } catch (e) {
+        Console.dumpError(e);
+    }
+};
+Controller.prototype._findPageToEditIndex = function () {
+    for (var i = 0; i < this.doc.pages.length; i ++) {
+        if (this._pageToEdit == this.doc.pages[i]) {
+            return i;
+            break;
+        }
+    }
+    return -1;
 }
 Controller.prototype.pageMoveRight = function () {
-        if(!this.doc.pages[this.mainView.selectedIndex+1]){
-            return
-        }
-        try {
-            var i = this.mainView.selectedIndex;
-            var right = this.doc.pages[i+1];
-            //moving tabpanel
-            var tabpanels =this.mainViewPanel.getElementsByTagName("tabpanel")
-            var pcanvas =this.mainViewPanel.getElementsByTagName("pcanvas")
-            var right_nodes = []
-            while (pcanvas[i+1].drawingLayer.hasChildNodes())
-                right_nodes.push(pcanvas[i+1].drawingLayer.removeChild(pcanvas[i+1].drawingLayer.firstChild));
-            while (pcanvas[i].drawingLayer.hasChildNodes()) 
-                    pcanvas[i+1].drawingLayer.appendChild(pcanvas[i].drawingLayer.firstChild);
-            while (right_nodes.length){
-                    pcanvas[i].drawingLayer.appendChild(right_nodes.shift());
-            }
-            //moving tab
-            var tabs =this.mainViewHeader.getElementsByTagName("tab")
-            var nextTab =  tabs[i+1].getAttribute("label");
-            tabs[i+1].setAttribute("label",tabs[i].getAttribute("label"));
-            tabs[i].setAttribute("label",nextTab);
-            //moving page
-            this.doc.pages[i+1] = this.doc.pages[i];
-            this.doc.pages[i] = right;
-            //update tab
-            tabs[i+1]._page = this.doc.pages[i+1];
-            tabs[i]._page = this.doc.pages[i];
-            //update view
-            this.doc.pages[i+1]._view = {header: tabs[i+1], body: tabpanels[i+1], canvas: pcanvas[i+1]};
-            this.doc.pages[i]._view = {header: tabs[i], body: tabpanels[i], canvas: pcanvas[i]};
-            //update tabpanel
-            tabpanels[i+1]._canvas = pcanvas[i+1];
-            tabpanels[i]._canvas = pcanvas[i];
-            
-            this._setSelectedPageIndex(i+1);
-            this.markDocumentModified();
-            this._ensureAllBackgrounds();
-        } catch (e) {
-            Console.dumpError(e);
-        }
+    var pageIndex = this._findPageToEditIndex();
+    if (pageIndex < 0) return;
+    this._movePage(pageIndex, true);
 }
-Controller.prototype.pageMoveLeft = function (i) {
-        if(!this.doc.pages[this.mainView.selectedIndex-1]){
-            return
-        }
-        try {
-            var i = this.mainView.selectedIndex;
-            var left = this.doc.pages[i-1];
-            //moving tabpanel
-            var tabpanels =this.mainViewPanel.getElementsByTagName("tabpanel")
-            var pcanvas =this.mainViewPanel.getElementsByTagName("pcanvas")
-            
-            var left_nodes = []
-            while (pcanvas[i-1].drawingLayer.hasChildNodes())
-                left_nodes.push(pcanvas[i-1].drawingLayer.removeChild(pcanvas[i-1].drawingLayer.firstChild));
-            while (pcanvas[i].drawingLayer.hasChildNodes()) 
-                    pcanvas[i-1].drawingLayer.appendChild(pcanvas[i].drawingLayer.firstChild);
-            while (left_nodes.length){
-                    pcanvas[i].drawingLayer.appendChild(left_nodes.shift());
-            }
-            //moving tab
-            var tabs =this.mainViewHeader.getElementsByTagName("tab")
-            var previousTab =  tabs[i-1].getAttribute("label");
-            tabs[i-1].setAttribute("label",tabs[i].getAttribute("label"));
-            tabs[i].setAttribute("label",previousTab);
-            //moving page
-            this.doc.pages[i-1] = this.doc.pages[i];
-            this.doc.pages[i] = left;
-            //update tab
-            tabs[i-1]._page = this.doc.pages[i-1];
-            tabs[i]._page = this.doc.pages[i];
-            //update view
-            this.doc.pages[i-1]._view = {header: tabs[i-1], body: tabpanels[i-1], canvas: pcanvas[i-1]};
-            this.doc.pages[i]._view = {header: tabs[i], body: tabpanels[i], canvas: pcanvas[i]};
-            //update tabpanel
-            tabpanels[i-1]._canvas = pcanvas[i-1];
-            tabpanels[i]._canvas = pcanvas[i];
-            
-            this._setSelectedPageIndex(i-1);
-            this.markDocumentModified();
-            this._ensureAllBackgrounds();
-        } catch (e) {
-            Console.dumpError(e);
-        }
+Controller.prototype.pageMoveLeft = function () {
+    var pageIndex = this._findPageToEditIndex();
+    if (pageIndex < 0) return;
+    this._movePage(pageIndex, false);
 }
 Controller.prototype.gotoPage = function (page) {
     var tab = page._view.header;
@@ -227,8 +198,15 @@ Controller.prototype.duplicatePage = function () {
     this._addPage(name, id, width, height, background, dimBackground);
     this._setSelectedPageIndex(this.doc.pages.length - 1);
     
+    var newPage = this.doc.pages[this.doc.pages.length-1];
+    
+    for (var i = 0; i < page._view.canvas.drawingLayer.childNodes.length; i ++) {
+        var node = page._view.canvas.drawingLayer.childNodes[i];
+        newPage._view.canvas.drawingLayer.appendChild(newPage._view.canvas.ownerDocument.importNode(node, true));
+        Dom.renewId(node);
+    }
+    
     this.markDocumentModified();
-    this.doc.pages[this.doc.pages.length-1].contentNode = page._view.canvas.drawingLayer;
 };
 Controller.prototype.newPage = function () {
     var returnValueHolder = {};
@@ -513,10 +491,21 @@ Controller.prototype._handleContextMenuShow = function (event) {
     if (tab) {
         this.pagePropertiesMenuItem.style.display = "";
         this.deletePageMenuItem.style.display = "";
+        this.pageDuplicateMenuItem.style.display = "";
+        this.pageMoveLeftMenuItem.style.display = "";
+        this.pageMoveRightMenuItem.style.display = "";
+        
         this._pageToEdit = tab._page;
+        
+        var index = this._findPageToEditIndex(this._pageToEdit);
+        Pencil._enableCommand("moveLeftCommand", index > 0);
+        Pencil._enableCommand("moveRightCommand", index < this.doc.pages.length - 1);
     } else {
         this.pagePropertiesMenuItem.style.display = "none";
         this.deletePageMenuItem.style.display = "none";
+        this.pageDuplicateMenuItem.style.display = "none";
+        this.pageMoveLeftMenuItem.style.display = "none";
+        this.pageMoveRightMenuItem.style.display = "none";
         this._pageToEdit = null;
     }
     
@@ -672,7 +661,7 @@ Controller.prototype.rasterizeDocument = function () {
                     pageIndex ++;
                     if (pageIndex >= thiz.doc.pages.length) {
                         listener.onTaskDone();
-                        Util.info("Document has been exported", "Location: " + dir.parent.path);
+                        //Util.info("Document has been exported", "Location: " + dir.parent.path);
                         return;
                     }
                     var page = thiz.doc.pages[pageIndex];
@@ -742,7 +731,7 @@ Controller.prototype.rasterizeCurrentPage = function () {
     if (fp.show() == nsIFilePicker.returnCancel) return false;
     try {
         this._rasterizePage(page, fp.file.path, function () {
-                Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
+                //Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
             });
     } catch (e) {
         Console.dumpError(e);

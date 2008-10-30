@@ -102,11 +102,3 @@ Pencil.insertPNGImage = function (url, w, h, x, y) {
         }, 10);
     }
 };
-
-
-
-
-
-
-
-
