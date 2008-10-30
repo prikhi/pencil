@@ -252,15 +252,15 @@ Controller.prototype.newPage = function () {
     this.markDocumentModified();    
 };
 Controller.prototype.saveDocumentAs = function () {
-    this.filePath = null;
-    this.saveDocument();
+    this.saveDocument(true);
 }
-Controller.prototype.saveDocument = function () {
+Controller.prototype.saveDocument = function (SaveAs) {
     var currentPath = this.filePath ? this.filePath : null;
+    var saveAs = SaveAs ? SaveAs : false
     try {
         this._updatePageFromView();
         
-        if (!this.isBoundToFile()) {
+        if (!this.isBoundToFile() || saveAs) {
             var nsIFilePicker = Components.interfaces.nsIFilePicker;
             var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
             fp.init(window, "Save Document As", nsIFilePicker.modeSave);
