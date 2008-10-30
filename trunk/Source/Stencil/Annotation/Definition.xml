@@ -21,9 +21,11 @@
                 </PropertyGroup>
                 <PropertyGroup name="Handles">
                     <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="Math.min($box.w, $box.h) / 2">8,0</Property>
-                    <Property name="start" displayName="Start Point" type="Handle" p:lockX="true" p:minY="$radius.x + 2" p:maxY="$end.y - 5">0,12</Property>
-                    <Property name="end" displayName="End Point" type="Handle" p:lockX="true" p:minY="$start.y + 5" p:maxY="$box.h - $radius.x - 2">0,33</Property>
-                    <Property name="pin" displayName="Balloon Pin" type="Handle" p:maxX="0" p:minY="0" p:maxY="$box.h">-12,23</Property>
+                    <Property name="leftStart" displayName="Start Point" type="Handle" p:lockX="true" p:minY="$radius.x + 2" p:maxY="$leftEnd.y - 5">0,12</Property>
+                    <Property name="leftEnd" displayName="End Point" type="Handle"     p:lockX="true" p:minY="$leftStart.y + 5" p:maxY="$box.h - $radius.x - 2">0,33</Property>
+                    <Property name="topStart" displayName="Start Point" type="Handle"  p:lockY="true" p:minX="$radius.x + 2" p:maxX="$topEnd.x - 5">12,0</Property>
+                    <Property name="topEnd" displayName="End Point" type="Handle"      p:lockY="true" p:minX="$topStart.x + 5" p:maxX="$box.w - $radius.x - 2">33,0</Property>
+                    <Property name="pin" displayName="Balloon Pin" type="Handle"  >-12,23</Property>
                 </PropertyGroup>
                 <PropertyGroup name="Background">
                     <Property name="fillColor" displayName="Color" type="Color">#FFCD19E6</Property>
@@ -39,11 +41,34 @@
             </Properties>
             <Behaviors>
                 <For ref="rect">
-                    <D>[M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
-                            L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
-                            L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
-                            L(0, $end.y), L($pin.x, $pin.y), L(0, $start.y), L(0, $radius.x),
-                            C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)]</D>
+                      <D>   
+                            var type="top";
+                            type=( (-$pin.y > -$pin.x &amp;&amp;  -$pin.y > ($pin.x - $box.w)  ) ? "top" :type);
+                            type=( ($pin.y - $box.h) > -$pin.x &amp;&amp; ($pin.y - $box.h) > ($pin.x - $box.w) ? "bottom" :type);
+                            type=( (($pin.x - $box.w)  >($pin.y - $box.h)  &amp;&amp; ($pin.x - $box.w) >  -$pin.y) ? "right":type);
+                            type=(  -$pin.x > -$pin.y &amp;&amp; -$pin.x > ($pin.y - $box.h) ? "left":type );
+                            var x = {"left": [M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                            L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                            L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                            L(0, $leftEnd.y), L($pin.x, $pin.y), L(0, $leftStart.y), L(0, $radius.x),
+                                            C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)],
+                                         
+                                     "top": [M($radius.x, 0),L($topStart.x,0), L($pin.x, $pin.y), L($topEnd.x,0), 
+                                            L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                            L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                            L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                            L(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)],
+                                     "right": [M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                            L($box.w, $leftStart.y),L($pin.x, $pin.y), L($box.w, $leftEnd.y), L($box.w, $box.h - $radius.x),  C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                            L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                            L(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)] ,
+                                     "bottom": [M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                            L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                            L($topEnd.x, $box.h), L($pin.x, $pin.y),L($topStart.x, $box.h),
+                                            L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                            L(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)]
+                                      }[type];
+                        x</D>
                     <Fill>$fillColor</Fill>
                     <StrokeColor>$strokeColor</StrokeColor>
                     <StrokeStyle>$strokeStyle</StrokeStyle>
