@@ -493,6 +493,8 @@ GeometryEditor.prototype.handleMouseMove_old = function (event) {
     this.setEditorGeometry(newGeo);
 };
 GeometryEditor.prototype.getLockingPolicy = function () {
+    if(!this.targetObject.def)
+        return {x: false, y: false, width: true, height: true, rotation: true, ratio: true};
     var boxPropDef = this.targetObject.def.propertyMap["box"];
     var lockW = boxPropDef ? (boxPropDef.meta.lockWidth == "true" || boxPropDef.meta.widthExpr) : false;
     var lockH = boxPropDef ? (boxPropDef.meta.lockHeight == "true" || boxPropDef.meta.heightExpr) : false;
