@@ -332,7 +332,7 @@
                     ]]>
                     </Impl>
             </Action>
-            <Action id="selectExternalFile" displayName="Change Image Source...">
+            <Action id="selectExternalFile" displayName="load linked image...">
                 <Impl>
                     <![CDATA[
                         var thiz = this;
@@ -343,6 +343,25 @@
                             if (data.data.match(/\.png$/)) {
                                 thiz.setProperty("fillColor", Color.fromString("#ffffff00"));
                             }
+                        });
+                    ]]>
+                    </Impl>
+            </Action>
+            <Action id="selectExternalFileEmbedded" displayName="load embedded Source...">
+                <Impl>
+                    <![CDATA[
+                        var thiz = this;
+                        ImageData.prompt(function(data) {
+                            if (!data) return
+                            var loader = new pImageLoader(data.data,function listener(aImageData){
+                                thiz.setProperty("imageData", data.w+","+data.h+",  ");
+                                thiz.setProperty("box", new Dimension(data.w, data.h));
+                                thiz.svg.getElementsByTagName("image")[0].setAttribute("xlink:href", aImageData);
+                                if (data.data.match(/\.png$/)) {
+                                    thiz.setProperty("fillColor", Color.fromString("#ffffff00"));
+                                }
+                            });
+                            loader.load();
                         });
                     ]]>
                     </Impl>
@@ -471,11 +490,6 @@
         </Actions>
         <p:Content xmlns="http://www.w3.org/2000/svg">
             <g id="container"></g>
-        </p:Content>
-    </Shape>
-    <Shape id="Bitmap_handler" system="true" displayName="close" icon="Icons/bitmap.png">
-        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-            <image xlink:href="" height="15" width="15" id="image"/>
         </p:Content>
     </Shape>
 </Shapes>

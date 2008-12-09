@@ -128,17 +128,22 @@ FileDragObserver.fileTypeHandler = {
                     canvas.invalidateEditors();
                 }
             } else {
-                var def = CollectionManager.shapeDefinition.locateDefinition("Evolus.Common:Bitmap_handler");
+                var def = CollectionManager.shapeDefinition.locateDefinition("Evolus.Common:Bitmap");
                 if (!def)return;
                 var loader = new pImageLoader(url,function listener(aImageData){ 
                     canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
                     if (canvas.currentController) {
-                        g = canvas.getSelectedTargets()[0].svg
-                        g.getElementsByTagName("image")[0].setAttribute("xlink:href", aImageData);
-                        Pencil.rasterizer.getImageDataFromUrl(url, function (imageData) {
-                            g.getElementsByTagName("image")[0].setAttribute("width", imageData.w);
-                            g.getElementsByTagName("image")[0].setAttribute("height", imageData.h);
-                            canvas.selectShape(g);
+                        var controller = canvas.currentController;
+                        Pencil.rasterizer.getImageDataFromUrl(aImageData, function (imageData) {
+                            var dim = new Dimension(imageData.w, imageData.h);
+                            controller.setProperty("imageData", dim + ", ");
+                            g = canvas.getSelectedTargets()[0].svg
+                            g.getElementsByTagName("image")[0].setAttribute("xlink:href", aImageData);
+                            controller.setProperty("box", dim);
+                            controller.setProperty("imageDimension", dim);
+                            if (transparent) {
+                                controller.setProperty("fillColor", Color.fromString("#ffffff00"));
+                            }
                         });
                         canvas.invalidateEditors();
                     }
