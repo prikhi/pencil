@@ -151,8 +151,8 @@
         <key id="zoom1Key" command="zoom1Command" modifiers="control" key="1"/>
         <key id="zoomOutKey" command="zoomOutCommand" modifiers="control" key="-"/>
 
-        <key id="makeSameHorizontalSpaceCommand" command="makeSameHorizontalSpaceCommand" key="O"/>
-		<key id="makeSameVerticalSpaceCommand" command="makeSameVerticalSpaceCommand" key="V"/>
+        <key id="makeSameHorizontalSpaceCommandKey" command="makeSameHorizontalSpaceCommand" key="O"/>
+		<key id="makeSameVerticalSpaceCommandKey" command="makeSameVerticalSpaceCommand" key="V"/>
 		<key id="alignLeftKey" command="alignLeftCommand" key="L"/>
         <key id="alignCenterKey" command="alignCenterCommand" key="C"/>
         <key id="alignRightKey" command="alignRightCommand" key="R"/>
@@ -247,8 +247,8 @@
                     <menuitem label="Align Center" command="alignCenterCommand" key="alignCenterKey"/>
                     <menuitem label="Align Right" command="alignRightCommand" key="alignRightKey"/>
                     <menuseparator/>
-					<menuitem label="Horiz.Space" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommand"/>
-					<menuitem label="Vert.Space" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommand"/>
+					<menuitem label="Same Horiz.Space" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommandKey"/>
+					<menuitem label="Same Vert.Space" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommandKey"/>
 					<menuseparator/>
                     <menuitem label="Align Top" command="alignTopCommand" key="alignTopKey"/>
                     <menuitem label="Align Middle" command="alignMiddleCommand" key="alignMiddleKey"/>

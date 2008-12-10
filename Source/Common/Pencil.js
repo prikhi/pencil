@@ -148,6 +148,9 @@ Pencil.setupCommands = function () {
     Pencil._enableCommand("moveLeftCommand", canvas != null);
     Pencil._enableCommand("moveRightCommand", canvas != null);
     
+	Pencil._enableCommand("makeSameHorizontalSpaceCommand", target && target.makeSameHorizontalSpace);
+	Pencil._enableCommand("makeSameVerticalSpaceCommand", target && target.makeSameVerticalSpace);
+	
     Pencil._enableCommand("alignLeftCommand", target && target.alignLeft);
     Pencil._enableCommand("alignCenterCommand", target && target.alignCenter);
     Pencil._enableCommand("alignRightCommand", target && target.alignRight);
