@@ -106,6 +106,8 @@
         <command id="zoom1Command" oncommand="Pencil.activeCanvas.zoomTo(1);"/>
         <command id="zoomOutCommand" oncommand="Pencil.activeCanvas.zoomTo(Pencil.activeCanvas.zoom / 1.25);"/>
 
+		<command id="makeSameHorizontalSpaceCommand" oncommand="Pencil.activeCanvas.currentController.makeSameHorizontalSpace();"/>
+		<command id="makeSameVerticalSpaceCommand" oncommand="Pencil.activeCanvas.currentController.makeSameVerticalSpace();"/>
         <command id="alignLeftCommand" oncommand="Pencil.activeCanvas.currentController.alignLeft();"/>
         <command id="alignCenterCommand" oncommand="Pencil.activeCanvas.currentController.alignCenter();"/>
         <command id="alignRightCommand" oncommand="Pencil.activeCanvas.currentController.alignRight();"/>
@@ -149,7 +151,9 @@
         <key id="zoom1Key" command="zoom1Command" modifiers="control" key="1"/>
         <key id="zoomOutKey" command="zoomOutCommand" modifiers="control" key="-"/>
 
-        <key id="alignLeftKey" command="alignLeftCommand" key="L"/>
+        <key id="makeSameHorizontalSpaceCommand" command="makeSameHorizontalSpaceCommand" key="O"/>
+		<key id="makeSameVerticalSpaceCommand" command="makeSameVerticalSpaceCommand" key="V"/>
+		<key id="alignLeftKey" command="alignLeftCommand" key="L"/>
         <key id="alignCenterKey" command="alignCenterCommand" key="C"/>
         <key id="alignRightKey" command="alignRightCommand" key="R"/>
         <key id="alignTopKey" command="alignTopCommand" key="T"/>
@@ -243,6 +247,9 @@
                     <menuitem label="Align Center" command="alignCenterCommand" key="alignCenterKey"/>
                     <menuitem label="Align Right" command="alignRightCommand" key="alignRightKey"/>
                     <menuseparator/>
+					<menuitem label="Horiz.Space" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommand"/>
+					<menuitem label="Vert.Space" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommand"/>
+					<menuseparator/>
                     <menuitem label="Align Top" command="alignTopCommand" key="alignTopKey"/>
                     <menuitem label="Align Middle" command="alignMiddleCommand" key="alignMiddleKey"/>
                     <menuitem label="Align Bottom" command="alignBottomCommand" key="alignBottomKey"/>
@@ -275,6 +282,9 @@
             </hbox>
             <toolbarseparator/>
             <hbox id="arrangementToolbar" class="ToolbarSection">
+				<toolbarbutton image="Icons/make-same-horizontal-space.png" label="Align left" tooltiptext="Make Same Horizontal Space" command="makeSameHorizontalSpaceCommand"/>
+				<toolbarbutton image="Icons/make-same-vertical-space.png" label="Align left" tooltiptext="Make Same Vertical Space" command="makeSameVerticalSpaceCommand"/>
+				<toolbarseparator/>
                 <toolbarbutton image="Icons/align-left.png" label="Align left" tooltiptext="Align left" command="alignLeftCommand"/>
                 <toolbarbutton image="Icons/align-center.png" label="Align center" tooltiptext="Align center" command="alignCenterCommand"/>
                 <toolbarbutton image="Icons/align-right.png" label="Align right" tooltiptext="Align right" command="alignRightCommand"/>
