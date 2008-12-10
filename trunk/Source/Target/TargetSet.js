@@ -121,6 +121,111 @@ TargetSet.prototype.getName = function () {
 TargetSet.prototype.deleteTarget = function () {
     for (i in this.targets) this.targets[i].deleteTarget();
 };
+
+function compareRectX(a, b)
+{
+	var rectA = a.getBoundingRect();
+	var rectB = b.getBoundingRect();
+	
+	return (rectA.x - rectB.x);
+};
+
+TargetSet.prototype.makeSameHorizontalSpace = function () {
+    var minX = Number.MAX_VALUE;
+	var maxX = 0;
+	var nObjects = 0;
+	var objectsWidth = 0;
+	
+	var orderedList = new Array();
+	
+    for (var i in this.targets) {
+        var rect = this.targets[i].getBoundingRect();
+        if (rect.x < minX) {
+            minX = rect.x;
+        }
+		
+        if ((rect.x + rect.width) > maxX) {
+            maxX = rect.x + rect.width;
+        }
+		
+		objectsWidth+=rect.width;
+		
+		nObjects++;
+		
+		orderedList.push(this.targets[i]);
+    }
+	
+	orderedList.sort(compareRectX);
+	
+	var horizontalSpace = (maxX - minX - objectsWidth)/(nObjects-1);
+	
+	var currentX = minX;
+	
+    for (var t=0;t<orderedList.length;t++) {
+        var rect = orderedList[t].getBoundingRect();
+		
+		var delta = currentX - rect.x;
+
+		orderedList[t].moveBy(delta, 0, true);
+		
+		currentX = currentX + rect.width + horizontalSpace;
+    }
+	
+	this.canvas.invalidateEditors();
+};
+
+function compareRectY(a, b)
+{
+	var rectA = a.getBoundingRect();
+	var rectB = b.getBoundingRect();
+	
+	return (rectA.y - rectB.y);
+};
+
+TargetSet.prototype.makeSameVerticalSpace = function () {
+    var minY = Number.MAX_VALUE;
+	var maxY = 0;
+	var nObjects = 0;
+	var objectsHeight = 0;
+	
+	var orderedList = new Array();
+	
+    for (var i in this.targets) {
+        var rect = this.targets[i].getBoundingRect();
+        if (rect.y < minY) {
+            minY = rect.y;
+        }
+		
+        if ((rect.y + rect.height) > maxY) {
+            maxY = rect.y + rect.height;
+        }
+		
+		objectsHeight+=rect.height;
+		
+		nObjects++;
+		
+		orderedList.push(this.targets[i]);
+    }
+	
+	orderedList.sort(compareRectY);
+	
+	var verticalSpace = (maxY - minY - objectsHeight)/(nObjects-1);
+	
+	var currentY = minY;
+	
+    for (var t=0;t<orderedList.length;t++) {
+        var rect = orderedList[t].getBoundingRect();
+		
+		var delta = currentY - rect.y;
+
+		orderedList[t].moveBy(0, delta, true);
+		
+		currentY = currentY + rect.height + verticalSpace;
+    }
+	
+	this.canvas.invalidateEditors();
+};
+
 TargetSet.prototype.alignLeft = function () {
     var mostTarget = null;
     var most = Number.MAX_VALUE;
