@@ -137,7 +137,7 @@
         <command id="moveLeftCommand" oncommand="Pencil.controller.pageMoveLeft()"/>
         <command id="moveRightCommand" oncommand="Pencil.controller.pageMoveRight()"/>
 
-        <command id="newWindowCommand" oncommand="window.open('Window.xul', '_blank', 'chrome')"/>
+        <command id="newWindowCommand" oncommand="window.open('Window.xul', '_blank', 'chrome,resizable=yes')"/>
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="control" key="N"/>
