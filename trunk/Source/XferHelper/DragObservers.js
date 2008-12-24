@@ -140,7 +140,6 @@ FileDragObserver.fileTypeHandler = {
                             g = canvas.getSelectedTargets()[0].svg
                             g.getElementsByTagName("image")[0].setAttribute("xlink:href", aImageData);
                             controller.setProperty("box", dim);
-                            controller.setProperty("imageDimension", dim);
                             if (transparent) {
                                 controller.setProperty("fillColor", Color.fromString("#ffffff00"));
                             }
