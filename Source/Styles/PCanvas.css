@@ -55,7 +55,9 @@ pcanvas g#selectionContainer rect {
 pcanvas[p|selection='1'] g#selectionContainer rect {
     visibility: hidden;
 }
-
+pcanvas[p|holding] g[p|type='ControlLayer'] > * {
+    display: none;
+}
 pcanvas svg|svg svg|g[p|type] svg|foreignObject[p|mime='text/html']:hover > html|div {
     outline: solid 1px highlight;
 }
