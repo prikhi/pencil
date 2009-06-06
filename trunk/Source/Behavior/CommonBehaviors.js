@@ -133,10 +133,18 @@ Pencil.behaviors.BoxFit = function (bound, align) {
     try {
         var isText = (this.localName == "text");
         if (isText) {
+            Svg.setStyle(this, "dominant-baseline", "auto");
             var bbox = this.getBBox();
             
             var x = Math.round(((bound.w - bbox.width) * align.h) / 2 + bound.x);
-            var y = Math.round(((bound.h - bbox.height) * align.v + (isText ? bbox.height : 0)) / 2 + bound.y);
+            
+            var baseLineDiff = bbox.height / 2;
+            
+            if (this.hasAttribute("y")) {
+                var realY = parseInt(this.getAttribute("y"), 10);
+                baseLineDiff = realY - bbox.y;
+            }
+            var y = Math.round(((bound.h - bbox.height) * align.v) / 2 + bound.y + baseLineDiff);
             this.setAttribute("x", x);
             this.setAttribute("y", y);
         } else {
