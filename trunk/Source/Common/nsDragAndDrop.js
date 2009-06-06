@@ -346,6 +346,7 @@ var nsDragAndDrop = {
         }
       catch (e) 
         {
+            Console.dumpError(e);
           return;  // not a draggable item, bail!
         }
 
@@ -410,12 +411,13 @@ var nsDragAndDrop = {
 
         this.mDragService.invokeDragSessionWithImage(aEvent.target, transArray,
                                                      region, dragAction.action,
-                                                     imageNode, 20, 20, aEvent);
+                                                     imageNode, 20, 20, aEvent, aEvent.dataTransfer);
       }
       catch(ex) {
         // this could be because the user pressed escape to
         // cancel the drag. even if it's not, there's not much
         // we can do, so be silent.
+        Console.dumpError(ex);
       }
       aEvent.stopPropagation();
     },
