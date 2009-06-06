@@ -190,18 +190,22 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     try {
+                        debug("start draging");
                         var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        debug(defNode);
                     
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
                                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                debug("dragging started");
                                 transferData.data = new TransferData();
                                 transferData.data.addDataForFlavour("pencil/def", defNode._def.id);
                                 transferData.data.addDataForFlavour("text/unicode", defNode._def.displayName);
                             }
                         });
+                        debug("end draging");
                     } catch (e) { alert(e); }
                 ]]>
                 </body>

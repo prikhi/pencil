@@ -122,13 +122,12 @@ TargetSet.prototype.deleteTarget = function () {
     for (i in this.targets) this.targets[i].deleteTarget();
 };
 
-function compareRectX(a, b)
-{
+function compareRectX(a, b) {
 	var rectA = a.getBoundingRect();
 	var rectB = b.getBoundingRect();
 	
 	return (rectA.x - rectB.x);
-};
+}
 
 TargetSet.prototype.makeSameHorizontalSpace = function () {
     var minX = Number.MAX_VALUE;
@@ -148,23 +147,23 @@ TargetSet.prototype.makeSameHorizontalSpace = function () {
             maxX = rect.x + rect.width;
         }
 		
-		objectsWidth+=rect.width;
+		objectsWidth += rect.width;
 		
-		nObjects++;
+		nObjects ++;
 		
 		orderedList.push(this.targets[i]);
     }
 	
 	orderedList.sort(compareRectX);
 	
-	var horizontalSpace = (maxX - minX - objectsWidth)/(nObjects-1);
+	var horizontalSpace = (maxX - minX - objectsWidth) / (nObjects - 1);
 	
 	var currentX = minX;
 	
-    for (var t=0;t<orderedList.length;t++) {
+    for (var t = 0; t < orderedList.length; t ++) {
         var rect = orderedList[t].getBoundingRect();
 		
-		var delta = currentX - rect.x;
+		var delta = Math.round(currentX - rect.x);
 
 		orderedList[t].moveBy(delta, 0, true);
 		
@@ -174,13 +173,12 @@ TargetSet.prototype.makeSameHorizontalSpace = function () {
 	this.canvas.invalidateEditors();
 };
 
-function compareRectY(a, b)
-{
+function compareRectY(a, b) {
 	var rectA = a.getBoundingRect();
 	var rectB = b.getBoundingRect();
 	
 	return (rectA.y - rectB.y);
-};
+}
 
 TargetSet.prototype.makeSameVerticalSpace = function () {
     var minY = Number.MAX_VALUE;
@@ -200,23 +198,23 @@ TargetSet.prototype.makeSameVerticalSpace = function () {
             maxY = rect.y + rect.height;
         }
 		
-		objectsHeight+=rect.height;
+		objectsHeight += rect.height;
 		
-		nObjects++;
+		nObjects ++;
 		
 		orderedList.push(this.targets[i]);
     }
 	
 	orderedList.sort(compareRectY);
 	
-	var verticalSpace = (maxY - minY - objectsHeight)/(nObjects-1);
+	var verticalSpace = (maxY - minY - objectsHeight) / (nObjects - 1);
 	
 	var currentY = minY;
 	
-    for (var t=0;t<orderedList.length;t++) {
+    for (var t = 0; t < orderedList.length; t ++) {
         var rect = orderedList[t].getBoundingRect();
 		
-		var delta = currentY - rect.y;
+		var delta = Math.round(currentY - rect.y);
 
 		orderedList[t].moveBy(0, delta, true);
 		
@@ -413,6 +411,7 @@ TargetSet.prototype.createTransferableData = function () {
     for (i in this.targets) node.appendChild(this.targets[i].createTransferableData().dataNode);
     
     return {type: TargetSetXferHelper.MIME_TYPE,
+            isSVG: true,
             dataNode: node
            };
 };

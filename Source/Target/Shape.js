@@ -420,8 +420,10 @@ Shape.prototype.getTextEditingInfo = function () {
 };
 
 Shape.prototype.createTransferableData = function () {
-    return {type: ShapeXferHelper.MIME_TYPE,
-            dataNode: this.svg.cloneNode(true)
+    return {
+                type: ShapeXferHelper.MIME_TYPE,
+                isSVG: true,
+                dataNode: this.svg.cloneNode(true)
            };
 };
 Shape.prototype.lock = function () {

@@ -34,7 +34,6 @@
 <script src="../Definition/ShapeDefCollectionParser.js"/>
 <script src="../Definition/CollectionManager.js"/>
 
-
 <script src="../Common/Pencil.js"/>
 <script src="../Common/pImageLoader.js"/>
 <script src="../Common/Controller.js"/>
@@ -212,7 +211,7 @@
                     <menuitem class="menuitem-iconic" label="New Document" command="newDocumentCommand" key="newDocumentKey" image="moz-icon://stock/document-new?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Open..." command="loadDocumentCommand" key="loadDocumentKey" image="moz-icon://stock/document-open?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Save" command="saveDocumentCommand" key="saveDocumentKey" image="moz-icon://stock/document-save?size=menu"/>
-                    <menuitem class="menuitem-iconic" label="Save as" command="saveDocumentAsCommand" key="saveDocumentAsKey" image="moz-icon://stock/document-save?size=menu"/>
+                    <menuitem class="menuitem-iconic" label="Save As..." command="saveDocumentAsCommand" key="saveDocumentAsKey" image="moz-icon://stock/document-save?size=menu"/>
                     <menuseparator/>
                     <menu label="Recent Documents">
                         <menupopup id="recentDocumentMenu">
@@ -247,8 +246,8 @@
                     <menuitem label="Align Center" command="alignCenterCommand" key="alignCenterKey"/>
                     <menuitem label="Align Right" command="alignRightCommand" key="alignRightKey"/>
                     <menuseparator/>
-					<menuitem label="Same Horiz.Space" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommandKey"/>
-					<menuitem label="Same Vert.Space" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommandKey"/>
+					<menuitem label="Same Horiz. Space" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommandKey"/>
+					<menuitem label="Same Vert. Space" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommandKey"/>
 					<menuseparator/>
                     <menuitem label="Align Top" command="alignTopCommand" key="alignTopKey"/>
                     <menuitem label="Align Middle" command="alignMiddleCommand" key="alignMiddleKey"/>
@@ -264,7 +263,7 @@
             </menu>
             <menu label="Help" id="help-menu">
                 <menupopup>
-                    <menuitem label="About..." oncommand="Util.info('%name% Version: %version%, build %build%.', 'Copyright (c) 2008 %author%. All rights reserved. This software is released under the terms of the GPL. Use it at your own risk.');"/>
+                    <menuitem label="About..." oncommand="Util.info('%name% Version: %version%, build %build%.', 'Copyright (c) 2008 Evolus. All rights reserved. This software is released under the terms of the GPL. Use it at your own risk.');"/>
                 </menupopup>
             </menu>
         </menubar>
@@ -333,12 +332,13 @@
     <popupset>
         <popup id="pageTabContextMenu">
             <menuitem class="menuitem-iconic" image="moz-icon://stock/add?size=menu" label="New Page..." id="newPageMenuItem" command="newPageCommand"/>
+            <menuseparator/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/edit-copy?size=menu" label="Duplicate" id="pageDuplicateMenuItem" command="duplicatePageCommand"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/remove?size=menu" label="Delete" id="deletePageMenuItem"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/previous?size=menu" label="Move left" id="pageMoveLeftMenuItem" command="moveLeftCommand"/>
             <menuitem class="menuitem-iconic" image="moz-icon://stock/next?size=menu" label="Move right" id="pageMoveRightMenuItem" command="moveRightCommand"/>
             <menuseparator/>
-            <menuitem class="menuitem-iconic" image="moz-icon://stock/document-properties?size=menu" label="Properties" id="pagePropertiesMenuItem"/>
+            <menuitem class="menuitem-iconic" image="moz-icon://stock/document-properties?size=menu" label="Properties..." id="pagePropertiesMenuItem"/>
             <menuitem label="Resize to fit contents..." id="sizeToContentMenuItem" command="sizeToContentCommand"/>
             <menuseparator/>
             <menu id="gotoTabMenu" label="Goto..."><menupopup/></menu>

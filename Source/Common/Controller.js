@@ -232,9 +232,9 @@ Controller.prototype.newPage = function () {
 Controller.prototype.saveDocumentAs = function () {
     this.saveDocument(true);
 }
-Controller.prototype.saveDocument = function (SaveAs) {
+Controller.prototype.saveDocument = function (saveAsArg) {
     var currentPath = this.filePath ? this.filePath : null;
-    var saveAs = SaveAs ? SaveAs : false
+    var saveAs = saveAsArg ? saveAsArg : false;
     try {
         this._updatePageFromView();
         
@@ -309,15 +309,14 @@ Controller.prototype.loadDocument = function (uri) {
     } else {
         try {
             //assume uri is a nsILocalFile
-            //don't know when use ?
             file = uri.QueryInterface(Components.interfaces.nsILocalFile);
         } catch (e1) {
-            try {//MRU OR double clic on explorer
+            try {//
                 //assume uri is an absolute path
                 file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
                 file.initWithPath("" + uri);
+                
             } catch (e){
-                //case drag'n drop ep file
                 //assume uri is a real uri
                 file = fileHandler.getFileFromURLSpec(uri).QueryInterface(Components.interfaces.nsILocalFile);
             }
@@ -667,23 +666,27 @@ Controller.prototype.rasterizeDocument = function () {
                     var page = thiz.doc.pages[pageIndex];
 
                     if (Config.get("document.SaveWithPrefixNumber") == null){
-                        Config.set("document.SaveWithPrefixNumber",false);
+                        Config.set("document.SaveWithPrefixNumber", false);
                     }
                     //signal progress
-                    var withPrefix = Config.get("document.SaveWithPrefixNumber")
-                    if(withPrefix)
-                        var task = "Exporting page " + (pageIndex +1 )+ '_' + page.properties.name + "...";
-                    else
-                        var task = "Exporting page " + page.properties.name + "...";
+                    var withPrefix = Config.get("document.SaveWithPrefixNumber");
+                    var task = "";
+                    if (withPrefix) {
+                        task = "Exporting page " + (pageIndex + 1) + "_" + page.properties.name + "...";
+                    } else {
+                        task = "Exporting page " + page.properties.name + "...";
+                    }
                     
                     listener.onProgressUpdated(task, pageIndex + 1, thiz.doc.pages.length);
                         
                     if (pageIndex > 0) dir = dir.parent;
-                    if(withPrefix)
-                        var fileName = (pageIndex +1 )+ '_' + page.properties.name.replace(/[\/!\\'"]/g, "_");
-                    else
+                    var fileName = "";
+                    if (withPrefix) {
+                        var fileName = (pageIndex + 1) + "_" + page.properties.name.replace(/[\/!\\'"]/g, "_");
+                    } else {
                         var fileName = page.properties.name.replace(/[\/!\\'"]/g, "_");
-                        
+                    }
+                    
                     dir.append(fileName + ".png");
                     
                     var pagePath = dir.path;
