@@ -1,11 +1,11 @@
 #!/bin/sh
 export NAME='Pencil'
 export VERSION='1.0'
-export BUILD='3'
-export AUTHOR='Duong Thanh An; an.duong@evolus.vn'
+export BUILD='5'
+export AUTHOR='Duong Thanh An (an.duong@evolus.vn) and Contributors'
 export XPINAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
 export FXMINVER='3.0b3'
-export FXMAXVER='3.0.*'
+export FXMAXVER='3.5.*'
 rm -Rf ./Outputs/
 mkdir -p ./Outputs
 
