@@ -665,6 +665,7 @@
                         this.oldPos = this.currentController.getGeometry();
                         
                         this.currentController.setPositionSnapshot();
+                        this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
 
                         if (top != this.lastTop || event.ctrlKey || event.button != 0) {
                             this.reClick = false;
@@ -686,12 +687,15 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
+                    this.removeAttributeNS(PencilNamespaces.p, "holding");
+                    
                     if (this.reClick && !this.hasMoved) {
                         for (editor in this.onScreenEditors) this.onScreenEditors[editor].nextTool();
                     }
                     if (this.controllerHeld && this.currentController && this.currentController.markAsMoving) {
                         this.currentController.markAsMoving(false);
                         this.currentController.clearPositionSnapshot();
+                        this.invalidateEditors();
                     }
                     if (this.controllerHeld && this.hasMoved) {
                         //just to save state
@@ -810,8 +814,6 @@
                         this.hasMoved = true;
                         this.currentController.moveFromSnapshot(dx, dy);
 
-                        this.invalidateEditors();
-                        
                         return;
                     }
                     
@@ -1120,11 +1122,35 @@
                                            createInstance(Components.interfaces.nsITransferable);
                     if (!trans) return false;
 
-                    trans.addDataFlavor("text/unicode");
-                    trans.setTransferData("text/unicode", systemString, textualData.length * 2);
+                    //trans.addDataFlavor("text/unicode");
+                    //trans.setTransferData("text/unicode", systemString, textualData.length * 2);
 
                     trans.addDataFlavor(transferableData.type);
                     trans.setTransferData(transferableData.type, systemString, textualData.length * 2);
+                    
+                    try {
+                        //generating text/xml+svg
+                        if (transferableData.isSVG) {
+                            var svg = this.svg.ownerDocument.createElementNS(PencilNamespaces.svg, "svg");
+                            
+                            //svg.setAttribute("width", transferableData.svgDIM.w);
+                            //svg.setAttribute("height", transferableData.svgDIM.h);
+                            svg.appendChild(transferableData.dataNode);
+                            
+                            var svgXML = new XMLSerializer().serializeToString(svg);
+                            svgXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + svgXML;
+                            
+                            var svgXMLSS   = Components.classes["@mozilla.org/supports-string;1"].
+                                                   createInstance(Components.interfaces.nsISupportsString);
+                            if (!svgXMLSS) return false;
+                            svgXMLSS.data = svgXML;
+                            
+                            trans.addDataFlavor("image/svg+xml");
+                            trans.setTransferData("image/svg+xml", svgXMLSS, svgXML.length * 2);
+                        }
+                    } catch (e) {
+                        Console.dumpError(e);
+                    }
 
                     var clipId = Components.interfaces.nsIClipboard;
                     var clip   = Components.classes["@mozilla.org/widget/clipboard;1"].getService(clipId);
