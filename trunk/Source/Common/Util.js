@@ -117,7 +117,23 @@ Dom.parseToNode = function (xml, dom) {
 Dom.serializeNode = function (node) {
     return Dom.serializer.serializeToString(node);
 };
+Dom.serializeNodeToFile = function (node, file) {
+    var fos = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                             .createInstance(Components.interfaces.nsIFileOutputStream);
+    fos.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
+    
+    var os = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+                       .createInstance(Components.interfaces.nsIConverterOutputStream);
 
+    // This assumes that fos is the nsIOutputStream you want to write to
+    os.init(fos, XMLDocumentPersister.CHARSET, 0, 0x0000);
+
+    os.writeString("<?xml version=\"1.0\"?>\n");
+    
+    Dom.serializer.serializeToStream(node, fos, XMLDocumentPersister.CHARSET);
+
+    fos.close();
+};
 Dom._buildHiddenFrame = function () {
     if (Dom._hiddenFrame) return;
     
@@ -211,7 +227,23 @@ Dom.appendAfter = function (fragment, node) {
         node.parentNode.appendChild(fragment);
     }
 };
-
+Dom.swapNode = function (node1, node2) {
+    var parentNode = node1.parentNode;
+    
+    var ref = node2.nextSibling;
+    if (ref == node1) {
+        debug("****, simple swap: " + [node1.label, node2.label]);
+        parentNode.removeChild(node1);
+        parentNode.insertBefore(node1, node2);
+        
+        return;
+    }
+    parentNode.removeChild(node2);
+    parentNode.insertBefore(node2, node1);
+    
+    parentNode.removeChild(node1);
+    parentNode.insertBefore(node1, ref);
+};
 
 
 var Svg = {};
@@ -357,6 +389,17 @@ Local.openExtenstionManager = function() {
     const EMURL = "chrome://mozapps/content/extensions/extensions.xul";
     const EMFEATURES = "chrome,menubar,extra-chrome,toolbar,dialog=no,resizable";
     window.openDialog(EMURL, "", EMFEATURES);
+};
+Local.newTempFile = function (prefix, ext) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var file = Components.classes["@mozilla.org/file/directory_service;1"].
+                         getService(Components.interfaces.nsIProperties).
+                         get("TmpD", Components.interfaces.nsIFile);
+    var seed = Math.round(Math.random() * 1000000);
+    
+    file.append(prefix + "-" + seed + "." + ext);
+
+    return file;
 };
 
 var Console = {};

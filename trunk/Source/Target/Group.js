@@ -197,6 +197,7 @@ Group.prototype.getTextEditingInfo = function () {
 
 Group.prototype.createTransferableData = function () {
     return {type: ShapeXferHelper.MIME_TYPE,
+            isSVG: true,
             dataNode: this.svg.cloneNode(true)
            };
 };

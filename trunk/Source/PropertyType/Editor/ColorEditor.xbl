@@ -3,10 +3,10 @@
           xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:html="http://www.w3.org/1999/xhtml" 
-	      xmlns:svg="http://www.w3.org/2000/svg"
-	      xmlns:xlink="http://www.w3.org/1999/xlink"
-	      xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-	      >
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+          >
     <binding id="colorEditor">
         <implementation>
             <constructor>
@@ -21,9 +21,9 @@
                 this.colorCode._control = this;
 
                 this.isUserModified = false;
-                                
+
                 var thiz = this;
-                
+
                 this.colorCode.addEventListener("change", function (event) {
                     thiz._handleColorCodeChange();
                 }, false);
@@ -35,7 +35,10 @@
                 this.opacity.addEventListener("change", function(event) {
                     thiz.opacityText.value = "Opacity: " + thiz.opacity.value + "%";
                     thiz._updatePreviewColor();
-                    
+                    event.stopPropagation();
+                }, false);
+                
+                this.opacity.addEventListener("mouseup", function(event) {
                     thiz._fireModifiedEvent();
                 }, false);
                 
