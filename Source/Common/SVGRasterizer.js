@@ -57,13 +57,14 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
     drawingLayer.removeAttribute("id");
     svg.appendChild(drawingLayer);
 
-    this.win.document.body.innerHTML = "";
-    this.win.document.body.appendChild(this.win.document.importNode(svg, true));
+    this._saveNodeToTempFileAndLoad(svg, function () {
+        debug("LOADED!!!");
+    });
 
     var thiz = this;    
     window.setTimeout(function () {
         thiz.rasterizeWindowToUrl(callback);
-    }, 10);
+    }, 300);
 };
 
 Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
@@ -108,32 +109,76 @@ Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
     };
     callback(data);
 };
-Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback) {
-    this.win.document.body.innerHTML = "";
-    this.win.document.body.appendChild(this.win.document.importNode(svgNode, true));
+Rasterizer.prototype.cleanup = function () {
+    if (this.lastTempFile) {
+        debug("deleting: " + this.lastTempFile.path);
+        try {
+            this.lastTempFile.remove(true);
+        } catch (e) {
+            Console.dumpError(e);
+        }
+    }
+};
+Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallback) {
+    this.cleanup();
 
+    this.lastTempFile = Local.newTempFile("raster", "svg");
+    Dom.serializeNodeToFile(svgNode, this.lastTempFile);
+
+    var url = ios.newFileURI(this.lastTempFile).spec;
+
+    if (this.lastLoadCallback) {
+        this.win.removeEventListener("load", this.lastLoadCallback, false);
+    }
+
+    if (loadCallback) {
+        //this.lastLoadCallback = loadCallback;
+        //this.win.addEventListener("load", this.lastLoadCallback, false);
+    }
+    this.win.location.href = url;
+};
+Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback) {
+    
+    this._width = svgNode.width.baseVal.value;
+    this._height = svgNode.height.baseVal.value;
+
+    this._saveNodeToTempFileAndLoad(svgNode, function () {
+        debug("LOADED!!!");
+    });
     var thiz = this;    
     window.setTimeout(function () {
-        thiz.rasterizeWindow(filePath, callback);
-    }, 10);
+        try {
+            thiz.rasterizeWindow(filePath, callback);
+        } catch (e) {
+            Console.dumpError(e);
+        }
+    }, 300);
 };
 
 Rasterizer.prototype.rasterizeWindow = function (filePath, callback) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+    debug(Dom.serializeNode(this.win.document));
     
     var h = 0;
     var w = 0;
-    var d =  this.win.document;
-    if( d.compatMode == "CSS1Compat" )
-    {
-      h = d.documentElement.scrollHeight;
-      w = d.documentElement.scrollWidth;
+    if (this._width && this._height) {
+        w = this._width;
+        h = this._height;
+    } else {
+        var d =  this.win.document;
+        if( d.compatMode == "CSS1Compat" )
+        {
+          h = d.documentElement.scrollHeight;
+          w = d.documentElement.scrollWidth;
+        }
+        else
+        {
+          h = d.body.scrollHeight;
+          w = d.body.scrollWidth;
+        }
     }
-    else
-    {
-      h = d.body.scrollHeight;
-      w = d.body.scrollWidth;
-    }
+    
     var canvasW = w;
     var canvasH = h;
     
@@ -152,7 +197,12 @@ Rasterizer.prototype.rasterizeWindow = function (filePath, callback) {
     data = canvas.toDataURL("image/png", "");
     
     this.saveURI(data, filePath);
-    
+    /*
+    if (this.lastTempFile && this.lastTempFile.exists()) {
+        this.lastTempFile.remove(true);
+    }
+    */
+
     callback();
 };
 
