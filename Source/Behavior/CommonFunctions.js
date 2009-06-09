@@ -16,3 +16,16 @@ F.textSize = function (name) {
     var dim = new Dimension(bbox.width, bbox.height);
     return dim;
 };
+
+F.getRelativeLocation = function (handle, box) {
+    if (box.w == 0) return "top";
+    
+    var y1 = (box.h * handle.x) / box.w;    //y value at the y = h*x/w line
+    var y2 = box.h - (box.h * handle.x / box.w); //y value the y = h - h*x/w line
+    
+    if (handle.y < y1) {
+        return handle.y < y2 ? "top" : "right";
+    } else {
+        return handle.y < y2 ? "left" : "bottom";
+    }
+};

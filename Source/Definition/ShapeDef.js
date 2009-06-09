@@ -21,6 +21,27 @@ ShapeDef.prototype.toString = function () {
 ShapeDef.prototype.getProperty = function (name) {
     return this.propertyMap[name];
 };
+ShapeDef.prototype.isPropertyAffectedBy = function (target, source, checkedProperties) {
+    if (target == source) return true;
+    
+    if (checkedProperties && checkedProperties[target]) return false;
+    
+    var tp = this.propertyMap[target];
+    if (!tp) return false;
+    
+    var sp = this.propertyMap[source];
+    if (!sp) return false;
+    
+    if (tp.relatedProperties[source]) return true;
+    
+    var props = checkedProperties ? checkedProperties : {};
+    props[target] = true;
+    for (name in tp.relatedProperties) {
+        if (this.isPropertyAffectedBy(name, source, props)) return true;
+    }
+    
+    return false;
+};
 
 function PropertyGroup() {
     this.name = null;

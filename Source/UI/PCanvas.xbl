@@ -687,8 +687,6 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                    this.removeAttributeNS(PencilNamespaces.p, "holding");
-                    
                     if (this.reClick && !this.hasMoved) {
                         for (editor in this.onScreenEditors) this.onScreenEditors[editor].nextTool();
                     }
@@ -701,6 +699,8 @@
                         //just to save state
                         this.run(function() {}, this);
                     }
+                    
+                    this.removeAttributeNS(PencilNamespaces.p, "holding");
                     
                     this.reClick = false;
                     this.hasMoved = true;
