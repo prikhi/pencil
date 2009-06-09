@@ -88,10 +88,12 @@ ShapeDefCollectionParser.CHARSET = "UTF-8";
             }
             property.initialValue = property.type.fromString(Dom.getText(propNode));
             
+            property.relatedProperties = {};
             //parsing meta
             Dom.workOn("./@p:*", propNode, function (metaAttribute) {
                 var metaValue = metaAttribute.nodeValue;
                 metaValue = metaValue.replace(/\$([a-z0-9]+)/gi, function (zero, one) {
+                    property.relatedProperties[one] = true;
                     return "properties." + one;
                 });
                 property.meta[metaAttribute.localName] = metaValue;

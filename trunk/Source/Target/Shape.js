@@ -48,7 +48,7 @@ Shape.prototype.setInitialPropertyValues = function () {
         this.applyBehaviorForProperty(name);
     }
 };
-Shape.prototype.applyBehaviorForProperty = function (name) {
+Shape.prototype.applyBehaviorForProperty = function (name, dontValidateRelatedProperties) {
     var propertyDef = this.def.propertyMap[name];
     this.prepareExpressionEvaluation();
     
@@ -88,7 +88,38 @@ Shape.prototype.applyBehaviorForProperty = function (name) {
                 Console.dumpError(e);
             }
         }
-    }    
+    }
+    try {
+        if (!dontValidateRelatedProperties) this.validateRelatedProperties(name);
+    } catch (e) {
+        Console.dumpError(e, "--to-console");
+    }
+};
+Shape.prototype.validateRelatedProperties = function (name) {
+    for (propName in this.def.propertyMap) {
+        //if (this.def.isPropertyAffectedBy(name, propName)) continue;
+        
+        var property = this.def.propertyMap[propName];
+        
+        if (!property.relatedProperties[name]) continue;
+        var value = this.getProperty(propName);
+        
+        for (meta in property.meta) {
+            var functionName = "apply" + meta.substring(0, 1).toUpperCase() + meta.substring(1);
+            if (!value[functionName]) continue;
+            
+            var f = value[functionName];
+            try {
+                var metaValue = this.evalExpression(property.meta[meta]);
+                f.call(value, metaValue);
+            } catch (e) {
+                Console.dumpError(e, "--to-console");
+            }
+        }
+        
+        this.storeProperty(propName, value);
+        this.applyBehaviorForProperty(propName, "dontValidateRelatedProperties");
+    }
 };
 Shape.prototype.prepareExpressionEvaluation = function () {
     this._evalContext = {properties: this.getProperties(), functions: Pencil.functions};
