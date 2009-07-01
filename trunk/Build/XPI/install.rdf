@@ -9,9 +9,7 @@
                    em:description="Sketching, simplified"
                    em:creator="%author%"
                    em:homepageURL="http://www.evolus.vn/Pencil/"
-                   em:updateURL="http://www.evolus.vn/Pencil/update.rdf"
-                   em:iconURL="chrome://pencil/content/Icons/48.png"
-                   em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCm7qykW4KgFRgHrJfNeMjcLSfKKRq2nQfCOQOR9JB/5jy5r/i15xTynyzAXJbmHQSjGlOfehTBjxuPODznqnGt/Xuvi2iWXp3WTZ9WRxrX9jQq6umcXc0Nzb90DCEr5gdvv9lzINbJJBR/NpsQMM4pTUEO/1RRsL5jZHy9HG1yPwIDAQAB">
+                   em:iconURL="chrome://pencil/content/Icons/48.png">
     <em:targetApplication RDF:resource="rdf:firefox"/>
   </RDF:Description>
   <RDF:Description RDF:about="rdf:firefox"

@@ -143,6 +143,7 @@ Pencil.setupCommands = function () {
     Pencil._enableCommand("duplicatePageCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("saveDocumentCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("saveDocumentAsCommand", Pencil.controller.hasDoc());
+    Pencil._enableCommand("rasterizeSelectionCommand", target && target.getGeometry);
     Pencil._enableCommand("rasterizeCommand", canvas != null);
     
     Pencil._enableCommand("zoomInCommand", canvas != null);
@@ -200,6 +201,11 @@ Pencil._enableCommand = function (name, condition) {
 
 Pencil.getGridSize = function () {
     return {w: 5, h: 5};
+};
+
+Pencil.getCurrentTarget = function () {
+    var canvas = Pencil.activeCanvas;
+    return canvas ? canvas.currentController : null;
 };
 
 window.addEventListener("load", Pencil.boot, false);

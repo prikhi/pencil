@@ -476,24 +476,6 @@ Util.getClipboardImage = function (clipData, length, handler) {
                              .createInstance(Components.interfaces.nsIFileOutputStream);
     fos.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
     
-    /*
-    //write the xml processing instruction
-    var os = Components.classes["@mozilla.org/binaryoutputstream;1"]
-                       .createInstance(Components.interfaces.nsIBinaryOutputStream);
-
-    // This assumes that fos is the nsIOutputStream you want to write to
-    os.setOutputStream(fos);
-    for (var i = 0; i < dataString.length; i ++) {
-        var w = dataString.charCodeAt(i);
-        var b0 = w % 256;
-        var b1 = w >> 8;
-        os.write8(b0);
-        os.write8(b1);
-    }
-    
-    os.close();
-    */
-    
     fos.write(bytes, bytes.length);
     fos.close();
     
@@ -506,27 +488,11 @@ Util.getClipboardImage = function (clipData, length, handler) {
 
     url += "?t=" + (new Date()).getTime();
     
-    var image = document.getElementById("tempImage");
-    Util.handleTempImageLoadImpl = function () {
-        var canvas = document.createElementNS(PencilNamespaces.html, "canvas");
-        canvas.style.width = image.width + "px";
-        canvas.style.height = image.height + "px";
-        canvas.width = image.width;
-        canvas.height = image.height;
-        var ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, image.width, image.height);
-        ctx.save();
-        ctx.scale(1, 1);
-        ctx.drawImage(image, 0, 0);
-        ctx.restore();
-        
-        var data = canvas.toDataURL();
-        
-        handler(image.width, image.height, data);
-    };
-    
-    image.src = url;
+    ImageData.fromUrlEmbedded(url, function (imageData) {
+        handler(imageData.w, imageData.h, imageData.data);
+    });
 };
+
 Util.info = function(title, description, buttonLabel) {
     var message = {type: "info",
                     title: title,
@@ -589,13 +555,6 @@ Util.beginProgressJob = function(jobName, jobStarter) {
     var dialog = window.openDialog("ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "centerscreen", jobName, jobStarter);
 };
 
-window.addEventListener("load", function () {
-    var tempImage = document.getElementById("tempImage");
-    if (!tempImage) return;
-    tempImage.addEventListener("load", Util.handleTempImageLoad, false);
-}, false)
-
-
 function debug(value) {
     dump("DEBUG: " + value + "\n");
 }
@@ -607,6 +566,17 @@ function info(value) {
 }
 function error(value) {
     dump("ERROR: " + value + "\n");
+}
+var lastTick = (new Date()).getTime();
+function tick(value) {
+    return;
+    var date = new Date();
+    var newTick = date.getTime();
+    var delta = newTick - lastTick;
+    lastTick = newTick;
+    
+    var prefix = value ? (value + ": ").toUpperCase() : "TICK: ";
+    dump(prefix + date.getSeconds() + "." + date.getMilliseconds() + " (" + delta + " ms)\n");
 }
 
 

@@ -592,6 +592,8 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
+                    tick("begin");
+                    
                     this._button = event.button;
                     var thiz = this;
                     var isInControlLayer = Dom.findUpward(event.originalTarget, function (node) {
@@ -620,6 +622,7 @@
                         this._sayTargetChanged();
                         return;
                     }
+                    tick("top found");
 
                     var controller = null;
 
@@ -646,6 +649,8 @@
                             this.addToSelection(controller);
                         }
                     }
+                    tick("target setup");
+                    
                     var targets = this.getSelectedTargets();
                     if (targets.length > 1) {
                         controller = new TargetSet(this, targets);
@@ -664,7 +669,10 @@
                         this.oY = Math.round(event.clientY / this.zoom);
                         this.oldPos = this.currentController.getGeometry();
                         
+                        tick("before setPositionSnapshot");
                         this.currentController.setPositionSnapshot();
+                        tick("after setPositionSnapshot");
+                        
                         this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
 
                         if (top != this.lastTop || event.ctrlKey || event.button != 0) {
@@ -675,10 +683,12 @@
                         } else {
                             this.reClick = true;
                         }
+                        tick("attached");
 
                         this.hasMoved = false;
                         this.lastTop = top;
                         this._sayTargetChanged();
+                        tick("done");
                     }
                 ]]>
                 </body>
@@ -800,8 +810,11 @@
                     if (this._button != 0) return;
                     event.preventDefault();
                     event.stopPropagation();
+                    
                     if (this.controllerHeld && this.currentController) {
+                        tick("start");
                         if (this.currentController.markAsMoving) this.currentController.markAsMoving(true);
+                        tick("after mark");
                         var newX = Math.round(event.clientX / this.zoom);
                         var newY = Math.round(event.clientY / this.zoom);
 
@@ -813,7 +826,7 @@
                         
                         this.hasMoved = true;
                         this.currentController.moveFromSnapshot(dx, dy);
-
+                        tick("after move");
                         return;
                     }
                     

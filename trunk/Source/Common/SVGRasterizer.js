@@ -3,6 +3,7 @@ function Rasterizer(format) {
     
     //create the window
     var iframe = document.createElementNS(PencilNamespaces.html, "html:iframe");
+    iframe._isRasterizeFrame = true;
 
     var container = document.body;
     if (!container) container = document.documentElement;
@@ -17,6 +18,27 @@ function Rasterizer(format) {
     
     box.style.MozBoxPack = "start";
     box.style.MozBoxAlign = "start";
+    
+    var thiz = this;
+    
+    this.nextHandler = null;
+    window.addEventListener("DOMFrameContentLoaded", function (event) {
+        debug("DOMFrameContentLoaded ---");
+        
+        if (!event.originalTarget._isRasterizeFrame) return;
+        if (!thiz.nextHandler) return;
+        
+        debug("has next handler");
+        
+        var f = thiz.nextHandler;
+        thiz.nextHandler = null;
+        
+        window.setTimeout(f, 10);
+    }, false);
+    
+    iframe.onload = function (event) {
+        debug("Rasterizer found iframe window loaded");
+    };
     
     this.win = iframe.contentWindow;
     this.win.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
@@ -57,14 +79,10 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
     drawingLayer.removeAttribute("id");
     svg.appendChild(drawingLayer);
 
-    this._saveNodeToTempFileAndLoad(svg, function () {
-        debug("LOADED!!!");
-    });
-
     var thiz = this;    
-    window.setTimeout(function () {
+    this._saveNodeToTempFileAndLoad(svg, function () {
         thiz.rasterizeWindowToUrl(callback);
-    }, 300);
+    });
 };
 
 Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
@@ -127,14 +145,10 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
 
     var url = ios.newFileURI(this.lastTempFile).spec;
 
-    if (this.lastLoadCallback) {
-        this.win.removeEventListener("load", this.lastLoadCallback, false);
-    }
-
     if (loadCallback) {
-        //this.lastLoadCallback = loadCallback;
-        //this.win.addEventListener("load", this.lastLoadCallback, false);
+        this.nextHandler = loadCallback;
     }
+    
     this.win.location.href = url;
 };
 Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback) {
@@ -142,24 +156,19 @@ Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback) {
     this._width = svgNode.width.baseVal.value;
     this._height = svgNode.height.baseVal.value;
 
-    this._saveNodeToTempFileAndLoad(svgNode, function () {
-        debug("LOADED!!!");
-    });
     var thiz = this;    
-    window.setTimeout(function () {
+    this._saveNodeToTempFileAndLoad(svgNode, function () {
         try {
             thiz.rasterizeWindow(filePath, callback);
         } catch (e) {
             Console.dumpError(e);
         }
-    }, 300);
+    });
 };
 
 Rasterizer.prototype.rasterizeWindow = function (filePath, callback) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
-    debug(Dom.serializeNode(this.win.document));
-    
     var h = 0;
     var w = 0;
     if (this._width && this._height) {

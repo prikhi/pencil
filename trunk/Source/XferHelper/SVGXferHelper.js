@@ -3,7 +3,7 @@ function SVGXferHelper(canvas) {
     
     this.type = SVGXferHelper.MIME_TYPE;
 }
-SVGXferHelper.MIME_TYPE = "text/xml";
+SVGXferHelper.MIME_TYPE = "image/svg+xml";
 
 SVGXferHelper.prototype.toString = function () {
     return "SVGXferHelper: " + SVGXferHelper.MIME_TYPE;
