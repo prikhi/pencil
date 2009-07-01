@@ -762,6 +762,44 @@ Controller.prototype._rasterizePage = function (page, path, callback) {
     Pencil.rasterizer.rasterizeDOM(svg, path, callback);
     
 };
+Controller.prototype.rasterizeSelection = function () {
+    var target = Pencil.getCurrentTarget();
+    if (!target || !target.getGeometry) return;
+    
+    var geo = target.getGeometry();
+    if (!geo) {
+        alert("The selected objects cannot be exported\nPlease try selecting a single object or a grouped object set.");
+        return;
+    }
+
+    var nsIFilePicker = Components.interfaces.nsIFilePicker;
+    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, "Export Selection As", nsIFilePicker.modeSave);
+    fp.appendFilter("PNG Image (*.png)", "*.png");
+    fp.appendFilter("All Files", "*");
+    
+    if (fp.show() == nsIFilePicker.returnCancel) return;
+    
+    var svg = document.createElementNS(PencilNamespaces.svg, "svg");
+    svg.setAttribute("width", "" + geo.dim.w  + "px");
+    svg.setAttribute("height", "" + geo.dim.h  + "px");
+    
+    var content = target.svg.cloneNode(true);
+    content.removeAttribute("transform");
+    content.removeAttribute("id");
+    
+    try  {
+        if (content.getAttributeNS(PencilNamespaces.p, "type") == "Group") {
+            content.setAttribute("transform", "translate(" + (0 - geo.ctm.e) + ", " + (0 - geo.ctm.f) + ")");
+        }
+    } catch (e) {
+        Console.dumpError(e);
+    }
+    svg.appendChild(content);
+    
+    Pencil.rasterizer.rasterizeDOM(svg, fp.file.path, function () {});
+};
+
 Controller.prototype.sizeToContent = function (passedPage, askForPadding) {
     var page = passedPage ? passedPage : this.getCurrentPage();
     var canvas = page._view.canvas;

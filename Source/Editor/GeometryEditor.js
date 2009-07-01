@@ -79,6 +79,8 @@ GeometryEditor.prototype.install = function (canvas) {
         }
         thiz.handleMouseMove(ev);
     }, false);
+    
+    /*
     thiz.shapeWidth.addEventListener("change", function(event) {
         if (thiz.passivated) {
             thiz.shapeWidth.removeEventListener("change", arguments.callee, false);
@@ -114,7 +116,7 @@ GeometryEditor.prototype.install = function (canvas) {
         }
         thiz.applyGeo('a');
     }, false);
-    
+    */
 };
 GeometryEditor.prototype.attach = function (targetObject) {
     if (targetObject.constructor == TargetSet) {
@@ -123,14 +125,6 @@ GeometryEditor.prototype.attach = function (targetObject) {
     }
     this.setTool("scale");
     this.targetObject = targetObject;
-    
-    var locking = this.getLockingPolicy();
-    //enabled geometry toolbar
-    this.shapeX.disabled=false;
-    this.shapeY.disabled=false;
-    this.shapeA.disabled = true //!locking.lockRatio ?false:true;
-    this.shapeWidth.disabled  = !locking.width ?false:true;
-    this.shapeHeight.disabled = !locking.height ?false:true;;
     
     var geo = this.canvas.getZoomedGeo(targetObject);
     this.setEditorGeometry(geo);
@@ -149,13 +143,6 @@ GeometryEditor.prototype.attach = function (targetObject) {
 GeometryEditor.prototype.dettach = function () {
     this.targetObject = null;
     this.svgElement.style.visibility = "hidden";
-    //disabled geometry toolbar
-    this.shapeX.disabled=true;
-    this.shapeY.disabled=true;
-    //this.shapeA.disabled=true;
-    this.shapeWidth.disabled=true;
-    this.shapeHeight.disabled=true;
-    
 };
 GeometryEditor.prototype.invalidate = function () {
     if (!this.targetObject) return;
@@ -164,11 +151,6 @@ GeometryEditor.prototype.invalidate = function () {
 };
 
 GeometryEditor.prototype.setEditorGeometry = function (geo) {
-    this.shapeX.value=geo.ctm.e / this.canvas.zoom
-    this.shapeY.value=geo.ctm.f / this.canvas.zoom
-    this.shapeWidth.value=geo.dim.w / this.canvas.zoom
-    this.shapeHeight.value=geo.dim.h / this.canvas.zoom
-    this.shapeA.value = Svg.getAngle(geo.ctm.a,geo.ctm.b);
     //transformation
     Svg.ensureCTM(this.svgElement, geo.ctm);
 

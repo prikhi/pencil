@@ -35,7 +35,6 @@
 <script src="../Definition/CollectionManager.js"/>
 
 <script src="../Common/Pencil.js"/>
-<script src="../Common/pImageLoader.js"/>
 <script src="../Common/Controller.js"/>
 <script src="../Common/MainWindow.js"/>
 
@@ -80,9 +79,9 @@
 
 <script src="../XferHelper/ShapeXferHelper.js"/>
 <script src="../XferHelper/TargetSetXferHelper.js"/>
-<script src="../XferHelper/SVGXferHelper.js"/>
 <script src="../XferHelper/RichTextXferHelper.js"/>
 <script src="../XferHelper/PNGImageXferHelper.js"/>
+<script src="../XferHelper/SVGXferHelper.js"/>
 
 <script src="../XferHelper/DragObservers.js"/>
 
@@ -95,6 +94,7 @@
         <command id="loadDocumentCommand" oncommand="Pencil.controller.loadDocument();"/>
         <command id="saveDocumentCommand" oncommand="Pencil.controller.saveDocument();"/>
         <command id="saveDocumentAsCommand" oncommand="Pencil.controller.saveDocumentAs();"/>
+        <command id="rasterizeSelectionCommand" oncommand="Pencil.controller.rasterizeSelection();"/>
         <command id="rasterizeCommand" oncommand="Pencil.controller.rasterizeCurrentPage();"/>
         <command id="rasterizeAllCommand" oncommand="Pencil.controller.rasterizeDocument();"/>
         <command id="sizeToContentCommand" oncommand="Pencil.controller.sizeToContent(null, true);"/>
@@ -218,6 +218,7 @@
                         </menupopup>
                     </menu>
                     <menuseparator/>
+                    <menuitem label="Export Selection as PNG..." command="rasterizeSelectionCommand"/>
                     <menuitem label="Export Page as PNG..." command="rasterizeCommand"/>
                     <menuitem label="Export Document as PNGs..." command="rasterizeAllCommand"/>
                     <menuseparator/>
@@ -373,8 +374,5 @@
             </hbox>
         </stack>
     </hbox>
-    <box style="width: 1px; height: 1px; overflow: hidden; -moz-box-pack: start; -moz-box-align: start;">
-        <html:img id="tempImage"/>
-    </box>
 </window>
 

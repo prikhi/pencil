@@ -1,4 +1,3 @@
-
 <Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" id="Evolus.Common" displayName="Common Shapes" description="Collection of general shapes">
     <Shape id="PlainText" displayName="Plain Texts" icon="Icons/plain-text.png">
         <Properties>
@@ -332,7 +331,7 @@
                     ]]>
                     </Impl>
             </Action>
-            <Action id="selectExternalFile" displayName="load linked image...">
+            <Action id="selectExternalFile" displayName="Load Linked Image...">
                 <Impl>
                     <![CDATA[
                         var thiz = this;
@@ -347,22 +346,18 @@
                     ]]>
                     </Impl>
             </Action>
-            <Action id="selectExternalFileEmbedded" displayName="load embedded Source...">
+            <Action id="selectExternalFileEmbedded" displayName="Load Embedded Image...">
                 <Impl>
                     <![CDATA[
                         var thiz = this;
                         ImageData.prompt(function(data) {
-                            if (!data) return
-                            var loader = new pImageLoader(data.data,function listener(aImageData){
-                                thiz.setProperty("imageData", data.w+","+data.h+",  ");
-                                thiz.setProperty("box", new Dimension(data.w, data.h));
-                                thiz.svg.getElementsByTagName("image")[0].setAttribute("xlink:href", aImageData);
-                                if (data.data.match(/\.png$/)) {
-                                    thiz.setProperty("fillColor", Color.fromString("#ffffff00"));
-                                }
-                            });
-                            loader.load();
-                        });
+                            if (!data) return;
+                            thiz.setProperty("imageData", data);
+                            thiz.setProperty("box", new Dimension(data.w, data.h));
+                            if (data.data.match(/\.png$/)) {
+                                thiz.setProperty("fillColor", Color.fromString("#ffffff00"));
+                            }
+                        }, "embedded");
                     ]]>
                     </Impl>
             </Action>
