@@ -24,8 +24,10 @@
 || alignBottom             || => B                        ||
 
 ==Dimension==
-|| makeSameWidth           || => W                       ||
-|| makeSameHeight          || => H                       ||
+|| makeSame Max Width           || => W                       ||
+|| makeSame Max Height          || => H                       ||
+|| makeSame Min Width           || => control  + W            ||
+|| makeSame Min Height          || => control  + H            ||
 
 ==Arrangement==
 || bringToFront            || => control shift + ]        ||
