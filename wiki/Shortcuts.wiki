@@ -29,21 +29,21 @@
 
 ==Arrangement==
 || bringToFront            || => control shift + ]        ||
-|| bringToFront            || => control shift + HOME  (1)   ||
+|| bringToFront            || => control shift + HOME     ||
 || bringToFront            || => control shift + }        ||
 || bringForward            || => control + ]              ||
-|| bringForward            || => control + HOME (1)          ||
+|| bringForward            || => control + HOME           ||
 || sendBackward            || => control + [              ||
-|| sendBackward            || => control + END        (1)    ||
-|| sendToBack              || => control shift + END  (1)    ||
+|| sendBackward            || => control + END            ||
+|| sendToBack              || => control shift + END      ||
 || sendToBack              || => control shift + [        ||
 || sendToBack              || => control shift {          ||
 
 =Tabs=
-||go to next tab          || => CTRL + PageDown            (1)     ||
-||go to previous tab      || => CTRL + PageDown            (1)     ||
-||move current tab left   || => CTRL + SHIFT + PageDown    (1)     ||
-||move current tab right  || => CTRL + SHIFT + PageDown     (1)    ||
+||go to next tab          || => CTRL + PageDown                 ||
+||go to previous tab      || => CTRL + PageUp                   ||
+||move current tab left   || => CTRL + SHIFT + PageDown        ||
+||move current tab right  || => CTRL + SHIFT + PageUp          ||
 
 =Editing=
 ||copy                    || => control + C                     ||
