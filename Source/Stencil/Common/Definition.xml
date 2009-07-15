@@ -434,6 +434,30 @@
                 <path id="path" fill="none" style="stroke-linejoin: round;"/>
             </p:Content>
     </Shape>
+    <Shape id="2pointline" displayName="Free Line" icon="Icons/hline.png">
+        <Properties>
+                <PropertyGroup>
+                    <Property name="a" displayName="Inner Top" type="Handle" >0,0</Property>
+                    <Property name="b" displayName="Inner Top" type="Handle"  >90,0</Property>
+                </PropertyGroup>
+                <PropertyGroup name="Border">
+                    <Property name="strokeColor" displayName="Line Color" type="Color">#99BBE8ff</Property>
+                    <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">1|</Property>
+                </PropertyGroup>
+            </Properties>
+            <Behaviors>
+                <For ref="path">
+                    <Transform>[translate(($strokeStyle.w % 2) / 2, ($strokeStyle.w % 2) / 2)]</Transform>
+                    <StrokeColor>$strokeColor</StrokeColor>
+                    <StrokeStyle>$strokeStyle</StrokeStyle>
+                    <D>[M($a.x, $a.y), L($b.x, $b.y),z]</D>
+                </For>
+            </Behaviors>
+            <p:Content    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                                        xmlns="http://www.w3.org/2000/svg">
+                <path id="path" fill="none" style="stroke-linejoin: round;"/>
+            </p:Content>
+    </Shape>
     <Shape id="SVGImage" system="true" displayName="SVG Image" icon="Icons/bitmap.png" xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink">
         <Properties>
             <PropertyGroup>
