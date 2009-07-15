@@ -4,11 +4,13 @@
 || loadDocument            || => control + O                 ||
 || saveDocument            || => control + S                 ||
 
+
 =View=                                                       
 || zoomIn                  || => control + +                 || 
 || zoomIn                  || => control shift + +           ||
 || zoom1                   || => control + 1                 ||
 || zoomOut                 || => control + -                 ||
+
 
 =shapes=
 
@@ -41,13 +43,16 @@
 || sendToBack              || => control shift + [        ||
 || sendToBack              || => control shift {          ||
 
+
 =Tabs=
 ||go to next tab          || => CTRL + PageDown                 ||
 ||go to previous tab      || => CTRL + PageUp                   ||
 ||move current tab left   || => CTRL + SHIFT + PageDown        ||
 ||move current tab right  || => CTRL + SHIFT + PageUp          ||
 
+
 =Editing=
+
 ||copy                    || => control + C                     ||
 ||cut                     || => control + X                     ||
 ||paste                   || => control + V                     ||
@@ -55,16 +60,22 @@
 ||Select All              || => control + A                     ||
 ||Delete                  || => Del                             ||
 
+
 =Changes=
+
 ||undo                    || => control + Z                     ||
 ||redo                    || => control + Y                     ||
 
-=Grouping=
-||||group                   || => control + G                     ||
-||||unGroup                 || => control alt + G                 ||
-||||unGroup                 || => control + U                     ||
 
-=Inside RichText shape=                                       ||
+=Grouping=
+
+||group                   || => control + G                     ||
+||unGroup                 || => control alt + G                 ||
+||unGroup                 || => control + U                     ||
+
+
+=Inside RichText shape=     
+                                  
 ||Bold                    || => control + B                     ||
 ||Italic                  || => control + I                     ||
 ||Underline               || => control + U                     ||
@@ -76,7 +87,9 @@
 ||Align InsertLink        || => control + K                     ||
 ||quit                    || => echap                           ||
 
-=Moving shape=                                               
+
+=Moving shape=  
+                                             
 || Moving  1 px            || =>           ↑ ↓ → ←           ||
 || Moving 20 px            || => Shift   + ↑ ↓ → ←           ||
 || Moving  5 px            || => control + ↑ ↓ → ←           ||
