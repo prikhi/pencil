@@ -116,6 +116,8 @@
 
         <command id="makeSameWidthCommand" oncommand="Pencil.activeCanvas.currentController.makeSameWidth();"/>
         <command id="makeSameHeightCommand" oncommand="Pencil.activeCanvas.currentController.makeSameHeight();"/>
+        <command id="makeSameMinWidthCommand" oncommand="Pencil.activeCanvas.currentController.makeSameMinWidth();"/>
+        <command id="makeSameMinHeightCommand" oncommand="Pencil.activeCanvas.currentController.makeSameMinHeight();"/>
         
         <command id="bringToFrontCommand" oncommand="Pencil.activeCanvas.currentController.bringToFront();"/>
         <command id="bringForwardCommand" oncommand="Pencil.activeCanvas.currentController.bringForward();"/>
@@ -161,6 +163,8 @@
 
         <key id="makeSameWidthKey" command="makeSameWidthCommand" key="W"/>
         <key id="makeSameHeightKey" command="makeSameHeightCommand" key="H"/>
+        <key id="makeSameMinWidthKey" command="makeSameMinWidthCommand" modifiers="accel" key="W"/>
+        <key id="makeSameMinHeightKey" command="makeSameMinHeightCommand" modifiers="accel" key="H"/>
 
         <key id="bringToFrontKey" command="bringToFrontCommand" modifiers="accel shift" key="]"/>
         <key id="bringToFrontKey2" command="bringToFrontCommand" modifiers="accel shift" key="}"/>
@@ -211,7 +215,7 @@
                     <menuitem class="menuitem-iconic" label="New Document" command="newDocumentCommand" key="newDocumentKey" image="moz-icon://stock/document-new?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Open..." command="loadDocumentCommand" key="loadDocumentKey" image="moz-icon://stock/document-open?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Save" command="saveDocumentCommand" key="saveDocumentKey" image="moz-icon://stock/document-save?size=menu"/>
-                    <menuitem class="menuitem-iconic" label="Save As..." command="saveDocumentAsCommand" key="saveDocumentAsKey" image="moz-icon://stock/document-save?size=menu"/>
+                    <menuitem class="menuitem-iconic" label="Save As..." command="saveDocumentAsCommand" key="saveDocumentAsKey" image="moz-icon://stock/document-saveas?size=menu"/>
                     <menuseparator/>
                     <menu label="Recent Documents">
                         <menupopup id="recentDocumentMenu">
@@ -242,6 +246,8 @@
                     <menuseparator/>
                     <menuitem label="Make Same Width" command="makeSameWidthCommand" key="makeSameWidthKey"/>
                     <menuitem label="Make Same Height" command="makeSameHeightCommand" key="makeSameHeightKey"/>
+                    <menuitem label="Make Same Min Width" command="makeSameMinWidthCommand" key="makeSameMinWidthKey"/>
+                    <menuitem label="Make Same Min Height" command="makeSameMinHeightCommand" key="makeSameMinHeightKey"/>
                     <menuseparator/>
                     <menuitem label="Align Left" command="alignLeftCommand" key="alignLeftKey"/>
                     <menuitem label="Align Center" command="alignCenterCommand" key="alignCenterKey"/>
@@ -273,6 +279,7 @@
                 <toolbarbutton image="moz-icon://stock/document-new?size=menu" label="New Document" tooltiptext="Create new document" command="newDocumentCommand"/>
                 <toolbarbutton image="moz-icon://stock/document-open?size=menu" label="Open" tooltiptext="Open an existing document" command="loadDocumentCommand"/>
                 <toolbarbutton image="moz-icon://stock/document-save?size=menu" label="Save" tooltiptext="Save this document" command="saveDocumentCommand"/>
+                <toolbarbutton image="moz-icon://stock/document-saveas?size=menu" label="Save" tooltiptext="Save this document as " command="saveDocumentAsCommand"/>
             </hbox>
             <toolbarseparator/>
             <hbox id="zoomToolbar" class="ToolbarSection">

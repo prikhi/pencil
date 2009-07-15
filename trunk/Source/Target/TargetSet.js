@@ -391,6 +391,51 @@ TargetSet.prototype.makeSameHeight = function () {
     this.canvas.invalidateEditors();
 };
 
+TargetSet.prototype.makeSameMinWidth = function () {
+    var mostTarget = null;
+    var most = Number.MAX_VALUE;
+    for (var i in this.targets) {
+        var box = this.targets[i].getProperty("box");
+        if (!box) continue;
+        if (box.w < most) {
+            most = box.w;
+            mostTarget = this.targets[i];
+        }
+    }
+    for (var i in this.targets) {
+        if (this.targets[i] == mostTarget) continue;
+        
+        var box = this.targets[i].getProperty("box");
+        if (!box) continue;
+        
+        box.w = most;
+        this.targets[i].setProperty("box", box);
+    }
+    this.canvas.invalidateEditors();
+};
+TargetSet.prototype.makeSameMinHeight = function () {
+    var mostTarget = null;
+    var most = Number.MAX_VALUE;
+    for (var i in this.targets) {
+        var box = this.targets[i].getProperty("box");
+        if (!box) continue;
+        if (box.h < most) {
+            most = box.h;
+            mostTarget = this.targets[i];
+        }
+    }
+    for (var i in this.targets) {
+        if (this.targets[i] == mostTarget) continue;
+        
+        var box = this.targets[i].getProperty("box");
+        if (!box) continue;
+        
+        box.h = most;
+        this.targets[i].setProperty("box", box);
+    }
+    this.canvas.invalidateEditors();
+};
+
 
 
 

@@ -165,6 +165,8 @@ Pencil.setupCommands = function () {
 
     Pencil._enableCommand("makeSameWidthCommand", target && target.makeSameWidth);
     Pencil._enableCommand("makeSameHeightCommand", target && target.makeSameHeight);
+    Pencil._enableCommand("makeSameMinWidthCommand", target && target.makeSameMinWidth);
+    Pencil._enableCommand("makeSameMinHeightCommand", target && target.makeSameMinHeight);
 
     Pencil._enableCommand("bringToFrontCommand", target && target.bringToFront);
     Pencil._enableCommand("bringForwardCommand", target && target.bringForward);
