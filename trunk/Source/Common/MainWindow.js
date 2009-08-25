@@ -44,7 +44,8 @@ Pencil.postBoot = function() {
                     var part = cmdLine.getArgument(i);
                     if (!part) break;
                     if (filePath.length > 0) filePath += " ";
-                    filePath += part;
+                    if (part.indexOf("application.ini") == -1)
+                        filePath += part;
                     i ++;
                 } catch (e) { break; }
             }
