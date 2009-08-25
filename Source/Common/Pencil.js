@@ -92,10 +92,11 @@ Pencil.boot = function (event) {
         document.documentElement.addEventListener("p:ContentModified", Pencil._setupUndoRedoCommand, false);
         
         Pencil.postBoot();
-        
+        /*
         window.setTimeout(function() {
             Pencil.controller.newDocument();
         }, 500);
+        */
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
