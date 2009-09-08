@@ -94,6 +94,8 @@ FileDragObserver.prototype = {
         if (!url.match(/^file:\/\/.*\.([a-zA-Z0-9]+)/)) return;
         var fileType = RegExp.$1.toLowerCase();
         
+        debug(["got: ", url, fileType]);
+        
         var loc = this.canvas.getEventLocation(evt);
 
         if (FileDragObserver.fileTypeHandler[fileType]) {
@@ -153,36 +155,7 @@ FileDragObserver.fileTypeHandler = {
     svg: function (canvas, url, loc) {
         var file = fileHandler.getFileFromURLSpec(url).QueryInterface(Components.interfaces.nsILocalFile);
         var fileContents = FileIO.read(file, XMLDocumentPersister.CHARSET);
-        var domParser = new DOMParser();
-        
-        var dom = domParser.parseFromString(fileContents, "text/xml");
-        try {
-            var width = parseInt(Dom.getSingle("/svg:svg/@width", dom).nodeValue, 10);
-            var height = parseInt(Dom.getSingle("/svg:svg/@height", dom).nodeValue, 10);
-            
-            var g = dom.createElementNS(PencilNamespaces.svg, "g");
-            while (dom.documentElement.childNodes.length > 0) {
-                var firstChild = dom.documentElement.firstChild;
-                dom.documentElement.removeChild(firstChild);
-                g.appendChild(firstChild);
-            }
-            dom.replaceChild(g, dom.documentElement);
-            
-            var def = CollectionManager.shapeDefinition.locateDefinition(FileDragObserver.SVG_SHAPE_DEF_ID);
-            if (!def) return;
-            
-            canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
-            if (canvas.currentController) {
-                var controller = canvas.currentController;
-                var dim = new Dimension(width, height);
-                controller.setProperty("svgXML", new PlainText(Dom.serializeNode(dom.documentElement)));
-                controller.setProperty("box", dim);
-                controller.setProperty("originalDim", dim);
-            }
-
-        } catch (e) {
-            Console.dumpError(e);
-        }
+        handleSVGData(fileContents, canvas, loc);
     },
     ep: function (canvas, url) {
         Pencil.controller.loadDocument(url);
@@ -191,5 +164,117 @@ FileDragObserver.fileTypeHandler = {
 
 Pencil.registerDragObserver(FileDragObserver);
 
+function handleSVGData(svg, canvas, loc) {
+    var domParser = new DOMParser();
+    
+    var dom = domParser.parseFromString(svg, "text/xml");
+    try {
+        var width = parseInt(Dom.getSingle("/svg:svg/@width", dom).nodeValue, 10);
+        var height = parseInt(Dom.getSingle("/svg:svg/@height", dom).nodeValue, 10);
+        
+        var g = dom.createElementNS(PencilNamespaces.svg, "g");
+        while (dom.documentElement.childNodes.length > 0) {
+            var firstChild = dom.documentElement.firstChild;
+            dom.documentElement.removeChild(firstChild);
+            g.appendChild(firstChild);
+        }
+        dom.replaceChild(g, dom.documentElement);
+        
+        var def = CollectionManager.shapeDefinition.locateDefinition(FileDragObserver.SVG_SHAPE_DEF_ID);
+        if (!def) return;
+        
+        canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
+        if (canvas.currentController) {
+            var controller = canvas.currentController;
+            var dim = new Dimension(width, height);
+            controller.setProperty("svgXML", new PlainText(Dom.serializeNode(dom.documentElement)));
+            controller.setProperty("box", dim);
+            controller.setProperty("originalDim", dim);
+        }
+
+    } catch (e) {
+        Console.dumpError(e);
+    }
+}
 
 
+function SVGDragObserver(canvas) {
+    this.canvas = canvas;
+}
+SVGDragObserver.prototype = {
+    getSupportedFlavours : function () {
+        var flavours = new FlavourSet();
+        
+        flavours.appendFlavour("image/svg+xml");
+        
+        return flavours;
+    },
+    onDragOver: function (evt, flavour, session){},
+    onDrop: function (evt, transferData, session) {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var svg = transferData.data;
+        var loc = this.canvas.getEventLocation(evt);
+        handleSVGData(svg, this.canvas, loc);
+    }
+};
+
+Pencil.registerDragObserver(SVGDragObserver);
+
+
+function PNGDragObserver(canvas) {
+    this.canvas = canvas;
+}
+PNGDragObserver.prototype = {
+    getSupportedFlavours : function () {
+        var flavours = new FlavourSet();
+        
+        flavours.appendFlavour("pencil/png");
+        
+        return flavours;
+    },
+    onDragOver: function (evt, flavour, session){},
+    onDrop: function (evt, transferData, session) {
+    	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var url = transferData.data;
+        
+        var loc = this.canvas.getEventLocation(evt);
+
+        this._handleImageFile(this.canvas, url, loc, "transparent");
+    },
+    _handleImageFile: function (canvas, url, loc, transparent) {
+        try {
+            var def = CollectionManager.shapeDefinition.locateDefinition(PNGImageXferHelper.SHAPE_DEF_ID);
+            if (!def) return;
+            
+            if (Config.get("document.EmbedImages") == null) {
+                Config.set("document.EmbedImages", false);
+            }
+            var embedImages = Config.get("document.EmbedImages")
+            
+            canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
+            if (!canvas.currentController) return;
+            
+            var controller = canvas.currentController;
+            
+            var handler = function (imageData) {
+                debug("handler called: " + imageData);
+                var dim = new Dimension(imageData.w, imageData.h);
+                controller.setProperty("imageData", imageData);
+                controller.setProperty("box", dim);
+                if (transparent) {
+                    controller.setProperty("fillColor", Color.fromString("#ffffff00"));
+                }
+            };
+            
+            //if (!embedImages) {
+            //    ImageData.fromUrl(url, handler);
+            //} else {
+                ImageData.fromUrlEmbedded(url, handler);
+            //}
+            canvas.invalidateEditors();
+        } catch (e) {
+            Console.dumpError(e);
+        }
+    },
+};
+Pencil.registerDragObserver(PNGDragObserver);

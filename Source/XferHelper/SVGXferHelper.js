@@ -9,13 +9,15 @@ SVGXferHelper.prototype.toString = function () {
     return "SVGXferHelper: " + SVGXferHelper.MIME_TYPE;
 };
 SVGXferHelper.prototype.handleData = function (data, length) {
-    alert("found: " + this.type);
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    //alert("found: " + this.type);
 
     var systemString = data.QueryInterface(Components.interfaces.nsISupportsString);
     var xml = systemString.data.substring(0, length / 2);
 
-    alert(xml);
+    //alert(xml);
+    handleSVGData(xml, this.canvas, {x: 10, y: 10});
+    
 /*
     var parser = new DOMParser();
     var dom = parser.parseFromString(xml, "text/xml");
