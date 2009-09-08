@@ -1,0 +1,384 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil">
+    <binding id="clipartBrowserPane">
+        <implementation>
+            <constructor>
+            <![CDATA[
+                this.contentBox = document.getAnonymousElementByAttribute(this, "aid", "contentBox");
+                //this.contentBox = document.getElementById("contentBox");
+                this.popup = document.getAnonymousElementByAttribute(this, "aid", "contextPopup");
+                this.copyMenuItem = document.getAnonymousElementByAttribute(this, "aid", "copyMenuItem");
+                this.insertMenuItem = document.getAnonymousElementByAttribute(this, "aid", "insertMenuItem");
+                
+                this.searchButton = document.getElementById("search-button");
+                this.loadingEl = document.getElementById("loading-box");
+                
+                this.IMAGE_WIDTH = 150;
+                this.IMAGE_HEIGHT = 150;
+                
+                this.rq = [];
+                
+                var id = "popup" + Math.round(1000 * Math.random());
+                this.popup.setAttribute("id", id);
+                this.contentBox.setAttribute("context", id);
+                var thiz = this;
+
+                this.addEventListener("click", function (event) {
+                    //if (event.button != 0) return;
+                    var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
+                    if (imgNode) {
+                        if (thiz._lastSelected && thiz._lastSelected != null) {
+                        	document.getElementById("_image_" + thiz._lastSelected).className = "Image";
+                        }
+                        thiz._lastSelected = imgNode._img._id;
+                        document.getElementById("_image_" + thiz._lastSelected).className = "Image Selected";
+                    }
+                }, false);
+                this.contentBox.addEventListener("contextmenu", function (event) {
+                    var img = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
+                    var hasImg = false;
+                    if (img) {
+                        hasImg = true;
+                        thiz.currentImage = img;
+                    }
+                    thiz.copyMenuItem.disabled = !hasImg;
+                    thiz.insertMenuItem.disabled = !hasImg;
+                }, false);
+                this.copyMenuItem.addEventListener("command", function (event) {
+                    if (thiz.currentImage) {
+                    	debug("copy: " + thiz.currentImage._img.src);
+                        thiz.doCopy(thiz.currentImage._img);
+                    }
+                }, false);
+                this.insertMenuItem.addEventListener("command", function (event) {
+                	if (thiz.currentImage) {
+                        debug("insert: " + thiz.currentImage._img.src);
+                        debug("ac: " + SearchManager.activeCanvas);
+                        if (SearchManager.activeCanvas) {
+                        	thiz.doCopy(thiz.currentImage._img);
+                            SearchManager.activeCanvas.doPaste();
+                        }
+                    }
+                }, false);
+            ]]>
+            </constructor>
+            <method name="doCopy">
+            	<parameter name="image"/>
+                <body>
+                <![CDATA[
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    if (!image) return;
+                    
+                    if (image.type == "image/svg+xml") {
+                        var svgXMLSS   = Components.classes["@mozilla.org/supports-string;1"].
+                                               createInstance(Components.interfaces.nsISupportsString);
+                        if (!svgXMLSS) return false;
+                        svgXMLSS.data = image._svg;
+                        
+                        var trans = Components.classes["@mozilla.org/widget/transferable;1"].
+                                               createInstance(Components.interfaces.nsITransferable);
+                        if (!trans) return false;
+                    
+                        trans.addDataFlavor("image/svg+xml");
+                        trans.setTransferData("image/svg+xml", svgXMLSS, image._svg.length * 2);
+    
+                        var clipId = Components.interfaces.nsIClipboard;
+                        var clip   = Components.classes["@mozilla.org/widget/clipboard;1"].getService(clipId);
+                        if (!clip) return false;
+    
+                        clip.setData(trans, null, clipId.kGlobalClipboard);
+                    } else {
+                    	var cmd = "cmd_copyImageContents";
+                    	document.popupNode = image._targetImage;
+                    	var controller = top.document.commandDispatcher.getControllerForCommand(cmd);
+                        if (controller && controller.isCommandEnabled(cmd))
+                          controller.doCommand(cmd);
+                    }
+                } catch (e) {
+                	error(e);
+                }
+                ]]>
+                </body>
+            </method>
+            <method name="addImages">
+                <parameter name="images"/>
+                <body>
+                <![CDATA[
+                    this.rq = [];
+
+                    Dom.empty(this.contentBox);
+                
+                    var imageBox = document.createElementNS(PencilNamespaces.xul, "vbox");
+                    imageBox._images = images;
+                    imageBox.setAttribute("class", "Images");
+                    this.contentBox.appendChild(imageBox);
+
+                    var searchContent = document.createElementNS(PencilNamespaces.html, "div");
+                    searchContent.setAttribute("class", "SearchResult");
+                    this.contentBox.appendChild(searchContent);
+
+                    var contentInner = document.createElementNS(PencilNamespaces.html, "div");
+                    contentInner.setAttribute("class", "Inner");
+                    searchContent.appendChild(contentInner);
+                    
+                    var loaded = 1;
+                    var thiz = this;
+
+                    function addImage(img, i) {
+                        var button = document.createElementNS(PencilNamespaces.html, "div");
+                        button._img = img;
+                        button.setAttribute("class", "Item");
+                        contentInner.appendChild(button);
+                        
+                        button.addEventListener("draggesture", function (event) {
+                            thiz.handleDragStart(event);
+                        }, false);
+                        
+                        var span = document.createElementNS(PencilNamespaces.html, "span");
+                        span.setAttribute("class", "Image");
+                        span.setAttribute("id", "_image_" + i);
+                        img._id = i;
+                        
+                        button.appendChild(span);
+                                    
+                        if (img.type == "image/svg+xml") {
+                            WebUtil.get(img.src, function(svg) {
+                            	img._svg = svg;
+                            	var domParser = new DOMParser();
+                                try {
+                                    var dom = domParser.parseFromString(svg, "text/xml");
+                                    var width = parseInt(Dom.getSingle("/svg:svg/@width", dom).nodeValue, 10);
+                                    var height = parseInt(Dom.getSingle("/svg:svg/@height", dom).nodeValue, 10);
+                                    var scale = parseFloat(thiz.IMAGE_WIDTH / width);
+                                    if (height > width) {
+                                    	scale = parseFloat(thiz.IMAGE_HEIGHT / height);
+                                    }
+
+                                    debug("w: " + width + ", h: " + height + ", scale: " + scale);
+                                    
+                                    var attrs = dom.documentElement.attributes;
+                                    var svge = dom.createElementNS(PencilNamespaces.svg, "svg");
+                                    for (var a in attrs) {
+                                    	if (attrs[a].nodeType == 2) {
+                                    	   svge.setAttribute(attrs[a].nodeName, attrs[a].nodeValue);
+                                    	}
+                                    }
+                                    
+                                    //if (scale < 1) {
+                                        var viewBox = Dom.getSingle("/svg:svg/@viewBox", dom);
+                                        if (viewBox != null) {
+                                            viewBox = viewBox.nodeValue.split(/\s+/);
+                                            if (viewBox.length >= 4) {
+                                            	var vb = viewBox[0] + " " + viewBox[1] + " " + parseFloat(viewBox[2]) * scale + " " +  
+                                            	           parseFloat(viewBox[3]) * scale;
+                                            	svge.setAttribute("viewBox", vb);
+                                            }
+                                        }
+                                    //}
+                                    
+                                    svge.setAttribute("width", width * scale);
+                                    svge.setAttribute("height", height * scale);
+                                    
+                                    var g = dom.createElementNS(PencilNamespaces.svg, "g");
+                                    //if (scale < 1) {
+                                        g.setAttribute("transform", "scale(" + scale + ")");
+                                    //}
+                                    while (dom.documentElement.childNodes.length > 0) {
+                                        var firstChild = dom.documentElement.firstChild;
+                                        dom.documentElement.removeChild(firstChild);
+                                        g.appendChild(firstChild);
+                                    }
+                                    
+                                    svge.appendChild(g);
+
+                                    var divv = document.getElementById("_image_" + img._id);
+                                    divv.innerHTML = Dom.serializeNode(svge);
+                                    
+                                    spanInfo = document.createElementNS(PencilNamespaces.html, "span");
+                                    spanInfo.setAttribute("class", "Info");
+                                    
+                                    spanInfo = thiz._buildInfoNode(spanInfo, img.displayName, "SVG", img.size, width, height);
+                                    
+                                    /*spanInfo.innerHTML = 
+                                            '<h2>' + document.createTextNode(img.displayName) + '</h2><a title="Public Domain" rel="license" ' +
+                                            'href="#">' +
+                                            '<img src="chrome://pencil/content/UI/Icons/pd.png" title="Public Domain"/></a>' +
+                                            
+                                            '<span><strong>SVG</strong> (' + img.size + ') ' + width + 'x' + height + '</span>';
+                                    */
+                                    
+                                    button.appendChild(spanInfo);
+                                    
+                                    loaded++;
+                                    debug("loaded: " + loaded);
+                                    thiz.loadingEl.value = "Loading " + loaded + "/" + images.length + "...";
+                                    if (loaded >= images.length) {
+                                    	thiz.loadingEl.style.display = "none";
+                                        thiz.searchButton.className = "search-go-button";
+                                    }
+                                } catch (e) {
+                                	error(e);
+                                }
+                            }, thiz.rq);
+                        } else {
+                        	WebUtil.getMetadata(img.src, function(size) {
+
+                        		//img._png = Base64.encode(png, true);
+                        		
+                        		//debug("getMetadata - s: " + size);
+                        		//debug("getMetadata - d: " + Base64.encode(img._png, true));
+                        		
+                        		var _image = document.createElementNS(PencilNamespaces.html, "img");
+                            
+                                _image.onload = function(exx) {
+                                    //debug("getMetadata - w: " + _image.width + ", h: " + _image.height);
+                                    var ww = _image.width;
+                                    var hh = _image.height;
+                                    
+                                    var scale = parseFloat(thiz.IMAGE_WIDTH / ww);
+                                    if (hh > ww) {
+                                        scale = parseFloat(thiz.IMAGE_HEIGHT / hh);
+                                    }
+                                    
+                                    if (scale < 1) {
+                                        _image.setAttribute("width", ww * scale);
+                                        _image.setAttribute("height", hh * scale);
+                                    }
+                                
+                                    _image.setAttribute("style", "");
+                                    
+                                    spanInfo = document.createElementNS(PencilNamespaces.html, "span");
+                                    spanInfo.setAttribute("class", "Info");
+                                    
+                                    spanInfo = thiz._buildInfoNode(spanInfo, img.displayName, img.typeName, Math.round(size / 1024) + 'KB', ww, hh);
+                                    
+                                    /*spanInfo.innerHTML = 
+                                            '<h2>' + img.displayName + '</h2><a title="Public Domain" rel="license" ' +
+                                            'href="#">' +
+                                            '<img src="chrome://pencil/content/UI/Icons/pd.png" title="Public Domain"/></a>' +
+                                            '<span><strong>' + img.typeName + '</strong> (' + Math.round(size / 1024) + 'KB) ' + ww + 'x' + hh + '</span>';
+                                    */
+                                    
+                                    button.appendChild(spanInfo);
+                                    
+                                    loaded++;
+                                    debug("loaded: " + loaded);
+                                    thiz.loadingEl.value = "Loading " + loaded + "/" + images.length + "...";
+                                    if (loaded >= images.length) {
+                                    	thiz.loadingEl.style.display = "none";
+                                        thiz.searchButton.className = "search-go-button";
+                                    }
+                                }
+                                
+                                _image.setAttribute("style", "display:none;");
+                                _image.setAttribute("src", img.src);
+                                
+                                img._targetImage = _image;
+                                
+                                var divv = document.getElementById("_image_" + img._id);
+                                divv.appendChild(_image);
+                        	}, thiz.rq);
+                        }
+                    };
+                    
+                    for (var i in images) {
+                        addImage(images[i], i);
+                    }
+                ]]>
+                </body>
+            </method>
+            <method name="_buildInfoNode">
+            	<parameter name="span"/>
+            	<parameter name="displayName"/>
+            	<parameter name="typeName"/>
+            	<parameter name="size"/>
+            	<parameter name="w"/>
+            	<parameter name="h"/>
+                <body>
+                <![CDATA[
+                    var n = document.createElementNS(PencilNamespaces.html, "h2");
+                    n.appendChild(document.createTextNode(displayName));
+                    span.appendChild(n);
+                    
+                    var a = document.createElementNS(PencilNamespaces.html, "a");
+                    a.setAttribute("title", "Public Domain");
+                    a.setAttribute("href", "#");
+                    span.appendChild(a);
+                    
+                    var i = document.createElementNS(PencilNamespaces.html, "img");
+                    i.setAttribute("src", "chrome://pencil/content/UI/Icons/pd.png");
+                    a.appendChild(i);
+                    
+                    n = document.createElementNS(PencilNamespaces.html, "span");
+                    var s = document.createElementNS(PencilNamespaces.html, "strong");
+                    s.appendChild(document.createTextNode(typeName));
+                    n.appendChild(s);
+                    
+                    n.appendChild(document.createTextNode(" (" + size + ") " + w + "x" + h));
+                    span.appendChild(n);
+                    
+                    return span;
+                ]]>
+                </body>
+            </method>
+            <method name="clearImages">
+                <body>
+                <![CDATA[
+                    Dom.empty(this.contentBox);
+                    for (var i = 0; i < this.rq.length; i++) {
+                    	if (this.rq[i]) {
+                        	this.rq[i].abort();
+                        	this.rq[i].onreadystatechange = null;
+                    	}
+                    }
+                ]]>
+                </body>
+            </method>
+            <method name="handleDragStart">
+                <parameter name="event"/>
+                <body>
+                <![CDATA[
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    try {
+                        var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
+                        debug("start draging: " + imgNode._img.src);
+                    
+                        nsDragAndDrop.startDrag(event, {
+                            onDragStart: function (evt, transferData, action) {
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                debug("dragging started");
+                                transferData.data = new TransferData();
+                                if (imgNode._img.type == "image/svg+xml") {
+                                    transferData.data.addDataForFlavour("image/svg+xml", imgNode._img._svg);
+                                } else {
+                                	transferData.data.addDataForFlavour("pencil/png", imgNode._img.src);
+                                }
+                            }
+                        });
+                        debug("end draging");
+                    } catch (e) { alert(e); }
+                ]]>
+                </body>
+            </method>
+        </implementation>
+        <handlers>
+        </handlers>
+        <xbl:content xmlns:xbl="http://www.mozilla.org/xbl"
+                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+            <vbox aid="contentBox" flex="1"></vbox>
+            <popupset>
+                <popup aid="contextPopup">
+                    <menuitem aid="copyMenuItem" label="Copy image" />
+                    <menuitem aid="insertMenuItem" label="Copy image to Pencil" />
+                </popup>
+            </popupset>        			
+        </xbl:content>
+    </binding>
+</bindings>
+
