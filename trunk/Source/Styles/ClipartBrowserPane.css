@@ -1,0 +1,83 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+pclipartbrowserpane {
+    -moz-binding: url(../UI/ClipartBrowserPane.xbl#clipartBrowserPane);
+    padding: 0em;
+    margin: 0em;
+}
+
+pclipartbrowserpane:focus,
+pclipartbrowserpane:hover {
+}
+pclipartbrowserpane > vbox,
+pclipartbrowserpane #contentBox {
+    overflow: auto;
+    background-color: #D6DED4;
+    border: solid 1px;
+    border-color: threedshadow;
+    
+    height: 100%;
+}
+
+pclipartbrowserpane div.SearchResult {
+    padding: 20px;
+}
+pclipartbrowserpane div.SearchResult .Inner {
+}
+pclipartbrowserpane div.SearchResult .Inner .Item {
+    width: 205px;
+    text-align: center;
+    
+    display: inline-block;
+    padding-top: 15px;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Image {
+    padding: 2px;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Image img,
+pclipartbrowserpane div.SearchResult .Inner .Item .Image svg {
+    cursor: pointer;
+    opacity: 0.9;
+    
+    border: none;
+    
+    padding: 5px;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Selected img,
+pclipartbrowserpane div.SearchResult .Inner .Item .Selected svg {
+    -moz-border-radius: 2px;
+    -moz-box-shadow: 0 0 3px #999;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Image img:hover,
+pclipartbrowserpane div.SearchResult .Inner .Item .Image svg:hover {
+    opacity: 1;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Info {
+    display: block;
+    margin-top: 10px;
+    
+    font-size: 11px;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Info h2 {
+    font-size: 14px;
+    font-weight: bold;
+    
+    margin: 0;
+    padding: 0;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Info a {
+    
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Info a img {
+    margin-bottom: -4px;
+    padding-right: 3px;
+        
+    border: none;
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Info span {
+}
+pclipartbrowserpane div.SearchResult .Inner .Item .Info span strong {
+    font-weight: bold;
+    font-size: 13px;
+}
