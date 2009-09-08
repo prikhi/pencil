@@ -263,6 +263,12 @@
                     <menuitem id="hideHeavyElementsMenuItem" label="Hide Heavy Elements" type="checkbox" checked="false" oncommand="Pencil.setShowHeavyElements(this.getAttribute('checked') != 'true', true)"/>
                 </menupopup>
             </menu>
+            <menu label="Tools" id="tools-menu">
+                <menupopup>
+                    <menuitem label="Stencil generator" oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
+                    <menuitem label="Clipart Browser" oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
+                </menupopup>
+            </menu>
             <menu label="Settings" id="settings-menu">
                 <menupopup>
                     <menuitem label="Advanced Configurations" oncommand="window.open('chrome://global/content/config.xul', 'aboutConfig', 'chrome')"/>
