@@ -195,6 +195,10 @@ Shape.prototype.getBoundingRect = function () {
     try {
         rect = this.svg.getBBox();
     } catch (e) {}
+    
+    if (rect == null) {
+    	rect = {x: 0, y: 0, width: 0, height: 0};
+    }
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
     
     var rect = Svg.getBoundRectInCTM(rect, ctm.inverse());
