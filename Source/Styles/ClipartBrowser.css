@@ -1,0 +1,40 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+#resultList {
+}
+html|div.Item {
+    float: left;
+    text-align: center;
+
+    width: 90px;
+    height: 90px;
+    padding: 5px;
+    -moz-box-sizing: border-box;
+
+    position: relative;
+
+    cursor: default;
+}
+html|div.Item:hover {
+    background: Highlight;
+    color: HighlightText;
+}
+html|div.Item html|img {
+    max-width: 80px;
+    max-height: 80px;
+}
+html|div.Item html|h4 {
+    margin: 0px;
+    font-size: 1em;
+    font-weight: normal;
+
+    position: absolute;
+
+    bottom: 5px;
+    width: 100%;
+    left: 0px;
+}
+html|div.Item html|p {
+    display: none;
+}

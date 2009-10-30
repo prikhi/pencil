@@ -16,8 +16,7 @@ PropertyPageEditor.registerTypeEditor(Font, "pfonteditor");
 PropertyPageEditor.registerTypeEditor(Alignment, "paligneditor");
 PropertyPageEditor.registerTypeEditor(StrokeStyle, "pstrokeeditor");
 PropertyPageEditor.registerTypeEditor(PlainText, "pplaintexteditor");
-
-
+PropertyPageEditor.registerTypeEditor(ShadowStyle, "pshadowstyleeditor");
 
 
 PropertyPageEditor.prototype.install = function (canvas) {
@@ -29,7 +28,7 @@ PropertyPageEditor.prototype.showAndAttach = function (targetObject) {
     if (!this.dialogShown) {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         this.propertyWindow = window.open("PropertyDialog.xul", "propertyEditor" + Util.getInstanceToken(), "chrome,dialog,alwaysRaised,dependent");
-        
+
         this.dialogShown = true;
 
         var thiz = this;
@@ -46,11 +45,11 @@ PropertyPageEditor.prototype.attach = function (targetObject) {
         this.invalidate();
 
     } catch (e) { alert(e); }
-    
+
 };
 PropertyPageEditor.prototype.invalidateData = function (targetObject) {
     var definedGroups = this.targetObject.getPropertyGroups();
-    
+
     var strippedGroups = [];
     for (var i in definedGroups) {
         var group = definedGroups[i];
@@ -70,12 +69,12 @@ PropertyPageEditor.prototype.invalidateData = function (targetObject) {
 
     this.groups = strippedGroups;
     this.properties = this.targetObject.getProperties();
-    
+
     window._dialogArgument = this;
 };
 PropertyPageEditor.prototype.invalidate = function () {
     if (this.propertyWindow) {
-        this.invalidateData(); 
+        this.invalidateData();
         this.propertyWindow.setup();
     }
 };

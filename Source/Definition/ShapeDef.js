@@ -5,12 +5,12 @@
 function ShapeDef() {
     this.id = null;
     this.displayName = null;
-    
+
     this.contentNode = null;
     this.propertyGroups = [];
     this.behaviors = [];
     this.actions = [];
-    
+
     this.propertyMap = {};
     this.behaviorMap = {};
     this.actionMap = {};
@@ -23,23 +23,23 @@ ShapeDef.prototype.getProperty = function (name) {
 };
 ShapeDef.prototype.isPropertyAffectedBy = function (target, source, checkedProperties) {
     if (target == source) return true;
-    
+
     if (checkedProperties && checkedProperties[target]) return false;
-    
+
     var tp = this.propertyMap[target];
     if (!tp) return false;
-    
+
     var sp = this.propertyMap[source];
     if (!sp) return false;
-    
+
     if (tp.relatedProperties[source]) return true;
-    
+
     var props = checkedProperties ? checkedProperties : {};
     props[target] = true;
     for (name in tp.relatedProperties) {
         if (this.isPropertyAffectedBy(name, source, props)) return true;
     }
-    
+
     return false;
 };
 
@@ -57,7 +57,7 @@ function Property() {
     this.displayName = null;
     this.type = null;
     this.initialValue = null;
-    
+
     this.relatedTargets = {};
     this.meta = {};
 }
@@ -93,10 +93,10 @@ BehaviorItem.prototype.toString = function () {
 function BehaviorItemArg(literal, shapeDef, currentTarget, type) {
     this.literal = literal;
     this.type = type ? type : null;
-    
+
     if (!this.type) {
         //preprocessing expression literal
-        this.literal = this.literal.replace(/\$([a-z0-9]+)/gi, function (zero, one) {
+        this.literal = this.literal.replace(/\$([a-z][a-z0-9]*)/gi, function (zero, one) {
             var property = shapeDef.getProperty(one);
             if (!property) {
                 throw "Invalid property reference: " + one;

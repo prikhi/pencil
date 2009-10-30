@@ -12,7 +12,7 @@ SharedFontEditor.prototype.setup = function () {
     this.boldButton = document.getElementById("edBoldButton");
     this.italicButton = document.getElementById("edItalicButton");
     this.underlineButton = document.getElementById("edUnderlineButton");
-    
+
     var thiz = this;
     this.fontList.addEventListener("command", function(event) {
         if (!thiz.target || !thiz.font || OnScreenTextEditor.isEditing) return;
@@ -25,7 +25,7 @@ SharedFontEditor.prototype.setup = function () {
         thiz.font.size = thiz.pixelFontSize.value + "px";
         thiz._applyValue();
     }, false);
-    
+
     this.boldButton.addEventListener("command", function(event) {
         if (!thiz.target || !thiz.font || OnScreenTextEditor.isEditing) return;
         thiz.font.weight = thiz.boldButton.checked ? "bold" : "normal";
@@ -37,7 +37,7 @@ SharedFontEditor.prototype.setup = function () {
         thiz.font.style = thiz.italicButton.checked ? "italic" : "normal";
         thiz._applyValue();
     }, false);
-    
+
     this.underlineButton.addEventListener("command", function(event) {
         if (!thiz.target || !thiz.font || OnScreenTextEditor.isEditing) return;
         thiz.font.decor = thiz.underlineButton.checked ? "underline" : "none";
@@ -63,9 +63,21 @@ SharedFontEditor.prototype.attach = function (target) {
     this.boldButton.disabled = false;
     this.italicButton.disabled = false;
     this.underlineButton.disabled = false;
-    
+
     //set the value
-    this.fontList.value = this.font.family;
+    if (Local.isFontExisting(this.font.family)) {
+        this.fontList.value = this.font.family;
+    } else {
+        var families = this.font.getFamilies();
+        for (var i = 0; i < families.length; i ++) {
+            var f = families[i];
+            if (Local.isFontExisting(f)) {
+                this.fontList.value = f;
+                break;
+            }
+        }
+    }
+
     if (this.font.size.match(/^([0-9]+)[^0-9]*$/)) {
         this.pixelFontSize.value = RegExp.$1;
     }
@@ -79,11 +91,11 @@ SharedFontEditor.prototype.detach = function () {
     this.boldButton.disabled = true;
     this.italicButton.disabled = true;
     this.underlineButton.disabled = true;
-    
+
     this.target = null;
     this.font = null;
 };
-SharedFontEditor.prototype.attach.invalidate = function () {
+SharedFontEditor.prototype.invalidate = function () {
     if (!this.target) {
         this.detach();
     } else {

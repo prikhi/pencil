@@ -5,7 +5,7 @@ Config.prefs = Components.classes["@mozilla.org/preferences-service;1"].
 
 Config._buildName = function(name) {
     return "pencil.config." + name;
-};                    
+};
 Config.set = function (name, value) {
     if (typeof(value) == "boolean") {
         Config.prefs.setBoolPref(Config._buildName(name), value);
@@ -19,7 +19,7 @@ Config.set = function (name, value) {
         var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
         str.data = value;
         Config.prefs.setComplexValue(Config._buildName(name), Components.interfaces.nsISupportsString, str);
-        
+
         return;
     }
     if (typeof(value) == "object" && value.length && value.join && value.shift) {
@@ -31,23 +31,24 @@ Config.set = function (name, value) {
     }
 };
 
-Config.get = function (name) {
+Config.get = function (name, defaultValue) {
     var type = Config.prefs.getPrefType(Config._buildName(name));
-    
+
+    if (typeof(defaultValue) == "undefined") defaultValue = null;
     switch (type) {
         case 32:
             try {
                 str = Config.prefs.getComplexValue(Config._buildName(name), Components.interfaces.nsISupportsString);
                 return str.data;
             } catch (e) {
-                return null;
+                return defaultValue;
             }
         case 64:
             return Config.prefs.getIntPref(Config._buildName(name));
 
         case 128:
             return Config.prefs.getBoolPref(Config._buildName(name));
-            
+
         case 0:
             type = Config.prefs.getPrefType(Config._buildName(name + ".length"));
             if (type == 64) {
@@ -56,11 +57,11 @@ Config.get = function (name) {
                 for (var i = 0; i < len; i ++) {
                     a.push(Config.get(name + "." + i));
                 }
-                
+
                 return a;
             }
     }
-    
-    return null;
+
+    return defaultValue;
 };
 

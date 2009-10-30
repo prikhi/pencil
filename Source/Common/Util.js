@@ -7,7 +7,7 @@
 
 /* static int */ Dom.workOn = function (xpath, node, worker) {
     var nodes = Dom.getList(xpath, node);
-    
+
     for (var i = 0; i < nodes.length; i ++) {
         worker(nodes[i]);
     }
@@ -31,7 +31,7 @@
         nodes.push(next);
         next = xpathResult.iterateNext();
     }
-    
+
     return nodes;
 }
 /* public static XmlDocument */ Dom.getImplementation = function () {
@@ -41,7 +41,7 @@
     var doc = Dom.getImplementation().createDocument("", "", null);
     doc.async = false;
     doc.load(relPath);
-    
+
     return doc;
 };
 
@@ -84,7 +84,7 @@ Dom.findTop = function (node, evaluator) {
             top = node;
         });
     } catch (e) {}
-    
+
     return top;
 };
 
@@ -105,13 +105,13 @@ Dom.parser = new DOMParser();
 Dom.serializer = new XMLSerializer();
 Dom.parseToNode = function (xml, dom) {
     var doc = Dom.parser.parseFromString(xml, "text/xml");
-    if (!doc || !doc.documentElement 
+    if (!doc || !doc.documentElement
              || doc.documentElement.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml") {
         return null;
     }
     var node = doc.documentElement;
     if (dom) return dom.importNode(node, true);
-    
+
     return node;
 }
 Dom.serializeNode = function (node) {
@@ -121,7 +121,7 @@ Dom.serializeNodeToFile = function (node, file) {
     var fos = Components.classes["@mozilla.org/network/file-output-stream;1"]
                              .createInstance(Components.interfaces.nsIFileOutputStream);
     fos.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
-    
+
     var os = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
                        .createInstance(Components.interfaces.nsIConverterOutputStream);
 
@@ -129,14 +129,14 @@ Dom.serializeNodeToFile = function (node, file) {
     os.init(fos, XMLDocumentPersister.CHARSET, 0, 0x0000);
 
     os.writeString("<?xml version=\"1.0\"?>\n");
-    
+
     Dom.serializer.serializeToStream(node, fos, XMLDocumentPersister.CHARSET);
 
     fos.close();
 };
 Dom._buildHiddenFrame = function () {
     if (Dom._hiddenFrame) return;
-    
+
     var iframe = document.createElementNS(PencilNamespaces.html, "html:iframe");
 
     var container = document.body;
@@ -146,13 +146,13 @@ Dom._buildHiddenFrame = function () {
 
     iframe.setAttribute("style", "border: none; width: 1px; height: 1px; xvisibility: hidden");
     iframe.setAttribute("src", "blank.html");
-    
+
     box.appendChild(iframe);
     container.appendChild(box);
-    
+
     box.style.MozBoxPack = "start";
     box.style.MozBoxAlign = "start";
-    
+
     Dom._hiddenFrame = iframe.contentWindow;
     Dom._hiddenFrame.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
 };
@@ -160,14 +160,14 @@ Dom.toXhtml = function (html) {
     Dom._buildHiddenFrame();
 
     var body = Dom._hiddenFrame.document.body;
-    
+
     body.innerHTML = "";
-        
+
     var div = body.ownerDocument.createElementNS(PencilNamespaces.html, "div");
     body.appendChild(div);
-    
+
     div.innerHTML = html;
-    
+
     var xhtml = Dom.serializeNode(div);
     xhtml = xhtml.replace(/(<[^>]+) xmlns=""([^>]*>)/g, function (zero, one, two) {
         return one + two;
@@ -181,7 +181,7 @@ Dom.htmlEncode = function (text) {
     Dom._buildHiddenFrame();
 
     var body = Dom._hiddenFrame.document.body;
-    
+
     body.innerHTML = "";
     body.appendChild(body.ownerDocument.createTextNode(text));
     return body.innerHTML;
@@ -229,18 +229,18 @@ Dom.appendAfter = function (fragment, node) {
 };
 Dom.swapNode = function (node1, node2) {
     var parentNode = node1.parentNode;
-    
+
     var ref = node2.nextSibling;
     if (ref == node1) {
         debug("****, simple swap: " + [node1.label, node2.label]);
         parentNode.removeChild(node1);
         parentNode.insertBefore(node1, node2);
-        
+
         return;
     }
     parentNode.removeChild(node2);
     parentNode.insertBefore(node2, node1);
-    
+
     parentNode.removeChild(node1);
     parentNode.insertBefore(node1, ref);
 };
@@ -261,6 +261,10 @@ Svg.setHeight = function (node, h) {
     node.height.baseVal.value = h;
 };
 Svg.setStyle = function (node, name, value) {
+    if (value == null) {
+        node.style.removeProperty(name);
+        return;
+    }
     node.style.setProperty(name, value, "");
 };
 Svg.getStyle = function (node, name) {
@@ -274,7 +278,7 @@ Svg.toTransformText = function (matrix) {
 };
 Svg.ensureCTM = function (node, matrix) {
     //FIXME: this works when no parent transformation applied. fix this later
-    
+
     var s = Svg.toTransformText(matrix);
     node.setAttribute("transform", s);
 };
@@ -284,7 +288,7 @@ Svg.vectorInCTM = function (point, userCTM, noTranslation) {
     var uPoint = new Point();
     uPoint.x = ctm.a * point.x + ctm.c * point.y + (noTranslation ? 0 : ctm.e);
     uPoint.y = ctm.b * point.x + ctm.d * point.y + (noTranslation ? 0 : ctm.f);
-    
+
     return uPoint;
 };
 Svg.getCTM = function (target) {
@@ -295,7 +299,7 @@ Svg.rotateMatrix = function (angle, center, element) {
     matrix = matrix.translate(center.x, center.y);
     matrix = matrix.rotate(angle);
     matrix = matrix.translate(0 - center.x, 0 - center.y);
-    
+
     return matrix;
 };
 Svg.getScreenLocation = function(element, point) {
@@ -310,7 +314,7 @@ Svg.getAngle = function (dx, dy) {
 Svg.getRelativeAngle = function (from, to, center) {
     var startAngle = Svg.getAngle(from.x - center.x, from.y - center.y);
     var endAngle = Svg.getAngle(to.x - center.x, to.y - center.y);
-    
+
     return endAngle - startAngle;
 };
 Svg.ensureRectContains = function (rect, point) {
@@ -321,10 +325,10 @@ Svg.ensureRectContains = function (rect, point) {
 };
 Svg.getBoundRectInCTM = function (box, ctm) {
     var p = Svg.vectorInCTM({x: box.x, y: box.y}, ctm);
-    
+
     var rect = {left: p.x, right: p.x, top: p.y, bottom: p.y};
-    
-    
+
+
     p = Svg.vectorInCTM({x: box.x + box.width, y: box.y}, ctm);
     Svg.ensureRectContains(rect, p);
 
@@ -333,16 +337,16 @@ Svg.getBoundRectInCTM = function (box, ctm) {
 
     p = Svg.vectorInCTM({x: box.x + box.width, y: box.y + box.height}, ctm);
     Svg.ensureRectContains(rect, p);
-    
+
     return rect;
 };
 Svg.joinRect = function (rect1, rect2) {
     var minX = Math.min(rect1.x, rect2.x);
     var minY = Math.min(rect1.y, rect2.y);
-    
+
     var maxX = Math.max(rect1.x + rect1.width, rect2.x + rect2.width);
     var maxY = Math.max(rect1.y + rect1.height, rect2.y + rect2.height);
-    
+
     return {x: minX,
             y: minY,
             width: maxX - minX,
@@ -369,14 +373,26 @@ Svg.optimizeSpeed = function(target, on) {
 Local = {};
 Local.getInstalledFonts = function () {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-    
+
     var localFonts;
     var enumerator = Components.classes["@mozilla.org/gfx/fontenumerator;1"]
                              .getService(Components.interfaces.nsIFontEnumerator);
     var localFontCount = { value: 0 }
     localFonts = enumerator.EnumerateAllFonts(localFontCount);
 
+    Local.cachedLocalFonts = localFonts;
+
     return localFonts;
+};
+Local.isFontExisting = function (font) {
+    if (!Local.cachedLocalFonts) {
+        Local.getInstalledFonts();
+    }
+    for (var i in Local.cachedLocalFonts) {
+        if (Local.cachedLocalFonts[i] == font) return true;
+    }
+
+    return false;
 };
 Local.openExtenstionManager = function() {
     const EMTYPE = "Extension:Manager";
@@ -396,7 +412,7 @@ Local.newTempFile = function (prefix, ext) {
                          getService(Components.interfaces.nsIProperties).
                          get("TmpD", Components.interfaces.nsIFile);
     var seed = Math.round(Math.random() * 1000000);
-    
+
     file.append(prefix + "-" + seed + "." + ext);
 
     return file;
@@ -413,7 +429,7 @@ Console.dumpError = function (exception, toConsole) {
         "Location: " + exception.fileName + " (" + exception.lineNumber + ")",
         "Stacktrace:\n\t" + (exception.stack ? exception.stack.replace(/\n/g, "\n\t") : "<empty stack trace>")
     ].join("\n");
-    
+
     if (true) {
         debug(s);
     } else {
@@ -430,7 +446,7 @@ Util.getInstanceToken = function () {
 Util.gridNormalize = function (value, size) {
     var r = value % size;
     if (r == 0) return value;
-    
+
     if (r > size / 2) {
         return value + size - r;
     } else {
@@ -446,39 +462,39 @@ Util.enumInterfaces = function (object) {
             if (o) ifaces.push(iface);
         } catch (e) {}
     }
-    
+
     return ifaces;
-    
+
 };
 Util.handleTempImageLoad = function () {
     if (Util.handleTempImageLoadImpl) Util.handleTempImageLoadImpl();
 };
 Util.ios = Components.classes["@mozilla.org/network/io-service;1"]
                         .getService(Components.interfaces.nsIIOService);
-                        
+
 Util.getClipboardImage = function (clipData, length, handler) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-    
+
     var dataStream = clipData.QueryInterface(Components.interfaces.nsIInputStream);
-    
+
     var bStream = Components.classes["@mozilla.org/binaryinputstream;1"]
                             .createInstance(Components.interfaces.nsIBinaryInputStream);
     bStream.setInputStream(dataStream);
     var bytes = bStream.readBytes(bStream.available());
-    
+
     //create a temp file to save
     var file = Components.classes["@mozilla.org/file/directory_service;1"]
                          .getService(Components.interfaces.nsIProperties)
                          .get("TmpD", Components.interfaces.nsIFile);
     file.append("pencil-clipboard-image.png");
-    
+
     var fos = Components.classes["@mozilla.org/network/file-output-stream;1"]
                              .createInstance(Components.interfaces.nsIFileOutputStream);
     fos.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
-    
+
     fos.write(bytes, bytes.length);
     fos.close();
-    
+
     if (!Util.ios) {
         Util.ios = Components.classes["@mozilla.org/network/io-service;1"]
                         .getService(Components.interfaces.nsIIOService);
@@ -487,7 +503,7 @@ Util.getClipboardImage = function (clipData, length, handler) {
     var url = Util.ios.newFileURI(file).spec;
 
     url += "?t=" + (new Date()).getTime();
-    
+
     ImageData.fromUrlEmbedded(url, function (imageData) {
         handler(imageData.w, imageData.h, imageData.data);
     });
@@ -498,7 +514,7 @@ Util.info = function(title, description, buttonLabel) {
                     title: title,
                     description: description ? description : null,
                     acceptLabel: buttonLabel ? buttonLabel : null };
-                    
+
     var returnValueHolder = {};
     var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
 }
@@ -507,7 +523,7 @@ Util.error = function(title, description, buttonLabel) {
                     title: title,
                     description: description ? description : null,
                     acceptLabel: buttonLabel ? buttonLabel : null };
-                    
+
     var returnValueHolder = {};
     var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
 }
@@ -517,7 +533,7 @@ Util.confirm = function(title, description, acceptLabel, cancelLabel) {
                     description: description ? description : null,
                     acceptLabel: acceptLabel ? acceptLabel : null,
                     cancelLabel: cancelLabel ? cancelLabel : null };
-                    
+
     var returnValueHolder = {};
     var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
     return returnValueHolder.button == "accept";
@@ -528,7 +544,7 @@ Util.confirmWithWarning = function(title, description, acceptLabel, cancelLabel)
                     description: description ? description : null,
                     acceptLabel: acceptLabel ? acceptLabel : null,
                     cancelLabel: cancelLabel ? cancelLabel : null };
-                    
+
     var returnValueHolder = {};
     var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
     return returnValueHolder.button == "accept";
@@ -540,15 +556,15 @@ Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancel
                     acceptLabel: acceptLabel ? acceptLabel : null,
                     extraLabel: extraLabel ? extraLabel : null,
                     cancelLabel: cancelLabel ? cancelLabel : null };
-                    
+
     var returnValueHolder = {};
     var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
-    
+
     var result = {};
     result.accept = (returnValueHolder.button == "accept");
     result.cancel = (returnValueHolder.button == "cancel");
     result.extra = (returnValueHolder.button == "extra");
-    
+
     return result;
 }
 Util.beginProgressJob = function(jobName, jobStarter) {
@@ -574,7 +590,7 @@ function tick(value) {
     var newTick = date.getTime();
     var delta = newTick - lastTick;
     lastTick = newTick;
-    
+
     var prefix = value ? (value + ": ").toUpperCase() : "TICK: ";
     dump(prefix + date.getSeconds() + "." + date.getMilliseconds() + " (" + delta + " ms)\n");
 }

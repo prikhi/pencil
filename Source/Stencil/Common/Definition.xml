@@ -22,6 +22,22 @@
                 </BoxFit>
             </For>
         </Behaviors>
+        <Actions>
+            <Action id="generateLoremShort" displayName="Generate Short Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("label", PlainText.fromLoremIpsum(4));
+                        ]]>
+                </Impl>
+            </Action>
+            <Action id="generateLoremLong" displayName="Generate Long Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("label", PlainText.fromLoremIpsum(15));
+                        ]]>
+                </Impl>
+            </Action>
+        </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <text id="text" y="9.0077095" x="17.999992" style="font-size:12px;font-style:normal;font-weight:normal;text-align:left;text-anchor:start; dominant-baseline: central;fill:#000000;font-family:'Segoe UI'" xml:space="preserve">checkbutton2</text>
         </p:Content>
@@ -46,6 +62,29 @@
                 <RichTextFit>$width.x</RichTextFit>
             </For>
         </Behaviors>
+        <Actions>
+            <Action id="generateLoremShortRichTextBox" displayName="Generate Short Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("textContent", RichText.fromLoremIpsum(10));
+                        ]]>
+                </Impl>
+            </Action>
+            <Action id="generateLoremLongRichTextBox" displayName="Generate Long Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("textContent", RichText.fromLoremIpsum(45));
+                        ]]>
+                </Impl>
+            </Action>
+            <Action id="generateLoremExtraLongRichTextBox" displayName="Generate Longer Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("textContent", RichText.fromLoremIpsum(150));
+                        ]]>
+                </Impl>
+            </Action>
+        </Actions>
 
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
 
@@ -159,7 +198,7 @@
                         <PropertyGroup name="Handles">
                                 <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2">0,0</Property>
                                 <Property name="textPadding" displayName="Text Padding" type="Handle" p:lockX="true" p:minY="0" p:maxY="$box.w / 2">0,5</Property>
-                                
+
                                 <Property name="textPadding" displayName="Text Padding" type="Handle" p:lockX="true" p:minY="0" p:maxY="$box.w / 2">0,5</Property>
                         </PropertyGroup>
 
@@ -257,7 +296,7 @@
                                width="1.06396"
                                x="-0.03198">
                                 <feGaussianBlur stdDeviation="1" in="SourceAlpha"/>
-                            </filter>            
+                            </filter>
                         </defs>
                         <use xlink:href="#rrRect" id="bgCopy" transform="translate(2, 2)" p:filter="url(#shadingFilter)" style="opacity:0.5;" p:heavy="true"/>
                         <use xlink:href="#rrRect" />

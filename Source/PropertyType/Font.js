@@ -35,4 +35,17 @@ Font.prototype.isUnderlined = function () {
 Font.prototype.toString = function () {
     return [this.family, this.weight, this.style, this.size, this.decor].join('|');
 };
+Font.prototype.toCSSFontString = function () {
+    return [this.weight, this.style, this.size, this.family].join(" ");
+};
+Font.prototype.getFamilies = function () {
+    var families = this.family.split(/[\,]+/);
+    for (var i = 0; i < families.length; i ++) {
+        var f = families[i];
+        if (f.match(/^'([^']+)'$/)) f = RegExp.$1;
+
+        families[i] = f.trim();
+    }
+    return families;
+}
 

@@ -62,21 +62,21 @@ Pencil.boot = function (event) {
         Pencil.booted = true;
         Pencil.window = document.documentElement;
         var win = Dom.getSingle("/xul:window", document);
-        
+
         //fix icons on other platform
         if (navigator.platform.indexOf("Linux") < 0) {
             Pencil.fixUI();
         }
-        
+
         Pencil.collectionPane = document.getElementById("collectionPane");
         Pencil.controller = new Controller(win);
         Pencil.rasterizer = new Rasterizer("image/png");
         CollectionManager.loadStencils();
-        
+
         Pencil.setTitle("(No document)");
         Pencil.activeCanvas = null;
         Pencil.setupCommands();
-        
+
         //booting shared editors
         for (var i in Pencil.sharedEditors) {
             try {
@@ -85,12 +85,12 @@ Pencil.boot = function (event) {
                 Console.dumpError(e, "stdout");
             }
         }
-        
+
         document.documentElement.addEventListener("p:CanvasChanged", Pencil.handleCanvasChange, false);
         document.documentElement.addEventListener("p:TargetChanged", Pencil.handleTargetChange, false);
 
         document.documentElement.addEventListener("p:ContentModified", Pencil._setupUndoRedoCommand, false);
-        
+
         Pencil.postBoot();
         /*
         window.setTimeout(function() {
@@ -117,7 +117,7 @@ Pencil.handleTargetChange = function (event) {
 Pencil.invalidateSharedEditor = function() {
     var canvas = Pencil.activeCanvas;
     var target = canvas ? canvas.currentController : null;
-    
+
     if (!target) {
         for (var i in Pencil.sharedEditors) {
             try {
@@ -139,24 +139,24 @@ Pencil.invalidateSharedEditor = function() {
 Pencil.setupCommands = function () {
     var canvas = Pencil.activeCanvas;
     var target = canvas ? canvas.currentController : null;
-    
+
     Pencil._enableCommand("newPageCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("duplicatePageCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("saveDocumentCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("saveDocumentAsCommand", Pencil.controller.hasDoc());
     Pencil._enableCommand("rasterizeSelectionCommand", target && target.getGeometry);
     Pencil._enableCommand("rasterizeCommand", canvas != null);
-    
+
     Pencil._enableCommand("zoomInCommand", canvas != null);
     Pencil._enableCommand("zoom1Command", canvas != null);
     Pencil._enableCommand("zoomOutCommand", canvas != null);
-    
+
     Pencil._enableCommand("moveLeftCommand", canvas != null);
     Pencil._enableCommand("moveRightCommand", canvas != null);
-    
-	Pencil._enableCommand("makeSameHorizontalSpaceCommand", target && target.makeSameHorizontalSpace);
-	Pencil._enableCommand("makeSameVerticalSpaceCommand", target && target.makeSameVerticalSpace);
-	
+
+    Pencil._enableCommand("makeSameHorizontalSpaceCommand", target && target.makeSameHorizontalSpace);
+    Pencil._enableCommand("makeSameVerticalSpaceCommand", target && target.makeSameVerticalSpace);
+
     Pencil._enableCommand("alignLeftCommand", target && target.alignLeft);
     Pencil._enableCommand("alignCenterCommand", target && target.alignCenter);
     Pencil._enableCommand("alignRightCommand", target && target.alignRight);
@@ -180,7 +180,7 @@ Pencil.setupCommands = function () {
 
     Pencil._enableCommand("groupCommand", target && target.constructor == TargetSet);
     Pencil._enableCommand("unGroupCommand", target && target.constructor == Group);
-    
+
     Pencil._setupUndoRedoCommand();
 };
 Pencil._setupUndoRedoCommand = function () {
@@ -203,7 +203,8 @@ Pencil._enableCommand = function (name, condition) {
 
 
 Pencil.getGridSize = function () {
-    return {w: 5, h: 5};
+    var size = Config.get("edit.gridSize", 5);
+    return {w: size, h: size};
 };
 
 Pencil.getCurrentTarget = function () {
