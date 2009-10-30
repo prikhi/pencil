@@ -2,11 +2,11 @@
 <bindings xmlns="http://www.mozilla.org/xbl"
           xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-          xmlns:html="http://www.w3.org/1999/xhtml" 
-	      xmlns:svg="http://www.w3.org/2000/svg"
-	      xmlns:xlink="http://www.w3.org/1999/xlink"
-	      xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-	      >
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+          >
     <binding id="fontEditor">
         <implementation>
             <constructor>
@@ -17,13 +17,13 @@
                 this.bold = document.getAnonymousElementByAttribute(this, "aid", "bold");
                 this.italic = document.getAnonymousElementByAttribute(this, "aid", "italic");
                 this.underline = document.getAnonymousElementByAttribute(this, "aid", "underline");
-                
+
                 this.box = document.getAnonymousElementByAttribute(this, "aid", "box");
                 var thiz = this;
                 this.box.addEventListener("command", function (event) {
                     Dom.emitEvent("p:ValueChanged", thiz, {value: thiz.getValue()});
                 }, false);
-                
+
                 //setup font list
                 var localFonts = Local.getInstalledFonts();
                 for (var i in localFonts) {
@@ -32,7 +32,8 @@
                     item.setAttribute("value", localFonts[i]);
                     this.fontPopup.appendChild(item);
                 }
-                
+                this.localFonts = localFonts;
+
                 if (this.hasAttribute("value")) this.setValue(Font.fromString(this.getAttribute("value")));
             ]]>
             </constructor>
@@ -43,12 +44,24 @@
                     this.meta = meta;
                 ]]>
                 </body>
-            </method>        
+            </method>
             <method name="setValue">
                 <parameter name="font"/>
                 <body>
                 <![CDATA[
-                    this.fontList.value = font.family;
+                    if (Local.isFontExisting(font.family)) {
+                        this.fontList.value = font.family;
+                    } else {
+                        var families = font.getFamilies();
+                        for (var i = 0; i < families.length; i ++) {
+                            var f = families[i];
+                            if (Local.isFontExisting(f)) {
+                                this.fontList.value = f;
+                                break;
+                            }
+                        }
+                    }
+
                     if (font.size.match(/^([0-9]+)[^0-9]*$/)) {
                         this.size.value = RegExp.$1;
                     }
@@ -57,7 +70,7 @@
                     this.underline.checked = (font.decor == "underline");
                 ]]>
                 </body>
-            </method>        
+            </method>
             <method name="getValue">
                 <body>
                 <![CDATA[
@@ -67,18 +80,18 @@
                     font.weight = this.bold.checked ? "bold" : "normal";
                     font.style = this.italic.checked ? "italic" : "normal";
                     font.decor = this.underline.checked ? "underline" : "none";
-                    
+
                     return font;
                 ]]>
                 </body>
-            </method>        
+            </method>
             <method name="isModified">
                 <body>
                 <![CDATA[
                     return true; //this.isUserModified;
                 ]]>
                 </body>
-            </method>        
+            </method>
         </implementation>
         <content>
             <hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" aid="box">

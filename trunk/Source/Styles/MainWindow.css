@@ -4,7 +4,7 @@
 
 toolbar {
     -moz-appearance: none !important;
-    border: none;    
+    border: none;
 }
 .AttachedAction {
     color: highlight;
@@ -91,17 +91,17 @@ tabbox.Main tab + tab[selected="true"] {
 }
 */
 
-tabbox.Main tab {
+tabbox.Main #mainViewHeader > tab {
     padding-left: 1em;
     padding-right: 1em;
 }
-tabbox.Main tab[selected="true"] {
+tabbox.Main #mainViewHeader > tab[selected="true"] {
     font-weight: bold;
 }
 
-tabbox.Main tabpanels {
+tabbox.Main > tabpanels {
 }
-tabbox.Main tabpanel {
+tabbox.Main > * > tabpanel {
     background: #ccc;
 }
 tabpanels#mainViewPanel > tabpanel > vbox {
@@ -120,10 +120,10 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 #mainView > hbox {
     margin-bottom: -1px;
 }
-#mainView > hbox tab {
+#mainView > hbox #mainViewHeader tab {
     margin-bottom: 1px;
 }
-#mainView > hbox tab[selected='true'] {
+#mainView > hbox #mainViewHeader tab[selected='true'] {
     margin-bottom: 0px;
 }
 

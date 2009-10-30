@@ -22,6 +22,7 @@
 <script src="../PropertyType/Color.js"/>
 <script src="../PropertyType/StrokeStyle.js"/>
 <script src="../PropertyType/PlainText.js"/>
+<script src="../PropertyType/ShadowStyle.js"/>
 
     <tabbox id="tabBox" flex="1" persist="selectedIndex">
       <tabs id="tabs"></tabs>

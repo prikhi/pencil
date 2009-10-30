@@ -1,16 +1,16 @@
 function Shape(canvas, svg) {
     this.svg = svg;
     this.canvas = canvas;
-    
+
     var defId = this.canvas.getType(svg);
     this.def = CollectionManager.shapeDefinition.locateDefinition(defId);
     if (!this.def) {
         throw "Shape definition not found: " + defId;
     }
-    
+
     //locating metadata node
     this.metaNode = Dom.getSingle("./p:metadata", this.svg);
-    
+
     //construct the target node map
     this.targetMap = {};
     for (i in this.def.behaviors) {
@@ -33,7 +33,7 @@ Shape.prototype.getProperties = function () {
     for (var name in this.def.propertyMap) {
         properties[name] = this.getProperty(name);
     }
-    
+
     return properties;
 };
 Shape.prototype.getPropertyGroups = function () {
@@ -51,27 +51,26 @@ Shape.prototype.setInitialPropertyValues = function () {
 Shape.prototype.applyBehaviorForProperty = function (name, dontValidateRelatedProperties) {
     var propertyDef = this.def.propertyMap[name];
     this.prepareExpressionEvaluation();
-    
+
     //enumerate all related target
     for (var targetName in propertyDef.relatedTargets) {
-    
+
         //do apply any target that was already processed
         if (this._appliedTargets) {
             for (var i in this._appliedTargets) if (this._appliedTargets[i] == targetName) continue;
             this._appliedTargets.push(targetName);
         }
-        
+
         var target = this.targetMap[targetName];
         if (!target) {
             warn("Target '" + targetName + "' is not found. Ignoring...");
             continue;
         }
         F._target = target;
-        
+
         var behavior = this.def.behaviorMap[targetName];
         for (var i in behavior.items) {
             var item = behavior.items[i];
-            
             var args = [];
             for (var j in item.args) {
                 var arg = item.args[j];
@@ -98,16 +97,16 @@ Shape.prototype.applyBehaviorForProperty = function (name, dontValidateRelatedPr
 Shape.prototype.validateRelatedProperties = function (name) {
     for (propName in this.def.propertyMap) {
         //if (this.def.isPropertyAffectedBy(name, propName)) continue;
-        
+
         var property = this.def.propertyMap[propName];
-        
+
         if (!property.relatedProperties[name]) continue;
         var value = this.getProperty(propName);
-        
+
         for (meta in property.meta) {
             var functionName = "apply" + meta.substring(0, 1).toUpperCase() + meta.substring(1);
             if (!value[functionName]) continue;
-            
+
             var f = value[functionName];
             try {
                 var metaValue = this.evalExpression(property.meta[meta]);
@@ -116,7 +115,7 @@ Shape.prototype.validateRelatedProperties = function (name) {
                 Console.dumpError(e, "--to-console");
             }
         }
-        
+
         this.storeProperty(propName, value);
         this.applyBehaviorForProperty(propName, "dontValidateRelatedProperties");
     }
@@ -154,7 +153,7 @@ Shape.prototype.getProperty = function (name) {
     var propNode = this.locatePropertyNode(name);
     if (!propNode) return null;
     var propType = this.def.getProperty(name).type;
-    
+
     var literal = propNode.textContent;
     if (!literal) literal = "";
     return propType.fromString(literal);
@@ -169,7 +168,7 @@ Shape.prototype.storeProperty = function (name, value) {
         propNode.setAttribute("name", name);
         this.metaNode.appendChild(propNode);
     } else Dom.empty(propNode);
-    
+
     var cdata = propNode.ownerDocument.createCDATASection(value.toString());
     propNode.appendChild(cdata);
 };
@@ -178,16 +177,16 @@ Shape.prototype.getGeometry = function () {
     var geo = new Geometry();
     geo.ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
     geo.dim = this.getProperty("box");
-    
+
     if (!geo.dim) {
         geo.dim = {};
         var bbox = this.svg.getBBox();
         geo.dim.w = bbox.width;
         geo.dim.h = bbox.height;
-        
+
         geo.loc = {x: bbox.x, y: bbox.y};
     }
-    
+
     return geo;
 };
 Shape.prototype.getBoundingRect = function () {
@@ -200,16 +199,16 @@ Shape.prototype.getBoundingRect = function () {
     	rect = {x: 0, y: 0, width: 0, height: 0};
     }
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
-    
+
     var rect = Svg.getBoundRectInCTM(rect, ctm.inverse());
     rect = {x: rect.left, y: rect.top, width: rect.right - rect.left, height: rect.bottom - rect.top};
-    
+
     return this.canvas.getZoomedRect(rect);
 };
 Shape.prototype.setGeometry = function (geo) {
     if (geo.ctm) {
         Svg.ensureCTM(this.svg, geo.ctm);
-    }    
+    }
     if (geo.dim) {
         //alert("commiting: " + [geo.dim.w, geo.dim.h]);
         if (this.def.propertyMap["box"]) {
@@ -220,7 +219,7 @@ Shape.prototype.setGeometry = function (geo) {
 
 Shape.prototype.getBound = function () {
     throw "@method: Shape.prototype.getBound is now depricated, using getGeometry instead.";
-    
+
     var box = this.getProperty("box");
     var bound = new Bound(0, 0, box.w, box.h);
     var s = this.svg.getAttribute("transform");
@@ -231,12 +230,12 @@ Shape.prototype.getBound = function () {
             bound.y = parseInt(RegExp.$2, 10);
         }
     }
-    
+
     return bound;
 };
 Shape.prototype.setBound = function (bound) {
     throw "@method: Shape.prototype.setBound(bound) is now depricated, using setGeometry(geometry) instead.";
-    
+
     this.setProperty("box", new Dimension(bound.w, bound.h));
     this.move(bound.x, bound.y);
 };
@@ -244,7 +243,7 @@ Shape.prototype.moveBy = function (x, y, zoomAware) {
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
     var v = Svg.vectorInCTM({x: x / (zoomAware ? this.canvas.zoom : 1), y: y / (zoomAware ? this.canvas.zoom : 1)}, ctm, true);
     ctm = ctm.translate(v.x, v.y);
-    
+
     Svg.ensureCTM(this.svg, ctm);
 };
 
@@ -256,7 +255,7 @@ Shape.prototype.setPositionSnapshot = function () {
     var translate = this.svg.ownerSVGElement.createSVGMatrix();
     translate.e = 0;
     translate.f = 0;
-    
+
     translate = this.svg.transform.baseVal.createSVGTransformFromMatrix(translate);
     this.svg.transform.baseVal.appendItem(translate);
 
@@ -266,16 +265,17 @@ Shape.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
     var v = Svg.vectorInCTM({x: dx, y: dy},
                             this._pSnapshot.ctm,
                             true);
-                       
-    if (!dontNormalize) {
+
+    var snap = Config.get("edit.snap.grid", true);
+    if (!dontNormalize && snap) {
         var grid = Pencil.getGridSize();
         newX = Util.gridNormalize(v.x + this._pSnapshot.x, grid.w);
         newY = Util.gridNormalize(v.y + this._pSnapshot.y, grid.h);
-        
+
         v.x = newX - this._pSnapshot.x;
         v.y = newY - this._pSnapshot.y;
     }
-    
+
     this._pSnapshot.translate.matrix.e = v.x;
     this._pSnapshot.translate.matrix.f = v.y;
 };
@@ -348,9 +348,24 @@ Shape.prototype.sendToBack = function () {
 
 Shape.prototype.getTextEditingInfo = function () {
     var info = null;
-    
+
     for (name in this.def.propertyMap) {
-        if (this.def.propertyMap[name].type == PlainText) {
+        var prop = this.def.propertyMap[name];
+        if (prop.meta.editInfo) {
+            F._target = this.svg;
+            this.prepareExpressionEvaluation();
+            var info = this.evalExpression(prop.meta.editInfo);
+
+            if (info) {
+                info.prop = prop;
+                info.value = this.getProperty(name);
+                info.target = Pencil.findObjectByName(this.svg, info.targetName);
+                info.type = prop.type;
+
+                return info;
+            }
+        }
+        if (prop.type == PlainText) {
             //find a behavior that use this as text content
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
@@ -378,7 +393,7 @@ Shape.prototype.getTextEditingInfo = function () {
                                 break;
                             }
                         }
-                        info = {prop: this.def.propertyMap[name],
+                        info = {prop: prop,
                                 value: this.getProperty(name),
                                 targetName: target,
                                 type: PlainText,
@@ -386,12 +401,12 @@ Shape.prototype.getTextEditingInfo = function () {
                                 bound: bound,
                                 align: align,
                                 font: font};
-                                
+
                         return info;
                     }
                 }
             }
-        } else if (this.def.propertyMap[name].type == RichText) {
+        } else if (prop.type == RichText) {
             var font = null;
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
@@ -429,10 +444,10 @@ Shape.prototype.getTextEditingInfo = function () {
                                 }
                             }
                         }
-                        
+
                         if (font) {
                             info = {
-                                prop: this.def.propertyMap[name],
+                                prop: prop,
                                 targetName: target,
                                 target: Dom.getSingle(".//*[@p:name='" + target + "']", this.svg),
                                 value: this.getProperty(name),
@@ -441,7 +456,7 @@ Shape.prototype.getTextEditingInfo = function () {
                                 align: align,
                                 type: RichText
                             };
-                            
+
                             return info;
                         }
                     }
@@ -450,7 +465,7 @@ Shape.prototype.getTextEditingInfo = function () {
             return null;
         }
     }
-    
+
     return null;
 };
 
@@ -471,7 +486,7 @@ Shape.prototype.markAsMoving = function (moving) {
 Shape.prototype.performAction = function (id) {
     var shapeAction = this.def.actionMap[id];
     if (!shapeAction) return;
-    
+
     shapeAction.implFunction.apply(this, []);
 }
 

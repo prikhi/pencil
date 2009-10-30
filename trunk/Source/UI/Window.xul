@@ -2,6 +2,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/HtmlForeignObject.css" type="text/css"?>
+<?xml-stylesheet href="../Styles/HtmlForeignObjectXUL.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/MainWindow.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/CollectionPane.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/PCanvas.css" type="text/css"?>
@@ -20,6 +21,7 @@
 <script src="../Common/nsDragAndDrop.js"/>
 <script src="../Common/Util.js"/>
 <script src="../Common/IO.js"/>
+<script src="../Common/Lorem.js"/>
 
 <script src="../Common/PencilNamespaces.js"/>
 <script src="../Common/Config.js"/>
@@ -58,6 +60,7 @@
 <script src="../PropertyType/PlainText.js"/>
 <script src="../PropertyType/RichText.js"/>
 <script src="../PropertyType/ImageData.js"/>
+<script src="../PropertyType/ShadowStyle.js"/>
 
 <script src="../Common/SVGRasterizer.js"/>
 
@@ -98,15 +101,15 @@
         <command id="rasterizeCommand" oncommand="Pencil.controller.rasterizeCurrentPage();"/>
         <command id="rasterizeAllCommand" oncommand="Pencil.controller.rasterizeDocument();"/>
         <command id="sizeToContentCommand" oncommand="Pencil.controller.sizeToContent(null, true);"/>
-        
+
         <command id="reorderPagesCommand" oncommand="Pencil.controller.reorderPages();"/>
 
         <command id="zoomInCommand" oncommand="Pencil.activeCanvas.zoomTo(Pencil.activeCanvas.zoom * 1.25);"/>
         <command id="zoom1Command" oncommand="Pencil.activeCanvas.zoomTo(1);"/>
         <command id="zoomOutCommand" oncommand="Pencil.activeCanvas.zoomTo(Pencil.activeCanvas.zoom / 1.25);"/>
 
-		<command id="makeSameHorizontalSpaceCommand" oncommand="Pencil.activeCanvas.currentController.makeSameHorizontalSpace();"/>
-		<command id="makeSameVerticalSpaceCommand" oncommand="Pencil.activeCanvas.currentController.makeSameVerticalSpace();"/>
+        <command id="makeSameHorizontalSpaceCommand" oncommand="Pencil.activeCanvas.currentController.makeSameHorizontalSpace();"/>
+        <command id="makeSameVerticalSpaceCommand" oncommand="Pencil.activeCanvas.currentController.makeSameVerticalSpace();"/>
         <command id="alignLeftCommand" oncommand="Pencil.activeCanvas.currentController.alignLeft();"/>
         <command id="alignCenterCommand" oncommand="Pencil.activeCanvas.currentController.alignCenter();"/>
         <command id="alignRightCommand" oncommand="Pencil.activeCanvas.currentController.alignRight();"/>
@@ -116,9 +119,10 @@
 
         <command id="makeSameWidthCommand" oncommand="Pencil.activeCanvas.currentController.makeSameWidth();"/>
         <command id="makeSameHeightCommand" oncommand="Pencil.activeCanvas.currentController.makeSameHeight();"/>
+
         <command id="makeSameMinWidthCommand" oncommand="Pencil.activeCanvas.currentController.makeSameMinWidth();"/>
         <command id="makeSameMinHeightCommand" oncommand="Pencil.activeCanvas.currentController.makeSameMinHeight();"/>
-        
+
         <command id="bringToFrontCommand" oncommand="Pencil.activeCanvas.currentController.bringToFront();"/>
         <command id="bringForwardCommand" oncommand="Pencil.activeCanvas.currentController.bringForward();"/>
         <command id="sendBackwardCommand" oncommand="Pencil.activeCanvas.currentController.sendBackward();"/>
@@ -129,9 +133,9 @@
         <command id="pasteCommand" oncommand="Pencil.activeCanvas.doPaste();"/>
 
         <command id="groupCommand" oncommand="Pencil.activeCanvas.doGroup();"/>
-        
+
         <command id="unGroupCommand" oncommand="Pencil.activeCanvas.doUnGroup();"/>
-        
+
         <command id="undoCommand" oncommand="Pencil.activeCanvas.careTaker.undo()"/>
         <command id="redoCommand" oncommand="Pencil.activeCanvas.careTaker.redo()"/>
 
@@ -153,8 +157,8 @@
         <key id="zoomOutKey" command="zoomOutCommand" modifiers="accel" key="-"/>
 
         <key id="makeSameHorizontalSpaceCommandKey" command="makeSameHorizontalSpaceCommand" key="O"/>
-		<key id="makeSameVerticalSpaceCommandKey" command="makeSameVerticalSpaceCommand" key="V"/>
-		<key id="alignLeftKey" command="alignLeftCommand" key="L"/>
+        <key id="makeSameVerticalSpaceCommandKey" command="makeSameVerticalSpaceCommand" key="V"/>
+        <key id="alignLeftKey" command="alignLeftCommand" key="L"/>
         <key id="alignCenterKey" command="alignCenterCommand" key="C"/>
         <key id="alignRightKey" command="alignRightCommand" key="R"/>
         <key id="alignTopKey" command="alignTopCommand" key="T"/>
@@ -188,10 +192,10 @@
 
         <key id="undoKey" command="undoCommand" modifiers="accel" key="Z"/>
         <key id="redoKey" command="redoCommand" modifiers="accel" key="Y"/>
-        
+
         <key id="moveLeftKey"  command="moveLeftCommand" modifiers="accel shift" keycode="VK_PAGE_UP"/>
         <key id="moveRightKey" command="moveRightCommand" modifiers="accel shift" keycode="VK_PAGE_DOWN"/>
-        
+
     </keyset>
     <keyset>
         <key id="editBoldKey" key="B" modifiers="accel" command="editBoldCommand"/>
@@ -234,7 +238,7 @@
                     <menuitem label="Copy" key="copyKey" command="copyCommand"/>
                     <menuitem label="Cut" key="cutKey" command="cutCommand"/>
                     <menuitem label="Paste" key="pasteKey" command="pasteCommand"/>
-                    <menuseparator/>                    
+                    <menuseparator/>
                     <menuitem label="Undo" key="undoKey" command="undoCommand"/>
                     <menuitem label="Redo" key="redoKey" command="redoCommand"/>
                 </menupopup>
@@ -253,9 +257,9 @@
                     <menuitem label="Align Center" command="alignCenterCommand" key="alignCenterKey"/>
                     <menuitem label="Align Right" command="alignRightCommand" key="alignRightKey"/>
                     <menuseparator/>
-					<menuitem label="Same Horiz. Space" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommandKey"/>
-					<menuitem label="Same Vert. Space" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommandKey"/>
-					<menuseparator/>
+                    <menuitem label="Same Horiz. Space" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommandKey"/>
+                    <menuitem label="Same Vert. Space" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommandKey"/>
+                    <menuseparator/>
                     <menuitem label="Align Top" command="alignTopCommand" key="alignTopKey"/>
                     <menuitem label="Align Middle" command="alignMiddleCommand" key="alignMiddleKey"/>
                     <menuitem label="Align Bottom" command="alignBottomCommand" key="alignBottomKey"/>
@@ -295,9 +299,9 @@
             </hbox>
             <toolbarseparator/>
             <hbox id="arrangementToolbar" class="ToolbarSection">
-				<toolbarbutton image="Icons/make-same-horizontal-space.png" label="Align left" tooltiptext="Make Same Horizontal Space" command="makeSameHorizontalSpaceCommand"/>
-				<toolbarbutton image="Icons/make-same-vertical-space.png" label="Align left" tooltiptext="Make Same Vertical Space" command="makeSameVerticalSpaceCommand"/>
-				<toolbarseparator/>
+                <toolbarbutton image="Icons/make-same-horizontal-space.png" label="Align left" tooltiptext="Make Same Horizontal Space" command="makeSameHorizontalSpaceCommand"/>
+                <toolbarbutton image="Icons/make-same-vertical-space.png" label="Align left" tooltiptext="Make Same Vertical Space" command="makeSameVerticalSpaceCommand"/>
+                <toolbarseparator/>
                 <toolbarbutton image="Icons/align-left.png" label="Align left" tooltiptext="Align left" command="alignLeftCommand"/>
                 <toolbarbutton image="Icons/align-center.png" label="Align center" tooltiptext="Align center" command="alignCenterCommand"/>
                 <toolbarbutton image="Icons/align-right.png" label="Align right" tooltiptext="Align right" command="alignRightCommand"/>
@@ -336,7 +340,7 @@
                 </vbox>
                 <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeAngle"  disabled="true"/>
             </hbox>
-            
+
             <!--
             <textbox id="foo" size="20" onkeypress="if (event.keyCode == event.DOM_VK_RETURN) { var x = eval(document.getElementById('foo').value, window); if (x) alert(x); this.focus(); this.select();}"/>
             <button default="true" label="Evaluate..." oncommand="var x = eval(document.getElementById('foo').value, window); if (x) alert(x);"/>

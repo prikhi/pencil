@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/ClipartBrowser.css" type="text/css"?>
+<window
+        title="Clipart Browsing"
+        id="hfMainWindow"
+        persist="screenX screenY width height sizemode"
+        sizemode="normal"
+        windowtype="HFMainWindow"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+
+<script src="../Common/Util.js"></script>
+<script src="../Common/IO.js"></script>
+    <keyset>
+        <key id="reloadKey" key="R" modifiers="accel" command="reloadCommand"/>
+    </keyset>
+    <command id="reloadCommand" oncommand="window.location.href = window.location.href;"/>
+    <toolbox id="mainToolbox">
+        <toolbar id="nav-toolbar">
+            <menulist id="sourceList" value="openclipart" style="font-weight: bold;">
+                <menupopup>
+                    <menuitem value="openclipart" label="OpenClipart.Org" style="font-weight: bold;"/>
+                    <menuitem value="tango" label="Tango" style="font-weight: bold;"/>
+                </menupopup>
+            </menulist>
+            <textbox type="search" emptytext="Search OpenClipart.org" flex="1"/>
+        </toolbar>
+    </toolbox>
+    <hbox flex="1" id="mainBox">
+        <div xmlns="http://www.w3.org/1999/xhtml" flex="1" style="background: rgba(255, 255, 255, .7); padding: 1em;">
+            <div id="resultList">
+                <div class="Item">
+                    <div>
+                        <img src="http://openclipart.org/media/download/ernes/27392" />
+                    </div>
+                    <h4>Pill Drug</h4>
+                </div>
+                <div class="Item" tooltiptext="Public Domain - PNG/SVG - 244x350">
+                    <div title="Public Domain - PNG/SVG - 244x350">
+                        <img src="http://openclipart.org/people/ernes/ernes_Dado_-_dice.png" />
+                    </div>
+                    <h4>Red dice</h4>
+                </div>
+            </div>
+        </div>
+    </hbox>
+</window>
+

@@ -1,4 +1,5 @@
 @namespace url(http://www.w3.org/1999/xhtml);
+@namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
 @namespace svg url(http://www.w3.org/2000/svg);
 @namespace p url(http://www.evolus.vn/Namespace/Pencil);
 
@@ -47,4 +48,3 @@ body#RichTextEditor table,
 svg|svg svg|foreignObject table {
     font-size: 1em;
 }
-

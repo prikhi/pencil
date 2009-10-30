@@ -1,10 +1,12 @@
 @namespace p url(http://www.evolus.vn/Namespace/Pencil);
 @namespace html url(http://www.w3.org/1999/xhtml);
 
-tabbox > tabs > tab {
+tabbox.Main > tabs > tab,
+#pencilPropertyEditorDialog tabbox > tabs > tab {
     min-height: 2.2em;
 }
-tabbox > tabs > tab label {
+tabbox.Main > tabs > tab label,
+#pencilPropertyEditorDialog tabbox > tabs > tab label {
     padding-left: .7em;
     padding-right: .7em;
 }
