@@ -1,38 +1,20 @@
 function PropertyPageEditor() {
 }
-PropertyPageEditor.typeEditorMap = [];
-PropertyPageEditor.registerTypeEditor = function (type, tagName) {
-    this.typeEditorMap[type.name] = tagName;
-};
-PropertyPageEditor.getTypeEditor = function (type) {
-    var editor = this.typeEditorMap[type.name];
-    if (!editor) return null;
-    return editor;
-};
-
-
-PropertyPageEditor.registerTypeEditor(Color, "pcoloreditor");
-PropertyPageEditor.registerTypeEditor(Font, "pfonteditor");
-PropertyPageEditor.registerTypeEditor(Alignment, "paligneditor");
-PropertyPageEditor.registerTypeEditor(StrokeStyle, "pstrokeeditor");
-PropertyPageEditor.registerTypeEditor(PlainText, "pplaintexteditor");
-PropertyPageEditor.registerTypeEditor(ShadowStyle, "pshadowstyleeditor");
-
 
 PropertyPageEditor.prototype.install = function (canvas) {
     this.canvas = canvas;
     this.canvas.propertyPageEditor = this;
     this.dialogShown = false;
 };
+PropertyPageEditor.prototype.onDialogShown = function () {
+    this.dialogShown = true;
+    this.attach(this._nextTargetObject);
+};
 PropertyPageEditor.prototype.showAndAttach = function (targetObject) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     if (!this.dialogShown) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        this.propertyWindow = window.open("PropertyDialog.xul", "propertyEditor" + Util.getInstanceToken(), "chrome,dialog,alwaysRaised,dependent");
-
-        this.dialogShown = true;
-
-        var thiz = this;
-        window.setTimeout(function () { thiz.attach(targetObject); }, 500);
+        this._nextTargetObject = targetObject;
+        this.propertyWindow = window.openDialog("PropertyDialog.xul", "propertyEditor" + Util.getInstanceToken(), "chrome,dialog,alwaysRaised,dependent", this);
     } else {
         this.attach(targetObject);
     }
@@ -56,7 +38,7 @@ PropertyPageEditor.prototype.invalidateData = function (targetObject) {
         var strippedGroup = new PropertyGroup();
         for (var j in group.properties) {
             var property = group.properties[j];
-            var editor = PropertyPageEditor.getTypeEditor(property.type);
+            var editor = TypeEditorRegistry.getTypeEditor(property.type);
             if (editor) {
                 strippedGroup.properties.push(property);
             }
@@ -69,8 +51,6 @@ PropertyPageEditor.prototype.invalidateData = function (targetObject) {
 
     this.groups = strippedGroups;
     this.properties = this.targetObject.getProperties();
-
-    window._dialogArgument = this;
 };
 PropertyPageEditor.prototype.invalidate = function () {
     if (this.propertyWindow) {
@@ -83,6 +63,19 @@ PropertyPageEditor.prototype.dettach = function () {
     if (this.propertyWindow) {
         this.propertyWindow.clean();
     }
+};
+
+
+//@begin interface to PropertyDialog.js
+PropertyPageEditor.prototype.getPropertyValue = function (name) {
+    return this.targetObject.getProperty(name);
+};
+PropertyPageEditor.prototype.setPropertyValue = function (name, value) {
+    this.targetObject.setProperty(name, value);
+};
+
+PropertyPageEditor.prototype.getTargetObjectName = function () {
+    return this.targetObject.getName();
 };
 
 

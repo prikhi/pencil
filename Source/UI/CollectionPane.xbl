@@ -12,6 +12,7 @@
             <![CDATA[
                 this.contentBox = document.getAnonymousElementByAttribute(this, "aid", "contentBox");
                 this.popup = document.getAnonymousElementByAttribute(this, "aid", "contextPopup");
+                this.settingMenuItem = document.getAnonymousElementByAttribute(this, "aid", "settingMenuItem");
                 this.hideMenuItem = document.getAnonymousElementByAttribute(this, "aid", "hideMenuItem");
                 this.uninstallMenuItem = document.getAnonymousElementByAttribute(this, "aid", "uninstallMenuItem");
                 this.installMenuItem = document.getAnonymousElementByAttribute(this, "aid", "installMenuItem");
@@ -32,7 +33,7 @@
                         e.shapeDef = defNode._def;
                         this.dispatchEvent(e);
                     }
-                    
+
                     var header = Dom.findUpward(event.originalTarget, function (node) { return node._isHeader; });
                     if (header) {
                         collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
@@ -58,7 +59,7 @@
                     if (hasCollection) {
                         thiz.aboutMenuItem.setAttribute("label", "About " + collection._collection.displayName + "...");
                     }
-                    
+
                     //setup hidden collection
                     var hasHiddenCollections = false;
                     Dom.empty(thiz.showHiddenMenu.firstChild);
@@ -110,6 +111,13 @@
                     var collection = thiz.currentCollection._collection;
                     CollectionManager.uninstallCollection(collection);
                 }, false);
+
+                this.settingMenuItem.addEventListener("command", function (event) {
+                    var collection = thiz.currentCollection._collection;
+                    var editor = new CollectionSettingEditor(collection);
+
+                    editor.open();
+                }, false);
             ]]>
             </constructor>
             <method name="addShapeCollection">
@@ -117,7 +125,7 @@
                 <body>
                 <![CDATA[
                     var collectionBox = document.createElementNS(PencilNamespaces.xul, "vbox");
-                    
+
                     collectionBox._collection = collection;
                     collectionBox.setAttribute("id", collection.id);
                     collectionBox.setAttribute("class", "Collection");
@@ -127,25 +135,25 @@
                     var hbox = document.createElementNS(PencilNamespaces.xul, "hbox");
                     collectionBox.appendChild(hbox);
                     hbox._isHeader = true;
-                    
+
                     var button = document.createElementNS(PencilNamespaces.xul, "button");
                     hbox.appendChild(button);
                     button.setAttribute("type", "checkbox");
-                    
+
                     var div = document.createElementNS(PencilNamespaces.html, "div");
                     hbox.appendChild(div);
                     div.setAttribute("flex", "1");
-                    
+
                     var h4 = document.createElementNS(PencilNamespaces.html, "h4");
                     div.appendChild(h4);
                     h4.appendChild(document.createTextNode(collection.displayName));
-                    
+
                     if (collection.description) {
                         var p = document.createElementNS(PencilNamespaces.html, "p");
                         div.appendChild(p);
                         p.appendChild(document.createTextNode(collection.description));
                     }
-                    
+
                     div = document.createElementNS(PencilNamespaces.html, "div");
                     collectionBox.appendChild(div);
 
@@ -158,15 +166,15 @@
                         var button = document.createElementNS(PencilNamespaces.html, "div");
                         button._def = def;
                         div.appendChild(button);
-                        
+
                         button.addEventListener("draggesture", function (event) {
                             thiz.handleDragStart(event);
                         }, false);
-                        
+
                         var image = document.createElementNS(PencilNamespaces.html, "img");
                         image.setAttribute("src", def.iconPath);
                         button.appendChild(image);
-                        
+
                         var label = document.createElementNS(PencilNamespaces.html, "label");
                         label.appendChild(document.createTextNode(def.displayName));
                         button.appendChild(label);
@@ -195,7 +203,7 @@
                         debug("start draging");
                         var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
                         debug(defNode);
-                    
+
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
                                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -222,6 +230,7 @@
             </vbox>
             <popupset>
                 <popup aid="contextPopup">
+                    <menuitem aid="settingMenuItem" label="Collection settings..." />
                     <menuitem aid="hideMenuItem" label="Hide this collection" />
                     <menuitem aid="uninstallMenuItem" label="Uninstall this collection" />
                     <menuitem aid="aboutMenuItem" label="About..." />

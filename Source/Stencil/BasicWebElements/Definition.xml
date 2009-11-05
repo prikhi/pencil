@@ -8,6 +8,21 @@
     description="Collection of basic items that are regularly used in web designs. Please note that this collection contains platform-related UI elements."
     author="Duong Thanh An"
     url="http://">
+    <Properties>
+        <PropertyGroup name="Commons">
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">'Liberation Sans'|normal|normal|12px</Property>
+            <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#000000ff</Property>
+            <Property name="defaultLinkColor" type="Color" displayName="Default Link Color">#0000ffff</Property>
+        </PropertyGroup>
+        <PropertyGroup name="Table: header">
+            <Property name="defaultHeaderTextColor" type="Color" displayName="Default Header Text Color">#000000ff</Property>
+            <Property name="defaultHeaderBGColor" type="Color" displayName="Default Header Background Color">#ccccccff</Property>
+        </PropertyGroup>
+        <PropertyGroup name="Table: border">
+            <Property name="defaultTableBorderColor" type="Color" displayName="Default Border Color">#00000055</Property>
+            <Property name="defaultTableBorderStyle" type="StrokeStyle" displayName="Default Border Style">1|</Property>
+        </PropertyGroup>
+    </Properties>
 
     <Script>
         collection.foo = function () {
@@ -43,8 +58,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
-                <Property name="textFont" displayName="Default Font" type="Font">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
-                <Property name="textColor" displayName="Text Color" type="Color">#000000ff</Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="textColor" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
                 <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
             </PropertyGroup>
         </Properties>
@@ -142,8 +157,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="text" displayName="Caption" type="PlainText">Select</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -184,8 +199,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="text" displayName="Caption" type="PlainText">Select</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -215,7 +230,7 @@
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
                 <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; position: relative;">
-                    <input type="button" id="button" style="width: 100%; height: 100%; -moz-user-focus: ignore; vertical-align: middle;" />
+                    <input type="button" id="button" style="width: 100%; height: 100%; -moz-user-focus: ignore; vertical-align: middle; margin: 0px !important;" />
                     <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"/>
                 </div>
             </foreignObject>
@@ -230,8 +245,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="text" displayName="Caption" type="PlainText">Select</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Text Alignment" type="Alignment">0,1</Property>
             </PropertyGroup>
         </Properties>
@@ -280,8 +295,8 @@
                 <Property name="text" displayName="Text Content" type="RichText"
                     p:editInfo="var size = F.elementSize('textArea'); ({targetName: 'htmlObject', bound: new Bound(5, 5, size.w - 10, size.h -10), font: $textFont, align: $textAlign})"
                 ></Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font" p:disabled="$useSystemFontStyle"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Text Alignment" type="Alignment">0,1</Property>
             </PropertyGroup>
         </Properties>
@@ -334,7 +349,7 @@
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
                 <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; position: relative;">
-                    <textarea type="text" id="textArea" style="width: 100%; height: 100%; -moz-user-focus: ignore; -moz-box-sizing: border-box;"></textarea>
+                    <textarea type="text" id="textArea" style="width: 100%; height: 100%; -moz-user-focus: ignore; -moz-box-sizing: border-box; -moz-column-gap: 0px; margin: 0px !important;"></textarea>
                     <div style="position: absolute; overflow: hidden;" id="content">
                     </div>
                 </div>
@@ -349,8 +364,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="text" displayName="Caption" type="PlainText">Radio</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -392,8 +407,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="text" displayName="Caption" type="PlainText">Check Box</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -435,8 +450,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[Sample text]]></Property>
-                <Property name="textFont" displayName="Default Font" type="Font">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
-                <Property name="textColor" displayName="Default Text Color" type="Color">#000000ff</Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultTextColor</E></Property>
                 <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
         </Properties>
@@ -509,8 +524,8 @@
             <PropertyGroup name="Text">
                 <Property name="textContent" displayName="Text Content" type="PlainText"
                 p:editInfo="var size = F.elementSize('textDiv'); ({targetName: 'htmlObject', bound: new Bound(0, 0, Math.max(size.w, 80) , Math.max(size.h, 10)), font: $textFont, align: new Alignment(0, 1)})"><![CDATA[Hyperlink]]></Property>
-               <Property name="textFont" displayName="Default Font" type="Font">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
-                <Property name="textColor" displayName="Default Text Color" type="Color">#0000ffff</Property>
+               <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultLinkColor</E></Property>
                  <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
         </Properties>
@@ -608,21 +623,21 @@
             <PropertyGroup name="Text">
                 <Property name="textContent" displayName="Text Content" type="PlainText"
                         p:editInfo="var size = F.elementSize('textDiv'); ({targetName: 'htmlObject', bound: new Bound(0, 0, Math.max(size.w, 80) , Math.max(size.h, 10)), font: $textFont, align: new Alignment(0, 1)})"><![CDATA[Home > Products > Pencil]]></Property>
-                <Property name="textColor" displayName="Default Text Color" type="Color">#0000ffff</Property>
-                <Property name="textFont" displayName="Default Font" type="Font">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultLinkColor</E></Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
             <PropertyGroup name="Home Styles">
-                <Property name="homeColor" displayName="Home Color" type="Color">#0000ffff</Property>
+                <Property name="homeColor" displayName="Home Color" type="Color"><E>$$defaultLinkColor</E></Property>
                 <Property name="homeCustomStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
             <PropertyGroup name="Separator Styles">
-                <Property name="sepColor" displayName="Home Color" type="Color">#00000055</Property>
+                <Property name="sepColor" displayName="Home Color" type="Color"><E>$$defaultTextColor.hollowed(0.5)</E></Property>
                 <Property name="spaceSize" displayName="Spacing" type="Enum" p:enumValues="['0|None', '0.5|Half a char', '1|One char', '2|Two chars']">0.5</Property>
                 <Property name="sepCustomStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
             <PropertyGroup name="End Styles">
-                <Property name="endColor" displayName="End Color" type="Color">#000000ff</Property>
+                <Property name="endColor" displayName="End Color" type="Color"><E>$$defaultTextColor</E></Property>
                 <Property name="endCustomStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
         </Properties>
@@ -684,21 +699,21 @@
                 <Property name="textContent" displayName="Text Content" type="PlainText"
                         p:editInfo="var size = F.elementSize('textDiv'); ({targetName: 'htmlObject', bound: new Bound(0, 0, Math.max(size.w, 80) , Math.max(size.h, 10)), font: $textFont, align: new Alignment(0, 1), multi: true})"><![CDATA[Column 1 | Column 2
 Cell Content 1 | Cell Content 2]]></Property>
-                <Property name="textFont" displayName="Default Font" type="Font">'Liberation Sans', Arial, sans-serif|normal|normal|12px</Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Text Alignment" type="Alignment">0,1</Property>
                 <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
             <PropertyGroup name="Content Color">
-                <Property name="textColor" displayName="Default Text Color" type="Color">#000000ff</Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultTextFont</E></Property>
                 <Property name="fillColor" displayName="Table Background" type="Color">#00000000</Property>
             </PropertyGroup>
             <PropertyGroup name="Header Color">
-                <Property name="headerTextColor" displayName="Default Text Color" type="Color">#000000ff</Property>
-                <Property name="headerBackground" displayName="Header Background" type="Color">#ccccccff</Property>
+                <Property name="headerTextColor" displayName="Default Text Color" type="Color"><E>$$defaultHeaderTextColor</E></Property>
+                <Property name="headerBackground" displayName="Header Background" type="Color"><E>$$defaultHeaderBGColor</E></Property>
             </PropertyGroup>
             <PropertyGroup name="Border">
-                <Property name="strokeColor" displayName="Border Color" type="Color">#00000055</Property>
-                <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle">1|</Property>
+                <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$defaultTableBorderColor</E></Property>
+                <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle"><E>$$defaultTableBorderStyle</E></Property>
             </PropertyGroup>
         </Properties>
 

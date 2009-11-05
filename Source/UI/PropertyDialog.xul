@@ -29,5 +29,6 @@
       <tabpanels id="tabPanels"></tabpanels>
     </tabbox>
 
+<script src="../Common/TypeEditorRegistry.js"/>
 <script src="../Common/PropertyDialog.js"/>
 </dialog>
