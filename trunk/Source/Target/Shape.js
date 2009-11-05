@@ -41,8 +41,19 @@ Shape.prototype.getPropertyGroups = function () {
 };
 
 Shape.prototype.setInitialPropertyValues = function () {
+    this._evalContext = {collection: this.def.collection};
+
     for (var name in this.def.propertyMap) {
-        this.storeProperty(name, this.def.propertyMap[name].initialValue);
+        var prop = this.def.propertyMap[name];
+
+        var value = null;
+        if (prop.initialValueExpression) {
+            value = this.evalExpression(prop.initialValueExpression);
+        } else {
+            value = prop.initialValue;
+        }
+
+        this.storeProperty(name, value);
     }
     for (name in this.def.propertyMap) {
         this.applyBehaviorForProperty(name);
@@ -121,7 +132,7 @@ Shape.prototype.validateRelatedProperties = function (name) {
     }
 };
 Shape.prototype.prepareExpressionEvaluation = function () {
-    this._evalContext = {properties: this.getProperties(), functions: Pencil.functions};
+    this._evalContext = {properties: this.getProperties(), functions: Pencil.functions, collection: this.def.collection};
 };
 Shape.prototype.evalExpression = function (expression, value) {
     var defaultValue = value ? value : null;
@@ -194,9 +205,9 @@ Shape.prototype.getBoundingRect = function () {
     try {
         rect = this.svg.getBBox();
     } catch (e) {}
-    
+
     if (rect == null) {
-    	rect = {x: 0, y: 0, width: 0, height: 0};
+        rect = {x: 0, y: 0, width: 0, height: 0};
     }
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
 

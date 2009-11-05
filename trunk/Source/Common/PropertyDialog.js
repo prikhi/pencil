@@ -1,46 +1,48 @@
 var PropertyDialog = {};
+
 function setup() {
     PropertyDialog.setupReally();
 }
 function clean() {
     try {
         PropertyDialog.clean();
-    } catch (e) {alert(); }
+    } catch (e) {
+        Console.dumpError(e);
+    }
 }
 PropertyDialog.setupReally = function () {
     try {
-        var editor = window.opener._dialogArgument;
-        PropertyDialog.editor = editor;
+        var editor = PropertyDialog.editor;
 
         var tabs = document.getElementById("tabs");
         var tabPanels = document.getElementById("tabPanels");
-        
+
         PropertyDialog.propertyMap = {};
         //creating tabs
         for (var i in editor.groups) {
             var group = editor.groups[i];
-            
+
             //create a tab for this group
             var tab = document.createElementNS(PencilNamespaces.xul, "tab");
             tab.setAttribute("label", group.name);
             tabs.appendChild(tab);
-            
+
             var tabPanel = document.createElementNS(PencilNamespaces.xul, "tabpanel");
             tabPanel.setAttribute("id", "tab" + new Date().getTime());
             tabPanels.appendChild(tabPanel);
-            
+
             var vbox = document.createElementNS(PencilNamespaces.xul, "vbox");
             vbox.setAttribute("flex", "1");
             tabPanel.appendChild(vbox);
-            
+
             for (var j in group.properties) {
                 var property = group.properties[j];
-                
+
                 var separator = document.createElementNS(PencilNamespaces.xul, "separator");
                 separator.setAttribute("class", "groove");
                 if (j > 0) vbox.appendChild(separator);
 
-                var tagName = editor.constructor.getTypeEditor(property.type);
+                var tagName = TypeEditorRegistry.getTypeEditor(property.type);
                 var editorWrapper = document.createElementNS(PencilNamespaces.xul, "peditorwrapper");
 
                 editorWrapper.setAttribute("editor", tagName);
@@ -48,7 +50,7 @@ PropertyDialog.setupReally = function () {
                 var value = editor.properties[property.name];
                 if (value) editorWrapper.setAttribute("value", value.toString());
                 else {
-                    value = PropertyDialog.editor.targetObject.getProperty(property.name, "any");
+                    value = editor.getPropertyValue(property.name);
                     if (value) {
                         editorWrapper.setAttribute("initial-value", value.toString());
                     }
@@ -56,39 +58,41 @@ PropertyDialog.setupReally = function () {
 
                 vbox.appendChild(editorWrapper);
 
-                
+
                 PropertyDialog.propertyMap[property.name] = editorWrapper;
-                
+
             }
         }
         if (tabs.parentNode.selectedIndex < 0) tabs.parentNode.selectedIndex = 0;
-        document.title = editor.targetObject.getName() + " Properties";
+        document.title = editor.getTargetObjectName() + " Properties";
 
-        window.setTimeout(function () { window.sizeToContent(); }, 100);
-    } catch (e) {}
-    
+        window.sizeToContent();
+    } catch (e) {
+        Console.dumpError(e);
+    }
+
 };
 
 PropertyDialog.clean = function () {
     var tabs = document.getElementById("tabs");
     var tabPanels = document.getElementById("tabPanels");
-    
+
     while (tabs.hasChildNodes()) tabs.removeChild(tabs.firstChild);
     while (tabPanels.hasChildNodes()) tabPanels.removeChild(tabPanels.firstChild);
-    
+
     //window.sizeToContent();
-    
+
     document.title = "Properties";
 };
 
 PropertyDialog.doApply = function () {
     for (name in PropertyDialog.propertyMap) {
         var editor = PropertyDialog.propertyMap[name];
-        
+
         //apply change to only modified properties
         if (editor.isModified()) {
             var value = editor.getValue();
-            PropertyDialog.editor.targetObject.setProperty(name, value);
+            PropertyDialog.editor.setPropertyValue(name, value);
         }
     }
     return false;
@@ -101,8 +105,16 @@ window.addEventListener("DOMContentLoaded", function(event) {
 }, false);
 
 window.addEventListener("beforeunload", function(event) {
-    window.opener._dialogArgument.propertyWindow = null;
-    window.opener._dialogArgument.dialogShown = false;
+    if (PropertyDialog.editor) {
+        PropertyDialog.editor.propertyWindow = null;
+        PropertyDialog.editor.dialogShown = false;
+    }
+}, false);
+
+window.addEventListener("load", function (event) {
+    var editor = window.arguments[0];
+    PropertyDialog.editor = editor;
+    PropertyDialog.editor.onDialogShown();
 }, false);
 
 
