@@ -32,11 +32,29 @@ toolbar *.ToolbarSection {
     margin-left: .3em;
     margin-right: .3em;
 }
+toolbar *.ToolbarSection textbox,
+toolbar *.ToolbarSection label {
+    margin: 0px;
+}
+toolbar *.ToolbarSection * + label {
+    margin-left: 1em;
+}
+toolbar *.ToolbarSection textbox {
+    font-size: .85em;
+}
 toolbar *.ToolbarSection > hbox > label {
     margin: 0px;
     margin-right: .5em;
     font-size: .9em;
     font-weight: bold;
+}
+toolbar *[disabled='true'].ToolbarSection {
+    display: none;
+}
+
+toolbar toolbarseparator {
+    -moz-appearance: none;
+    display: -moz-box !important;
 }
 
 toolbar pfonteditor > * > * > label {

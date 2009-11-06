@@ -12,7 +12,7 @@
             <![CDATA[
                 this.xferHelpers = [];
                 this.dragObservers = [];
-                
+
                 //building the content as: box >> svg
                 var thiz = this;
 
@@ -21,7 +21,7 @@
                 box2 = document.createElementNS(PencilNamespaces.xul, "xul:box");
                 this.firstChild.appendChild(box2);
                 this.focusableBox = box2;
-                
+
                 this.addEventListener("mousedown", function (event) {
                     var inDrawing = Dom.findUpward(event.originalTarget, function (node) {
                         return (node == box2 || node == thiz.popup || node == thiz.svg);
@@ -86,14 +86,14 @@
                 rect.setAttribute("height", "2000");
                 rect.setAttribute("style", "fill: #ffffff; stroke: none; fill-opacity: 0;");
                 this.bgLayer.appendChild(rect);
-                
+
                 //background image
                 this.backgroundImage = document.createElementNS(PencilNamespaces.svg, "svg:image");
                 this.backgroundImage.setAttribute("x", "0");
                 this.backgroundImage.setAttribute("y", "0");
                 this.bgLayer.appendChild(this.backgroundImage);
                 this.hasBackgroundImage = false;
-                
+
                 var rect = document.createElementNS(PencilNamespaces.svg, "svg:rect");
                 rect.setAttribute("x", "0");
                 rect.setAttribute("y", "0");
@@ -101,10 +101,10 @@
                 rect.setAttribute("height", "2000");
                 rect.setAttributeNS(PencilNamespaces.p, "p:name", "BackgroundDimmer");
                 this.bgLayer.appendChild(rect);
-                
+
 
                 this.topGroup.appendChild(this.bgLayer);
-                
+
                 //create the drawing layer
                 this.drawingLayer = document.createElementNS(PencilNamespaces.svg, "svg:g");
                 this.topGroup.appendChild(this.drawingLayer);
@@ -112,13 +112,13 @@
                 //create the control layer
                 this.controlLayer = document.createElementNS(PencilNamespaces.svg, "svg:g");
                 this.controlLayer.setAttributeNS(PencilNamespaces.p, "p:type", "ControlLayer");
-                
+
                 this.topGroup.appendChild(this.controlLayer);
 
                 this.selectionContainer = document.createElementNS(PencilNamespaces.svg, "svg:g");
                 this.selectionContainer.setAttribute("id", "selectionContainer");
                 this.installControlSVGElement(this.selectionContainer);
-                
+
                 this.rangeBoundRect = document.createElementNS(PencilNamespaces.svg, "svg:rect");
                 this.installControlSVGElement(this.rangeBoundRect);
                 Svg.setX(this.rangeBoundRect, 0.5);
@@ -168,18 +168,18 @@
                 this.svg.addEventListener("dblclick", function (event) {
                     thiz.handleDblclick(event);
                 }, false);
-                
+
                 this.careTaker = new CanvasCareTaker(this);
-                
+
                 /*
                 this.dragObserver = {
                     getSupportedFlavours : function () {
                         var flavours = new FlavourSet();
-                        
+
                         flavours.appendFlavour("pencil/def");
                         flavours.appendFlavour("text/unicode");
                         //flavours.appendFlavour("image/png");
-                        
+
                         return flavours;
                     },
                     onDragOver: function (evt, flavour, session){},
@@ -187,16 +187,16 @@
                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         var defId = transferData.data;
                         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
-                        
+
                         var loc = thiz.getEventLocation(evt);
-                        
+
                         if (loc.x <0 || loc.y < 0) return;
-                        
+
                         thiz.insertShape(def, new Bound(loc.x, loc.y, null, null));
                     }
                 };
                 */
-                
+
                 this.nVGridPainted = 0;
                 this.nHGridPainted = 0;
 
@@ -212,7 +212,7 @@
                         var rect = this.svg.getBoundingClientRect();
                         var x = Math.round(event.clientX - rect.left);
                         var y = Math.round(event.clientY - rect.top);
-                        
+
                         return {x: x, y: y};
                 ]]>
                 </body>
@@ -287,17 +287,17 @@
 
                     var targets = this.getSelectedTargets();
                     this.setAttributeNS(PencilNamespaces.p, "p:selection", targets.length);
-                    
+
                     var controller = null;
                     if (targets.length > 1) {
                         controller = new TargetSet(this, targets);
                     } else if (targets.length == 1 && controller == null) {
                         controller = targets[0];
                     }
-                    
+
                     this._detachEditors();
                     this.currentController = controller;
-                    
+
                     this._attachEditors(this.currentController);
                     this._sayTargetChanged();
                 ]]>
@@ -362,7 +362,7 @@
                     geo.ctm.f *= this.zoom;
                     geo.dim.w *= this.zoom;
                     geo.dim.h *= this.zoom;
-                    
+
                     if (geo.loc) {
                         geo.loc.x *= this.zoom;
                         geo.loc.y *= this.zoom;
@@ -395,7 +395,7 @@
                     geo.ctm.f /= this.zoom;
                     geo.dim.w /= this.zoom;
                     geo.dim.h /= this.zoom;
-                    
+
                     this.run(function() {
                         target.setGeometry(geo);
                     }, this);
@@ -451,7 +451,7 @@
                         node.setAttribute("id", id);
                         node.id = id;
                     });
-                    
+
                     Dom.resolveIdRef(shape, seed);
 
 
@@ -462,13 +462,13 @@
 
                     var controller = new Shape(this, shape);
                     controller.setInitialPropertyValues();
-                    
+
                     if (bound) {
                         var bbox = controller.getBoundingRect();
                         controller.moveBy(bound.x - Math.round(bbox.width / 2), bound.y - Math.round(bbox.height / 2), true);
                         controller.normalizePositionToGrid();
                     }
-                    
+
                     this.selectShape(shape);
                 ]]>
                 </body>
@@ -506,7 +506,7 @@
                         this.addToSelection(this.createControllerFor(shapes[i]));
                     }
                     this.setAttributeNS(PencilNamespaces.p, "p:selection", shapes.length);
-                    
+
                     var targets = this.getSelectedTargets();
                     if (targets.length > 1) {
                         controller = new TargetSet(this, targets);
@@ -593,7 +593,7 @@
                 <body>
                 <![CDATA[
                     tick("begin");
-                    
+
                     this._button = event.button;
                     var thiz = this;
                     var isInControlLayer = Dom.findUpward(event.originalTarget, function (node) {
@@ -611,7 +611,7 @@
                         //this._detachEditors();
                         this.currentController = null;
                         //this.setAttributeNS(PencilNamespaces.p, "p:selection", 0);
-                        
+
                         this.isSelectingRange = true;
                         this.lastMousePos = this.getEventLocation(event);
                         this.setRangeBoundStart(this.lastMousePos.x, this.lastMousePos.y);
@@ -650,7 +650,7 @@
                         }
                     }
                     tick("target setup");
-                    
+
                     var targets = this.getSelectedTargets();
                     if (targets.length > 1) {
                         controller = new TargetSet(this, targets);
@@ -668,11 +668,11 @@
                         this.oX = Math.round(event.clientX / this.zoom);
                         this.oY = Math.round(event.clientY / this.zoom);
                         this.oldPos = this.currentController.getGeometry();
-                        
+
                         tick("before setPositionSnapshot");
                         this.currentController.setPositionSnapshot();
                         tick("after setPositionSnapshot");
-                        
+
                         this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
 
                         if (top != this.lastTop || event.ctrlKey || event.button != 0) {
@@ -709,14 +709,14 @@
                         //just to save state
                         this.run(function() {}, this);
                     }
-                    
+
                     this.removeAttributeNS(PencilNamespaces.p, "holding");
-                    
+
                     this.reClick = false;
                     this.hasMoved = true;
-                    
+
                     this.controllerHeld = false;
-                    
+
                     if (this.isSelectingRange) {
                         this.setRangeBoundVisibility(false);
                         this.isSelectingRange = false;
@@ -729,7 +729,7 @@
                             if (thiz.isShapeLocked(node)) return;
                             var controller = thiz.createControllerFor(node);
                             var bbox = controller.getBoundingRect();
-                            
+
                             if (Svg.isInside(bbox, thiz.currentRange)) {
                                 if (event.ctrlKey) {
                                     var targets = thiz.getSelectedTargets();
@@ -741,7 +741,7 @@
                                             break;
                                         }
                                     }
-                                    
+
                                     if (foundTarget) {
                                         thiz.removeFromSelection(foundTarget);
                                     } else {
@@ -757,13 +757,13 @@
                         var controller = null;
                         var targets = this.getSelectedTargets();
                         this.setAttributeNS(PencilNamespaces.p, "p:selection", targets.length);
-                        
+
                         if (targets.length > 1) {
                             controller = new TargetSet(this, targets);
                         } else if (targets.length == 1 && controller == null) {
                             controller = targets[0];
                         }
-                        
+
                         this._detachEditors();
                         if (controller) {
                             this.currentController = controller;
@@ -785,16 +785,16 @@
                                      && node.localName.toLowerCase() == "a"
                                      && node.namespaceURI == PencilNamespaces.html);
                     });
-                    
+
                     if (!a) return;
-                    
+
                     //is this html:a inside an svg:foreignObject?
                     var foreignObject = Dom.findUpward(a, function (node) {
                         return (node && node.nodeType == 1
                                      && node.localName == "foreignObject"
                                      && node.namespaceURI == PencilNamespaces.svg);
                     });
-                    
+
                     //ok, it is then prevent it
                     if (foreignObject) {
                         event.preventDefault();
@@ -810,7 +810,7 @@
                     if (this._button != 0) return;
                     event.preventDefault();
                     event.stopPropagation();
-                    
+
                     if (this.controllerHeld && this.currentController) {
                         tick("start");
                         if (this.currentController.markAsMoving) this.currentController.markAsMoving(true);
@@ -823,25 +823,25 @@
 
                         //this.oX = newX;
                         //this.oY = newY;
-                        
+
                         this.hasMoved = true;
                         this.currentController.moveFromSnapshot(dx, dy);
                         tick("after move");
                         return;
                     }
-                    
+
                     if (this.isSelectingRange) {
                         var end = this.getEventLocation(event);
                         var x1 = Math.min(end.x, this.lastMousePos.x);
                         var x2 = Math.max(end.x, this.lastMousePos.x);
                         var y1 = Math.min(end.y, this.lastMousePos.y);
                         var y2 = Math.max(end.y, this.lastMousePos.y);
-                        
+
                         var w = x2 - x1;
                         var h = y2 - y1;
-                        
+
                         this.currentRange = {x: x1, y: y1, width: w, height: h};
-                        
+
                         this.setRangeBoundStart(x1, y1);
                         this.setRangeBoundSize(w, h);
                     }
@@ -895,7 +895,7 @@
                         if (event.keyCode == event.DOM_VK_DOWN) dy = 1;
                         if (event.keyCode == event.DOM_VK_LEFT) dx = -1;
                         if (event.keyCode == event.DOM_VK_RIGHT) dx = 1;
-                        
+
                         var gridSize = Pencil.getGridSize();
                         if (event.shiftKey) {
                             dx *= gridSize.w * 4;
@@ -909,7 +909,7 @@
                         this.run(function () {
                             this.currentController.moveBy(dx, dy);
                         }, this);
-                        
+
                         this.invalidateEditors();
                         event.preventDefault();
                     } else if (event.keyCode == event.DOM_VK_DELETE) {
@@ -965,11 +965,11 @@
                                 child._controller = this.currentController;
                             }
                         }
-                        
-                        
+
+
                         this.lockingMenuItem.style.display = "none";
                         this.lockingStatus = null;
-                        
+
                         if (this.currentController) {
                             this.lockingStatus = {
                                 controller: this.currentController
@@ -988,7 +988,7 @@
                                 this.lockingMenuItem.setAttribute("checked", "true");
                             }
                         }
-                        
+
                         //remove all menu items previously created by the on-menu editor
                         var parent = this.popupSeparator.parentNode;
                         var len = parent.childNodes.length;
@@ -1003,11 +1003,11 @@
                                 this.contextMenuEditor.attach(this.currentController);
                             }
                         }
-                        
+
                         var childs = this.popup.childNodes;
                         var shouldHideNextSeparator = true;
                         var foundVisibleItem = false;
-                        
+
                         for (var i = 0; i < childs.length; i ++) {
                             var child = childs[i];
                             if (child.localName == "menuseparator") {
@@ -1021,12 +1021,12 @@
                                     shouldHideNextSeparator = false;
                                 }
                             }
-                            
+
                             if (child.style.display != "none") {
                                 foundVisibleItem = true;
                             }
                         }
-                        
+
                         for (var i = childs.length - 1; i >= 0; i --) {
                             var child = childs[i];
                             if (child.localName != "menuseparator" && child.style.display != "none") {
@@ -1040,7 +1040,7 @@
                         }
                     } catch (e) {
                         Console.dumpError(e);
-                    }                        
+                    }
                 ]]>
                 </body>
             </method>
@@ -1063,6 +1063,7 @@
                         var e = this.onScreenEditors[editor];
                         if (!source || source != e) e.invalidate();
                     }
+                    Pencil.invalidateSharedEditor();
                     //invalidates all selections
                     for (var i = 0; i < this.selectionContainer.childNodes.length; i ++) {
                         var rect = this.selectionContainer.childNodes[i];
@@ -1098,13 +1099,13 @@
                     var top = Dom.findTop(event.originalTarget, function (node) {
                         return node.hasAttributeNS && node.hasAttributeNS(PencilNamespaces.p, "type") && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape" && !thiz.isShapeLocked(node);
                     });
-                    
+
                     if (!top) return;
-                    
+
                     var target = this.createControllerFor(top);
-                    
+
                     Dom.emitEvent("p:ShapeDoubleClicked", top, {controller: target});
-                    
+
                 ]]>
                 </body>
             </method>
@@ -1120,12 +1121,12 @@
                 <![CDATA[
                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     if (!this.currentController) return;
-                    
+
                     var transferableData = this.currentController.createTransferableData();
 
                     //serialize to string
                     var textualData = new XMLSerializer().serializeToString(transferableData.dataNode);
-                    
+
                     var systemString   = Components.classes["@mozilla.org/supports-string;1"].
                                            createInstance(Components.interfaces.nsISupportsString);
                     if (!systemString) return false;
@@ -1140,24 +1141,24 @@
 
                     trans.addDataFlavor(transferableData.type);
                     trans.setTransferData(transferableData.type, systemString, textualData.length * 2);
-                    
+
                     try {
                         //generating text/xml+svg
                         if (transferableData.isSVG) {
                             var svg = this.svg.ownerDocument.createElementNS(PencilNamespaces.svg, "svg");
-                            
+
                             //svg.setAttribute("width", transferableData.svgDIM.w);
                             //svg.setAttribute("height", transferableData.svgDIM.h);
                             svg.appendChild(transferableData.dataNode);
-                            
+
                             var svgXML = new XMLSerializer().serializeToString(svg);
                             svgXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + svgXML;
-                            
+
                             var svgXMLSS   = Components.classes["@mozilla.org/supports-string;1"].
                                                    createInstance(Components.interfaces.nsISupportsString);
                             if (!svgXMLSS) return false;
                             svgXMLSS.data = svgXML;
-                            
+
                             trans.addDataFlavor("image/svg+xml");
                             trans.setTransferData("image/svg+xml", svgXMLSS, svgXML.length * 2);
                         }
@@ -1184,20 +1185,20 @@
                         var helper = this.xferHelpers[i];
                         var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
                         if (!trans) return;
-                        
+
                         trans.addDataFlavor(helper.type);
                         clip.getData(trans, clip.kGlobalClipboard);
 
                         var data = new Object();
                         var length = new Object();
                         var flavour = new Object();
-                        
+
                         try {
                             trans.getAnyTransferData(flavour, data, length);
                         } catch (e) {
                             continue;
                         }
-                        
+
                         if (data && length && data.value && length.value) {
                             helper.handleData(data.value, length.value);
                             break;
@@ -1219,24 +1220,24 @@
                 <![CDATA[
                     var targets = this.getSelectedTargets();
                     if (targets.length <= 1) return;
-                    
+
                     //create an svg:g to box all the selected target
                     var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
                     g.setAttributeNS(PencilNamespaces.p, "p:type", "Group");
-                    
+
                     var nodes = [];
                     Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
                         for (t in targets) if (targets[t].isFor(node)) nodes.push(node);
                     });
-                    
+
                     for (n in nodes) {
                         var node = nodes[n];
                         node.parentNode.removeChild(node);
                         g.appendChild(node);
                     }
-                    
+
                     this.drawingLayer.appendChild(g);
-                    
+
                     this.selectShape(g);
                 ]]>
                 </body>
@@ -1259,18 +1260,18 @@
                 <![CDATA[
                     if (!this.currentController) return;
                     if (this.currentController.constructor != Group) return;
-                    
+
                     var nodes = [];
                     for (t in this.currentController.targets) {
                         var node = this.currentController.targets[t].svg;
                         node.parentNode.removeChild(node);
                         this.drawingLayer.appendChild(node);
-                        
+
                         nodes.push(node);
                     }
-                    
+
                     this.drawingLayer.removeChild(this.currentController.svg);
-                    
+
                     this.selectMultiple(nodes);
                 ]]>
                 </body>
@@ -1355,10 +1356,10 @@
                         fragment.appendChild(this.drawingLayer.ownerDocument.importNode(memento.node.childNodes[i], true));
                     }
                     this.drawingLayer.appendChild(fragment);
-                    
+
                     this.focusableBox.style.visibility = "hidden";
                     this.focusableBox.style.visibility = "visible";
-                    
+
                     this._sayContentModified();
                 ]]>
                 </body>
@@ -1369,10 +1370,12 @@
                 <parameter name="args"/>
                 <body>
                 <![CDATA[
-                    
+
                     try {
                         //console.log();
                         job.apply(targetObject, args);
+                    } catch (e) {
+                        Console.dumpError(e);
                     } finally {
                         this._saveMemento();
                         this._sayContentModified();
@@ -1387,19 +1390,19 @@
                 <![CDATA[
                     this.width = width;
                     this.height = height;
-                    
+
                     var thiz = this;
-                    
+
                     this.svg.setAttribute("width", 10);
                     this.svg.setAttribute("height", 10);
-                    
+
                     window.setTimeout(function () {
                         thiz.svg.setAttribute("width", Math.ceil(thiz.width * thiz.zoom));
                         thiz.svg.setAttribute("height", Math.ceil(thiz.height * thiz.zoom));
-                        
+
                         CanvasImpl.setupGrid.apply(thiz);
                     }, 50);
-                    
+
                 ]]>
                 </body>
             </method>
@@ -1447,7 +1450,7 @@
                 <body>
                 <![CDATA[
                     this.zoomTo(1.0);
-                    
+
                     var thiz = this;
                     var maxBox = null;
                     Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
@@ -1478,14 +1481,14 @@
                         alert("The current document is empty, sizing is failed!");
                         return;
                     }
-                    
+
                     var width = maxBox.x2 - maxBox.x1 + 2 * hPadding;
                     var height = maxBox.y2 - maxBox.y1 + 2 * vPadding;
-                    
+
                     //moving
                     var dx = 0 - maxBox.x1 + hPadding;
                     var dy = 0 - maxBox.y1 + vPadding;
-                    
+
                     Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
                         try {
                             var controller = thiz.createControllerFor(node);
@@ -1495,11 +1498,11 @@
                             alert(e);
                         }
                     });
-                    
+
                     this.setSize(width, height);
-                    
+
                     this.selectNone();
-                    
+
                     return {width: width, height: height};
                 ]]>
                 </body>
