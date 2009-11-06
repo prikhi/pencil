@@ -30,6 +30,16 @@ Handle.prototype.applyExpressionX = function (value) {
 Handle.prototype.applyExpressionY = function (value) {
     this.y = value;
 };
+Handle.prototype.applyConstraintFunction = function (value) {
+    try {
+        this._fromApplyConstraintFunction = true;
+        var c = value(this, this);
+        this.x = c.x;
+        this.y = c.y;
+    } catch (e) {
+        Console.dumpError(e);
+    }
+};
 Handle.prototype.toString = function () {
     return this.x + "," + this.y;
 };

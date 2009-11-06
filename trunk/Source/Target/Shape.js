@@ -120,7 +120,7 @@ Shape.prototype.validateRelatedProperties = function (name) {
 
             var f = value[functionName];
             try {
-                var metaValue = this.evalExpression(property.meta[meta]);
+                var metaValue = this.evalExpression("(" + property.meta[meta] + ")");
                 f.call(value, metaValue);
             } catch (e) {
                 Console.dumpError(e, "--to-console");

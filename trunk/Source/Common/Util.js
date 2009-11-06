@@ -196,7 +196,7 @@ Dom.renewId = function (shape) {
     Dom.resolveIdRef(shape, seed);
 };
 Dom.resolveIdRef = function (shape, seed) {
-    Dom.workOn(".//*/@p:filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start", shape, function (node) {
+    Dom.workOn(".//*/@p:filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask", shape, function (node) {
         var value = node.value;
         if (value.substring(0, 1) == "#") {
             value += seed;
