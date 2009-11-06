@@ -8,27 +8,27 @@
             <command id="editItalicCommand" oncommand="OnScreenTextEditor._runEditorCommand('italic');"/>
             <command id="editUnderlineCommand" oncommand="OnScreenTextEditor._runEditorCommand('underline');"/>
             <command id="editStrikeCommand" oncommand="OnScreenTextEditor._runEditorCommand('strikethrough');"/>
-        
+
             <command id="editLeftCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifyleft');"/>
             <command id="editCenterCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifycenter');"/>
             <command id="editRightCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifyright');"/>
             <command id="editFullCommand" oncommand="OnScreenTextEditor._runEditorCommand('justifyfull');"/>
-        
+
             <command id="editBulletedListCommand" oncommand="OnScreenTextEditor._runEditorCommand('insertunorderedlist');"/>
             <command id="editNumberedListCommand" oncommand="OnScreenTextEditor._runEditorCommand('insertorderedlist');"/>
             <command id="editIndentCommand" oncommand="OnScreenTextEditor._runEditorCommand('indent');"/>
             <command id="editOutdentCommand" oncommand="OnScreenTextEditor._runEditorCommand('outdent');"/>
-        
+
             <command id="editStrikeCommand" oncommand="OnScreenTextEditor._runEditorCommand('strikethrough');"/>
             <command id="editSuperScriptCommand" oncommand="OnScreenTextEditor._runEditorCommand('superscript');"/>
             <command id="editSubScriptCommand" oncommand="OnScreenTextEditor._runEditorCommand('subscript');"/>
-        
+
             <command id="editHorzRuleCommmand" oncommand="OnScreenTextEditor._runEditorCommand('inserthorizontalrule');"/>
             <command id="editInsertLinkCommand" oncommand="OnScreenTextEditor._runEditorCommand('createlink', '#');"/>
-            
+
             <command id="quitCommand" oncommand="OnScreenTextEditor._hide();"/>
         </commandset>
-        <toolbar id="richTextEditorToolbar">
+        <toolbar id="richTextEditorToolbar" style="display: block">
             <menulist class="PropertyList" id="blockList">
                 <menupopup>
                     <menuitem value="---" label="Block format" class="NameItem"/>

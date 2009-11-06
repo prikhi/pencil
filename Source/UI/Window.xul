@@ -8,6 +8,7 @@
 <?xml-stylesheet href="../Styles/PCanvas.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/ColorPickerButton.css" type="text/css"?>
 <?xml-stylesheet href="../PropertyType/Editor/CommonEditors.css" type="text/css"?>
+<?xul-overlay href="GeometryToolOverlay.xul"?>
 <?xul-overlay href="ColorToolOverlay.xul"?>
 <?xul-overlay href="TextToolOverlay.xul"?>
 <window
@@ -82,6 +83,7 @@
 
 <script src="../Editor/SharedFontEditor.js"/>
 <script src="../Editor/SharedFillColorEditor.js"/>
+<script src="../Editor/SharedGeometryEditor.js"/>
 
 <script src="../XferHelper/ShapeXferHelper.js"/>
 <script src="../XferHelper/TargetSetXferHelper.js"/>
@@ -287,7 +289,7 @@
                 </menupopup>
             </menu>
         </menubar>
-        <toolbar id="nav-toolbar" mode="icons">
+        <toolbar id="nav-toolbar" mode="icons" align="center">
             <hbox id="fileToolbar" class="ToolbarSection">
                 <toolbarbutton image="moz-icon://stock/document-new?size=menu" label="New Document" tooltiptext="Create new document" command="newDocumentCommand"/>
                 <toolbarbutton image="moz-icon://stock/document-open?size=menu" label="Open" tooltiptext="Open an existing document" command="loadDocumentCommand"/>
@@ -313,37 +315,13 @@
                 <toolbarbutton image="Icons/align-middle.png" label="Align middle" tooltiptext="Align middle" command="alignMiddleCommand"/>
                 <toolbarbutton image="Icons/align-bottom.png" label="Align bottom" tooltiptext="Align bottom" command="alignBottomCommand"/>
             </hbox>
-            <toolbarseparator/>
+            <separator/>
             <hbox id="zIndexToolbar" class="ToolbarSection">
                 <toolbarbutton image="Icons/top.png" label="Bring to Front" tooltiptext="Bring to Front" command="bringToFrontCommand"/>
                 <toolbarbutton image="Icons/up.png" label="Bring Forward" tooltiptext="Bring Forward" command="bringForwardCommand"/>
                 <toolbarbutton image="Icons/down.png" label="Send Backward" tooltiptext="Send Backward" command="sendBackwardCommand"/>
                 <toolbarbutton image="Icons/bottom.png" label="Send to Back" tooltiptext="Send to Back" command="sendToBackCommand"/>
             </hbox>
-            <toolbarseparator/>
-            <hbox id="dimension" class="ToolbarSection">
-                <vbox pack="center">
-                    <label value="X:"/>
-                </vbox>
-                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeX" disabled="true" />
-                <vbox pack="center">
-                    <label value="Y:"/>
-                </vbox>
-                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeY"  disabled="true"/>
-                <vbox pack="center">
-                    <label value="Width:"/>
-                </vbox>
-                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeWidth"  disabled="true"/>
-                <vbox pack="center">
-                    <label value="Height:"/>
-                </vbox>
-                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeHeight"  disabled="true"/>
-                <vbox pack="center">
-                    <label value="Angle:"/>
-                </vbox>
-                <textbox type="number" min="-5000" max="5000" size="3" increment="1" id="shapeAngle"  disabled="true"/>
-            </hbox>
-
             <!--
             <textbox id="foo" size="20" onkeypress="if (event.keyCode == event.DOM_VK_RETURN) { var x = eval(document.getElementById('foo').value, window); if (x) alert(x); this.focus(); this.select();}"/>
             <button default="true" label="Evaluate..." oncommand="var x = eval(document.getElementById('foo').value, window); if (x) alert(x);"/>
