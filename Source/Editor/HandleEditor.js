@@ -132,11 +132,29 @@ HandleEditor.prototype.handleMouseMove = function (event) {
 
     var newX = this.currentHandle._x + dx;
     var newY = this.currentHandle._y + dy;
-
-
     if (!constraints.lockX) newX = Math.min(Math.max(newX, constraints.minX), constraints.maxX);
     if (!constraints.lockY) newY = Math.min(Math.max(newY, constraints.minY), constraints.maxY);
 
+    if (uPoint1.x != uPoint2.x || uPoint1.y != uPoint2.y) {
+        if (constraints.constraintFunction) {
+            var a = {
+                x: this.currentHandle._x,
+                y: this.currentHandle._y
+            };
+            var b = {
+                x: newX,
+                y: newY
+            };
+            var result = constraints.constraintFunction(a, b);
+            //debug("result: " + result.toSource());
+            
+            
+            newX = result.x;
+            newY = result.y;
+            //debug("constraintFunction result: " + result.toSource());
+        }
+    }
+    
     this.currentHandle._newX = newX;
     this.currentHandle._newY = newY;
 
@@ -154,14 +172,17 @@ HandleEditor.prototype.getPropertyConstraintsFromDef = function (def) {
     this.targetObject.prepareExpressionEvaluation();
 
     var meta = def.meta;
-    return {lockX: this.targetObject.evalExpression(meta.lockX, false),
-            lockY: this.targetObject.evalExpression(meta.lockY, false),
-            disabled: this.targetObject.evalExpression(meta.disabled, false),
-            maxX: this.targetObject.evalExpression(meta.maxX, Number.MAX_VALUE),
-            minX: this.targetObject.evalExpression(meta.minX, 0 - Number.MAX_VALUE),
-            maxY: this.targetObject.evalExpression(meta.maxY, Number.MAX_VALUE),
-            minY: this.targetObject.evalExpression(meta.minY, 0 - Number.MAX_VALUE)
-            };
+        
+    return {
+        lockX: this.targetObject.evalExpression(meta.lockX, false),
+        lockY: this.targetObject.evalExpression(meta.lockY, false),
+        disabled: this.targetObject.evalExpression(meta.disabled, false),
+        maxX: this.targetObject.evalExpression(meta.maxX, Number.MAX_VALUE),
+        minX: this.targetObject.evalExpression(meta.minX, 0 - Number.MAX_VALUE),
+        maxY: this.targetObject.evalExpression(meta.maxY, Number.MAX_VALUE),
+        minY: this.targetObject.evalExpression(meta.minY, 0 - Number.MAX_VALUE),
+        constraintFunction: meta.constraintFunction ? this.targetObject.evalExpression("(" + meta.constraintFunction + ")", 0 - Number.MAX_VALUE) : null
+    };
 };
 
 HandleEditor.prototype.createHandle = function (def, value) {

@@ -195,6 +195,18 @@ function C(x1, y1, x2, y2, x, y) {
 function S(x2, y2, x, y) {
     return "S " + x2 + " " + y2 + " " + x + " " + y;
 }
+function Q(x1, y1, x, y) {
+    return "Q " + x1 + " " + y1 + " " + x + " " + y;
+}
+function T(x, y) {
+    return "T " + x + " " + y;
+}
+function a(rx, ry, f1, f2, f3, x, y) {
+    return "a " + rx + " " + ry + " " + f1 + " " + f2 + " " + f3 + " " + x + " " + y;
+}
+function A(rx, ry, f1, f2, f3, x, y) {
+    return "A " + rx + " " + ry + " " + f1 + " " + f2 + " " + f3 + " " + x + " " + y;
+}
 var z = "z";
 
 function rotate(a) {
