@@ -141,6 +141,12 @@ F.angle = function(v1, v2) {
     var r = Math.acos(cosa);
     return r;
 };
+F.reflect = function(x, o) {
+    return {
+        x: 2*o.x - x.x,
+        y: 2*o.y - x.y
+    };
+};
 F.debug = function(o) {
     debug(o);
 };
