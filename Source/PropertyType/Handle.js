@@ -9,7 +9,7 @@ Handle.fromString = function(literal) {
         handle.x = parseInt(RegExp.$1);
         handle.y = parseInt(RegExp.$2);
     }
-    
+
     return handle;
 };
 Handle.prototype.applyMaxX = function (value) {
