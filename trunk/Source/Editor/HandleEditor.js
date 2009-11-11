@@ -132,8 +132,8 @@ HandleEditor.prototype.handleMouseMove = function (event) {
 
     var newX = this.currentHandle._x + dx;
     var newY = this.currentHandle._y + dy;
-    if (!constraints.lockX) newX = Math.min(Math.max(newX, constraints.minX), constraints.maxX);
-    if (!constraints.lockY) newY = Math.min(Math.max(newY, constraints.minY), constraints.maxY);
+    if (!constraints.lockX) newX = Math.min(Math.max(newX, constraints.minX*Pencil.activeCanvas.zoom), constraints.maxX*Pencil.activeCanvas.zoom);
+    if (!constraints.lockY) newY = Math.min(Math.max(newY, constraints.minY*Pencil.activeCanvas.zoom), constraints.maxY*Pencil.activeCanvas.zoom);
 
     if (uPoint1.x != uPoint2.x || uPoint1.y != uPoint2.y) {
         if (constraints.constraintFunction) {
@@ -147,14 +147,14 @@ HandleEditor.prototype.handleMouseMove = function (event) {
             };
             var result = constraints.constraintFunction(a, b);
             //debug("result: " + result.toSource());
-            
-            
+
+
             newX = result.x;
             newY = result.y;
             //debug("constraintFunction result: " + result.toSource());
         }
     }
-    
+
     this.currentHandle._newX = newX;
     this.currentHandle._newY = newY;
 
@@ -172,7 +172,7 @@ HandleEditor.prototype.getPropertyConstraintsFromDef = function (def) {
     this.targetObject.prepareExpressionEvaluation();
 
     var meta = def.meta;
-        
+
     return {
         lockX: this.targetObject.evalExpression(meta.lockX, false),
         lockY: this.targetObject.evalExpression(meta.lockY, false),

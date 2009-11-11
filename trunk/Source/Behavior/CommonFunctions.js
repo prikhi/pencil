@@ -81,42 +81,14 @@ F.thirdPoint = function(a, b, r, m) {
 F.lineLength = function(a, b) {
     return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
 };
-F.pieConstraintFunction = function(aa, bb, box) {
-    var a = {
-        x: aa.x, y: aa.y, toString: function() {
-            return this.x + "," + this.y;
-        }
-    };
-    var b = {
-        x: bb.x, y: bb.y, toString: function() {
-            return this.x + "," + this.y;
-        }
-    };
-
-    /*debug(bb._fromApplyConstraintFunction);
-    debug("lbox: " + F._lastBox);
-    debug("box: " + box);
-
-    debug("oldb: "+ F._lastB);
-    if (aa._fromApplyConstraintFunction && bb._fromApplyConstraintFunction && F._lastBox && F._lastB) {
-        if (F._lastBox.w != box.w || F._lastBox.h != box.h) {
-            debug("xxx");
-            b.x = F._lastB.x + box.w - F._lastBox.w;
-            b.y = F._lastB.y + box.h - F._lastBox.h;
-        }
-    }
-    debug("newb: "+ b);*/
+F.pieConstraintFunction = function(a, b, box) {
 
     var r = Math.atan((box.h / 2 - a.y) / (box.w / 2 - a.x));
-
-    //debug("R: "+ r);
 
     var rx = box.w / 2;
     var ry = box.h / 2;
 
     var alpha = Math.atan2(b.y - ry, b.x - rx);
-
-    //debug("angle: " + [b.x, b.y, rx, ry, alpha * 180 / Math.PI]);
 
     var co = Math.cos(alpha);
     var si = Math.sin(alpha);
@@ -127,7 +99,6 @@ F.pieConstraintFunction = function(aa, bb, box) {
     var x = r * co + rx;
     var y = r * si + ry;
 
-    //debug("X: " + x + ", Y: " + y);
     F._lastBox = box;
     F._lastB = b;
 
