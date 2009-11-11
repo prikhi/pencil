@@ -223,7 +223,29 @@ Shape.prototype.setGeometry = function (geo) {
     if (geo.dim) {
         //alert("commiting: " + [geo.dim.w, geo.dim.h]);
         if (this.def.propertyMap["box"]) {
-            this.setProperty("box", new Dimension(geo.dim.w, geo.dim.h));
+            var box = this.getProperty("box");
+            var fw = geo.dim.w / box.w;
+            var fh = geo.dim.h / box.h;
+
+            debug("factor: " + [fw, fh]);
+            this.storeProperty("box", new Dimension(geo.dim.w, geo.dim.h));
+
+            //scale the handle
+            for (name in this.def.propertyMap) {
+                var p = this.def.propertyMap[name];
+                if (p.type != Handle || p.meta.noScale) continue;
+
+                var h = this.getProperty(name);
+                debug("before: " + [h.x, h.y]);
+                h.x = h.x * fw;
+                h.y = h.y * fh;
+
+                debug("after: " + [h.x, h.y]);
+
+                this.storeProperty(name, h);
+            }
+
+            this.applyBehaviorForProperty("box");
         }
     }
 };
