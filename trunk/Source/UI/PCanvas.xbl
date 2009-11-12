@@ -388,6 +388,7 @@
             <method name="setZoomedGeo">
                 <parameter name="target"/>
                 <parameter name="geo"/>
+                <parameter name="setter"/>
                 <body>
                 <![CDATA[
                     geo = geo.clone(this.svg);
@@ -399,6 +400,8 @@
                     this.run(function() {
                         target.setGeometry(geo);
                     }, this);
+
+                    Dom.emitEvent("p:ShapeGeometryModified", this, {setter: setter ? setter : null});
                 ]]>
                 </body>
             </method>
@@ -704,6 +707,8 @@
                         this.currentController.markAsMoving(false);
                         this.currentController.clearPositionSnapshot();
                         this.invalidateEditors();
+
+                        Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
                     }
                     if (this.controllerHeld && this.hasMoved) {
                         //just to save state
@@ -1063,7 +1068,8 @@
                         var e = this.onScreenEditors[editor];
                         if (!source || source != e) e.invalidate();
                     }
-                    Pencil.invalidateSharedEditor();
+
+                    //Pencil.invalidateSharedEditor();
                     //invalidates all selections
                     for (var i = 0; i < this.selectionContainer.childNodes.length; i ++) {
                         var rect = this.selectionContainer.childNodes[i];
@@ -1136,8 +1142,8 @@
                                            createInstance(Components.interfaces.nsITransferable);
                     if (!trans) return false;
 
-                    //trans.addDataFlavor("text/unicode");
-                    //trans.setTransferData("text/unicode", systemString, textualData.length * 2);
+                    trans.addDataFlavor("text/unicode");
+                    trans.setTransferData("text/unicode", systemString, textualData.length * 2);
 
                     trans.addDataFlavor(transferableData.type);
                     trans.setTransferData(transferableData.type, systemString, textualData.length * 2);

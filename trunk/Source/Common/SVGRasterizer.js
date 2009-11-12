@@ -10,7 +10,7 @@ function Rasterizer(format) {
     var box = document.createElement("box");
     box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
 
-    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
+    iframe.setAttribute("style", "border: solid 1px blue; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
     iframe.setAttribute("src", "blank.html");
 
     box.appendChild(iframe);
@@ -141,7 +141,10 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
     this.cleanup();
 
     this.lastTempFile = Local.newTempFile("raster", "svg");
-    Dom.serializeNodeToFile(svgNode, this.lastTempFile);
+    Dom.serializeNodeToFile(svgNode, this.lastTempFile,
+        "<?xml-stylesheet href=\"chrome://global/skin/\" type=\"text/css\"?>\n" +
+        "<?xml-stylesheet href=\"chrome://pencil/content/Styles/HtmlForeignObjectXUL.css\" type=\"text/css\"?>\n" +
+        "<?xml-stylesheet href=\"chrome://pencil/content/Styles/HtmlForeignObject.css\" type=\"text/css\"?>");
 
     var url = ios.newFileURI(this.lastTempFile).spec;
 
