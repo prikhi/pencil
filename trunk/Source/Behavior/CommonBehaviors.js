@@ -33,8 +33,8 @@ Pencil.behaviors.Fill = function (color) {
     Svg.setStyle(this, "fill-opacity", color.a);
 };
 Pencil.behaviors.Color = function (color) {
-    Svg.setStyle(this, "color", color.toRGBString());
-    Svg.setStyle(this, "opacity", color.a);
+    Svg.setStyle(this, "color", color ? color.toRGBString() : null);
+    Svg.setStyle(this, "opacity", color ? color.a : null);
 };
 Pencil.behaviors.StrokeColor = function (color) {
     Svg.setStyle(this, "stroke", color.toRGBString());
@@ -283,7 +283,43 @@ Pencil.behaviors.Call = function (name, args) {
     var f = this[name];
     f.apply(this, args);
 };
+Pencil.behaviors.Width = function (width) {
+    if (this.namespaceURI == PencilNamespaces.xul) {
+        this.setAttribute("width", width);
+        this.width = width;
 
+        if (this.localName == "button") return;
+    }
+
+    Svg.setStyle(this, "width", "" + width + "px");
+};
+Pencil.behaviors.Height = function (height) {
+    if (this.namespaceURI == PencilNamespaces.xul) {
+        this.setAttribute("height", height);
+        this.height = height;
+
+        if (this.localName == "button") return;
+    }
+
+    Svg.setStyle(this, "height", "" + height + "px");
+};
+Pencil.behaviors.Value = function (value, parseAccessKey) {
+    var label = parseAccessKey ? F.stripAccessKey(value) : value;
+    this.setAttribute("value", label);
+    this.value = label;
+
+    this.setAttribute("accesskey", parseAccessKey ? F.getAccessKey(value) : "");
+};
+Pencil.behaviors.Label = function (value, parseAccessKey) {
+    var label = parseAccessKey ? F.stripAccessKey(value) : value;
+    this.setAttribute("label", label);
+
+    this.setAttribute("accesskey", parseAccessKey ? F.getAccessKey(value) : "");
+};
+Pencil.behaviors.Disabled = function (disabled) {
+    this.setAttribute("disabled", disabled ? true : false);
+    this.disabled = disabled ? true : false;
+};
 
 
 

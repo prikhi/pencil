@@ -47,6 +47,9 @@ F.newDOMElement = function (spec) {
     if (spec._text) {
         e.appendChild(e.ownerDocument.createTextNode(spec._text));
     }
+    if (spec._children && spec._children.length > 0) {
+        e.appendChild(F.newDOMFragment(spec._children));
+    }
 
     return e;
 };
@@ -120,4 +123,22 @@ F.reflect = function(x, o) {
 };
 F.debug = function(o) {
     debug(o);
+};
+F.stripAccessKey = function (label) {
+    return label.replace(/_([^_])/, function (zero, one) { return one; })
+                .replace(/__/g, "_");
+};
+F.getAccessKey = function (label) {
+    if (label.match(/_([^_])/)) return RegExp.$1;
+
+    return "";
+};
+F.parseTextArray = function (text) {
+    var lines = text.split(/[\r\n]+/);
+    var a = [];
+    for (var i = 0; i < lines.length; i++) {
+        a.push(lines[i].split(/\|/));
+    }
+
+    return a;
 };
