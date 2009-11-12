@@ -65,10 +65,13 @@ SharedGeomtryEditor.prototype.setup = function () {
                 thiz.handleCommandEvent();
             }
         }, false);
+
+    this.geometryToolbar.ownerDocument.documentElement.addEventListener("p:ShapeGeometryModified", function (event) {
+            if (event.setter && event.setter == thiz) return;
+            thiz.invalidate();
+        }, false);
 };
 SharedGeomtryEditor.prototype.handleCommandEvent = function () {
-    debug("xxx");
-
     var currentGeo = this.targetObject.getGeometry();
     var dx = this.shapeXTextBox.value - currentGeo.ctm.e;
     var dy = this.shapeYTextBox.value - currentGeo.ctm.f;
@@ -84,8 +87,6 @@ SharedGeomtryEditor.prototype.handleCommandEvent = function () {
         if (box) {
             box.w = this.shapeWidthTextBox.value;
             box.h = this.shapeHeightTextBox.value;
-
-            this.targetObject.setProperty(SharedGeomtryEditor.PROPERTY_NAME, box, "nested, dont add to undo stack");
         }
 
         var point = Svg.getScreenLocation(this.targetObject.svg);
@@ -95,12 +96,18 @@ SharedGeomtryEditor.prototype.handleCommandEvent = function () {
         var rm = Svg.rotateMatrix(da, center, this.targetObject.svg);
         var geo = Pencil.activeCanvas.getZoomedGeo(this.targetObject);
 
+        box.w *= Pencil.activeCanvas.zoom;
+        box.h *= Pencil.activeCanvas.zoom;
+
         var newGeo = new Geometry();
         newGeo.ctm = geo.ctm.multiply(rm);
-        newGeo.dim = geo.dim;
+        newGeo.dim = box;
         newGeo.loc = null;
 
-        Pencil.activeCanvas.setZoomedGeo(this.targetObject, newGeo);
+        Pencil.activeCanvas.setZoomedGeo(this.targetObject, newGeo, this);
+        if (da != 0) {
+            this.invalidate();
+        }
     }, this);
 
     Pencil.activeCanvas.invalidateEditors(this);
@@ -124,6 +131,8 @@ SharedGeomtryEditor.prototype.attach = function (targetObject) {
         this.detach();
         return;
     }
+
+    debug("Attaching...");
 
     this.targetObject = targetObject;
 
@@ -153,10 +162,10 @@ SharedGeomtryEditor.prototype.detach = function () {
     this.shapeAngleTextBox.disabled = true;
 };
 SharedGeomtryEditor.prototype.invalidate = function () {
-    if (!this.target) {
+    if (!this.targetObject) {
         this.detach();
     } else {
-        this.attach(this.target);
+        this.attach(this.targetObject);
     }
 }
 

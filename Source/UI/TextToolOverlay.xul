@@ -28,7 +28,7 @@
 
             <command id="quitCommand" oncommand="OnScreenTextEditor._hide();"/>
         </commandset>
-        <toolbar id="richTextEditorToolbar" style="display: block">
+        <toolbar id="richTextEditorToolbar">
             <menulist class="PropertyList" id="blockList">
                 <menupopup>
                     <menuitem value="---" label="Block format" class="NameItem"/>

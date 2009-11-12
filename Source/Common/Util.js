@@ -117,7 +117,7 @@ Dom.parseToNode = function (xml, dom) {
 Dom.serializeNode = function (node) {
     return Dom.serializer.serializeToString(node);
 };
-Dom.serializeNodeToFile = function (node, file) {
+Dom.serializeNodeToFile = function (node, file, additionalContentPrefixes) {
     var fos = Components.classes["@mozilla.org/network/file-output-stream;1"]
                              .createInstance(Components.interfaces.nsIFileOutputStream);
     fos.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
@@ -129,6 +129,9 @@ Dom.serializeNodeToFile = function (node, file) {
     os.init(fos, XMLDocumentPersister.CHARSET, 0, 0x0000);
 
     os.writeString("<?xml version=\"1.0\"?>\n");
+    if (additionalContentPrefixes) {
+        os.writeString(additionalContentPrefixes + "\n");
+    }
 
     Dom.serializer.serializeToStream(node, fos, XMLDocumentPersister.CHARSET);
 

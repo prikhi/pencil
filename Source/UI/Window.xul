@@ -348,10 +348,10 @@
         <stack flex="1" id="mainBoxStack">
             <hbox>
                 <tabbox id="sideBox" width="300" persist="width">
-                    <tabs>
+                    <tabs id="sideBoxTabs">
                         <tab label="Shape Collections"/>
                     </tabs>
-                    <tabpanels flex="1">
+                    <tabpanels flex="1" id="sideBoxTabPanels">
                         <tabpanel>
                             <pcollectionpane id="collectionPane" flex="1"/>
                         </tabpanel>

@@ -173,6 +173,7 @@ Shape.prototype.locatePropertyNode = function (name) {
     return Dom.getSingle("./p:property[@name='" + name +"']", this.metaNode);
 };
 Shape.prototype.storeProperty = function (name, value) {
+    debug("setting: " + name + " = " + value.toString());
     var propNode = this.locatePropertyNode(name);
     if (!propNode) {
         propNode = this.metaNode.ownerDocument.createElementNS(PencilNamespaces.p, "p:property");
@@ -224,6 +225,7 @@ Shape.prototype.setGeometry = function (geo) {
         //alert("commiting: " + [geo.dim.w, geo.dim.h]);
         if (this.def.propertyMap["box"]) {
             var box = this.getProperty("box");
+            debug("box: " + [box.w, box.h, geo.dim.w, geo.dim.h]);
             var fw = geo.dim.w / box.w;
             var fh = geo.dim.h / box.h;
 
