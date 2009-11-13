@@ -270,6 +270,42 @@
                 ]]>
                 </body>
             </method>
+            <method name="selectSibling">
+                <parameter name="next"/>
+                <body>
+                <![CDATA[
+                    var targets = this.getSelectedTargets();
+                    var node = null;
+
+                    var sibling = null;
+
+                    if (targets && targets[0] && targets[0].svg) {
+                        node = targets[0].svg;
+
+                        if (next) {
+                            if (node.nextSibling) {
+                                sibling = node.nextSibling;
+                            } else {
+                                sibling = this.drawingLayer.firstChild;
+                            }
+                        } else {
+                            if (node.previousSibling) {
+                                sibling = node.previousSibling;
+                            } else {
+                                sibling = this.drawingLayer.lastChild;
+                            }
+                        }
+
+                    } else {
+                        sibling = this.drawingLayer.firstChild;
+                    }
+
+                    if (!sibling) return;
+
+                    this.selectShape(sibling);
+                ]]>
+                </body>
+            </method>
             <method name="selectAll">
                 <body>
                 <![CDATA[
@@ -917,6 +953,8 @@
 
                         this.invalidateEditors();
                         event.preventDefault();
+                        Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+
                     } else if (event.keyCode == event.DOM_VK_DELETE) {
                         if (this.currentController) {
                             this.run(function () {
@@ -932,6 +970,14 @@
                         if (this.currentController) {
                             Dom.emitEvent("p:TextEditingRequested", event.originalTarget, {controller: this.currentController});
                         }
+                    } else if (event.keyCode == event.DOM_VK_TAB) {
+                        if (event.shiftKey) {
+                            this.selectSibling(false);
+                        } else {
+                            this.selectSibling(true);
+                        }
+
+                        event.preventDefault();
                     } else if (event.charCode == " ".charCodeAt(0) && event.ctrlKey) {
                         event.preventDefault();
                         this._showPropertyDialog();
