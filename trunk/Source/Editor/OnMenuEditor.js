@@ -21,27 +21,29 @@ OnMenuEditor.prototype.attach = function (targetObject) {
     this.targetObject = targetObject;
 
     var definedGroups = this.targetObject.getPropertyGroups();
-    
+
     for (var i in definedGroups) {
         var group = definedGroups[i];
         for (var j in group.properties) {
             var property = group.properties[j];
             var editorClass = OnMenuEditor.getTypeEditor(property.type);
             if (!editorClass) continue;
-            
+
             var editor = new editorClass(property, this.targetObject.getProperty(property.name), this.targetObject);
             var menuitem = editor.createMenuItem(this.canvas.ownerDocument);
-            
+
             this.canvas.insertEditorContextMenuItem(menuitem);
         }
     }
-    //actions
+
     var thiz = this;
+    var doc = this.canvas.ownerDocument;
+
+    //actions
     if (targetObject.def && targetObject.performAction) {
-        var doc = this.canvas.ownerDocument;
         var menu = doc.createElementNS(PencilNamespaces.xul, "menu");
         menu.setAttribute("label", "Actions");
-        
+
         var popup = doc.createElementNS(PencilNamespaces.xul, "menupopup");
         menu.appendChild(popup);
         var hasAction = false;
@@ -51,12 +53,12 @@ OnMenuEditor.prototype.attach = function (targetObject) {
             var item = doc.createElementNS(PencilNamespaces.xul, "menuitem");
             item.setAttribute("label", action.displayName);
             item._actionId = action.id;
-            
+
             popup.appendChild(item);
         }
         if (hasAction) {
             this.canvas.insertEditorContextMenuItem(menu);
-            
+
             menu.addEventListener("command", function (event) {
                 if (event.originalTarget._actionId) {
                     targetObject.performAction(event.originalTarget._actionId);
@@ -65,6 +67,66 @@ OnMenuEditor.prototype.attach = function (targetObject) {
             }, false);
         }
     }
+
+    //linking
+    //TODO: Refactor to p:Href="page://<pageId>"
+    //      to allow further extending (link to other resource types)
+    if (Pencil.controller.hasDoc() && Pencil.controller.doc.pages.length > 1
+             && targetObject.setMetadata && targetObject.getMetadata) {
+        var menu = doc.createElementNS(PencilNamespaces.xul, "menu");
+        menu.setAttribute("label", "Link to");
+
+        var popup = doc.createElementNS(PencilNamespaces.xul, "menupopup");
+        menu.appendChild(popup);
+
+        var targetPageId = targetObject.getMetadata("RelatedPage");
+
+        var currentPage = Pencil.controller.getCurrentPage();
+        var pages = Pencil.controller.doc.pages;
+        for (var i = 0; i < pages.length; i ++) {
+            var page = pages[i];
+
+            var item = doc.createElementNS(PencilNamespaces.xul, "menuitem");
+            item.setAttribute("label", page.properties.name);
+            item.setAttribute("type", "radio");
+            item._pageId = page.properties.id;
+
+            if (page.properties.id == currentPage.properties.id) {
+                    item.setAttribute("disabled", true);
+                }
+
+            if (page.properties.id == targetPageId) {
+                item.setAttribute("checked", true);
+            }
+
+            popup.appendChild(item);
+        }
+        popup.appendChild(doc.createElementNS(PencilNamespaces.xul, "menuseparator"));
+
+        var item = doc.createElementNS(PencilNamespaces.xul, "menuitem");
+        item.setAttribute("label", "Nothing");
+        item.setAttribute("type", "radio");
+        item._pageId = "";
+
+        if (!targetPageId) {
+            item.setAttribute("checked", true);
+        }
+
+        popup.appendChild(item);
+
+        popup.addEventListener("command", function (event) {
+                var menuitem = Dom.findUpward(event.originalTarget, function (node) {
+                        return node.localName == "menuitem";
+                    });
+                if (!menuitem) return;
+
+                thiz.targetObject.setMetadata("RelatedPage", menuitem._pageId ? menuitem._pageId : "");
+            }, false);
+
+        this.canvas.insertEditorContextMenuItem(doc.createElementNS(PencilNamespaces.xul, "menuseparator"));
+        this.canvas.insertEditorContextMenuItem(menu);
+    }
+
 };
 OnMenuEditor.prototype.invalidate = function () {
 };

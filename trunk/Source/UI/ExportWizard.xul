@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/ExportWizard.css" type="text/css"?>
+<wizard id="pencilExportWizard"
+        title="Document Export Wizard"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onwizardfinish="ExportWizard.onFinish();"
+        >
+
+<script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/Util.js"/>
+<script src="../Common/ExportWizard.js"/>
+
+    <wizardpage description="Select output format">
+        <label value="Output format:" class="Primary"/>
+        <radiogroup id="exporterRadioGroup" oncommand="ExportWizard.onExporterChanged();">
+        </radiogroup>
+        <description id="exporterWarningPane">
+        </description>
+    </wizardpage>
+
+    <wizardpage description="Select pages that you want to export" onpageadvanced="return ExportWizard.validatePageSelection();">
+        <label value="Pages to export:" class="Primary"/>
+        <radiogroup id="pageSelectionGroup" oncommand="ExportWizard.onPageSelectionChanged();">
+            <radio label="All pages in the document" accesskey="A" value="all"/>
+            <radio label="All pages, except backgrounds" accesskey="e" value="all-no-bg"/>
+            <radio label="Only the following pages:" accesskey="O" value="only"/>
+        </radiogroup>
+        <vbox flex="1">
+            <listbox id="pageList" flex="1" oncommand="ExportWizard.onPageSelectionChanged();">
+            </listbox>
+            <label value="2 of 3 pages selected." id="pageSelectionSummaryLabel"/>
+        </vbox>
+    </wizardpage>
+
+    <wizardpage description="Select the template and setting up options" onpageadvanced="return ExportWizard.validateOptions();">
+        <label value="Template:"/>
+        <menulist id="templateMenu">
+            <menupopup>
+            </menupopup>
+        </menulist>
+        <description id="templateDescription">
+            Exporting all pages into a single HTML document. Printing stylesheet included.
+        </description>
+
+        <label value="Other options:"/>
+        <checkbox label="Copy links from background pages" accesskey="k" checked="true" id="copyBGLinkCheckbox"/>
+
+        <label value="Destination:"/>
+        <hbox>
+            <textbox flex="1" id="targetDirPathText" value="/home/dgthanhan/foo"/>
+            <button label="Browse..." id="browseButton" oncommand="ExportWizard.browseTargetDir();"/>
+        </hbox>
+    </wizardpage>
+
+</wizard>
+

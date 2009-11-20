@@ -143,7 +143,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
                     });
 
                     property.initialValueExpression = expression;
-                    debug(property.initialValueExpression);
                 } else if (valueElement.localName == "Null") {
                     property.initialValue = null;
                 }

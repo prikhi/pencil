@@ -86,3 +86,6 @@ toolbar label {
     font-weight: bold;
     font-size: .9em;
 }
+treechildren::-moz-tree-row {
+    height: 1.8em;
+}

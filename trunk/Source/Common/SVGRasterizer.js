@@ -10,7 +10,7 @@ function Rasterizer(format) {
     var box = document.createElement("box");
     box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
 
-    iframe.setAttribute("style", "border: solid 1px blue; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
+    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
     iframe.setAttribute("src", "blank.html");
 
     box.appendChild(iframe);
@@ -154,7 +154,7 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
 
     this.win.location.href = url;
 };
-Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback) {
+Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, preprocessor) {
 
     this._width = svgNode.width.baseVal.value;
     this._height = svgNode.height.baseVal.value;
@@ -162,15 +162,19 @@ Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback) {
     var thiz = this;
     this._saveNodeToTempFileAndLoad(svgNode, function () {
         try {
-            thiz.rasterizeWindow(filePath, callback);
+            thiz.rasterizeWindow(filePath, callback, preprocessor);
         } catch (e) {
             Console.dumpError(e);
         }
     });
 };
 
-Rasterizer.prototype.rasterizeWindow = function (filePath, callback) {
+Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocessor) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+    if (preprocessor && preprocessor.process) {
+        preprocessor.process(this.win.document);
+    }
 
     var h = 0;
     var w = 0;
