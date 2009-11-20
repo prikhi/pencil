@@ -36,3 +36,5 @@ r79
  * For developers: More behaviors and common functions
 r80
  * New Feature: You can now navigation from shape to shape with the tab key, select a shape then press tab, Yes !
+r83
+ * New Feature : Page Note, right click on tab header then Edit Page Notes ...
