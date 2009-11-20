@@ -342,6 +342,8 @@
             <menuseparator/>
             <menu id="gotoTabMenu" label="Goto..."><menupopup/></menu>
             <menuitem label="Re-order Pages..." id="reorderPageMenuItem" command="reorderPagesCommand" style="display: none;"/>
+            <menuseparator/>
+            <menuitem class="menuitem-iconic" image="moz-icon://stock/blank-note-16?size=menu" label="Edit page notes..." id="pageNoteMenuItem" />
         </popup>
     </popupset>
     <hbox flex="1" id="mainBox">
