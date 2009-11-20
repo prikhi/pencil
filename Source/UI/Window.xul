@@ -37,6 +37,9 @@
 <script src="../Definition/ShapeDefCollectionParser.js"/>
 <script src="../Definition/CollectionManager.js"/>
 
+<script src="../Definition/ExportTemplate.js"/>
+<script src="../Definition/ExportTemplateManager.js"/>
+
 <script src="../Common/Pencil.js"/>
 <script src="../Common/Controller.js"/>
 <script src="../Common/MainWindow.js"/>
@@ -93,6 +96,11 @@
 
 <script src="../XferHelper/DragObservers.js"/>
 
+<script src="../Exporter/BaseExporter.js"/>
+<script src="../Exporter/BaseRasterizedExporter.js"/>
+<script src="../Exporter/WebPageExporter.js"/>
+<script src="../Exporter/OtherExporters.js"/>
+
     <popupset>
     </popupset>
     <commandset>
@@ -104,7 +112,7 @@
         <command id="saveDocumentAsCommand" oncommand="Pencil.controller.saveDocumentAs();"/>
         <command id="rasterizeSelectionCommand" oncommand="Pencil.controller.rasterizeSelection();"/>
         <command id="rasterizeCommand" oncommand="Pencil.controller.rasterizeCurrentPage();"/>
-        <command id="rasterizeAllCommand" oncommand="Pencil.controller.rasterizeDocument();"/>
+        <command id="exportCommand" oncommand="Pencil.controller.exportDocument();"/>
         <command id="sizeToContentCommand" oncommand="Pencil.controller.sizeToContent(null, true);"/>
 
         <command id="reorderPagesCommand" oncommand="Pencil.controller.reorderPages();"/>
@@ -148,6 +156,9 @@
         <command id="moveRightCommand" oncommand="Pencil.controller.pageMoveRight()"/>
 
         <command id="newWindowCommand" oncommand="window.open('Window.xul', '_blank', 'chrome,resizable=yes')"/>
+
+        <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
+        <command id="installNewHTMLTemplateCommand" oncommand="ExportTemplateManager.installNewTemplate('HTML');"/>
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="accel" key="N"/>
@@ -233,7 +244,7 @@
                     <menuseparator/>
                     <menuitem label="Export Selection as PNG..." command="rasterizeSelectionCommand"/>
                     <menuitem label="Export Page as PNG..." command="rasterizeCommand"/>
-                    <menuitem label="Export Document as PNGs..." command="rasterizeAllCommand"/>
+                    <menuitem label="Export Document..." command="exportCommand"/>
                     <menuseparator/>
                     <menuitem label="Exit" oncommand="if (!Pencil.controller.modified || Pencil.controller._confirmAndSaveDocument()) window.close();"/>
                 </menupopup>
@@ -276,6 +287,9 @@
                 <menupopup>
                     <menuitem label="Stencil generator" oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
                     <menuitem label="Clipart Browser" oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
+                    <menuseparator/>
+                    <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
+                    <menuitem label="Install New HTML Export Template..." command="installNewHTMLTemplateCommand"/>
                 </menupopup>
             </menu>
             <menu label="Settings" id="settings-menu">
