@@ -7,6 +7,7 @@ function Controller(win) {
     this.mainViewHeader = this.window.ownerDocument.getElementById("mainViewHeader");
     this.mainViewPanel = this.window.ownerDocument.getElementById("mainViewPanel");
     this.pagePropertiesMenuItem = this.window.ownerDocument.getElementById("pagePropertiesMenuItem");
+    this.pageNoteMenuItem = this.window.ownerDocument.getElementById("pageNoteMenuItem");
     this.deletePageMenuItem = this.window.ownerDocument.getElementById("deletePageMenuItem");
     this.pageMoveLeftMenuItem = this.window.ownerDocument.getElementById("pageMoveLeftMenuItem");
     this.pageMoveRightMenuItem = this.window.ownerDocument.getElementById("pageMoveRightMenuItem");
@@ -41,6 +42,11 @@ function Controller(win) {
     this.pagePropertiesMenuItem.addEventListener("command", function (event) {
         if (thiz._pageToEdit) {
             thiz.editPageProperties(thiz._pageToEdit);
+        }
+    }, false);
+    this.pageNoteMenuItem.addEventListener("command", function (event) {
+        if (thiz._pageToEdit) {
+            thiz.editPageNote(thiz._pageToEdit);
         }
     }, false);
     this.gotoTabMenu.addEventListener("command", function (event) {
@@ -410,7 +416,7 @@ Controller.prototype._updatePageFromView = function () {
 Controller.prototype._generateId = function () {
     return (new Date().getTime()) + "_" + Math.round(Math.random() * 10000);
 };
-Controller.prototype._addPage = function (name, id, width, height, background, dimBackground) {
+Controller.prototype._addPage = function (name, id, width, height, background, dimBackground,note) {
     var page = new Page(this.doc);
     page.properties.name = name;
     page.properties.id = id;
@@ -421,7 +427,9 @@ Controller.prototype._addPage = function (name, id, width, height, background, d
         page.properties.background = background;
         page.properties.dimBackground = dimBackground;
     }
-    
+    if(note) {
+        page.properties.note = note;
+    }
     this.doc.addPage(page);
     page._doc = this.doc;
     
@@ -489,6 +497,7 @@ Controller.prototype._handleContextMenuShow = function (event) {
     });
     if (tab) {
         this.pagePropertiesMenuItem.style.display = "";
+        this.pageNoteMenuItem.style.display = "";
         this.deletePageMenuItem.style.display = "";
         this.pageDuplicateMenuItem.style.display = "";
         this.pageMoveLeftMenuItem.style.display = "";
@@ -501,6 +510,7 @@ Controller.prototype._handleContextMenuShow = function (event) {
         Pencil._enableCommand("moveRightCommand", index < this.doc.pages.length - 1);
     } else {
         this.pagePropertiesMenuItem.style.display = "none";
+        this.pageNoteMenuItem.style.display = "none";
         this.deletePageMenuItem.style.display = "none";
         this.pageDuplicateMenuItem.style.display = "none";
         this.pageMoveLeftMenuItem.style.display = "none";
@@ -552,6 +562,7 @@ Controller.prototype._modifyPageProperties = function (page, data) {
         Console.dumpError(e, "sasd");
     }
     page.rasterizeDataCache = null;
+    this.markDocumentModified();
 };
 Controller.prototype._deletePage = function (page) {
     //find page in the list
@@ -628,6 +639,19 @@ Controller.prototype.editPageProperties = function (page) {
         this._ensureAllBackgrounds(null);
     } catch (e) {
         Console.dumpError(e);
+    }
+};
+Controller.prototype.editPageNote = function (page) {
+    var returnValueHolder = {};
+    var currentData = {value : page.properties.note ? page.properties.note : ""};
+    var returnValueHolder = {};
+    var dialog = window.openDialog("PageNoteDialog.xul", "PageNoteDialog" + Util.getInstanceToken(), "dialog=no,centerscreen,resizable,minimizable=yes,maximizable=yes,dependent, modal", currentData, returnValueHolder, page.properties.name);
+    if (returnValueHolder.ok) {
+        if (!page._view) return;
+        page.properties.note = RichText.fromString(returnValueHolder.html);
+        debug("html " + returnValueHolder.html);
+        debug("RichText " + page.properties.note);
+        this.markDocumentModified();
     }
 };
 Controller.prototype.rasterizeDocument = function () {

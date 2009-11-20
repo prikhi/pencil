@@ -1,0 +1,25 @@
+dialog {
+    padding: 0px;
+}
+editor {
+    background-color: #fff;
+    -moz-box-flex: 1;
+    border: solid 1px;
+    -moz-border-top-colors: threedshadow;
+    -moz-border-left-colors: threedshadow;
+    -moz-border-bottom-colors: threedhighlight;
+    -moz-border-right-colors: threedhighlight;
+}
+*.dialog-button-box {
+    padding: .4em;
+}
+*.dialog-button-box button {
+    font-size: .9em;
+}
+toolbarbutton {
+}
+
+toolbar menuitem.NameItem {
+    font-weight: bold;
+    background: threedface;
+}
