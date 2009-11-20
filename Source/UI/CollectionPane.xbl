@@ -172,6 +172,9 @@
                         }, false);
 
                         var image = document.createElementNS(PencilNamespaces.html, "img");
+                        image.onError = function () {
+                            div.setAttribute("noimage", true);
+                        };
                         image.setAttribute("src", def.iconPath);
                         button.appendChild(image);
 
@@ -225,7 +228,7 @@
                  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
             <vbox flex="1">
-                <vbox flex="1" aid="contentBox">
+                   <vbox flex="1" aid="contentBox">
                 </vbox>
             </vbox>
             <popupset>

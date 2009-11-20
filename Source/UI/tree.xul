@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
+
+<window title="XUL Childless Trees"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script src="../Common/nsDragAndDrop.js"/>
+<script src="../Common/Util.js"/>
+<script src="../Common/IO.js"/>
+<script src="../Common/Lorem.js"/>
+
+<script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/Tree.js"/>
+
+<script>
+<![CDATA[
+
+function setText(treeID,textID)
+{
+  var tree = document.getElementById(treeID);
+  var selection = tree.contentView.getItemAtIndex(tree.currentIndex);
+  var text = selection.firstChild.firstChild.getAttribute("label");
+  document.getElementById(textID).value = text;
+}
+
+]]>
+</script>
+<stack flex="1">
+    <vbox flex="1">
+
+<description><html:h1>XUL Childless Trees</html:h1></description>
+
+<vbox flex="1" style="overflow: auto">
+
+    <groupbox flex="2">
+    <caption label="single selection" />
+    <tree id="tree1" editable="true" flex="1" hidecolumnpicker="true" seltype="single"
+                     onselect="setText('tree1','value1');" >
+      <treecols>
+    <treecol id="name1"  flex="1" label="Name" />
+    <treecol id="sex1"   flex="1" label="Sex" />
+    <treecol id="color1" flex="1" label="Color" />
+    <treecol id="attr1"  flex="1" label="Attribute" />
+      </treecols>
+
+      <treechildren onmousedown="handleEdit(event)">
+       <treeitem>
+        <treerow>
+     <treecell label="Pearl" />
+     <treecell label="Female" />
+     <treecell label="Gray" />
+     <treecell label="Frumpy" />
+        </treerow>
+       </treeitem>
+       <treeitem>
+        <treerow>
+     <treecell label="Aramis" />
+     <treecell label="Male" />
+     <treecell label="Black" />
+     <treecell label="Cute" />
+        </treerow>
+       </treeitem>
+       <treeitem>
+        <treerow>
+     <treecell label="Yakima" />
+     <treecell label="Male" />
+     <treecell label="Holstein" />
+     <treecell label="Handsome" />
+        </treerow>
+       </treeitem>
+      </treechildren>
+    </tree>
+    <description id="value1" value="(none yet)" />
+    </groupbox>
+
+    <groupbox flex="3">
+    <caption label="multiple selection, with columnpicker and separator" />
+    <tree id="tree2" flex="1" hidecolumnpicker="false" seltype="multiple" style="min-height: 200px;">
+      <treecols>
+    <treecol id="name2"  flex="1" label="Name" />
+    <treecol id="sex2"   flex="1" label="Sex"  />
+    <treecol id="color2" flex="1" label="Color" />
+    <treecol id="attr2"  flex="1" label="Attribute" />
+      </treecols>
+
+      <treechildren onmousedown="handleEdit(event)">
+       <treeitem>
+        <treerow>
+     <treecell label="Cosmo" />
+     <treecell label="Female" />
+     <treecell label="White" />
+     <treecell label="Round" />
+        </treerow>
+       </treeitem>
+       <treeitem>
+        <treerow>
+     <treecell label="Fergus" />
+     <treecell label="Male" />
+     <treecell label="Black" />
+     <treecell label="Long" />
+        </treerow>
+       </treeitem>
+       <treeitem>
+        <treerow>
+     <treecell label="Clint" />
+     <treecell label="Male" />
+     <treecell label="Black" />
+     <treecell label="Young" />
+        </treerow>
+       </treeitem>
+       <treeseparator />
+       <treeitem>
+        <treerow>
+     <treecell label="Tribble" />
+     <treecell label="Female" />
+     <treecell label="Orange" />
+     <treecell label="Frumpy" />
+        </treerow>
+       </treeitem>
+       <treeitem>
+        <treerow>
+     <treecell label="Zippy" />
+     <treecell label="Male" />
+     <treecell label="Orange" />
+     <treecell label="Playful" />
+        </treerow>
+       </treeitem>
+      </treechildren>
+     </tree>
+    </groupbox>
+
+    <groupbox flex="1">
+    <caption label="with dragable, resizable columns" />
+    <tree id="tree3" flex="1" hidecolumnpicker="true" enableColumnDrag="true" >
+      <treecols>
+    <treecol id="name3"  flex="1" label="Name" />
+    <splitter class="tree-splitter" />
+    <treecol id="sex3"   flex="1" label="Sex"  />
+    <splitter class="tree-splitter" />
+    <treecol id="color3" flex="1" label="Color" />
+    <splitter class="tree-splitter" />
+    <treecol id="attr3"  flex="1" label="Attribute" />
+      </treecols>
+
+      <treechildren onmousedown="handleEdit(event)">
+       <treeitem>
+        <treerow>
+     <treecell label="Feathers" />
+     <treecell label="Male" />
+     <treecell label="Tabby" />
+     <treecell label="Patiarchal" />
+        </treerow>
+       </treeitem>
+       <treeitem>
+        <treerow>
+     <treecell label="Butter" />
+     <treecell label="Male" />
+     <treecell label="Orange" />
+     <treecell label="Old" />
+        </treerow>
+       </treeitem>
+      </treechildren>
+     </tree>
+    </groupbox>
+</vbox>
+</vbox>
+    <menulist id="editor" top="10" left="10" style="width: 100px; height: 25px; margin: 0px; font-size: .9em;" label="Value"/>
+</stack>
+
+</window>

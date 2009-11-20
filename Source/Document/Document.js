@@ -4,27 +4,27 @@ function PencilDocument() {
 }
 PencilDocument.prototype.toDom = function () {
     var dom = document.implementation.createDocument(PencilNamespaces.p, "Document", null);
-    
+
     //properties
     var propertyContainerNode = dom.createElementNS(PencilNamespaces.p, "Properties");
     dom.documentElement.appendChild(propertyContainerNode);
-    
+
     for (name in this.properties) {
         var propertyNode = dom.createElementNS(PencilNamespaces.p, "Property");
         propertyContainerNode.appendChild(propertyNode);
-        
+
         propertyNode.setAttribute("name", name);
         propertyNode.appendChild(dom.createTextNode(this.properties[name].toString()));
     }
-    
+
     //pages
     var pageContainerNode = dom.createElementNS(PencilNamespaces.p, "Pages");
     dom.documentElement.appendChild(pageContainerNode);
-    
+
     for (i in this.pages) {
         pageContainerNode.appendChild(this.pages[i].toNode(dom));
     }
-    
+
     return dom;
 };
 
@@ -35,7 +35,7 @@ PencilDocument.prototype.getPageById = function (id) {
     for (var i in this.pages) {
         if (this.pages[i].properties.id == id) return this.pages[i];
     }
-    
+
     return null;
 };
 
@@ -53,31 +53,31 @@ function Page(doc) {
 Page.prototype.validateLoadedData = function () {
     this.properties.dimBackground = (this.properties.dimBackground == "true");
 };
-Page.prototype.toNode = function (dom) {
+Page.prototype.toNode = function (dom, noContent) {
     var pageNode = dom.createElementNS(PencilNamespaces.p, "Page");
-    
+
     var propertyContainerNode = dom.createElementNS(PencilNamespaces.p, "Properties");
     pageNode.appendChild(propertyContainerNode);
-    
+
     for (name in this.properties) {
         var propertyNode = dom.createElementNS(PencilNamespaces.p, "Property");
         propertyContainerNode.appendChild(propertyNode);
-        
+
         propertyNode.setAttribute("name", name);
         propertyNode.appendChild(dom.createTextNode(this.properties[name].toString()));
     }
-    
 
-    if (this.contentNode) {
+
+    if (this.contentNode && !noContent) {
         var contentNode = dom.createElementNS(PencilNamespaces.p, "p:Content");
         for (var i = 0; i < this.contentNode.childNodes.length; i ++) {
             var node = this.contentNode.childNodes[i];
             contentNode.appendChild(dom.importNode(node, true));
         }
-        
+
         pageNode.appendChild(contentNode);
     }
-    
+
     return pageNode;
 };
 Page.prototype.equals = function (page) {
@@ -87,7 +87,7 @@ Page.prototype.equals = function (page) {
 Page.prototype.getBackgroundPage = function () {
     var bgPageId = this.properties.background;
     if (!bgPageId) return null;
-    
+
     return this.doc.getPageById(bgPageId);
 };
 
@@ -107,7 +107,7 @@ Page._validateBackgroundInternal = function (list, page) {
 Page.prototype.validateBackgroundSetting = function () {
     var page = this.getBackgroundPage();
     if (!page) return;
-    
+
     Page._validateBackgroundInternal([this], page);
 };
 Page.prototype.canSetBackgroundTo = function (page) {
@@ -122,7 +122,7 @@ Page.prototype.isBackgroundValid = function () {
     if (!page) return (this.bgToken ? false : true);
     if (!page.isRasterizeDataCacheValid()) return false;
     if (!page.rasterizeDataCache || (page.rasterizeDataCache.token != this.bgToken)) return false;
-    
+
     return true;
 };
 
@@ -137,7 +137,7 @@ Page.prototype.ensureBackground = function (callback) { // callback: function() 
     if (!page) {
         this.bgToken = null;
         this._view.canvas.setBackgroundImageData(null);
-        
+
         if (callback) callback();
         return;
     }
@@ -150,14 +150,14 @@ Page.prototype.ensureBackground = function (callback) { // callback: function() 
         } catch (e) {
             Console.dumpError(e);
         }
-        
+
         if (callback) callback();
     });
 };
 Page.prototype.getRasterizeData = function (callback) {
     if (this.isRasterizeDataCacheValid()) {
         callback(this.rasterizeDataCache);
-        
+
         return;
     }
     var thiz = this;
