@@ -1,7 +1,7 @@
 
-window.onerrorx = function (message, url, code) {
+window.onerror = function (message, url, code) {
     //Console.dumpError(message);
-    Util.info("System error:\nMessage: " + message + "\nURL: " + url + "\nError code: " + code);
+    error("SYSTEM ERROR!\n\t* " + message + "\n\t* at: " + url + ":" + code);
     return false;
 };
 
@@ -23,6 +23,21 @@ Pencil.registerXferHelper = function (helperClass) {
 };
 
 Pencil.behaviors = {};
+
+Pencil.documentExporters = [];
+Pencil.defaultDocumentExporter = null;
+Pencil.registerDocumentExporter = function (exporter, defaultExporter) {
+    Pencil.documentExporters.push(exporter);
+    if (defaultExporter) Pencil.defaultDocumentExporter = exporter;
+};
+Pencil.getDocumentExporterById = function (id) {
+    for (var i = 0; i < Pencil.documentExporters.length; i ++) {
+        if (Pencil.documentExporters[i].id == id) {
+            return Pencil.documentExporters[i];
+        }
+    }
+    return null;
+};
 
 Pencil.toggleHeartBeat = function () {
     if (Pencil.window.hasAttribute("class")) {
@@ -72,6 +87,7 @@ Pencil.boot = function (event) {
         Pencil.controller = new Controller(win);
         Pencil.rasterizer = new Rasterizer("image/png");
         CollectionManager.loadStencils();
+        ExportTemplateManager.loadTemplates();
 
         Pencil.setTitle("(No document)");
         Pencil.activeCanvas = null;
@@ -228,6 +244,7 @@ window.addEventListener("close", function (event) {
     }
     Pencil.rasterizer.cleanup();
 }, false);
+
 
 
 

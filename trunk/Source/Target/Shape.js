@@ -169,6 +169,12 @@ Shape.prototype.getProperty = function (name) {
     if (!literal) literal = "";
     return propType.fromString(literal);
 };
+Shape.prototype.setMetadata = function (name, value) {
+    return Util.setNodeMetadata(this.svg, name, value);
+};
+Shape.prototype.getMetadata = function (name) {
+    return Util.getNodeMetadata(this.svg, name);
+};
 Shape.prototype.locatePropertyNode = function (name) {
     return Dom.getSingle("./p:property[@name='" + name +"']", this.metaNode);
 };
@@ -201,6 +207,96 @@ Shape.prototype.getGeometry = function () {
 
     return geo;
 };
+
+//new imple for geometry editing
+
+Shape.prototype.moveBy = function (dx, dy) {
+    var matrix = this.svg.ownerSVGElement.createSVGTransform().matrix;
+    matrix = matrix.translate(dx, dy);
+    var ctm = this.svg.getTransformToElement(this.svg.parentNode);
+    
+    matrix = matrix.multiply(ctm);
+    Svg.ensureCTM(this.svg, matrix);
+};
+Shape.prototype.scaleTo = function (w, h) {
+    if (this.def.propertyMap["box"]) {
+        var box = this.getProperty("box");
+        var fw = w / box.w;
+        var fh = h / box.h;
+
+        this.storeProperty("box", new Dimension(w, h));
+
+        //scale the handle
+        for (name in this.def.propertyMap) {
+            var p = this.def.propertyMap[name];
+            if (p.type != Handle || p.meta.noScale) continue;
+
+            var h = this.getProperty(name);
+            debug("before: " + [h.x, h.y]);
+            h.x = h.x * fw;
+            h.y = h.y * fh;
+
+            debug("after: " + [h.x, h.y]);
+
+            this.storeProperty(name, h);
+        }
+
+        this.applyBehaviorForProperty("box");
+    } else {
+        error(this.def.displayName + " does not support scaling.");
+    }
+};
+Shape.prototype.rotateBy = function (da) {
+    debug("rotateBy: " + da);
+    var ctm = this.svg.getTransformToElement(this.svg.parentNode);
+    
+    var x = 0, y = 0;
+    
+    var box = this.getProperty("box");
+    
+    if (box) {
+        x = box.w / 2;
+        y = box.h / 2;
+    } else {
+        var bbox = this.svg.getBBox();
+        x = bbox.x + bbox.width / 2;
+        y = bbox.y + bbox.height / 2;
+    }
+
+    center = Svg.pointInCTM(x, y, ctm);
+    
+    ctm = ctm.translate(x, y);
+    ctm = ctm.rotate(da);
+    ctm = ctm.translate(0 - x, 0 - y);
+    
+    Svg.ensureCTM(this.svg, ctm);
+};
+Shape.prototype.getBounding = function (to) {
+    var context = to ? to : this.canvas.drawingLayer;
+    var ctm = this.svg.getTransformToElement(context);
+    
+    var bbox = this.svg.getBBox();
+    
+    var p = Svg.pointInCTM(bbox.x, bbox.y, ctm);
+    var rect = {
+        x: p.x,
+        y: p.y,
+        width: 0,
+        height: 0
+    };
+    
+    Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x + bbox.width, bbox.y, ctm));
+    Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x + bbox.width, bbox.y + bbox.height, ctm));
+    Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x, bbox.y + bbox.height, ctm));
+    
+    return rect;
+};
+Shape.prototype.supportScaling = function () {
+    return this.getProperty("box") ? true : false;
+};
+
+//~new impl
+
 Shape.prototype.getBoundingRect = function () {
     var rect = {x: 0, y: 0, width: 0, height: 0};
     try {
@@ -274,7 +370,7 @@ Shape.prototype.setBound = function (bound) {
     this.setProperty("box", new Dimension(bound.w, bound.h));
     this.move(bound.x, bound.y);
 };
-Shape.prototype.moveBy = function (x, y, zoomAware) {
+Shape.prototype.moveByx = function (x, y, zoomAware) {
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
     var v = Svg.vectorInCTM({x: x / (zoomAware ? this.canvas.zoom : 1), y: y / (zoomAware ? this.canvas.zoom : 1)}, ctm, true);
     ctm = ctm.translate(v.x, v.y);
@@ -283,6 +379,7 @@ Shape.prototype.moveBy = function (x, y, zoomAware) {
 };
 
 Shape.prototype.setPositionSnapshot = function () {
+/*
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
 
     this.svg.transform.baseVal.consolidate();
@@ -294,9 +391,11 @@ Shape.prototype.setPositionSnapshot = function () {
     translate = this.svg.transform.baseVal.createSVGTransformFromMatrix(translate);
     this.svg.transform.baseVal.appendItem(translate);
 
-    this._pSnapshot = {ctm: ctm, translate: translate, x: ctm.e, y: ctm.f};
+*/
+    this._pSnapshot = {lastDX: 0, lastDY: 0};
 };
 Shape.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
+/*
     var v = Svg.vectorInCTM({x: dx, y: dy},
                             this._pSnapshot.ctm,
                             true);
@@ -313,11 +412,19 @@ Shape.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
 
     this._pSnapshot.translate.matrix.e = v.x;
     this._pSnapshot.translate.matrix.f = v.y;
+*/
+    
+    this.moveBy(dx - this._pSnapshot.lastDX, dy - this._pSnapshot.lastDY);
+    this._pSnapshot.lastDX = dx;
+    this._pSnapshot.lastDY = dy;
 };
 Shape.prototype.clearPositionSnapshot = function () {
+/*
     delete this._pSnapshot;
     this._pSnapshot = null;
     this.svg.transform.baseVal.consolidate();
+*/
+    this._pSnapshot = {lastDX: 0, lastDY: 0};
 };
 Shape.prototype.normalizePositionToGrid = function () {
     this.setPositionSnapshot();

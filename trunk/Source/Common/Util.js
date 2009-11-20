@@ -128,7 +128,9 @@ Dom.serializeNodeToFile = function (node, file, additionalContentPrefixes) {
     // This assumes that fos is the nsIOutputStream you want to write to
     os.init(fos, XMLDocumentPersister.CHARSET, 0, 0x0000);
 
-    os.writeString("<?xml version=\"1.0\"?>\n");
+    if (node.nodeType != Node.DOCUMENT_NODE) {
+        os.writeString("<?xml version=\"1.0\"?>\n");
+    }
     if (additionalContentPrefixes) {
         os.writeString(additionalContentPrefixes + "\n");
     }
@@ -247,7 +249,42 @@ Dom.swapNode = function (node1, node2) {
     parentNode.removeChild(node1);
     parentNode.insertBefore(node1, ref);
 };
+Dom.parseFile = function (file) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
 
+    var fileContents = FileIO.read(file, "UTF-8");
+    var dom = Dom.parser.parseFromString(fileContents, "text/xml");
+
+    return dom;
+};
+
+Dom.newDOMElement = function (spec, doc) {
+    var ownerDocument = doc ? doc : document;
+    var e = spec._uri ? ownerDocument.createElementNS(spec._uri, spec._name) : ownerDocument.createElement(spec._name);
+
+    for (name in spec) {
+        if (name.match(/^_/)) continue;
+        e.setAttribute(name, spec[name]);
+    }
+
+    if (spec._text) {
+        e.appendChild(e.ownerDocument.createTextNode(spec._text));
+    }
+    if (spec._children && spec._children.length > 0) {
+        e.appendChild(Dom.newDOMFragment(spec._children, e.ownerDocument));
+    }
+
+    return e;
+};
+Dom.newDOMFragment = function (specs, doc) {
+    var ownerDocument = doc ? doc : document;
+    var f = ownerDocument.createDocumentFragment();
+
+    for (var i in specs) {
+        f.appendChild(Dom.newDOMElement(specs[i], ownerDocument));
+    }
+    return f;
+};
 
 var Svg = {};
 Svg.setX = function (node, x) {
@@ -285,6 +322,13 @@ Svg.ensureCTM = function (node, matrix) {
     var s = Svg.toTransformText(matrix);
     node.setAttribute("transform", s);
 };
+Svg.pointInCTM = function (x, y, ctm) {
+    return {
+        x: ctm.a * x + ctm.c * y + ctm.e,
+        y: ctm.b * x + ctm.d * y + ctm.f
+    };
+};
+
 Svg.vectorInCTM = function (point, userCTM, noTranslation) {
     var ctm = userCTM.inverse();
 
@@ -354,6 +398,21 @@ Svg.joinRect = function (rect1, rect2) {
             y: minY,
             width: maxX - minX,
             height: maxY - minY};
+};
+Svg.expandRectTo = function (rect, p) {
+    if (p.x < rect.x) {
+        rect.width += rect.x - p.x;
+        rect.x = p.x;
+    } else if (p.x > rect.x + rect.width) {
+        rect.width = p.x - rect.x;
+    }
+    
+    if (p.y < rect.y) {
+        rect.height += rect.y - p.y;
+        rect.y = p.y;
+    } else if (p.y > rect.y + rect.height) {
+        rect.height = p.y - rect.y;
+    }
 };
 Svg.contains = function (x, y, large) {
     return (large.x <= x && x <= large.x + large.width) &&
@@ -573,7 +632,12 @@ Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancel
 Util.beginProgressJob = function(jobName, jobStarter) {
     var dialog = window.openDialog("ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "centerscreen", jobName, jobStarter);
 };
-
+Util.setNodeMetadata = function (node, name, value) {
+    node.setAttributeNS(PencilNamespaces.p, "p:" + name, value);
+};
+Util.getNodeMetadata = function (node, name) {
+    return node.getAttributeNS(PencilNamespaces.p, name);
+};
 function debug(value) {
     dump("DEBUG: " + value + "\n");
 }
