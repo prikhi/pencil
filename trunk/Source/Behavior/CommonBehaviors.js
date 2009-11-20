@@ -218,7 +218,12 @@ function translate(x, y) {
 function scale(x, y) {
     return "scale(" + [x, y] + ")";
 }
-
+function skewX(a) {
+    return "skewX(" + a + ")";
+}
+function skewY(a) {
+    return "skewY(" + a + ")";
+}
 Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootElement) {
     var isText = (this.localName == "text");
 
