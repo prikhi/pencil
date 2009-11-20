@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-    xmlns:p="http://www.evolus.vn/Namespace/Pencil">
+    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+    xmlns="http://www.w3.org/1999/xhtml">
 <xsl:output method="html"/>
 
     <xsl:template match="/">
@@ -21,7 +22,11 @@
                     height="{p:Properties/p:Property[@name='height']/text()}"
                     usemap="#map{p:Properties/p:Property[@name='id']/text()}"/>
             </div>
-            <p class="Notes"></p>
+            <xsl:if test="p:Note">
+                <p class="Notes">
+                    <xsl:copy-of select="p:Note/node()"/>
+                </p>
+            </xsl:if>
             <map name="map{p:Properties/p:Property[@name='id']/text()}">
                 <xsl:apply-templates select="p:Links/p:Link" />
             </map>

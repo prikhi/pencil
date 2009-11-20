@@ -866,6 +866,18 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
     for (i in pages) {
         var page = pages[i];
         var pageNode = page.toNode(dom, "no content");
+        
+        //ugly walkarround for Gecko d-o-e bug (https://bugzilla.mozilla.org/show_bug.cgi?id=98168)
+        //we have to reparse the provided notes as XHTML and append it directly to the dom
+        if (page.properties.note) {
+            var xhtml = "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + page.properties.note + "</div>";
+            var node = Dom.parseToNode(xhtml, dom);
+            
+            var noteNode = dom.createElementNS(PencilNamespaces.p, "Note");
+            noteNode.appendChild(node);
+            pageNode.appendChild(noteNode);
+        }
+        
         pageContainerNode.appendChild(pageNode);
 
         if (!pageExtraInfos[page.properties.id]) continue;
@@ -905,7 +917,8 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
     } catch (e) {
         Util.error("Error exporting document", "" + e);
     } finally {
-        file.remove(true);
+        debug("about to remove: " + file.path);
+        //file.remove(true);
     }
 };
 
