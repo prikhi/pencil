@@ -80,34 +80,19 @@ SharedGeomtryEditor.prototype.handleCommandEvent = function () {
     var da = this.shapeAngleTextBox.value - a;
 
     Pencil.activeCanvas.run(function () {
-        this.targetObject.setPositionSnapshot();
-        this.targetObject.moveFromSnapshot(dx, dy);
-
-        var box = this.targetObject.getProperty(SharedGeomtryEditor.PROPERTY_NAME);
-        if (box) {
-            box.w = this.shapeWidthTextBox.value;
-            box.h = this.shapeHeightTextBox.value;
+        if (dx != 0 || dy != 0) {
+            this.targetObject.moveBy(dx, dy);
+        }
+        
+        if (this.targetObject.supportScaling()) {
+            this.targetObject.scaleTo(this.shapeWidthTextBox.value, this.shapeHeightTextBox.value);
         }
 
-        var point = Svg.getScreenLocation(this.targetObject.svg);
-
-        var center = { x: currentGeo.dim.w * 0.5, y: currentGeo.dim.h * 0.5};
-
-        var rm = Svg.rotateMatrix(da, center, this.targetObject.svg);
-        var geo = Pencil.activeCanvas.getZoomedGeo(this.targetObject);
-
-        box.w *= Pencil.activeCanvas.zoom;
-        box.h *= Pencil.activeCanvas.zoom;
-
-        var newGeo = new Geometry();
-        newGeo.ctm = geo.ctm.multiply(rm);
-        newGeo.dim = box;
-        newGeo.loc = null;
-
-        Pencil.activeCanvas.setZoomedGeo(this.targetObject, newGeo, this);
         if (da != 0) {
-            this.invalidate();
+            this.targetObject.rotateBy(da);
         }
+        
+        this.invalidate();
     }, this);
 
     Pencil.activeCanvas.invalidateEditors(this);

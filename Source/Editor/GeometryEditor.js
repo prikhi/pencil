@@ -1,10 +1,20 @@
 function GeometryEditor() {
     this.svgElement = null;
     this.canvas = null;
+    
+    this.resetAccomulatedChanges();
 }
 
 GeometryEditor.configDoc = Dom.loadSystemXml("GeometryEditor.config.xml");
 GeometryEditor.ANCHOR_SIZE = 4;
+
+GeometryEditor.prototype.resetAccomulatedChanges = function () {
+    this.adx = 0;
+    this.ady = 0;
+    this.adw = 0;
+    this.adh = 0;
+    this.ada = 0;
+};
 GeometryEditor.prototype.install = function (canvas) {
     this.canvas = canvas;
     this.canvas.onScreenEditors.push(this);
@@ -116,7 +126,7 @@ GeometryEditor.prototype.attach = function (targetObject) {
 
     this.svgElement.style.visibility = "visible";
 
-    if (this.targetObject.getProperty("box")) {
+    if (this.targetObject.supportScaling()) {
         this.svgElement.removeAttributeNS(PencilNamespaces.p, "nobox");
     } else {
         this.svgElement.setAttributeNS(PencilNamespaces.p, "p:nobox", true);
@@ -254,8 +264,24 @@ GeometryEditor.prototype.handleMouseDown = function (event) {
 GeometryEditor.prototype.handleMouseUp = function (event) {
     try {
         if (this.currentAnchor) {
-            this.canvas.setZoomedGeo(this.targetObject, this.geo);
-            this.canvas.invalidateEditors(this);
+            this.canvas.run(function () {
+                try {
+                    if (this.adx != 0 || this.ady != 0) {
+                        this.targetObject.moveBy(this.adx / this.canvas.zoom, this.ady / this.canvas.zoom);
+                    }
+                    if (this.adw != 0 || this.adh != 0) {
+                        var geo = this.targetObject.getGeometry();
+                        if (!geo.dim) return;
+                        this.targetObject.scaleTo(geo.dim.w + this.adw / this.canvas.zoom, geo.dim.h + this.adh / this.canvas.zoom);
+                    }
+                    if (this.ada != 0) {
+                        this.targetObject.rotateBy(this.ada);
+                    }
+                } finally {
+                    this.resetAccomulatedChanges();
+                    this.canvas.invalidateEditors();
+                }
+            }, this);
         }
     } finally {
         this.currentAnchor = null;
@@ -388,6 +414,12 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
 
     newGeo.ctm = this.oGeo.ctm.translate(dx, dy);
     newGeo.dim = new Dimension(Math.round(this.oGeo.dim.w + dw), Math.round(this.oGeo.dim.h + dh));
+    
+    var p = Svg.vectorInCTM(new Point(dx, dy), this.geo.ctm.inverse(), true);
+    this.adx = p.x;
+    this.ady = p.y;
+    this.adw = dw;
+    this.adh = dh;
 
 
     //validate the bound using the current policies
@@ -442,8 +474,9 @@ GeometryEditor.prototype.handleMouseMove_old = function (event) {
     this.setEditorGeometry(newGeo);
 };
 GeometryEditor.prototype.getLockingPolicy = function () {
+    var allowScalling = this.targetObject.supportScaling();
     if(!this.targetObject.def)
-        return {x: false, y: false, width: true, height: true, rotation: true, ratio: true};
+        return {x: false, y: false, width: !allowScalling, height: !allowScalling, rotation: false, ratio: false};
     var boxPropDef = this.targetObject.def.propertyMap["box"];
     var lockW = boxPropDef ? (boxPropDef.meta.lockWidth == "true" || boxPropDef.meta.widthExpr) : false;
     var lockH = boxPropDef ? (boxPropDef.meta.lockHeight == "true" || boxPropDef.meta.heightExpr) : false;
@@ -506,6 +539,8 @@ GeometryEditor.prototype.rotate = function (from, to, event) {
     newGeo.loc = this.geo.loc ? this.geo.loc : null;
 
     this.setEditorGeometry(newGeo);
+    
+    this.ada = a;
 };
 GeometryEditor.prototype.validateGeometry = function (geo, matrix, locking) {
 

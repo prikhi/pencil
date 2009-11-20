@@ -35,6 +35,7 @@
                 //create the context menu
                 this.popup = document.getAnonymousElementByAttribute(this, "aid", "contextPopup");
                 this.arrangementMenu = document.getAnonymousElementByAttribute(this, "aid", "arrangementMenu");
+                this.linkMenu = document.getAnonymousElementByAttribute(this, "aid", "linkMenu");
                 this.arrangementMenu._canvas = this;
 
                 this.popupSeparator = document.getAnonymousElementByAttribute(this, "aid", "contextPopupSeparator");
@@ -644,6 +645,8 @@
                         return node.hasAttributeNS && node.hasAttributeNS(PencilNamespaces.p, "type");
                     });
                     if (top && this.isShapeLocked(top)) top = null;
+                    debug("top: " + top);
+                    
                     if (!top) {
                         this.lastTop = null;
                         //this.clearSelection();
@@ -701,33 +704,38 @@
 
 
                     if (controller) {
-                        this.currentController = controller;
-                        this.controllerHeld = true;
+                        try {
+                            debug("controler: " + controller.getName());
+                            this.currentController = controller;
+                            this.controllerHeld = true;
 
-                        this.oX = Math.round(event.clientX / this.zoom);
-                        this.oY = Math.round(event.clientY / this.zoom);
-                        this.oldPos = this.currentController.getGeometry();
+                            this.oX = Math.round(event.clientX / this.zoom);
+                            this.oY = Math.round(event.clientY / this.zoom);
+                            this.oldPos = this.currentController.getGeometry();
 
-                        tick("before setPositionSnapshot");
-                        this.currentController.setPositionSnapshot();
-                        tick("after setPositionSnapshot");
+                            tick("before setPositionSnapshot");
+                            this.currentController.setPositionSnapshot();
+                            tick("after setPositionSnapshot");
 
-                        this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
+                            this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
 
-                        if (top != this.lastTop || event.ctrlKey || event.button != 0) {
-                            this.reClick = false;
-                            this._attachEditors(controller);
+                            if (top != this.lastTop || event.ctrlKey || event.button != 0) {
+                                this.reClick = false;
+                                this._attachEditors(controller);
 
 
-                        } else {
-                            this.reClick = true;
+                            } else {
+                                this.reClick = true;
+                            }
+                            tick("attached");
+
+                            this.hasMoved = false;
+                            this.lastTop = top;
+                            this._sayTargetChanged();
+                            tick("done");
+                        } catch (e) {
+                            Console.dumpError(e);
                         }
-                        tick("attached");
-
-                        this.hasMoved = false;
-                        this.lastTop = top;
-                        this._sayTargetChanged();
-                        tick("done");
                     }
                 ]]>
                 </body>
@@ -1278,8 +1286,15 @@
                     g.setAttributeNS(PencilNamespaces.p, "p:type", "Group");
 
                     var nodes = [];
+                    var rect = null;
                     Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
-                        for (t in targets) if (targets[t].isFor(node)) nodes.push(node);
+                        for (t in targets) {
+                            if (targets[t].isFor(node)) {
+                                nodes.push(node);
+                                var childRect = targets[t].getBounding();
+                                rect = rect ? Svg.joinRect(rect, childRect) : childRect;
+                            }
+                        }
                     });
 
                     for (n in nodes) {
@@ -1289,6 +1304,12 @@
                     }
 
                     this.drawingLayer.appendChild(g);
+
+                    for (t in targets) {
+                        targets[t].moveBy(0 - rect.x, 0 - rect.y);
+                    }
+
+                    g.setAttribute("transform", "translate(" + [rect.x, rect.y] + ")");
 
                     this.selectShape(g);
                 ]]>
@@ -1312,17 +1333,8 @@
                 <![CDATA[
                     if (!this.currentController) return;
                     if (this.currentController.constructor != Group) return;
-
-                    var nodes = [];
-                    for (t in this.currentController.targets) {
-                        var node = this.currentController.targets[t].svg;
-                        node.parentNode.removeChild(node);
-                        this.drawingLayer.appendChild(node);
-
-                        nodes.push(node);
-                    }
-
-                    this.drawingLayer.removeChild(this.currentController.svg);
+                    
+                    var nodes = this.currentController.ungroup();
 
                     this.selectMultiple(nodes);
                 ]]>
