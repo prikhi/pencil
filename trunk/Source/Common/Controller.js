@@ -777,6 +777,7 @@ Controller.prototype.exportDocument = function () {
             pages = this.doc.pages;
         }
         
+        var usedFriendlyIds = [];
 
         var thiz = this;
         var starter = function (listener) {
@@ -795,16 +796,19 @@ Controller.prototype.exportDocument = function () {
                     //signal progress
                     var task = "Exporting page " + page.properties.name + "...";
                     listener.onProgressUpdated(task, pageIndex + 1, pages.length);
+                    
+                    var friendlyId = page.generateFriendlyId(usedFriendlyIds);
 
                     var file = pagesDir.clone();
-                    var fileName = page.properties.id + ".png";
+                    var fileName = friendlyId + ".png";
                     file.append(fileName);
 
                     var pagePath = file.path;
                     debug("File path: " + pagePath);
 
                     var pageExtraInfo = {
-                        rasterizedPath: Controller.PAGES_SUBFOLDER_NAME + "/" + fileName
+                        rasterizedPath: Controller.PAGES_SUBFOLDER_NAME + "/" + fileName,
+                        friendlyId: friendlyId
                     };
                     pageExtraInfos[page.properties.id] = pageExtraInfo;
 
@@ -850,13 +854,35 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
     //properties
     var propertyContainerNode = dom.createElementNS(PencilNamespaces.p, "Properties");
     dom.documentElement.appendChild(propertyContainerNode);
+    
+    var docProperties = {};
 
     for (name in this.doc.properties) {
+        docProperties[name] = this.doc.properties[name];
+    }
+    
+    //enriching with additional properties
+    var d = new Date();
+    docProperties["exportTime"] = d;
+    docProperties["exportTimeShort"] = "" + d.getFullYear() + (d.getMonth() + 1) + d.getDate();
+    
+    if (this.isBoundToFile()) {
+        docProperties["path"] = this.filePath;
+        
+        var file = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
+                             
+        file.initWithPath(this.filePath);
+        
+        docProperties["fileName"] = file.leafName;
+    }
+    
+    for (name in docProperties) {
         var propertyNode = dom.createElementNS(PencilNamespaces.p, "Property");
         propertyContainerNode.appendChild(propertyNode);
 
         propertyNode.setAttribute("name", name);
-        propertyNode.appendChild(dom.createTextNode(this.doc.properties[name].toString()));
+        propertyNode.appendChild(dom.createTextNode(docProperties[name].toString()));
     }
 
     //pages
@@ -873,6 +899,8 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
             var xhtml = "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + page.properties.note + "</div>";
             var node = Dom.parseToNode(xhtml, dom);
             
+            //TODO: Manipulating the notes dom for inter-page linking
+            
             var noteNode = dom.createElementNS(PencilNamespaces.p, "Note");
             noteNode.appendChild(node);
             pageNode.appendChild(noteNode);
@@ -883,6 +911,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
         if (!pageExtraInfos[page.properties.id]) continue;
         var extra = pageExtraInfos[page.properties.id];
         pageNode.setAttribute("rasterized", extra.rasterizedPath);
+        pageNode.setAttribute("friendlyId", extra.friendlyId);
 
         var linkingContainerNode = dom.createElementNS(PencilNamespaces.p, "Links");
         pageNode.appendChild(linkingContainerNode);
@@ -894,10 +923,15 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
 
             var targetPage = this.doc.getPageById(linking.pageId);
             if (!targetPage) continue;
+            var targetExtra = pageExtraInfos[linking.pageId];
 
             var linkNode = dom.createElementNS(PencilNamespaces.p, "Link");
             linkNode.setAttribute("target", linking.pageId);
             linkNode.setAttribute("targetName", targetPage.properties.name);
+            if (targetExtra) {
+                linkNode.setAttribute("targetFid", targetExtra.friendlyId);
+            }
+            
             linkNode.setAttribute("x", linking.geo.x);
             linkNode.setAttribute("y", linking.geo.y);
             linkNode.setAttribute("w", linking.geo.w);
@@ -1038,6 +1072,7 @@ function LinkingGeometryPreprocessor(pageExtraInfo) {
 }
 LinkingGeometryPreprocessor.prototype.process = function (doc) {
     var objects = Dom.getList("//svg:g[@p:RelatedPage]", doc);
+    objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];
 

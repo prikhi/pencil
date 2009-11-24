@@ -39,6 +39,7 @@ PencilDocument.prototype.getPageById = function (id) {
     return null;
 };
 
+
 function Page(doc) {
     if (!doc) throw "Attempting to construct a page outside the scope of a valid document.";
     this.doc = doc;
@@ -177,7 +178,18 @@ Page.prototype.isRasterizeDataCacheValid = function () {
 Page.prototype._generateToken = function () {
     return this.properties.id + "@" + (new Date().getTime()) + "_" + Math.round(Math.random() * 1000);
 };
-
+Page.prototype.generateFriendlyId = function (usedFriendlyIds) {
+    var baseName = this.properties.name.replace(/[^a-z0-9 ]+/gi, "").replace(/[ ]+/g, "_").toLowerCase();
+    var name = baseName;
+    var seed = 1;
+    
+    while (usedFriendlyIds.indexOf(name) >= 0) {
+        name = baseName + "_" + (seed ++);    
+    }
+    
+    usedFriendlyIds.push(name);
+    return name;
+};
 
 
 
