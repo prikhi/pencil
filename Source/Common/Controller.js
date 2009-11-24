@@ -761,8 +761,15 @@ Controller.prototype.exportDocument = function () {
         if (!pagesDir.exists()) {
             pagesDir.create(pagesDir.DIRECTORY_TYPE, 0777);
         }
-
-        debug("Selected folder: " + dir.path);
+        
+        //populating friendly-id. WARN: side-effect!
+        var usedFriendlyIds = [];
+        for (var i = 0; i < this.doc.pages.length; i ++) {
+            var p = this.doc.pages[i];
+            var fid = p.generateFriendlyId(usedFriendlyIds);
+            p.properties.fid = fid;
+        }
+    
 
         var pages = [];
         
@@ -777,8 +784,6 @@ Controller.prototype.exportDocument = function () {
             pages = this.doc.pages;
         }
         
-        var usedFriendlyIds = [];
-
         var thiz = this;
         var starter = function (listener) {
             var pageExtraInfos = {};
@@ -797,7 +802,7 @@ Controller.prototype.exportDocument = function () {
                     var task = "Exporting page " + page.properties.name + "...";
                     listener.onProgressUpdated(task, pageIndex + 1, pages.length);
                     
-                    var friendlyId = page.generateFriendlyId(usedFriendlyIds);
+                    var friendlyId = page.properties.fid;
 
                     var file = pagesDir.clone();
                     var fileName = friendlyId + ".png";
@@ -807,8 +812,7 @@ Controller.prototype.exportDocument = function () {
                     debug("File path: " + pagePath);
 
                     var pageExtraInfo = {
-                        rasterizedPath: Controller.PAGES_SUBFOLDER_NAME + "/" + fileName,
-                        friendlyId: friendlyId
+                        rasterizedPath: Controller.PAGES_SUBFOLDER_NAME + "/" + fileName
                     };
                     pageExtraInfos[page.properties.id] = pageExtraInfo;
 
@@ -899,7 +903,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
             var xhtml = "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + page.properties.note + "</div>";
             var node = Dom.parseToNode(xhtml, dom);
             
-            //TODO: Manipulating the notes dom for inter-page linking
+            this._populateLinkTargetsInNote(node);
             
             var noteNode = dom.createElementNS(PencilNamespaces.p, "Note");
             noteNode.appendChild(node);
@@ -911,7 +915,6 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
         if (!pageExtraInfos[page.properties.id]) continue;
         var extra = pageExtraInfos[page.properties.id];
         pageNode.setAttribute("rasterized", extra.rasterizedPath);
-        pageNode.setAttribute("friendlyId", extra.friendlyId);
 
         var linkingContainerNode = dom.createElementNS(PencilNamespaces.p, "Links");
         pageNode.appendChild(linkingContainerNode);
@@ -923,14 +926,11 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
 
             var targetPage = this.doc.getPageById(linking.pageId);
             if (!targetPage) continue;
-            var targetExtra = pageExtraInfos[linking.pageId];
 
             var linkNode = dom.createElementNS(PencilNamespaces.p, "Link");
             linkNode.setAttribute("target", linking.pageId);
             linkNode.setAttribute("targetName", targetPage.properties.name);
-            if (targetExtra) {
-                linkNode.setAttribute("targetFid", targetExtra.friendlyId);
-            }
+            linkNode.setAttribute("targetFid", targetPage.properties.fid);
             
             linkNode.setAttribute("x", linking.geo.x);
             linkNode.setAttribute("y", linking.geo.y);
@@ -951,9 +951,49 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
     } catch (e) {
         Util.error("Error exporting document", "" + e);
     } finally {
-        debug("about to remove: " + file.path);
-        //file.remove(true);
+        //debug("about to remove: " + file.path);
+        file.remove(true);
     }
+};
+
+Controller.prototype._populateLinkTargetsInNote = function (htmlNode) {
+    var thiz = this;
+    Dom.workOn("//html:a[@page-id or starts-with(@href, '#id:')]", htmlNode, function (link) {
+        var id = link.getAttribute("page-id");
+        if (!id) {
+            id = link.getAttribute("href").substring(4);
+        }
+        
+        var page = thiz.doc.getPageById(id);
+        
+        if (!page) return;
+        link.setAttribute("page-name", page.properties.name);
+        link.setAttribute("page-fid", page.properties.fid);
+    });
+
+    Dom.workOn("//html:a[@page-fid or starts-with(@href, '#fid:')]", htmlNode, function (link) {
+        var fid = link.getAttribute("page-fid");
+        if (!fid) {
+            fid = link.getAttribute("href").substring(5);
+        }
+        var page = thiz.doc.getPageByFid(fid);
+        
+        if (!page) return;
+        link.setAttribute("page-name", page.properties.name);
+        link.setAttribute("page-id", page.properties.id);
+    });
+
+    Dom.workOn("//html:a[@page-name or starts-with(@href, '#name:')]", htmlNode, function (link) {
+        var name = link.getAttribute("page-name");
+        if (!name) {
+            name = link.getAttribute("href").substring(6);
+        }
+        var page = thiz.doc.getFirstPageByName(name);
+        
+        if (!page) return;
+        link.setAttribute("page-fid", page.properties.fid);
+        link.setAttribute("page-id", page.properties.id);
+    });
 };
 
 Controller.prototype.rasterizeCurrentPage = function () {
