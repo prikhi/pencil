@@ -18,12 +18,8 @@ ExportTemplateManager.getTemplateById = function (templateId) {
     return ExportTemplateManager.templateMap[templateId];
 };
 
-ExportTemplateManager.loadUserDefinedTemplates = function () {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
+ExportTemplateManager.loadTemplatesIn = function (templateDir) {
     try {
-        var templateDir = ExportTemplateManager.getUserTemplateDirectory();
-
         for (i in ExportTemplateManager.SUPPORTED_TYPES) {
             var type = ExportTemplateManager.SUPPORTED_TYPES[i];
             var dir = templateDir.clone();
@@ -35,6 +31,18 @@ ExportTemplateManager.loadUserDefinedTemplates = function () {
         Console.dumpError(e);
     }
 };
+
+ExportTemplateManager.loadUserDefinedTemplates = function () {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+    try {
+        var templateDir = ExportTemplateManager.getUserTemplateDirectory();
+        ExportTemplateManager.loadTemplatesIn(templateDir);
+    } catch (e) {
+        Console.dumpError(e);
+    }
+};
+
 ExportTemplateManager.getUserTemplateDirectory = function () {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
                      .getService(Components.interfaces.nsIProperties);
@@ -46,6 +54,27 @@ ExportTemplateManager.getUserTemplateDirectory = function () {
 
     return templateDir;
 };
+ExportTemplateManager.loadSystemWideDefinedTemplates = function () {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+    try {
+        var templateDir = ExportTemplateManager.getSystemWideTemplateDirectory();
+        ExportTemplateManager.loadTemplatesIn(templateDir);
+    } catch (e) {
+        Console.dumpError(e);
+    }
+};
+ExportTemplateManager.getSystemWideTemplateDirectory = function () {
+    var properties = Components.classes["@mozilla.org/file/directory_service;1"]
+                     .getService(Components.interfaces.nsIProperties);
+
+    var templateDir = null;
+    templateDir = properties.get("resource:app", Components.interfaces.nsIFile);
+    templateDir.append("Templates");
+
+    return templateDir;
+};
+
 ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
@@ -62,7 +91,11 @@ ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type)
             var template = ExportTemplate.parse(dir);
 
             if (!template) {
-                Util.error("Unrecognized template at: " + dir.path);
+                if (dir.leafName.match(/^\./)) {
+                    warn("Ignoring template in: " + dir.path);
+                } else {
+                    Util.error("Template loading failed", "Unrecognized template at: " + dir.path);
+                }
                 continue;
             }
 
@@ -79,6 +112,7 @@ ExportTemplateManager.loadTemplates = function() {
     ExportTemplateManager.templates = {};
     ExportTemplateManager.templateMap = {};
     
+    ExportTemplateManager.loadSystemWideDefinedTemplates();
     ExportTemplateManager.loadUserDefinedTemplates();
 };
 ExportTemplateManager.installNewTemplate = function (type) {

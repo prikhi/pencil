@@ -5,35 +5,41 @@
 
     <xsl:template match="/">
         <html>
-            <head></head>
+            <head>
+                <title>
+                    <xsl:value-of select="/p:Document/p:Properties/p:Property[@name='fileName']/text()"/>
+                </title>
+            </head>
             <body>
+                <h1><xsl:value-of select="/p:Document/p:Properties/p:Property[@name='fileName']/text()"/></h1>
+                <p>Exported at: <xsl:value-of select="/p:Document/p:Properties/p:Property[@name='exportTime']/text()"/></p>
                 <xsl:apply-templates select="/p:Document/p:Pages/p:Page" />
             </body>
         </html>
     </xsl:template>
     <xsl:template match="p:Page">
-        <div class="Page" id="page{p:Properties/p:Property[@name='id']/text()}">
-            <h1>
+        <div class="Page" id="{@friendlyId}_page">
+            <h2>
                 <xsl:value-of select="p:Properties/p:Property[@name='name']/text()"/>
-            </h1>
+            </h2>
             <div class="ImageContainer">
                 <img src="{@rasterized}"
                     width="{p:Properties/p:Property[@name='width']/text()}"
                     height="{p:Properties/p:Property[@name='height']/text()}"
-                    usemap="#map{p:Properties/p:Property[@name='id']/text()}"/>
+                    usemap="#map_{@friendlyId}"/>
             </div>
             <xsl:if test="p:Note">
                 <p class="Notes">
                     <xsl:copy-of select="p:Note/node()"/>
                 </p>
             </xsl:if>
-            <map name="map{p:Properties/p:Property[@name='id']/text()}">
+            <map name="map_{@friendlyId}">
                 <xsl:apply-templates select="p:Links/p:Link" />
             </map>
         </div>
     </xsl:template>
     <xsl:template match="p:Link">
         <area shape="rect"
-            coords="{@x},{@y},{@x+@w},{@y+@h}" href="#page{@target}" title="Go to page '{@targetName}'"/>
+            coords="{@x},{@y},{@x+@w},{@y+@h}" href="#{@targetFid}_page" title="Go to page '{@targetName}'"/>
     </xsl:template>
 </xsl:stylesheet>
