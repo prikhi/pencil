@@ -38,6 +38,20 @@ PencilDocument.prototype.getPageById = function (id) {
 
     return null;
 };
+PencilDocument.prototype.getPageByFid = function (fid) {
+    for (var i in this.pages) {
+        if (this.pages[i].properties.fid == fid) return this.pages[i];
+    }
+
+    return null;
+};
+PencilDocument.prototype.getFirstPageByName = function (name) {
+    for (var i in this.pages) {
+        if (this.pages[i].properties.name == name) return this.pages[i];
+    }
+
+    return null;
+};
 
 
 function Page(doc) {
