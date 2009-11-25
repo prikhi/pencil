@@ -2,7 +2,7 @@ ExportTemplateManager = {}
 ExportTemplateManager.templates = {};
 ExportTemplateManager.templateMap = {};
 
-ExportTemplateManager.SUPPORTED_TYPES = ["HTML"];
+ExportTemplateManager.SUPPORTED_TYPES = ["HTML", "ODT"];
 
 ExportTemplateManager.addTemplate = function (template, type) {
     if (!ExportTemplateManager.templates[type]) {
@@ -88,6 +88,8 @@ ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type)
             var dir = entries.getNext();
 
             dir = dir.QueryInterface(Components.interfaces.nsIFile);
+            
+            if (!dir.isDirectory()) continue;
             var template = ExportTemplate.parse(dir);
 
             if (!template) {

@@ -25,6 +25,8 @@ WebPageExporter.prototype.getWarnings = function () {
 
 
 WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile) {
+    debug("destDir: " + destDir.path);
+    
     var templateId = options.templateId;
     if (!templateId) return;
     
@@ -48,6 +50,10 @@ WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile) {
 
     //transform the xml to HTML
     var sourceDOM = Dom.parseFile(xmlFile);
+    
+    //changing rasterized path to relative
+    this.fixAbsoluteRasterizedPaths(sourceDOM, destDir);
+    
     var xsltDOM = Dom.parseFile(template.styleSheetFile);
 
     var xsltProcessor = new XSLTProcessor();

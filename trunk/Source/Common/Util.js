@@ -1,6 +1,14 @@
 // Copyright (c) Evolus Solutions. All rights reserved.
 // License: GPL/MPL
 // $Id$
+const PR_RDONLY      = 0x01;
+const PR_WRONLY      = 0x02;
+const PR_RDWR        = 0x04;
+const PR_CREATE_FILE = 0x08;
+const PR_APPEND      = 0x10;
+const PR_TRUNCATE    = 0x20;
+const PR_SYNC        = 0x40;
+const PR_EXCL        = 0x80;
 
 /* class */ function Dom() {
 }
@@ -479,6 +487,19 @@ Local.newTempFile = function (prefix, ext) {
 
     return file;
 };
+Local.createTempDir = function (prefix) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var dir = Components.classes["@mozilla.org/file/directory_service;1"].
+                         getService(Components.interfaces.nsIProperties).
+                         get("TmpD", Components.interfaces.nsIFile);
+    var seed = Math.round(Math.random() * 1000000);
+
+    dir.append(prefix + "-" + seed);
+    
+    dir.create(dir.DIRECTORY_TYPE, 0777);
+
+    return dir;
+};
 
 var Console = {};
 Console.log = function (message) {
@@ -638,6 +659,32 @@ Util.setNodeMetadata = function (node, name, value) {
 Util.getNodeMetadata = function (node, name) {
     return node.getAttributeNS(PencilNamespaces.p, name);
 };
+
+
+Util.compress = function (dir, zipFile) {
+    var writer = Components.classes["@mozilla.org/zipwriter;1"]
+                          .createInstance(Components.interfaces.nsIZipWriter);
+    writer.open(zipFile, PR_RDWR | PR_CREATE_FILE | PR_TRUNCATE);
+    
+    Util.writeDirToZip(dir, writer, "");
+    writer.close();
+};
+Util.writeDirToZip = function (dir, writer, prefix) {
+    var items = dir.directoryEntries;
+    while (items.hasMoreElements()) {
+        var file = items.getNext().QueryInterface(Components.interfaces.nsIFile);
+        
+        var itemPath = prefix + file.leafName;
+        
+        if (file.isDirectory()) {
+            writer.addEntryDirectory(itemPath, file.lastModifiedTime * 1000, false);
+            Util.writeDirToZip(file, writer, itemPath + "/");
+        } else {
+            writer.addEntryFile(itemPath, Components.interfaces.nsIZipWriter.COMPRESSION_DEFAULT, file, false);
+        }
+    }
+};
+
 function debug(value) {
     dump("DEBUG: " + value + "\n");
 }
