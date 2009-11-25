@@ -99,6 +99,7 @@
 <script src="../Exporter/BaseExporter.js"/>
 <script src="../Exporter/BaseRasterizedExporter.js"/>
 <script src="../Exporter/WebPageExporter.js"/>
+<script src="../Exporter/ODTExporter.js"/>
 <script src="../Exporter/OtherExporters.js"/>
 
     <popupset>
@@ -159,6 +160,7 @@
 
         <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
         <command id="installNewHTMLTemplateCommand" oncommand="ExportTemplateManager.installNewTemplate('HTML');"/>
+        <command id="installNewODTTemplateCommand" oncommand="ExportTemplateManager.installNewTemplate('ODT');"/>
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="accel" key="N"/>
@@ -289,7 +291,8 @@
                     <menuitem label="Clipart Browser" oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
                     <menuseparator/>
                     <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
-                    <menuitem label="Install New HTML Export Template..." command="installNewHTMLTemplateCommand"/>
+                    <menuitem label="Install New Web Export Template..." command="installNewHTMLTemplateCommand"/>
+                    <menuitem label="Install New Document Export Template..." command="installNewODTTemplateCommand"/>
                 </menupopup>
             </menu>
             <menu label="Settings" id="settings-menu">
