@@ -748,15 +748,17 @@ Controller.prototype.exportDocument = function () {
 
         //Select target dir
         var pageIndex = -1;
-        var dir = Components.classes["@mozilla.org/file/local;1"]
+        var destFile = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
-        dir.initWithPath(data.selection.targetPath);
+        destFile.initWithPath(data.selection.targetPath);
         
-        if (!dir.exists()) {
-            dir.create(pagesDir.DIRECTORY_TYPE, 0777);
+        if (exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_DIRECTORY) {
+            if (!destFile.exists()) {
+                destFile.create(destFile.DIRECTORY_TYPE, 0777);
+            }
         }
         
-        var pagesDir = exporter.getRasterizedPageDestination(dir);
+        var pagesDir = exporter.getRasterizedPageDestination(destFile);
 
         if (!pagesDir.exists()) {
             pagesDir.create(pagesDir.DIRECTORY_TYPE, 0777);
@@ -791,9 +793,9 @@ Controller.prototype.exportDocument = function () {
                 try {
                     pageIndex ++;
                     if (pageIndex >= pages.length) {
-                        thiz._exportDocumentToXML(pages, pageExtraInfos, dir, data.selection)
+                        thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection)
                         listener.onTaskDone();
-                        debug("Document has been exported, location: " + dir.parent.path);
+                        debug("Document has been exported, location: " + destFile.path);
                         return;
                     }
                     var page = pages[pageIndex];
@@ -812,7 +814,7 @@ Controller.prototype.exportDocument = function () {
                     debug("File path: " + pagePath);
 
                     var pageExtraInfo = {
-                        rasterizedPath: Controller.PAGES_SUBFOLDER_NAME + "/" + fileName
+                        rasterizedPath: pagePath
                     };
                     pageExtraInfos[page.properties.id] = pageExtraInfo;
 
@@ -852,7 +854,7 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
 
     return links;
 };
-Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir, exportSelection) {
+Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, destFile, exportSelection) {
     var dom = document.implementation.createDocument(PencilNamespaces.p, "Document", null);
 
     //properties
@@ -873,12 +875,12 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
     if (this.isBoundToFile()) {
         docProperties["path"] = this.filePath;
         
-        var file = Components.classes["@mozilla.org/file/local;1"]
+        var epFile = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
                              
-        file.initWithPath(this.filePath);
+        epFile.initWithPath(this.filePath);
         
-        docProperties["fileName"] = file.leafName;
+        docProperties["fileName"] = epFile.leafName;
     }
     
     for (name in docProperties) {
@@ -941,18 +943,19 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, dir
         }
     }
 
-    var file = Local.newTempFile("pencil-doc", "xml");
-    Dom.serializeNodeToFile(dom, file);
+    var xmlFile = Local.newTempFile("pencil-doc", "xml");
+    Dom.serializeNodeToFile(dom, xmlFile);
 
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
     
     try {
-        exporter.export(this.doc, exportSelection, dir, file);
+        exporter.export(this.doc, exportSelection, destFile, xmlFile);
     } catch (e) {
         Util.error("Error exporting document", "" + e);
+        Console.dumpError(e);
     } finally {
-        //debug("about to remove: " + file.path);
-        file.remove(true);
+        //debug("about to remove: " + xmlFile.path);
+        xmlFile.remove(true);
     }
 };
 

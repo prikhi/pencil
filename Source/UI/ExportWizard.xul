@@ -9,6 +9,7 @@
 
 <script src="../Common/PencilNamespaces.js"/>
 <script src="../Common/Util.js"/>
+<script src="../Exporter/BaseExporter.js"/>
 <script src="../Common/ExportWizard.js"/>
 
     <wizardpage description="Select output format">
@@ -48,8 +49,8 @@
 
         <label value="Destination:"/>
         <hbox>
-            <textbox flex="1" id="targetDirPathText" value="/home/dgthanhan/foo"/>
-            <button label="Browse..." id="browseButton" oncommand="ExportWizard.browseTargetDir();"/>
+            <textbox flex="1" id="targetFilePathText" value="/home/dgthanhan/foo"/>
+            <button label="Browse..." id="browseButton" oncommand="ExportWizard.browseTargetFile();"/>
         </hbox>
     </wizardpage>
 
