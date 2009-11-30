@@ -4,6 +4,32 @@
 
 /* class */ function ShapeDefCollectionParser() {
 }
+ShapeDefCollectionParser.prototype.injectEntityDefs = function (content, file) {
+	//getting the current local
+	var locale = Config.getLocale();
+	
+	var dtdFile = file.parent.clone();
+	dtdFile.append(locale + ".dtd");
+	
+	if (!dtdFile.exists()) {
+		dtdFile = file.parent.clone();
+		dtdFile.append("default.dtd");
+		
+		if (!dtdFile.exists()) {
+			return content;
+		}
+	}
+	
+	var dtdContent = FileIO.read(dtdFile, ShapeDefCollectionParser.CHARSET);
+	
+	var doctypeContent = "<!DOCTYPE Shapes [\n" + dtdContent + "\n]>\n";
+	
+	content = content.replace(/(<Shapes)/, function (zero, one) {
+			return doctypeContent + one;
+		});
+	
+	return content;
+};
 ShapeDefCollectionParser.CHARSET = "UTF-8";
 ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionId, propName) {
     return "Collection." + collectionId + ".properties." + propName;
@@ -26,6 +52,11 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         var fileContents = FileIO.read(file, ShapeDefCollectionParser.CHARSET);
         var domParser = new DOMParser();
 
+        
+        fileContents = this.injectEntityDefs(fileContents, file)
+        debug("---- AFTER INJECTION ----");
+        debug(fileContents.substring(0, 200));
+        
         var dom = domParser.parseFromString(fileContents, "text/xml");
 
         return this.parse(dom, uri);

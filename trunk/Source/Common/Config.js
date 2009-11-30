@@ -64,4 +64,6 @@ Config.get = function (name, defaultValue) {
 
     return defaultValue;
 };
-
+Config.getLocale = function () {
+    return Config.prefs.getCharPref("general.useragent.locale");
+};
