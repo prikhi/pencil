@@ -23,6 +23,7 @@
 <script src="../Common/Util.js"/>
 <script src="../Common/IO.js"/>
 <script src="../Common/Lorem.js"/>
+<script src="../Common/CSS.js"/>
 
 <script src="../Common/PencilNamespaces.js"/>
 <script src="../Common/Config.js"/>
@@ -100,7 +101,7 @@
 <script src="../Exporter/BaseRasterizedExporter.js"/>
 <script src="../Exporter/WebPageExporter.js"/>
 <script src="../Exporter/ODTExporter.js"/>
-<script src="../Exporter/OtherExporters.js"/>
+<script src="../Exporter/OOConversionExporter.js"/>
 
     <popupset>
     </popupset>
@@ -237,7 +238,7 @@
                     <menuitem class="menuitem-iconic" label="New Document" command="newDocumentCommand" key="newDocumentKey" image="moz-icon://stock/document-new?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Open..." command="loadDocumentCommand" key="loadDocumentKey" image="moz-icon://stock/document-open?size=menu"/>
                     <menuitem class="menuitem-iconic" label="Save" command="saveDocumentCommand" key="saveDocumentKey" image="moz-icon://stock/document-save?size=menu"/>
-                    <menuitem class="menuitem-iconic" label="Save As..." command="saveDocumentAsCommand" key="saveDocumentAsKey" image="moz-icon://stock/document-saveas?size=menu"/>
+                    <menuitem class="menuitem-iconic" label="Save As..." command="saveDocumentAsCommand" key="saveDocumentAsKey" image="moz-icon://stock/document-save-as?size=menu"/>
                     <menuseparator/>
                     <menu label="Recent Documents">
                         <menupopup id="recentDocumentMenu">
@@ -311,7 +312,7 @@
                 <toolbarbutton image="moz-icon://stock/document-new?size=menu" label="New Document" tooltiptext="Create new document" command="newDocumentCommand"/>
                 <toolbarbutton image="moz-icon://stock/document-open?size=menu" label="Open" tooltiptext="Open an existing document" command="loadDocumentCommand"/>
                 <toolbarbutton image="moz-icon://stock/document-save?size=menu" label="Save" tooltiptext="Save this document" command="saveDocumentCommand"/>
-                <toolbarbutton image="moz-icon://stock/document-saveas?size=menu" label="Save" tooltiptext="Save this document as " command="saveDocumentAsCommand"/>
+                <toolbarbutton image="moz-icon://stock/document-save-as?size=menu" label="Save" tooltiptext="Save this document as " command="saveDocumentAsCommand"/>
             </hbox>
             <toolbarseparator/>
             <hbox id="zoomToolbar" class="ToolbarSection">
@@ -360,7 +361,7 @@
             <menu id="gotoTabMenu" label="Goto..."><menupopup/></menu>
             <menuitem label="Re-order Pages..." id="reorderPageMenuItem" command="reorderPagesCommand" style="display: none;"/>
             <menuseparator/>
-            <menuitem class="menuitem-iconic" image="moz-icon://stock/blank-note-16?size=menu" label="Edit page notes..." id="pageNoteMenuItem" />
+            <menuitem class="menuitem-iconic" image="moz-icon://stock/gtk-edit?size=menu" label="Edit page notes..." id="pageNoteMenuItem" />
         </popup>
     </popupset>
     <hbox flex="1" id="mainBox">
