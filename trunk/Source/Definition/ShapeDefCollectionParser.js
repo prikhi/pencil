@@ -16,7 +16,12 @@ ShapeDefCollectionParser.prototype.injectEntityDefs = function (content, file) {
 		dtdFile.append("default.dtd");
 		
 		if (!dtdFile.exists()) {
-			return content;
+		    dtdFile = file.parent.clone();
+		    dtdFile.append("en-US.dtd");
+		
+		    if (!dtdFile.exists()) {
+			    return content;
+		    }
 		}
 	}
 	
