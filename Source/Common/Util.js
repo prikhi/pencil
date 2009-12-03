@@ -278,6 +278,9 @@ Dom.newDOMElement = function (spec, doc) {
     if (spec._text) {
         e.appendChild(e.ownerDocument.createTextNode(spec._text));
     }
+    if (spec._html) {
+        e.innerHTML = spec._html;
+    }
     if (spec._children && spec._children.length > 0) {
         e.appendChild(Dom.newDOMFragment(spec._children, e.ownerDocument));
     }
@@ -709,9 +712,136 @@ function tick(value) {
     dump(prefix + date.getSeconds() + "." + date.getMilliseconds() + " (" + delta + " ms)\n");
 }
 
+var Net = {};
+Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener, options) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
+
+    var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                                  .getService(Components.interfaces.nsIIOService);
+
+    var uri = ioService.newURI(url, null, null);
+    var channel = ioService.newChannelFromURI(uri);
+
+    var httpChannel = channel.QueryInterface(Components.interfaces.nsIHttpChannel);
+    
+    var listener = {
+        foStream: null,
+        file: downloadTargetFile,
+        listener: listener,
+        size: 0,
+        
+        writeMessage: function (message) {
+            if (this.listener && this.listener.onMessage) {
+                this.listener.onMessage(message);
+            }
+        },
+        onStartRequest: function (request, context) {
+            this.writeMessage("Request started");
+        },
+        onDataAvailable: function (request, context, stream, sourceOffset, length) {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
+
+            if (this.canceled) return;
+            
+            try {
+                if (!this.foStream) {
+                    this.foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                                             .createInstance(Components.interfaces.nsIFileOutputStream);
+                    this.writeMessage("Start receiving file...");
+                    
+                    this.downloaded = 0;
+                    
+                    this.foStream.init(this.file, 0x04 | 0x08 | 0x20, 0664, 0);
+                }
+
+                try {
+                    this.size = parseInt(httpChannel.getResponseHeader("Content-Length"), 10);
+                } catch (e) { }
+                
+                var bStream = Components.classes["@mozilla.org/binaryinputstream;1"].
+                                createInstance(Components.interfaces.nsIBinaryInputStream);
+
+                bStream.setInputStream(stream);
+                var bytes = bStream.readBytes(length);
 
 
+                this.foStream.write(bytes, bytes.length);
 
+                this.downloaded += length;
+
+                if (this.size > 0) {
+                    var percent = Math.floor((this.downloaded * 100) / this.size);
+                    if (this.listener && this.listener.onProgress) this.listener.onProgress(percent);
+                }
+            } catch (e) {
+                alert("Saving error:\n" + e);
+            }
+        },
+        onStopRequest: function (request, context, status) {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
+            
+            this.foStream.close();
+            this.writeMessage("Done");
+            this.listener.onDone();
+        },
+        onChannelRedirect: function (oldChannel, newChannel, flags) {
+        },
+        getInterface: function (aIID) {
+            try {
+                return this.QueryInterface(aIID);
+            } catch (e) {
+                throw Components.results.NS_NOINTERFACE;
+            }
+        },
+        onProgress : function (aRequest, aContext, aProgress, aProgressMax) { },
+        onStatus : function (aRequest, aContext, aStatus, aStatusArg) {
+            this.writeMessage("onStatus: " + [aRequest, aContext, aStatus, aStatusArg]);
+        },
+        onRedirect : function (aOldChannel, aNewChannel) { },
+
+        QueryInterface : function(aIID) {
+            if (aIID.equals(Components.interfaces.nsISupports) ||
+                aIID.equals(Components.interfaces.nsIInterfaceRequestor) ||
+                aIID.equals(Components.interfaces.nsIChannelEventSink) ||
+                aIID.equals(Components.interfaces.nsIProgressEventSink) ||
+                aIID.equals(Components.interfaces.nsIHttpEventSink) ||
+                aIID.equals(Components.interfaces.nsIStreamListener)) {
+
+                return this;
+            }
+
+            throw Components.results.NS_NOINTERFACE;
+        }
+    }; //listener
+    
+    var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"]  
+                        .createInstance(Components.interfaces.nsIFileInputStream);  
+    inputStream.init(uploadFile, 0x04 | 0x08, 0644, 0x04); // file is an nsIFile instance   
+
+    var uploadChannel = channel.QueryInterface(Components.interfaces.nsIUploadChannel);
+    var mime = "application/octet-stream";
+    
+    if (options && options.mime) mime = options.mime;
+    
+    uploadChannel.setUploadStream(inputStream, mime, -1);
+
+    httpChannel.requestMethod = "POST";
+    
+    if (options && options.headers) {
+        for (name in options.headers) {
+            httpChannel.setRequestHeader(name, options.headers[name], false);
+        }
+    }
+
+    channel.notificationCallbacks = listener;
+    channel.asyncOpen(listener, null);
+};
 
 
 

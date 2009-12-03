@@ -793,9 +793,10 @@ Controller.prototype.exportDocument = function () {
                 try {
                     pageIndex ++;
                     if (pageIndex >= pages.length) {
-                        thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection)
-                        listener.onTaskDone();
-                        debug("Document has been exported, location: " + destFile.path);
+                        thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
+                            listener.onTaskDone();
+                            debug("Document has been exported, location: " + destFile.path);
+                        });
                         return;
                     }
                     var page = pages[pageIndex];
@@ -854,7 +855,7 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
 
     return links;
 };
-Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, destFile, exportSelection) {
+Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, destFile, exportSelection, callback) {
     var dom = document.implementation.createDocument(PencilNamespaces.p, "Document", null);
 
     //properties
@@ -949,13 +950,13 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
     
     try {
-        exporter.export(this.doc, exportSelection, destFile, xmlFile);
+        exporter.export(this.doc, exportSelection, destFile, xmlFile, function () {
+            xmlFile.remove(true);
+            callback();
+        });
     } catch (e) {
         Util.error("Error exporting document", "" + e);
         Console.dumpError(e);
-    } finally {
-        //debug("about to remove: " + xmlFile.path);
-        xmlFile.remove(true);
     }
 };
 
