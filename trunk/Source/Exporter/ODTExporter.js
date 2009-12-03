@@ -1,30 +1,30 @@
-function ODTExporer() {
+function ODTExporter() {
     this.name = "OpenOffice.org document (ODT file)";
-    this.id = "ODTExporer";
+    this.id = "ODTExporter";
     this.xsltProcessor = new XSLTProcessor();
 }
-ODTExporer.RASTERIZED_SUBDIR = "Pages";
+ODTExporter.RASTERIZED_SUBDIR = "Pages";
 
-ODTExporer.prototype = new BaseRasterizedExporter();
+ODTExporter.prototype = new BaseRasterizedExporter();
 
-ODTExporer.prototype.getRasterizedPageDestination = function (baseDir) {
+ODTExporter.prototype.getRasterizedPageDestination = function (baseDir) {
     this.tmpDir = Local.createTempDir("pencilodt");
     var dir = this.tmpDir.clone();
-    dir.append(ODTExporer.RASTERIZED_SUBDIR);
+    dir.append(ODTExporter.RASTERIZED_SUBDIR);
 
     return dir;
 };
-ODTExporer.prototype.supportTemplating = function () {
+ODTExporter.prototype.supportTemplating = function () {
     return true;
 };
-ODTExporer.prototype.getTemplates = function () {
+ODTExporter.prototype.getTemplates = function () {
     return ExportTemplateManager.getTemplatesForType("ODT");
 };
-ODTExporer.prototype.getWarnings = function () {
+ODTExporter.prototype.getWarnings = function () {
     return null;
 };
 
-ODTExporer.prototype.transform = function (template, fileBaseName, sourceDOM, targetDir) {
+ODTExporter.prototype.transform = function (template, fileBaseName, sourceDOM, targetDir) {
     var styleSheetFile = template.dir.clone();
     styleSheetFile.append(fileBaseName + ".xslt");
     
@@ -43,7 +43,7 @@ ODTExporer.prototype.transform = function (template, fileBaseName, sourceDOM, ta
     Dom.serializeNodeToFile(result, xmlFile);
 };
 
-ODTExporer.prototype.export = function (doc, options, destFile, xmlFile) {
+ODTExporter.prototype.export = function (doc, options, destFile, xmlFile, callback) {
     var templateId = options.templateId;
     if (!templateId) return;
     
@@ -83,11 +83,13 @@ ODTExporer.prototype.export = function (doc, options, destFile, xmlFile) {
     Util.compress(this.tmpDir, destFile);
     this.tmpDir.remove(true);
     this.tmpDir = null;
+    
+    callback();
 };
-ODTExporer.prototype.getOutputType = function () {
+ODTExporter.prototype.getOutputType = function () {
     return BaseExporter.OUTPUT_TYPE_FILE;
 };
-ODTExporer.prototype.getOutputFileExtensions = function () {
+ODTExporter.prototype.getOutputFileExtensions = function () {
     return [
         {
             title: "OpenOffice.org Document (*.odt)",
@@ -95,4 +97,4 @@ ODTExporer.prototype.getOutputFileExtensions = function () {
         }
     ];
 };
-Pencil.registerDocumentExporter(new ODTExporer());
+Pencil.registerDocumentExporter(new ODTExporter());

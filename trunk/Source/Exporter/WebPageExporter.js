@@ -24,7 +24,7 @@ WebPageExporter.prototype.getWarnings = function () {
 };
 
 
-WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile) {
+WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile, callback) {
     debug("destDir: " + destDir.path);
     
     var templateId = options.templateId;
@@ -65,5 +65,7 @@ WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile) {
     htmlFile.append(WebPageExporter.HTML_FILE);
 
     Dom.serializeNodeToFile(result, htmlFile);
+    
+    callback();
 };
 Pencil.registerDocumentExporter(new WebPageExporter(), "default=true");

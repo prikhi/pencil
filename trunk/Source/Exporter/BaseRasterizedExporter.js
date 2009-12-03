@@ -11,7 +11,8 @@ BaseRasterizedExporter.prototype.getRasterizedPageDestination = function (baseDi
     return baseDir.clone();
 };
 
-BaseRasterizedExporter.prototype.export = function (doc, pages, extraDataMap, options, dir) {
+BaseRasterizedExporter.prototype.export = function (doc, pages, extraDataMap, options, dir, callback) {
+    callback();
 };
 BaseRasterizedExporter.prototype.getWarnings = function () {
     return "No linkings are preserved when the document is exported to rasterized images";
