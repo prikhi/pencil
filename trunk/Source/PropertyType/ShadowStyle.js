@@ -1,15 +1,15 @@
 function ShadowStyle() {
-    this.dx = "0";
-    this.dy = "0";
-    this.size = "3";
+    this.dx = 0;
+    this.dy = 0;
+    this.size = 3;
 }
 ShadowStyle.REG_EX = /^([^\|]+)\|([^\|]+)\|([^\|]+)$/i;
 ShadowStyle.fromString = function (literal) {
     var shadowStyle = new ShadowStyle();
     if (literal.match(ShadowStyle.REG_EX)) {
-        shadowStyle.dx = RegExp.$1;
-        shadowStyle.dy = RegExp.$2;
-        shadowStyle.size = RegExp.$3;
+        shadowStyle.dx = parseInt(RegExp.$1, 10);
+        shadowStyle.dy = parseInt(RegExp.$2, 10);
+        shadowStyle.size = parseInt(RegExp.$3, 10);
     }
     return shadowStyle;
 };
