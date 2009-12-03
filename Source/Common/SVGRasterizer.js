@@ -3,7 +3,6 @@ function Rasterizer(format) {
 
     //create the window
     var iframe = document.createElementNS(PencilNamespaces.html, "html:iframe");
-    iframe._isRasterizeFrame = true;
 
     var container = document.body;
     if (!container) container = document.documentElement;
@@ -12,6 +11,9 @@ function Rasterizer(format) {
 
     iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
     iframe.setAttribute("src", "blank.html");
+    
+    debug(iframe);
+    debug(iframe.contentWindow);
 
     box.appendChild(iframe);
     container.appendChild(box);
@@ -22,23 +24,27 @@ function Rasterizer(format) {
     var thiz = this;
 
     this.nextHandler = null;
+    
     window.addEventListener("DOMFrameContentLoaded", function (event) {
-        debug("DOMFrameContentLoaded ---");
+        debug("DOMFrameContentLoaded, " + iframe.contentWindow);
+        
+        if (!iframe.contentWindow._initialized) {
+            debug("Initializing content window");
+            iframe.contentWindow._isRasterizeFrame = true;
+            iframe.contentWindow.addEventListener("MozAfterPaint", function (event) {
+                debug("MozAfterPaint: " + [event, event.originalTarget]);
+                
+                if (!event.originalTarget._isRasterizeFrame) return;
+                if (!thiz.nextHandler) return;
 
-        if (!event.originalTarget._isRasterizeFrame) return;
-        if (!thiz.nextHandler) return;
-
-        debug("has next handler");
-
-        var f = thiz.nextHandler;
-        thiz.nextHandler = null;
-
-        window.setTimeout(f, 10);
+                var f = thiz.nextHandler;
+                thiz.nextHandler = null;
+                f();
+                
+            }, false);
+            iframe.contentWindow._initialized = true;
+        }
     }, false);
-
-    iframe.onload = function (event) {
-        debug("Rasterizer found iframe window loaded");
-    };
 
     this.win = iframe.contentWindow;
     this.win.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
