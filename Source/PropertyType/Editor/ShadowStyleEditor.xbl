@@ -59,10 +59,10 @@
         <content>
             <hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" align="center">
                 <label value="X offset:"/>
-                <textbox type="number" min="0" max="30" size="2" aid="dx" xbl:inherits="disabled"/>
+                <textbox type="number" min="-30" max="30" size="2" aid="dx" xbl:inherits="disabled"/>
 
                 <label value="Y offset:"/>
-                <textbox type="number" min="0" max="30" size="2" aid="dy" xbl:inherits="disabled"/>
+                <textbox type="number" min="-30" max="30" size="2" aid="dy" xbl:inherits="disabled"/>
 
                 <label value="Blur size:"/>
                 <textbox type="number" min="0" max="30" size="2" aid="size" xbl:inherits="disabled"/>
