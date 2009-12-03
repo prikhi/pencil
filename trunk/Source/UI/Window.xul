@@ -142,6 +142,8 @@
         <command id="bringForwardCommand" oncommand="Pencil.activeCanvas.currentController.bringForward();"/>
         <command id="sendBackwardCommand" oncommand="Pencil.activeCanvas.currentController.sendBackward();"/>
         <command id="sendToBackCommand" oncommand="Pencil.activeCanvas.currentController.sendToBack();"/>
+        
+        <command id="hideHeavyElementsCommand" oncommand="Pencil.toggleShowHeavyElements();"/>
 
         <command id="copyCommand" oncommand="Pencil.activeCanvas.doCopy();"/>
         <command id="cutCommand" oncommand="Pencil.activeCanvas.doCopy(); Pencil.activeCanvas.deleteSelected();"/>
@@ -169,6 +171,7 @@
         <key id="loadDocumentKey" command="loadDocumentCommand" modifiers="accel" key="O"/>
         <key id="saveDocumentKey" command="saveDocumentCommand" modifiers="accel" key="S"/>
         <key id="saveDocumentAsKey" command="saveDocumentCommand" modifiers="accel shift" key="S"/>
+        <key id="exportDocumentKey" command="exportCommand" modifiers="accel shift" key="E"/>
 
         <key id="zoomInKey" command="zoomInCommand" modifiers="accel" key="+"/>
         <key id="zoomInKey2" command="zoomInCommand" modifiers="accel shift" key="+"/>
@@ -201,6 +204,8 @@
         <key id="sendBackwardKey3" command="sendBackwardCommand" modifiers="accel"         keycode="VK_END"/>
         <key id="sendToBackKey3" command="sendToBackCommand" modifiers="accel shift"     keycode="VK_END"/>
 
+        <key id="hideHeavyElementsKey" command="hideHeavyElementsCommand" modifiers="accel shift" key="H"/>
+        
         <key id="copyKey" command="copyCommand" modifiers="accel" key="C"/>
         <key id="cutKey" command="cutCommand" modifiers="accel" key="X"/>
         <key id="pasteKey" command="pasteCommand" modifiers="accel" key="V"/>
@@ -231,7 +236,7 @@
     </keyset>
     <toolbox id="mainToolbox">
         <menubar id="menubar">
-            <menu id="file-menu" label="Document">
+            <menu id="file-menu" label="Document" accesskey="D">
                 <menupopup id="file-popup">
                     <menuitem class="menuitem-iconic" label="New Window" command="newWindowCommand" image="moz-icon://stock/window-new?size=menu"/>
                     <menuseparator/>
@@ -247,12 +252,12 @@
                     <menuseparator/>
                     <menuitem label="Export Selection as PNG..." command="rasterizeSelectionCommand"/>
                     <menuitem label="Export Page as PNG..." command="rasterizeCommand"/>
-                    <menuitem label="Export Document..." command="exportCommand"/>
+                    <menuitem label="Export Document..." command="exportCommand" key="exportDocumentKey"/>
                     <menuseparator/>
                     <menuitem label="Exit" oncommand="if (!Pencil.controller.modified || Pencil.controller._confirmAndSaveDocument()) window.close();"/>
                 </menupopup>
             </menu>
-            <menu id="edit-menu" label="Edit">
+            <menu id="edit-menu" label="Edit" accesskey="E">
                 <menupopup id="edit-popup">
                     <menuitem label="Copy" key="copyKey" command="copyCommand"/>
                     <menuitem label="Cut" key="cutKey" command="cutCommand"/>
@@ -262,7 +267,7 @@
                     <menuitem label="Redo" key="redoKey" command="redoCommand"/>
                 </menupopup>
             </menu>
-            <menu label="Shape" id="shape-menu">
+            <menu label="Shape" id="shape-menu" accesskey="S">
                 <menupopup>
                     <menuitem label="Group" command="groupCommand" key="groupKey"/>
                     <menuitem label="Ungroup" command="unGroupCommand" key="unGroupKey"/>
@@ -283,10 +288,10 @@
                     <menuitem label="Align Middle" command="alignMiddleCommand" key="alignMiddleKey"/>
                     <menuitem label="Align Bottom" command="alignBottomCommand" key="alignBottomKey"/>
                     <menuseparator/>
-                    <menuitem id="hideHeavyElementsMenuItem" label="Hide Heavy Elements" type="checkbox" checked="false" oncommand="Pencil.setShowHeavyElements(this.getAttribute('checked') != 'true', true)"/>
+                    <menuitem id="hideHeavyElementsMenuItem" label="Hide Heavy Elements" type="checkbox" checked="false" command="hideHeavyElementsCommand" key="hideHeavyElementsKey"/>
                 </menupopup>
             </menu>
-            <menu label="Tools" id="tools-menu">
+            <menu label="Tools" id="tools-menu" accesskey="T">
                 <menupopup>
                     <menuitem label="Stencil generator" oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
                     <menuitem label="Clipart Browser" oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
@@ -296,12 +301,12 @@
                     <menuitem label="Install New Document Export Template..." command="installNewODTTemplateCommand"/>
                 </menupopup>
             </menu>
-            <menu label="Settings" id="settings-menu">
+            <menu label="Settings" id="settings-menu" accesskey="t">
                 <menupopup>
                     <menuitem label="Advanced Configurations" oncommand="window.open('chrome://global/content/config.xul', 'aboutConfig', 'chrome')"/>
                 </menupopup>
             </menu>
-            <menu label="Help" id="help-menu">
+            <menu label="Help" id="help-menu" accesskey="H">
                 <menupopup>
                     <menuitem label="About..." oncommand="Util.info('%name% Version: %version%, build %build%.', 'Copyright (c) 2008 Evolus. All rights reserved. This software is released under the terms of the GPL. Use it at your own risk.');"/>
                 </menupopup>
