@@ -61,9 +61,23 @@ Pencil.postBoot = function() {
         }
     }
     
+    
+    Pencil.updateGUIForHeavyElementVisibility();
+};
+Pencil.getBestFitSize = function () {
+    var mainViewPanel = document.getElementById("mainViewPanel");
+    return [mainViewPanel.boxObject.width - 50, mainViewPanel.boxObject.height - 50].join("x");
+};
+Pencil.toggleShowHeavyElements = function () {
+    var show = Config.get("view.showHeavyElements", true);
+    
+    Config.set("view.showHeavyElements", !show);
+    
+    Pencil.updateGUIForHeavyElementVisibility();
+};
+Pencil.updateGUIForHeavyElementVisibility = function () {
     var hideHeavyElementsMenuItem = document.getElementById("hideHeavyElementsMenuItem");
-    var showHeavyElements = Config.get("view.showHeavyElements");
-    if (showHeavyElements == null) showHeavyElements = true;
+    var showHeavyElements = Config.get("view.showHeavyElements", true);
     
     if (showHeavyElements) {
         hideHeavyElementsMenuItem.removeAttribute("checked");
@@ -71,17 +85,7 @@ Pencil.postBoot = function() {
         hideHeavyElementsMenuItem.setAttribute("checked", true);
     }
     
-    Pencil.setShowHeavyElements(showHeavyElements, false);
-};
-Pencil.getBestFitSize = function () {
-    var mainViewPanel = document.getElementById("mainViewPanel");
-    return [mainViewPanel.boxObject.width - 50, mainViewPanel.boxObject.height - 50].join("x");
-};
-Pencil.setShowHeavyElements = function (show, updateConfig) {
-    document.documentElement.setAttributeNS(PencilNamespaces.p, 'p:hide-heavy', show ? "false" : "true");
-    if (updateConfig) {
-        Config.set("view.showHeavyElements", show);
-    }
+    document.documentElement.setAttributeNS(PencilNamespaces.p, "p:hide-heavy", showHeavyElements ? "false" : "true");
 };
 Pencil.insertPNGImage = function (url, w, h, x, y) {
     var imageData = new ImageData(w, h, url);
