@@ -210,7 +210,7 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                        var rect = this.svg.getBoundingClientRect();
+                        var rect = this.svg.parentNode.getBoundingClientRect();
                         var x = Math.round(event.clientX - rect.left);
                         var y = Math.round(event.clientY - rect.top);
 
