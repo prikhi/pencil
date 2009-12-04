@@ -20,7 +20,10 @@ WebPageExporter.prototype.getTemplates = function () {
     return ExportTemplateManager.getTemplatesForType("HTML");
 };
 WebPageExporter.prototype.getWarnings = function () {
-    return null;
+    var templates = this.getTemplates();
+    if (templates && templates.length > 0) return null;
+    
+    return "No template has been installed for exporting to web pages. Templates can be installed via Tools > Manage Export Templates..."
 };
 
 

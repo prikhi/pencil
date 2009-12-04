@@ -3,6 +3,10 @@ ExportTemplateManager.templates = {};
 ExportTemplateManager.templateMap = {};
 
 ExportTemplateManager.SUPPORTED_TYPES = ["HTML", "ODT"];
+ExportTemplateManager.SUPPORTED_TYPES_NAMES = {
+    "HTML": "Templates for exporting to HTML Documents",
+    "ODT": "Templates for exporting to Text Documents (ODT, DOC and PDF)"
+};
 
 ExportTemplateManager.addTemplate = function (template, type) {
     if (!ExportTemplateManager.templates[type]) {
@@ -96,7 +100,7 @@ ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type)
                 if (dir.leafName.match(/^\./)) {
                     warn("Ignoring template in: " + dir.path);
                 } else {
-                    Util.error("Template loading failed", "Unrecognized template at: " + dir.path);
+                    //Util.error("Template loading failed", "Unrecognized template at: " + dir.path);
                 }
                 continue;
             }
@@ -113,6 +117,11 @@ ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type)
 ExportTemplateManager.loadTemplates = function() {
     ExportTemplateManager.templates = {};
     ExportTemplateManager.templateMap = {};
+
+    for (i in ExportTemplateManager.SUPPORTED_TYPES) {
+        var type = ExportTemplateManager.SUPPORTED_TYPES[i];
+        ExportTemplateManager.templates[type] = [];
+    }
     
     ExportTemplateManager.loadSystemWideDefinedTemplates();
     ExportTemplateManager.loadUserDefinedTemplates();
@@ -191,6 +200,7 @@ ExportTemplateManager.installTemplateFromFile = function (file, type) {
     try {
         var template = ExportTemplate.parse(extractedDir);
         if (!template) throw "Template cannot be parsed";
+        if (ExportTemplateManager.templateMap[template.id]) throw "Template '" + template.name + "' has been already installed.";
 
         Util.info("Template '" + template.name + "' has been installed successfully");
         ExportTemplateManager.loadTemplates();
@@ -200,5 +210,13 @@ ExportTemplateManager.installTemplateFromFile = function (file, type) {
     }
 };
 ExportTemplateManager.uninstallTemplate = function (template) {
-    //TODO:
+    try {
+        debug("About to remove: " + template.dir.path);
+        template.dir.remove(true);
+    } catch (e) {
+        Util.error("Failed to uninstall the template", "" + e);
+        Console.dumpError(e);
+    }
+    
+    ExportTemplateManager.loadTemplates();
 }

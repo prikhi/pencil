@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/TemplateManagementDialog.css" type="text/css"?>
+<dialog id="templateManager"
+    	title="Export Template Management"
+    	xmlns:html="http://www.w3.org/1999/xhtml"
+    	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        style="padding: 10px;"
+        buttons="extra1,extra2,cancel"
+        buttonlabelcancel="Close"
+        buttonlabelextra1="Uninstall"
+        buttonlabelextra2="Install New Template..."
+        height="300"
+        width="500"
+        ondialogextra2="TemplateManagementDialog.installNewTemplate();"
+        ondialogextra1="TemplateManagementDialog.uninstallSelectedTemplates();"
+        ondialogcancel="return true;">
+
+    <script src="../Common/Util.js"></script>
+    <script src="../Common/IO.js"></script>
+    <script src="../Common/PencilNamespaces.js"></script>
+    <script src="../Common/TemplateManagementDialog.js"></script>
+    
+    <hbox align="center">
+        <label value="Templates for:"/>
+        <menulist flex="1" value="HTML" id="templateTypeSelector" oncommand="TemplateManagementDialog.loadTemplatesForSelectedType();">
+            <menupopup>
+                <menuitem label="Exporting to HTML Documents" value="HTML"/>
+                <menuitem label="Exporting to Text Documents (ODT, DOC, PDF...)" value="ODT"/>
+            </menupopup>
+        </menulist>
+    </hbox>
+    <tree flex="1" onselect="TemplateManagementDialog.handleTemplateSelectionChange();">
+        <treecols>
+            <treecol label="Template" flex="1"/>
+            <treecol label="Information" flex="1"/>
+            <treecol label="Author"/>
+        </treecols>
+        <treechildren id="templateListContent">
+        <!--
+            <treeitem>
+                <treerow>
+                    <treecell label="Default HTML Template" properties="name"/>
+                    <treecell label="Built-in template for exporting to HTML"/>
+                    <treecell label="dgthanhan"/>
+                </treerow>
+            </treeitem>
+        -->
+        </treechildren>
+    </tree>
+</dialog>

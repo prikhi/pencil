@@ -296,6 +296,13 @@ Dom.newDOMFragment = function (specs, doc) {
     }
     return f;
 };
+Dom.populate = function (container, ids, doc) {
+    var dom = doc ? doc : document;
+    for (var i = 0; i < ids.length; i ++) {
+        var id = ids[i];
+        container[id] = dom.getElementById(id);
+    }
+};
 
 var Svg = {};
 Svg.setX = function (node, x) {
@@ -842,6 +849,14 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
     channel.notificationCallbacks = listener;
     channel.asyncOpen(listener, null);
 };
+Util.goDoCommand = function (command, doc) {
+    var dom = doc ? doc : document;
+    var controller = dom.commandDispatcher.getControllerForCommand(command);
+    if (controller && controller.isCommandEnabled(command)){
+        controller.doCommand(command);
+    }
+};
 
-
-
+window.addEventListener("DOMContentLoaded", function () {
+    document.documentElement.setAttribute("platform", navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux");
+}, false);

@@ -268,6 +268,10 @@ ExportWizard.onFinish = function () {
     
     debug(selection.toSource());
 };
+ExportWizard.callManageTemplateDialog = function () {
+    window.opener.openDialog('ExportTemplateManagementDialog.xul', '', 'modal,centerscreen,chrome');
+    ExportWizard.onExporterChanged();
+};
 
 window.onload = function () {
     ExportWizard.setup();
