@@ -4,6 +4,7 @@
 <wizard id="pencilExportWizard"
         title="Document Export Wizard"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
         onwizardfinish="ExportWizard.onFinish();"
         >
 
@@ -36,12 +37,17 @@
 
     <wizardpage description="Select the template and setting up options" onpageadvanced="return ExportWizard.validateOptions();">
         <label value="Template:"/>
-        <menulist id="templateMenu">
-            <menupopup>
-            </menupopup>
-        </menulist>
+        <hbox align="center">
+            <menulist id="templateMenu" flex="1">
+                <menupopup>
+                </menupopup>
+            </menulist>
+            <html:div style="margin-left: 1em;">
+                <html:a onclick="ExportWizard.callManageTemplateDialog();" href="#" style="color: -moz-hyperlinktext; text-decoration: underline; font-size: .9em;">Manage Templates...</html:a>
+            </html:div>
+        </hbox>
         <description id="templateDescription">
-            Exporting all pages into a single HTML document. Printing stylesheet included.
+            <!-- Exporting all pages into a single HTML document. Printing stylesheet included. -->
         </description>
 
         <label value="Other options:"/>

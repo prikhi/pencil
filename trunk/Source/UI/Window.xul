@@ -162,8 +162,7 @@
         <command id="newWindowCommand" oncommand="window.open('Window.xul', '_blank', 'chrome,resizable=yes')"/>
 
         <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
-        <command id="installNewHTMLTemplateCommand" oncommand="ExportTemplateManager.installNewTemplate('HTML');"/>
-        <command id="installNewODTTemplateCommand" oncommand="ExportTemplateManager.installNewTemplate('ODT');"/>
+        <command id="manageExportTemplateCommand" oncommand="window.openDialog('ExportTemplateManagementDialog.xul', '', 'modal,centerscreen,chrome')"/>
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="accel" key="N"/>
@@ -293,12 +292,12 @@
             </menu>
             <menu label="Tools" id="tools-menu" accesskey="T">
                 <menupopup>
-                    <menuitem label="Stencil generator" oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
-                    <menuitem label="Clipart Browser" oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
+                    <menuitem label="Stencil Generator..." oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
+                    <menuitem label="Clipart Browser..." oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
                     <menuseparator/>
                     <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
-                    <menuitem label="Install New Web Export Template..." command="installNewHTMLTemplateCommand"/>
-                    <menuitem label="Install New Document Export Template..." command="installNewODTTemplateCommand"/>
+                    
+                    <menuitem label="Manage Export Template..." command="manageExportTemplateCommand"/>
                 </menupopup>
             </menu>
             <menu label="Settings" id="settings-menu" accesskey="t">

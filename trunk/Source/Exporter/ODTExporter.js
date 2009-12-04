@@ -21,7 +21,10 @@ ODTExporter.prototype.getTemplates = function () {
     return ExportTemplateManager.getTemplatesForType("ODT");
 };
 ODTExporter.prototype.getWarnings = function () {
-    return null;
+    var templates = this.getTemplates();
+    if (templates && templates.length > 0) return null;
+    
+    return "No template has been installed for exporting to text documents. Templates can be installed via Tools > Manage Export Templates..."
 };
 
 ODTExporter.prototype.transform = function (template, fileBaseName, sourceDOM, targetDir) {
