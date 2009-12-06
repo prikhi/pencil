@@ -160,6 +160,19 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
 
     this.win.location.href = url;
 };
+Rasterizer.prototype.rasterizeDOMToUrl = function (svgNode, callback) {
+    this._width = svgNode.width.baseVal.value;
+    this._height = svgNode.height.baseVal.value;
+
+    var thiz = this;
+    this._saveNodeToTempFileAndLoad(svgNode, function () {
+        try {
+            thiz.rasterizeWindowToUrl(callback);
+        } catch (e) {
+            Console.dumpError(e);
+        }
+    });
+};
 Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, preprocessor) {
 
     this._width = svgNode.width.baseVal.value;

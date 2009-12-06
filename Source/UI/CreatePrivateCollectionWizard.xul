@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/PrivateCollectionWizard.css" type="text/css"?>
+<wizard id="pencilPrivateCollectionWizard"
+        title="Create Private Collection Wizard"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onwizardfinish="PrivateCollectionWizard.onFinish();"
+        width="550"
+        height="400">
+
+<script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/IO.js"/>
+<script src="../Common/Util.js"/>
+
+<script src="../PrivateCollection/PrivateCollection.js"/>
+<script src="../PrivateCollection/PrivateShapeDef.js"/>
+<script src="../PrivateCollection/PrivateCollectionManager.js"/>
+<script src="../Common/PrivateCollectionWizard.js"/>
+
+    <stringbundleset id="strbundles">
+        <stringbundle id="pencilMessages" src="chrome://mtv/locale/pencil.properties"/>
+    </stringbundleset>
+
+    <wizardpage description="Select an existing private collection or create new private collection" onpageadvanced="return PrivateCollectionWizard.checkCollection();">
+        <label value="Select private collection:" class="Primary"/>
+        <hbox flex="1">
+            <listbox id="collectionList" flex="1" oncommand="PrivateCollectionWizard.onPageSelectionChanged();">
+                <!--<listitem label="Create new private collection" selected="true" current="true"/>-->
+            </listbox>
+        </hbox>
+    </wizardpage>
+
+    <wizardpage description="Please enter collection or shape information." onpageadvanced="return PrivateCollectionWizard.validatePage();">
+        <hbox id="collection">
+            <groupbox flex="1">
+                <caption label="Collection information"/>
+                <grid>
+                <columns>
+                    <column />
+                    <column flex="1"/>
+                </columns>
+                <rows>
+                    <row align="center">
+                        <hbox align="right" style="width:60px">
+                            <label control="collectionName" value="Name:" />
+                        </hbox>
+                        <textbox id="collectionName" size="32" maxlength="255" />
+                    </row>
+                    <row align="center">
+                        <hbox align="right">
+                            <label control="collectionDescription" value="Description:" />
+                        </hbox>
+                        <textbox id="collectionDescription" multiline="true" rows="2"/>
+                    </row>
+                </rows>
+                </grid>
+            </groupbox>
+        </hbox>
+        <hbox>
+            <groupbox flex="1">
+                <caption label="Shape definition"/>
+                <grid>
+                <columns>
+                    <column />
+                    <column flex="1"/>
+                </columns>
+                <rows>
+                    <row align="center">
+                        <hbox align="right" style="width:60px">
+                            <label control="shapeName" value="Name:" />
+                        </hbox>
+                        <textbox id="shapeName" size="32" maxlength="255" />
+                    </row>
+                    <row align="center">
+                        <hbox align="right">
+                            <label control="icon" value="Icon:" />
+                        </hbox>
+                        <hbox>
+                            <textbox id="shapeIcon" size="32" maxlength="255" flex="1"  disabled="true"/>
+                            <button id="browse" label="Browse..." disabled="true" oncommand="PrivateCollectionWizard.browseIconFile();"></button>
+                        </hbox>
+                    </row>
+                    <row align="left">
+                        <hbox align="right"></hbox>
+                        <checkbox id="autoGenerateIcon" label="Auto generate icon" checked="true" oncommand="if (this.checked) {document.getElementById('shapeIcon').disabled=true;document.getElementById('browse').disabled=true;} else {document.getElementById('shapeIcon').disabled=false;document.getElementById('browse').disabled=false;}"/>
+                    </row>
+                </rows>
+                </grid>
+            </groupbox>
+        </hbox>
+    </wizardpage>
+</wizard>
+

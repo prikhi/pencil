@@ -33,7 +33,7 @@ CollectionManager.loadUserDefinedStencils = function () {
 
     try {
         var properties = Components.classes["@mozilla.org/file/directory_service;1"]
-                         .getService(Components.interfaces.nsIProperties);
+                        .getService(Components.interfaces.nsIProperties);
 
         stencilDir = properties.get("resource:app", Components.interfaces.nsIFile);
         stencilDir.append("Stencils");
@@ -46,7 +46,7 @@ CollectionManager.loadUserDefinedStencils = function () {
 };
 CollectionManager.getUserStencilDirectory = function () {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
-                     .getService(Components.interfaces.nsIProperties);
+                    .getService(Components.interfaces.nsIProperties);
 
     var stencilDir = null;
     stencilDir = properties.get("ProfD", Components.interfaces.nsIFile);
@@ -101,8 +101,10 @@ CollectionManager.loadStencils = function() {
     CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/BasicWebElements/Definition.xml"));
 
     CollectionManager.loadUserDefinedStencils();
+    PrivateCollectionManager.loadPrivateCollections();
 
     Pencil.collectionPane.reloadCollections();
+    Pencil.privateCollectionPane.reloadCollections();
 };
 CollectionManager.installNewCollection = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
@@ -117,7 +119,7 @@ CollectionManager.installNewCollection = function () {
 }
 CollectionManager.installCollectionFromFile = function (file) {
     var zipReader = Components.classes["@mozilla.org/libjar/zip-reader;1"]
-                   .createInstance(Components.interfaces.nsIZipReader);
+                    .createInstance(Components.interfaces.nsIZipReader);
     zipReader.open(file);
 
     var targetDir = CollectionManager.getUserStencilDirectory();
@@ -136,7 +138,7 @@ CollectionManager.installCollectionFromFile = function (file) {
         var entry = entryEnum.getNext();
 
         var targetFile = Components.classes["@mozilla.org/file/local;1"]
-                   .createInstance(Components.interfaces.nsILocalFile);
+                    .createInstance(Components.interfaces.nsILocalFile);
         targetFile.initWithPath(targetPath);
 
         debug(entry);
@@ -166,14 +168,14 @@ CollectionManager.installCollectionFromFile = function (file) {
         targetFile.permissions = 0600;
     }
     var extractedDir = Components.classes["@mozilla.org/file/local;1"]
-                   .createInstance(Components.interfaces.nsILocalFile);
+                    .createInstance(Components.interfaces.nsILocalFile);
 
     extractedDir.initWithPath(targetPath);
 
     //try loading the collection
     try {
         var definitionFile = Components.classes["@mozilla.org/file/local;1"]
-                       .createInstance(Components.interfaces.nsILocalFile);
+                        .createInstance(Components.interfaces.nsILocalFile);
 
         definitionFile.initWithPath(targetPath);
         definitionFile.append("Definition.xml");
@@ -194,8 +196,8 @@ CollectionManager.installCollectionFromFile = function (file) {
         }
         collection.userDefined = true;
         if (!Util.confirmWithWarning("Are you sure you want to install the unsigned collection: " + collection.displayName,
-                                     new RichText("<p>Since a collection may contain execution code that could harm your machine. " +
-                                                  "It is highly recommended that you should <em>only install collections from authors whom you trust</em>.</p>"), "Install")) {
+                                    new RichText("<p>Since a collection may contain execution code that could harm your machine. " +
+                                                "It is highly recommended that you should <em>only install collections from authors whom you trust</em>.</p>"), "Install")) {
             extractedDir.remove(true);
             return;
         }
@@ -216,7 +218,7 @@ CollectionManager.installCollectionFromFile = function (file) {
 };
 CollectionManager.installCollectionFromFilePath = function (filePath) {
     var file = Components.classes["@mozilla.org/file/local;1"]
-                   .createInstance(Components.interfaces.nsILocalFile);
+                    .createInstance(Components.interfaces.nsILocalFile);
     file.initWithPath(filePath);
 
     CollectionManager.installCollectionFromFile(file);
@@ -242,9 +244,9 @@ CollectionManager.isCollectionCollapsed = function (collection) {
 CollectionManager.uninstallCollection = function (collection) {
     if (!collection.installDirPath || !collection.userDefined) return;
     if (!Util.confirm("Are you sure you want to uninstall " + collection.displayName + "?",
-                      "Warning: uninstalling a collection makes shapes created by that collection uneditable.")) return;
+                        "Warning: uninstalling a collection makes shapes created by that collection uneditable.")) return;
     var dir = Components.classes["@mozilla.org/file/local;1"]
-                   .createInstance(Components.interfaces.nsILocalFile);
+                    .createInstance(Components.interfaces.nsILocalFile);
     dir.initWithPath(collection.installDirPath);
 
     dir.remove(true);

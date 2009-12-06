@@ -5,6 +5,7 @@
 <?xml-stylesheet href="../Styles/HtmlForeignObjectXUL.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/MainWindow.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/CollectionPane.css" type="text/css"?>
+<?xml-stylesheet href="../Styles/PrivateCollectionPane.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/PCanvas.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/ColorPickerButton.css" type="text/css"?>
 <?xml-stylesheet href="../PropertyType/Editor/CommonEditors.css" type="text/css"?>
@@ -31,6 +32,11 @@
 <script src="../CanvasHelper/CanvasCareTaker.js"/>
 <script src="../CanvasHelper/CanvasMemento.js"/>
 <script src="../CanvasHelper/CanvasImpl.js"/>
+
+<script src="../PrivateCollection/PrivateCollection.js"/>
+<script src="../PrivateCollection/PrivateShapeDef.js"/>
+<script src="../PrivateCollection/PrivateShapeDefParser.js"/>
+<script src="../PrivateCollection/PrivateCollectionManager.js"/>
 
 <script src="../Definition/Geometry.js"/>
 <script src="../Definition/ShapeDef.js"/>
@@ -142,7 +148,7 @@
         <command id="bringForwardCommand" oncommand="Pencil.activeCanvas.currentController.bringForward();"/>
         <command id="sendBackwardCommand" oncommand="Pencil.activeCanvas.currentController.sendBackward();"/>
         <command id="sendToBackCommand" oncommand="Pencil.activeCanvas.currentController.sendToBack();"/>
-        
+
         <command id="hideHeavyElementsCommand" oncommand="Pencil.toggleShowHeavyElements();"/>
 
         <command id="copyCommand" oncommand="Pencil.activeCanvas.doCopy();"/>
@@ -204,7 +210,7 @@
         <key id="sendToBackKey3" command="sendToBackCommand" modifiers="accel shift"     keycode="VK_END"/>
 
         <key id="hideHeavyElementsKey" command="hideHeavyElementsCommand" modifiers="accel shift" key="H"/>
-        
+
         <key id="copyKey" command="copyCommand" modifiers="accel" key="C"/>
         <key id="cutKey" command="cutCommand" modifiers="accel" key="X"/>
         <key id="pasteKey" command="pasteCommand" modifiers="accel" key="V"/>
@@ -296,7 +302,7 @@
                     <menuitem label="Clipart Browser..." oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
                     <menuseparator/>
                     <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
-                    
+
                     <menuitem label="Manage Export Template..." command="manageExportTemplateCommand"/>
                 </menupopup>
             </menu>
@@ -374,10 +380,14 @@
                 <tabbox id="sideBox" width="300" persist="width">
                     <tabs id="sideBoxTabs">
                         <tab label="Shape Collections"/>
+                        <tab label="My Collections"/>
                     </tabs>
                     <tabpanels flex="1" id="sideBoxTabPanels">
                         <tabpanel>
                             <pcollectionpane id="collectionPane" flex="1"/>
+                        </tabpanel>
+                        <tabpanel>
+                            <privatecollectionpane id="privateCollectionPane" flex="1"/>
                         </tabpanel>
                     </tabpanels>
                 </tabbox>

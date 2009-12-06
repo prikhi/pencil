@@ -37,6 +37,34 @@ ShapeDefDragObserver.prototype = {
 
 Pencil.registerDragObserver(ShapeDefDragObserver);
 
+function PrivateShapeDefDragObserver(canvas) {
+    this.canvas = canvas;
+}
+PrivateShapeDefDragObserver.prototype = {
+    getSupportedFlavours : function () {
+        var flavours = new FlavourSet();
+        flavours.appendFlavour("pencil/privateDef");
+        return flavours;
+    },
+    onDragOver: function (evt, flavour, session){},
+    onDrop: function (evt, transferData, session) {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var defId = transferData.data;
+        debug("drop: " + defId);
+
+        var def = PrivateCollectionManager.locateShapeDefinition(defId);
+        debug("found def: " + def);
+
+        var loc = this.canvas.getEventLocation(evt);
+
+        if (loc.x <0 || loc.y < 0) return;
+
+        this.canvas.insertPrivateShape(def, new Bound(loc.x, loc.y, null, null));
+    }
+};
+
+Pencil.registerDragObserver(PrivateShapeDefDragObserver);
+
 //====================================================================================
 
 function RichTextDragObserver(canvas) {
