@@ -123,6 +123,10 @@ pcollectionpane .Collection .Content > div:hover {
     color: highlighttext;
 }
 pcollectionpane .Collection .Content > div img {
+    opacity: .7;
+
+	max-width: 5em;
+    max-height: 5em;
 }
 pcollectionpane .Collection .Content > div:hover img {
     opacity: 1;
@@ -131,6 +135,7 @@ pcollectionpane .Collection .Content > div label {
     display: block;
     text-shadow: 0px 0px 1px rgba(0, 0, 0, .2);
     opacity: .7;
+	overflow: hidden;
 }
 
 

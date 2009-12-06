@@ -84,6 +84,8 @@ Pencil.boot = function (event) {
         }
 
         Pencil.collectionPane = document.getElementById("collectionPane");
+        Pencil.privateCollectionPane = document.getElementById("privateCollectionPane");
+
         Pencil.controller = new Controller(win);
         Pencil.rasterizer = new Rasterizer("image/png");
         CollectionManager.loadStencils();

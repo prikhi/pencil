@@ -646,7 +646,7 @@
                     });
                     if (top && this.isShapeLocked(top)) top = null;
                     debug("top: " + top);
-                    
+
                     if (!top) {
                         this.lastTop = null;
                         //this.clearSelection();
@@ -1333,7 +1333,7 @@
                 <![CDATA[
                     if (!this.currentController) return;
                     if (this.currentController.constructor != Group) return;
-                    
+
                     var nodes = this.currentController.ungroup();
 
                     this.selectMultiple(nodes);
@@ -1571,6 +1571,145 @@
                 ]]>
                 </body>
             </method>
+            <method name="addSelectedToMyCollection">
+                <body>
+                <![CDATA[
+                    if (!this.currentController) return;
+                    try {
+                        var target = Pencil.getCurrentTarget();
+                        debug("adding selected shapes to my collection... ");
+
+                        //generating text/xml+svg
+                        var svg = target.svg.cloneNode(true);
+
+                        var data = {
+                            collections: PrivateCollectionManager.privateShapeDef.collections,
+                            valueHolder: {}
+                        };
+                        var d = window.openDialog('chrome://pencil/content/UI/CreatePrivateCollectionWizard.xul', 'CreatePrivateCollectionWizard', 'chrome,centerscreen,modal', data);
+
+                        var valueHolder = data.valueHolder;
+                        if (!valueHolder.shapeName) return;
+
+                        debug("creating shape");
+
+                        var shapeDef = new PrivateShapeDef();
+                        shapeDef.displayName = valueHolder.shapeName;
+                        shapeDef.content = svg;
+                        shapeDef.id = shapeDef.displayName.replace(/\s+/g, "_").toLowerCase() + "_" + (new Date()).getTime();
+
+                        debug("shape name: " + shapeDef.displayName + ", id: " + shapeDef.id);
+
+                        var collection = valueHolder.collection;
+                        var isNewCollection = (collection == null || collection == -1);
+
+                        if (isNewCollection) {
+                            debug("creating new collection...");
+                            collection = new PrivateCollection();
+                            collection.displayName = valueHolder.collectionName;
+                            collection.description = valueHolder.collectionDescription;
+                            collection.id = collection.displayName.replace(/\s+/g, "_").toLowerCase() + "_" + (new Date()).getTime();
+                            debug("collection name: " + collection.displayName + ", id: " + collection.id);
+
+                            collection.shapeDefs.push(shapeDef);
+                        }
+
+                        debug("generating icon... ");
+                        if (valueHolder.autoGenerateIcon) {
+                            Util.generateIcon(target, 64, 64, 2, null, function (data) {
+                                debug("done. ");
+                                shapeDef.iconData = data;
+                                if (isNewCollection) {
+                                    PrivateCollectionManager.addShapeCollection(collection);
+                                } else {
+                                    PrivateCollectionManager.addShapeToCollection(collection, shapeDef);
+                                }
+                                return;
+                            });
+                        } else {
+                            var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+                            file.initWithPath(valueHolder.shapeIcon);
+
+                            var ios = Components.classes["@mozilla.org/network/io-service;1"].
+                                            getService(Components.interfaces.nsIIOService);
+                            var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+                                                    createInstance(Components.interfaces.nsIFileInputStream);
+                            istream.init(file, -1, -1, false);
+
+                            var bstream = Components.classes["@mozilla.org/binaryinputstream;1"].
+                                                    createInstance(Components.interfaces.nsIBinaryInputStream);
+                            bstream.setInputStream(istream);
+                            var bytes = bstream.readBytes(bstream.available());
+                            istream.close();
+                            bstream.close();
+
+                            var base64 = Base64.encode(bytes, true);
+                            shapeDef.iconData = "data:image/png;base64," + base64;
+
+                            if (isNewCollection) {
+                                PrivateCollectionManager.addShapeCollection(collection);
+                            } else {
+                                PrivateCollectionManager.addShapeToCollection(collection, shapeDef);
+                            }
+                        }
+                    } catch (e) {
+                        Console.dumpError(e);
+                    }
+                ]]>
+                </body>
+            </method>
+            <method name="insertPrivateShape">
+                <parameter name="shapeDef"/>
+                <parameter name="bound"/>
+                <body>
+                <![CDATA[
+                    this.run(this.insertPrivateShapeImpl_, this, [shapeDef, bound ? bound : null]);
+                ]]>
+                </body>
+            </method>
+            <method name="insertPrivateShapeImpl_">
+                <parameter name="shapeDef"/>
+                <parameter name="bound"/>
+                <body>
+                <![CDATA[
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+                    debug("inserting private shape: " + shapeDef.displayName + ", id: " + shapeDef.id);
+                    var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
+                    g.appendChild(shapeDef.content);
+
+                    //validate
+                    var shape = Dom.getSingle("/svg:g[@p:type='Shape' or @p:type='Group']", g);
+                    if (!shape) {
+                        return;
+                    }
+
+                    shape = this.ownerDocument.importNode(shape, true);
+                    //generate the ids
+                    var seed = "" + (this.idSeed ++) + (new Date().getTime());
+
+                    Dom.workOn(".//*[@p:name]", shape, function (node) {
+                        var id = node.getAttributeNS(PencilNamespaces.p, "name") + seed;
+                        node.setAttribute("id", id);
+                        node.id = id;
+                    });
+
+                    Dom.resolveIdRef(shape, seed);
+                    //Dom.renewId(shape);
+
+                    this.run(function() {
+                        this.drawingLayer.appendChild(shape);
+                        this.selectShape(shape);
+                        if (bound) {
+                            var bbox = this.currentController.getBounding();
+                            this.currentController.moveBy(bound.x - bbox.x - Math.round(bbox.width/2), bound.y - bbox.y - Math.round(bbox.height/2), true);
+                        }
+                        //this.ensureControllerInView();
+                    }, this);
+                    this.invalidateEditors();
+                ]]>
+                </body>
+            </method>
         </implementation>
         <handlers>
             <handler event="dragover">
@@ -1591,6 +1730,7 @@
             </handler>
             <handler event="dragdrop">
                 <![CDATA[
+                    debug("dorp");
                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     if (this.lastAcceptedDragObserver) {
                         try {
@@ -1618,6 +1758,7 @@
                     <menuitem label="Group" command="groupCommand" p:for="TargetSet" key="groupKey"/>
                     <menuitem label="Ungroup" command="unGroupCommand" p:for="Group" key="unGroupKey"/>
                     <menuitem label="Delete" p:for="Shape,TargetSet,Group" oncommand="this._canvas.deleteSelected();"/>
+					<menuitem label="Add to My Collections..." p:for="Shape,Group" oncommand="this._canvas.addSelectedToMyCollection();"/>
                     <menuitem aid="propertyMenuItem" label="Properties..." p:for="Shape,Group,TargetSet"/>
                 </popup>
             </popupset>

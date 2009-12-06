@@ -104,7 +104,7 @@ Group.prototype.moveBy = function (dx, dy) {
     var matrix = this.svg.ownerSVGElement.createSVGTransform().matrix;
     matrix = matrix.translate(dx, dy);
     var ctm = this.svg.getTransformToElement(this.svg.parentNode);
-    
+
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
 };
@@ -114,17 +114,17 @@ Group.prototype.scaleTo = function (w, h) {
     var dh = h / geo.dim.h;
     for (t in this.targets) {
         var target = this.targets[t];
-        
+
         var bounding = target.getBounding(this.svg);
         var newX = bounding.x * dw;
         var newY = bounding.y * dh;
-        
+
         var targetGeo = target.getGeometry();
         var newW = targetGeo.dim.w * dw;
         var newH = targetGeo.dim.h * dh;
-        
+
         target.scaleTo(newW, newH);
-        
+
         bounding = target.getBounding(this.svg);
         target.moveBy(newX - bounding.x, newY - bounding.y);
     }
@@ -135,33 +135,33 @@ Group.prototype.rotateBy = function (da) {
     var bbox = this.svg.getBBox();
     var x = bbox.x + bbox.width / 2;
     var y = bbox.y + bbox.height / 2;
-    
+
     center = Svg.pointInCTM(x, y, ctm);
-    
+
     ctm = ctm.translate(x, y);
     ctm = ctm.rotate(da);
     ctm = ctm.translate(0 - x, 0 - y);
-    
+
     Svg.ensureCTM(this.svg, ctm);
 };
 Group.prototype.getBounding = function (to) {
     var context = to ? to : this.canvas.drawingLayer;
     var ctm = this.svg.getTransformToElement(context);
-    
+
     var bbox = this.svg.getBBox();
-    
+
     var p = Svg.pointInCTM(bbox.x, bbox.y, ctm);
     var rect = {
         x: p.x,
         y: p.y,
-        w: 0,
-        h: 0
+        width: 0,
+        height: 0
     };
-    
+
     Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x + bbox.width, bbox.y, ctm));
     Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x + bbox.width, bbox.y + bbox.height, ctm));
     Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x, bbox.y + bbox.height, ctm));
-    
+
     return rect;
 };
 Group.prototype.supportScaling = function () {
@@ -172,20 +172,20 @@ Group.prototype.ungroup = function () {
     var nodes = [];
     for (t in this.targets) {
         var target = this.targets[t];
-        
+
         var node = target.svg;
         var ctm = target.svg.getTransformToElement(this.canvas.drawingLayer);
-        
+
         node.parentNode.removeChild(node);
         this.canvas.drawingLayer.appendChild(node);
-        
+
         Svg.ensureCTM(node, ctm);
 
         nodes.push(node);
     }
 
     this.canvas.drawingLayer.removeChild(this.svg);
-    
+
     return nodes;
 };
 
@@ -195,7 +195,7 @@ Group.TRANSLATE_REGEX = /^translate\(([\-0-9]+)\,([\-0-9]+)\)$/
 Group.prototype.getGeometry = function () {
     var geo = new Geometry();
     geo.ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
-    
+
     geo.dim = {};
     var bbox = this.svg.getBBox();
     geo.dim.w = bbox.width;
@@ -266,7 +266,7 @@ Group.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
     this._pSnapshot.translate.matrix.e = v.x;
     this._pSnapshot.translate.matrix.f = v.y;
 */
-    
+
     this.moveBy(dx - this._pSnapshot.lastDX, dy - this._pSnapshot.lastDY);
     this._pSnapshot.lastDX = dx;
     this._pSnapshot.lastDY = dy;

@@ -669,8 +669,47 @@ Util.setNodeMetadata = function (node, name, value) {
 Util.getNodeMetadata = function (node, name) {
     return node.getAttributeNS(PencilNamespaces.p, name);
 };
+Util.generateIcon = function (target, width, height, padding, iconPath, callback) {
+    if (!target || !target.getGeometry) {
+        return;
+    }
 
+    var geo = target.getGeometry();
+    if (!geo) {
+        return;
+    }
 
+    var w = geo.dim.w;
+    var h = geo.dim.h;
+
+    if (w > h) {
+        height = h / (w / 64);
+    } else {
+        width = w / (h / 64);
+    }
+
+    var svg = document.createElementNS(PencilNamespaces.svg, "svg");
+    svg.setAttribute("width", "" + (width + padding * 2) + "px");
+    svg.setAttribute("height", "" + (height + padding * 2) + "px");
+
+    var content = target.svg.cloneNode(true);
+    content.removeAttribute("transform");
+    content.removeAttribute("id");
+
+    content.setAttribute("transform", "translate(" + padding + ", " + padding + ") scale(" + width / geo.dim.w + ", " + height / geo.dim.h + ")");
+
+    svg.appendChild(content);
+
+    if (iconPath) {
+        Pencil.rasterizer.rasterizeDOM(svg, iconPath, function () {});
+    } else {
+        Pencil.rasterizer.rasterizeDOMToUrl(svg, function (data) {
+            if (callback) {
+                callback(data.url);
+            }
+        });
+    }
+};
 Util.compress = function (dir, zipFile) {
     var writer = Components.classes["@mozilla.org/zipwriter;1"]
                           .createInstance(Components.interfaces.nsIZipWriter);
