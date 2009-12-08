@@ -50,6 +50,7 @@
                     
                     this.brightScale.addEventListener("change", function(event) {
                         thiz.bright.value = thiz.brightScale.value;
+                        thiz._disableEventFiringOnce = false;
                     }, false);
                     this.brightScale.addEventListener("mouseup", function(event) {
                         thiz._emitChangeEvent();

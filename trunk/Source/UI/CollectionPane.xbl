@@ -181,6 +181,8 @@
                         var label = document.createElementNS(PencilNamespaces.html, "label");
                         label.appendChild(document.createTextNode(def.displayName));
                         button.appendChild(label);
+                        
+                        button.setAttribute("ptype", def.constructor.name);
                     }
                 ]]>
                 </body>
@@ -210,10 +212,14 @@
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
                                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                                debug("dragging started");
                                 transferData.data = new TransferData();
-                                transferData.data.addDataForFlavour("pencil/def", defNode._def.id);
-                                transferData.data.addDataForFlavour("text/unicode", defNode._def.displayName);
+                                var def = defNode._def;
+                                if (def.constructor == ShapeDef) {
+                                    transferData.data.addDataForFlavour("pencil/def", def.id);
+                                } else if (def.constructor == Shortcut) {
+                                    transferData.data.addDataForFlavour("pencil/shortcut", def.id);
+                                }
+                                transferData.data.addDataForFlavour("text/unicode", def.displayName);
                             }
                         });
                         debug("end draging");

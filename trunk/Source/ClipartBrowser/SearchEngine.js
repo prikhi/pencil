@@ -1,13 +1,12 @@
 
 function SearchEngine() {
-	this.title = "";
-	this.name = "";
-	this.icon = "";
-	this.iconURI = "";
-	this.uri = "";
-	this.searchUri = "";
+    this.title = null;
+    this.name = null;
+    this.icon = null;
+    this.description = null;
+    this.uri = null;
 }
 
-SearchEngine.prototype.getSearchData = function(aData, a) {
-	return this.getData(aData, a);
+SearchEngine.prototype.search = function(query, options, callback) {
+    return this.searchImpl(query, options, callback);
 }

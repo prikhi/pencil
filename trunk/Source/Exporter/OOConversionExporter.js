@@ -81,7 +81,6 @@ OOConversionExporter.converters["jod"] = {
 
 OOConversionExporter.prototype = new ODTExporter();
 OOConversionExporter.prototype.super$export = OOConversionExporter.prototype.export;
-debug(OOConversionExporter.prototype.super$export);
 OOConversionExporter.prototype.export = function (doc, options, destFile, xmlFile, callback) {
     var tmpODTFile = Local.newTempFile("penciloo", "odt");
     

@@ -1,4 +1,6 @@
 
 function openClipartBrowser() {
-    window.openDialog('../UI/ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas);
+    if (!Pencil.activeCanvas._clipartShowing) {
+        window.openDialog('../UI/ClipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil.activeCanvas);
+    }
 }

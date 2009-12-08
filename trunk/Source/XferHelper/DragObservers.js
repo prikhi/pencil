@@ -67,6 +67,38 @@ Pencil.registerDragObserver(PrivateShapeDefDragObserver);
 
 //====================================================================================
 
+function ShapeShortcutDragObserver(canvas) {
+    this.canvas = canvas;
+}
+ShapeShortcutDragObserver.prototype = {
+    getSupportedFlavours : function () {
+        var flavours = new FlavourSet();
+        
+        flavours.appendFlavour("pencil/shortcut");
+        
+        return flavours;
+    },
+    onDragOver: function (evt, flavour, session){},
+    onDrop: function (evt, transferData, session) {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var defId = transferData.data;
+        var shortcut = CollectionManager.shapeDefinition.locateShortcut(defId);
+        
+        var def = shortcut.shape;
+        var overridingValueMap = shortcut.propertyMap;
+        
+        var loc = this.canvas.getEventLocation(evt);
+        
+        if (loc.x <0 || loc.y < 0) return;
+        
+        this.canvas.insertShape(def, new Bound(loc.x, loc.y, null, null), overridingValueMap);
+    }
+};
+
+Pencil.registerDragObserver(ShapeShortcutDragObserver);
+
+//====================================================================================
+
 function RichTextDragObserver(canvas) {
     this.canvas = canvas;
 }
@@ -199,6 +231,7 @@ function handleSVGData(svg, canvas, loc) {
     try {
         var width = parseInt(Dom.getSingle("/svg:svg/@width", dom).nodeValue, 10);
         var height = parseInt(Dom.getSingle("/svg:svg/@height", dom).nodeValue, 10);
+        var origDim = new Dimension(width, height);
         
         var g = dom.createElementNS(PencilNamespaces.svg, "g");
         while (dom.documentElement.childNodes.length > 0) {
@@ -211,13 +244,23 @@ function handleSVGData(svg, canvas, loc) {
         var def = CollectionManager.shapeDefinition.locateDefinition(FileDragObserver.SVG_SHAPE_DEF_ID);
         if (!def) return;
         
-        canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
+        if (width > canvas.width || height > canvas.height) {
+            var rw = width / canvas.width;
+            var rh = height / canvas.height;
+            
+            var r = Math.max(rw, rh);
+            
+            width = Math.round(width / r);
+            height = Math.round(height / r);
+        }
+        
+        canvas.insertShape(def, new Bound(loc.x - Math.round(width / 2), loc.y - Math.round(height / 2), null, null));
         if (canvas.currentController) {
             var controller = canvas.currentController;
             var dim = new Dimension(width, height);
             controller.setProperty("svgXML", new PlainText(Dom.serializeNode(dom.documentElement)));
             controller.setProperty("box", dim);
-            controller.setProperty("originalDim", dim);
+            controller.setProperty("originalDim", origDim);
         }
 
     } catch (e) {

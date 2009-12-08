@@ -119,7 +119,14 @@ ShapeAction.prototype.toString = function () {
     return "[ShapeAction: " + this.implFunction + "]";
 };
 
-
+function Shortcut() {
+    this.id = null;
+    this.name = "";
+    this.displayName = "";
+    
+    this.shape = null;
+    this.propertyMap = {};
+}
 
 
 
