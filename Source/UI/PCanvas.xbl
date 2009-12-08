@@ -178,6 +178,7 @@
                         var flavours = new FlavourSet();
 
                         flavours.appendFlavour("pencil/def");
+                        flavours.appendFlavour("pencil/shortcut");
                         flavours.appendFlavour("text/unicode");
                         //flavours.appendFlavour("image/png");
 
@@ -460,15 +461,17 @@
             <method name="insertShape">
                 <parameter name="shapeDef"/>
                 <parameter name="bound"/>
+                <parameter name="overridingValueMap"/>
                 <body>
                 <![CDATA[
-                    this.run(this.insertShapeImpl_, this, [shapeDef, bound ? bound : null]);
+                    this.run(this.insertShapeImpl_, this, [shapeDef, bound ? bound : null, overridingValueMap ? overridingValueMap : null]);
                 ]]>
                 </body>
             </method>
             <method name="insertShapeImpl_">
                 <parameter name="shapeDef"/>
                 <parameter name="bound"/>
+                <parameter name="overridingValueMap"/>
                 <body>
                 <![CDATA[
                     // instantiate the shape using the shapedef
@@ -501,7 +504,7 @@
                     // applying defined behaviors into the shape
 
                     var controller = new Shape(this, shape);
-                    controller.setInitialPropertyValues();
+                    controller.setInitialPropertyValues(overridingValueMap);
 
                     if (bound) {
                         var bbox = controller.getBoundingRect();
@@ -635,6 +638,7 @@
                     tick("begin");
 
                     this._button = event.button;
+                    
                     var thiz = this;
                     var isInControlLayer = Dom.findUpward(event.originalTarget, function (node) {
                         return (node == thiz.controlLayer);
@@ -645,7 +649,6 @@
                         return node.hasAttributeNS && node.hasAttributeNS(PencilNamespaces.p, "type");
                     });
                     if (top && this.isShapeLocked(top)) top = null;
-                    debug("top: " + top);
 
                     if (!top) {
                         this.lastTop = null;
@@ -664,7 +667,6 @@
                         this._sayTargetChanged();
                         return;
                     }
-                    tick("top found");
 
                     var controller = null;
 
@@ -691,7 +693,6 @@
                             this.addToSelection(controller);
                         }
                     }
-                    tick("target setup");
 
                     var targets = this.getSelectedTargets();
                     if (targets.length > 1) {
@@ -705,7 +706,6 @@
 
                     if (controller) {
                         try {
-                            debug("controler: " + controller.getName());
                             this.currentController = controller;
                             this.controllerHeld = true;
 
@@ -717,7 +717,7 @@
                             this.currentController.setPositionSnapshot();
                             tick("after setPositionSnapshot");
 
-                            this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
+                            if (event.button == 0) this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
 
                             if (top != this.lastTop || event.ctrlKey || event.button != 0) {
                                 this.reClick = false;
@@ -725,9 +725,8 @@
 
 
                             } else {
-                                this.reClick = true;
+                                if (event.detail != 2) this.reClick = true;
                             }
-                            tick("attached");
 
                             this.hasMoved = false;
                             this.lastTop = top;
@@ -1164,7 +1163,7 @@
 
                     var target = this.createControllerFor(top);
 
-                    Dom.emitEvent("p:ShapeDoubleClicked", top, {controller: target});
+                    Dom.emitEvent("p:ShapeDoubleClicked", top, {controller: target, origTarget: event.originalTarget, clientX: event.clientX, clientY: event.clientY});
 
                 ]]>
                 </body>
