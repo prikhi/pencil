@@ -120,7 +120,7 @@ Pencil.boot = function (event) {
     }
 };
 Pencil.setTitle = function (s) {
-    document.title = s + " - %name%";
+    document.title = s + " - Pencil";
 };
 
 Pencil.handleCanvasChange = function (event) {

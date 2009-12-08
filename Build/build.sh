@@ -1,15 +1,19 @@
 #!/bin/sh
 export NAME='Pencil'
-export VERSION='1.0'
-export BUILD='7'
+export VERSION='1.1'
+export BUILD='0'
 export AUTHOR='Duong Thanh An (an.duong@evolus.vn) and Contributors'
 export XPINAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
 export FXMINVER='3.0b3'
-export FXMAXVER='3.5.*'
+export FXMAXVER='3.6.*'
+export XRMINVER='1.9'
+export XRMAXVER='1.9.2.*'
 rm -Rf ./Outputs/
 mkdir -p ./Outputs
 
-echo "Building XPI..."
+echo "----------------"
+echo "* Building XPI *"
+echo "----------------"
 rm -Rf ./Outputs/XPI/
 mkdir ./Outputs/XPI/
 cp -R ./XPI/* ./Outputs/XPI/
@@ -34,16 +38,21 @@ cp -R ./XPI/update.rdf ./Outputs/
 
 rm -Rf ./Outputs/XPI/
 
-echo "------------------------------"
-echo "Building Linux GTK+ version..."
+echo "-------------------------------------------"
+echo "* Building Linux Shared XULRunner version *"
+echo "-------------------------------------------"
 rm -Rf ./Outputs/Linux/
 mkdir ./Outputs/Linux/
-cp -R ./Linux/xulrunner/* ./Outputs/Linux/
-cp -R ../Source/* ./Outputs/Linux/chrome/pencil@evolus.vn/
+cp -R ./Linux/* ./Outputs/Linux/
+cp -R ./XULRunner/* ./Outputs/Linux/
+mkdir -p ./Outputs/Linux/chrome/content
+cp -R ../Source/* ./Outputs/Linux/chrome/content/
+find ./Outputs/Linux/ -name .svn | xargs -i rm -Rf {}
 
-./replacer.sh ./Outputs/Linux/chrome/pencil@evolus.vn/UI/Window.xul
-./replacer.sh ./Outputs/Linux/chrome/pencil@evolus.vn/Common/Pencil.js
+./replacer.sh ./Outputs/Linux/chrome/content/UI/Window.xul
+./replacer.sh ./Outputs/Linux/chrome/content/Common/Pencil.js
 ./replacer.sh ./Outputs/Linux/application.ini
+chmod +x ./Outputs/Linux/*.sh
 
 echo "Compressing..."
 cd ./Outputs/Linux/
@@ -51,22 +60,5 @@ tar -czvf ../Pencil-$VERSION-$BUILD-linux-gtk.tar.gz * > /dev/null
 cd ../../
 rm -Rf ./Outputs/Linux/
 
-
-echo "-------------------------"
-echo "Building Win32 version..."
-rm -Rf ./Outputs/Win32/
-mkdir ./Outputs/Win32/
-cp -R ./Win32/xulrunner/* ./Outputs/Win32/
-cp -R ../Source/* ./Outputs/Win32/chrome/pencil@evolus.vn/
-
-./replacer.sh ./Outputs/Win32/chrome/pencil@evolus.vn/UI/Window.xul
-./replacer.sh ./Outputs/Win32/chrome/pencil@evolus.vn/Common/Pencil.js
-./replacer.sh ./Outputs/Win32/application.ini
-
-echo "Compressing..."
-cd ./Outputs/Win32/
-zip -r ../Pencil-$VERSION-$BUILD-win32.zip * > /dev/null
-cd ../../
-rm -Rf ./Outputs/Win32/
 
 echo "Done!"

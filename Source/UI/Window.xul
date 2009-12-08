@@ -13,7 +13,7 @@
 <?xul-overlay href="ColorToolOverlay.xul"?>
 <?xul-overlay href="TextToolOverlay.xul"?>
 <window
-        title="%name%"
+        title="Pencil"
         id="pencilMainWindow"
         persist="screenX screenY width height sizemode"
         sizemode="normal"
@@ -313,7 +313,7 @@
             </menu>
             <menu label="Help" id="help-menu" accesskey="H">
                 <menupopup>
-                    <menuitem label="About..." oncommand="Util.info('%name% Version: %version%, build %build%.', 'Copyright (c) 2008 Evolus. All rights reserved. This software is released under the terms of the GPL. Use it at your own risk.');"/>
+                    <menuitem label="About..." oncommand="Util.info('%name% Version: %version%, build %build%.', 'Copyright (c) 2009 Evolus. All rights reserved. This software is released under the terms of the GPL. Use it at your own risk.');"/>
                 </menupopup>
             </menu>
         </menubar>
