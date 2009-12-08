@@ -101,9 +101,14 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     this.parseCollectionProperties(shapeDefsNode, collection);
 
     var parser = this;
-    Dom.workOn("./p:Shape", shapeDefsNode, function (shapeDefNode) {
-        collection.shapeDefs.push(parser.parseShapeDef(shapeDefNode, collection));
+    Dom.workOn("./p:Shape | ./p:Shortcut", shapeDefsNode, function (node) {
+        if (node.localName == "Shape") {
+            collection.addDefinition(parser.parseShapeDef(node, collection));
+        } else {
+            collection.addShortcut(parser.parseShortcut(node, collection));
+        }
     });
+
 
     return collection;
 };
@@ -262,6 +267,52 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     });
 
     return shapeDef;
+};
+/* public Shortcut */ ShapeDefCollectionParser.prototype.parseShortcut = function (shortcutNode, collection) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+    var shortcut = new Shortcut();
+    
+    shortcut.displayName = shortcutNode.getAttribute("displayName");
+    shortcut.system = shortcutNode.getAttribute("system") == "true";
+    shortcut.collection = collection;
+    var iconPath = shortcutNode.getAttribute("icon");
+    iconPath = collection.url.substring(0, collection.url.lastIndexOf("/") + 1) + iconPath;
+    shortcut.iconPath = iconPath;
+
+    var shapeId = collection.id + ":" + shortcutNode.getAttribute("to");
+    var shapeDef = collection.getShapeDefById(shapeId);
+    
+    if (!shapeDef) throw "Bad shortcut. Target shape def is not found: " + shapeId;
+    
+    shortcut.shape = shapeDef;
+    shortcut.id = "system:ref:" + shortcut.displayName.replace(/[^a-z0-9]+/gi, "_").toLowerCase() + shortcut.shape.id;
+    
+    //parse property values
+    Dom.workOn(".//p:PropertyValue", shortcutNode, function (propValueNode) {
+        var name = propValueNode.getAttribute("name");
+
+        var valueElement = Dom.getSingle("./p:*", propValueNode);
+        var spec = {};
+        if (valueElement) {
+            if (valueElement.localName == "E") {
+                var expression = Dom.getText(valueElement);
+                expression = expression.replace(/\$\$([a-z][a-z0-9]*)/gi, function (zero, one) {
+                    return "collection.properties." + one + ".value";
+                });
+
+                spec.initialValueExpression = expression;
+            } else if (valueElement.localName == "Null") {
+                spec.initialValue = null;
+            }
+        } else {
+            var type = shapeDef.getProperty(name).type;
+            spec.initialValue = type.fromString(Dom.getText(propValueNode));
+        }
+
+        shortcut.propertyMap[name] = spec;
+    });
+
+    return shortcut;
 };
 
 

@@ -40,17 +40,27 @@ Shape.prototype.getPropertyGroups = function () {
     return this.def.propertyGroups;
 };
 
-Shape.prototype.setInitialPropertyValues = function () {
+Shape.prototype.setInitialPropertyValues = function (overridingValueMap) {
     this._evalContext = {collection: this.def.collection};
 
     for (var name in this.def.propertyMap) {
-        var prop = this.def.propertyMap[name];
-
         var value = null;
-        if (prop.initialValueExpression) {
-            value = this.evalExpression(prop.initialValueExpression);
+        
+        if (overridingValueMap && overridingValueMap[name]) {
+            var spec = overridingValueMap[name];
+            if (spec.initialValueExpression) {
+                value = this.evalExpression(spec.initialValueExpression);
+            } else {
+                value = spec.initialValue;
+            }
         } else {
-            value = prop.initialValue;
+            var prop = this.def.propertyMap[name];
+
+            if (prop.initialValueExpression) {
+                value = this.evalExpression(prop.initialValueExpression);
+            } else {
+                value = prop.initialValue;
+            }
         }
 
         this.storeProperty(name, value);
@@ -488,14 +498,14 @@ Shape.prototype.sendToBack = function () {
     } catch (e) { alert(e); }
 };
 
-Shape.prototype.getTextEditingInfo = function () {
-    var info = null;
+Shape.prototype.getTextEditingInfo = function (editingEvent) {
+    var infos = [];
 
+    this.prepareExpressionEvaluation();
     for (name in this.def.propertyMap) {
         var prop = this.def.propertyMap[name];
         if (prop.meta.editInfo) {
             F._target = this.svg;
-            this.prepareExpressionEvaluation();
             var info = this.evalExpression(prop.meta.editInfo);
 
             if (info) {
@@ -504,11 +514,13 @@ Shape.prototype.getTextEditingInfo = function () {
                 info.target = Pencil.findObjectByName(this.svg, info.targetName);
                 info.type = prop.type;
 
-                return info;
+                infos.push(info);
             }
         }
         if (prop.type == PlainText) {
             //find a behavior that use this as text content
+            var info = null;
+
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
                 for (i in b.items) {
@@ -544,12 +556,17 @@ Shape.prototype.getTextEditingInfo = function () {
                                 align: align,
                                 font: font};
 
-                        return info;
+                        break;
                     }
+                }
+                if (info) {
+                    infos.push(info);
+                    break;
                 }
             }
         } else if (prop.type == RichText) {
             var font = null;
+            var info = null;
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
                 for (i in b.items) {
@@ -598,17 +615,41 @@ Shape.prototype.getTextEditingInfo = function () {
                                 align: align,
                                 type: RichText
                             };
-
-                            return info;
+                            
+                            break;
                         }
                     }
                 }
+                if (info) {
+                    infos.push(info);
+                    break;
+                }
+
             }
-            return null;
         }
     }
-
-    return null;
+    
+    if (infos.length == 0) return null;
+    
+    if (!editingEvent || !editingEvent.origTarget) return infos[0];
+    
+    var min = 200000;
+    var selectedInfo = null;
+    for (var i = 0; i < infos.length; i ++) {
+        var info = infos[i];
+        var clientRect = info.target.getBoundingClientRect();
+        var c = {x: clientRect.left + clientRect.width / 2, y: clientRect.top + clientRect.height / 2};
+        var dx = editingEvent.clientX - c.x;
+        var dy = editingEvent.clientY - c.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        
+        if (d < min) {
+            selectedInfo = info;
+            min = d;
+        }
+    }
+    
+    return selectedInfo;
 };
 
 Shape.prototype.createTransferableData = function () {

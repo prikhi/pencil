@@ -230,7 +230,7 @@ HandleEditor.prototype.setupHandles = function () {
 
     for (name in properties) {
         var value = properties[name];
-        if (value.constructor != Handle) {
+        if (!value || value.constructor != Handle) {
             continue;
         }
 

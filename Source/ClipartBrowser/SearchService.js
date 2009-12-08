@@ -1,50 +1,54 @@
 
 function SearchService(options) {
-	this.options = options;
-	
-	this.engines = [];
-	
-	this.currentEngine = null;
+    this.options = options;
+    this.engines = [];
+    this.currentEngine = null;
 }
 
 SearchService.prototype.getEngines = function() {
-	return this.engines;
+    return this.engines;
 }
 
 SearchManager = {
-	searchService: null,
-	getSearchService: function() {
-	    if (this.searchService == null) {
-	    	this.searchService = new SearchService();
-	    }
-	    return this.searchService;
+    searchService: null,
+    getSearchService: function() {
+        if (this.searchService == null) {
+            this.searchService = new SearchService();
+        }
+        return this.searchService;
     },
-	registerSearchEngine: function(constructor, isDefault) {
-    	try {
-    		var se = new constructor();
-    		if (se) {
-    			debug("Register search engine: " + se.name);
-    			this.getSearchService().engines.push(se);
-    			if (isDefault) {
-    				this.setCurrentEngine(se);
-    			}
-    		}
-    	} catch (e) {
-    		error("Failed to register search engine: " + e);
-    	}
+    registerSearchEngine: function(constructor, isDefault) {
+        try {
+            var se = new constructor();
+            if (se) {
+                debug("Register search engine: " + se.name);
+                this.getSearchService().engines.push(se);
+                if (isDefault) {
+                    this.setCurrentEngine(se);
+                }
+            }
+        } catch (e) {
+            error("Failed to register search engine: " + e);
+        }
     },
     setCurrentEngine: function(se) {
-    	this.getSearchService().currentEngine = se;
+        this.getSearchService().currentEngine = se;
     },
-    
+
     activeCanvas: null
 }
 
-handleOnload = function(abc) {
-	debug("args: " + window.arguments);
-	if (window.arguments.length > 0) {
-		SearchManager.activeCanvas = window.arguments[0];
-	}
+handleOnload = function() {
+    if (window.arguments && window.arguments.length > 0) {
+        SearchManager.activeCanvas = window.arguments[0];
+        SearchManager.activeCanvas._clipartShowing = true;
+    }
+}
+handleOnUnload = function() {
+    if (SearchManager.activeCanvas) {
+        SearchManager.activeCanvas._clipartShowing = false;
+    }
 }
 
 window.addEventListener("load", handleOnload, false);
+window.addEventListener("unload", handleOnUnload, false);

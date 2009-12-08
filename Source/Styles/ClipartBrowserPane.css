@@ -16,7 +16,7 @@ pclipartbrowserpane #contentBox {
     background-color: #D6DED4;
     border: solid 1px;
     border-color: threedshadow;
-    
+
     height: 100%;
 }
 
@@ -28,7 +28,7 @@ pclipartbrowserpane div.SearchResult .Inner {
 pclipartbrowserpane div.SearchResult .Inner .Item {
     width: 205px;
     text-align: center;
-    
+
     display: inline-block;
     padding-top: 15px;
 }
@@ -39,9 +39,9 @@ pclipartbrowserpane div.SearchResult .Inner .Item .Image img,
 pclipartbrowserpane div.SearchResult .Inner .Item .Image svg {
     cursor: pointer;
     opacity: 0.9;
-    
+
     border: none;
-    
+
     padding: 5px;
 }
 pclipartbrowserpane div.SearchResult .Inner .Item .Selected img,
@@ -56,23 +56,23 @@ pclipartbrowserpane div.SearchResult .Inner .Item .Image svg:hover {
 pclipartbrowserpane div.SearchResult .Inner .Item .Info {
     display: block;
     margin-top: 10px;
-    
+
     font-size: 11px;
 }
 pclipartbrowserpane div.SearchResult .Inner .Item .Info h2 {
     font-size: 14px;
     font-weight: bold;
-    
+
     margin: 0;
     padding: 0;
 }
 pclipartbrowserpane div.SearchResult .Inner .Item .Info a {
-    
+
 }
 pclipartbrowserpane div.SearchResult .Inner .Item .Info a img {
     margin-bottom: -4px;
     padding-right: 3px;
-        
+
     border: none;
 }
 pclipartbrowserpane div.SearchResult .Inner .Item .Info span {
@@ -80,4 +80,70 @@ pclipartbrowserpane div.SearchResult .Inner .Item .Info span {
 pclipartbrowserpane div.SearchResult .Inner .Item .Info span strong {
     font-weight: bold;
     font-size: 13px;
+}
+
+
+hbox div.BottomPane {
+	padding: 10px;
+	height: 32px;
+}
+hbox div.BottomPane div.Navigation {
+	float: left;
+
+	font-size: 12px;
+}
+hbox div.BottomPane div.Navigation a {
+	text-decoration: none;
+	margin-left: 10px;
+
+	color: #0E7184;
+	cursor:pointer;
+	font-weight: bold;
+}
+hbox div.BottomPane div.Navigation a.Disabled {
+	color: gray;
+
+	cursor: default;
+}
+hbox div.BottomPane div.Navigation a#goPrevious {
+
+}
+hbox div.BottomPane div.Navigation a#goNext {
+	margin-right: 10px;
+}
+
+
+hbox div.BottomPane div.BrowseLimit {
+    float: right;
+	font-size: 1em;
+	padding-left: 1em;
+	border-left: solid 1px #999;
+}
+
+hbox div.BottomPane div.BrowseLimit a {
+	color: #0E7184;
+	margin: 0px 1ex;
+
+	font-weight: bold;
+
+	text-decoration: none;
+	opacity: .3;
+}
+hbox div.BottomPane div.BrowseLimit a:hover {
+	opacity: 1;
+	text-decoration: underline;
+}
+hbox div.BottomPane div.BrowseLimit a.Active {
+	font-weight: bold;
+	opacity: 1;
+	text-decoration: none;
+	margin: 0px .3ex;
+	padding: .3ex .7ex;
+	color: #fff;
+	background: #777;
+	-moz-border-radius: 5px;
+}
+hbox div.BottomPane {
+}
+hbox div.BottomPane {
 }

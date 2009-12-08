@@ -122,6 +122,11 @@ Dom.parseToNode = function (xml, dom) {
 
     return node;
 }
+Dom.parseDocument = function (xml) {
+    var dom = Dom.parser.parseFromString(xml, "text/xml");
+    return dom;
+};
+
 Dom.serializeNode = function (node) {
     return Dom.serializer.serializeToString(node);
 };
