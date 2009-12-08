@@ -47,15 +47,15 @@ pcollectionpane .Collection {
 }
 pcollectionpane .Collection + .Collection {
     margin-top: 2em;
-    border-top: solid 1px threedshadow;
+    border-top: solid 1px highlighttext;
 }
 pcollectionpane *[pcollapsed='true'].Collection + .Collection {
     margin-top: 0em;
 }
 pcollectionpane .Collection > hbox:first-child {
     -moz-box-align: start;
-    background-color: threedface;
-    color: buttontext;
+    background-color: highlight;
+    color: highlighttext;
     padding: .3em;
     cursor: default;
 }
@@ -75,9 +75,6 @@ pcollectionpane .Collection > hbox:first-child > button {
 pcollectionpane .Collection > hbox:first-child:hover > button {
     opacity: 1;
 }
-pcollectionpane .Collection > hbox:first-child:hover div h4 {
-    color: highlight;
-}
 pcollectionpane .Collection > hbox:first-child > button image {
     margin: 0px;
 }
@@ -95,7 +92,10 @@ pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child > button {
     background-position: -9px 0px;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div {
-    opacity: .3;
+    opacity: .2;
+}
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child:hover div {
+    opacity: 1;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div > p,
 pcollectionpane *[pcollapsed='true'].Collection .Content {
