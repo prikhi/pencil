@@ -12,12 +12,26 @@
                 id="Evolus.Annotation"
                 displayName="Annotation"
                 description="Shapes for annotations"
+                author="Evolus"
                 >
+    <Properties>
+        <PropertyGroup name="Text">
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">'Liberation Sans'|normal|normal|13px</Property>
+            <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#ffffffff</Property>
+        </PropertyGroup>
+        <PropertyGroup name="Border">
+            <Property name="strokeColor" type="Color" displayName="Default Border Color">#1B3280ff</Property>
+            <Property name="strokeStyle" type="StrokeStyle" displayName="Default Border Style">2|</Property>
+        </PropertyGroup>
+        <PropertyGroup name="Background">
+            <Property name="fillColor" type="Color" displayName="Default Background Color">#4388CCff</Property>
+        </PropertyGroup>
+    </Properties>
         <Shape id="Balloon" displayName="Balloon" icon="Icons/balloon.png">
             <Properties>
                 <PropertyGroup>
                     <Property name="box" type="Dimension">200,80</Property>
-                    <Property name="withBlur" type="Bool" displayName="With Shadow">true</Property>
+                    <Property name="withBlur" type="Bool" displayName="With Shadow">false</Property>
                 </PropertyGroup>
                 <PropertyGroup name="Handles">
                     <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="Math.min($box.w, $box.h) / 2">8,0</Property>
@@ -53,15 +67,16 @@
                     <Property name="pin" displayName="Balloon Pin" type="Handle"  >-12,23</Property>
                 </PropertyGroup>
                 <PropertyGroup name="Background">
-                    <Property name="fillColor" displayName="Color" type="Color">#FFCD19E6</Property>
+                    <Property name="fillColor" displayName="Color" type="Color"><E>$$fillColor</E></Property>
                 </PropertyGroup>
                 <PropertyGroup name="Border">
-                    <Property name="strokeColor" displayName="Color" type="Color">#00000047</Property>
-                    <Property name="strokeStyle" displayName="Style" type="StrokeStyle">1|</Property>
+                    <Property name="strokeColor" displayName="Color" type="Color"><E>$$strokeColor</E></Property>
+                    <Property name="strokeStyle" displayName="Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
                 </PropertyGroup>
                 <PropertyGroup name="Text">
-                    <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[Text pane]]></Property>
-                    <Property name="textFont" displayName="Default Font" type="Font">Arial|normal|normal|11px</Property>
+                    <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[Annotation]]></Property>
+                    <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                    <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultTextColor</E></Property>
                 </PropertyGroup>
             </Properties>
             <Behaviors>
@@ -98,6 +113,8 @@
                 <For ref="text">
                     <TextContent>$textContent</TextContent>
                     <Font>$textFont</Font>
+                    <Fill>$textColor</Fill>
+                    <Color>$textColor</Color>
                     <Bound>Bound.fromBox($box, $radius.x)</Bound>
                 </For>
                 <For ref="bgCopy">
@@ -137,19 +154,19 @@
             <Properties>
                 <PropertyGroup>
                     <Property name="box" type="Dimension" p:lockRatio="true">30,30</Property>
-                    <Property name="withBlur" type="Bool" displayName="With Shadow">true</Property>
+                    <Property name="withBlur" type="Bool" displayName="With Shadow">false</Property>
                 </PropertyGroup>
                 <PropertyGroup name="Background">
-                    <Property name="fillColor" displayName="Color" type="Color">#FFCD19E6</Property>
+                    <Property name="fillColor" displayName="Color" type="Color"><E>$$fillColor</E></Property>
                 </PropertyGroup>
                 <PropertyGroup name="Border">
-                    <Property name="strokeColor" displayName="Color" type="Color">#00000047</Property>
-                    <Property name="strokeStyle" displayName="Style" type="StrokeStyle">1|</Property>
+                    <Property name="strokeColor" displayName="Color" type="Color"><E>$$strokeColor</E></Property>
+                    <Property name="strokeStyle" displayName="Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
                 </PropertyGroup>
                 <PropertyGroup name="Text">
-                    <Property name="textContent" displayName="Text Content" type="PlainText">1</Property>
-                    <Property name="textFont" displayName="Default Font" type="Font">Arial|bold|normal|15px</Property>
-                    <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
+                    <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[1]]></Property>
+                    <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                    <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
                 </PropertyGroup>
             </Properties>
             <Behaviors>
