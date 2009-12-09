@@ -1,4 +1,5 @@
-<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" id="Evolus.Common" displayName="Common Shapes" description="Collection of general shapes">
+<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" id="Evolus.Common" displayName="Common Shapes" description="Collection of general shapes" author="Evolus"
+>
     <Properties>
         <PropertyGroup name="Text">
             <Property name="defaultTextFont" type="Font" displayName="Default Font">'Liberation Sans'|normal|normal|13px</Property>
@@ -9,7 +10,7 @@
             <Property name="strokeStyle" type="StrokeStyle" displayName="Default Border Style">2|</Property>
         </PropertyGroup>
         <PropertyGroup name="Background">
-            <Property name="fillColor" type="Color" displayName="Default Background Color">#336699ff</Property>
+            <Property name="fillColor" type="Color" displayName="Default Background Color">#4388CCff</Property>
         </PropertyGroup>
     </Properties>
 
@@ -217,8 +218,8 @@
                         </PropertyGroup>
 
                         <PropertyGroup name="Background">
-                            <Property name="startFillColor" displayName="Start Color" type="Color"><E>$$fillColor</E></Property>
-                            <Property name="endFillColor" displayName="End Color" type="Color"><E>$$fillColor.shaded(-0.6)</E></Property>
+                            <Property name="startFillColor" displayName="Start Color" type="Color"><E>$$fillColor.shaded(0.3)</E></Property>
+                            <Property name="endFillColor" displayName="End Color" type="Color"><E>$$fillColor.shaded(-0.4)</E></Property>
                         </PropertyGroup>
                         <PropertyGroup name="Border">
                                 <Property name="strokeColor" displayName="Color" type="Color"><E>$$strokeColor</E></Property>
