@@ -121,7 +121,8 @@ Color.prototype.toRGBAString = function () {
 };
 Color.prototype.shaded = function (percent) {
     var hsv = RGB2HSV(this);
-    hsv.value = hsv.value * (1 - percent);
+    hsv.value = Math.max(Math.min(hsv.value * (1 - percent), 100), 0);
+    
 
     var rgb = HSV2RGB(hsv);
 
@@ -139,7 +140,7 @@ Color.prototype.hollowed = function (percent) {
     color.g = this.g;
     color.b = this.b;
 
-    color.a = this.a * (1 - percent);
+    color.a = Math.max(Math.min(this.a * (1 - percent), 1), 0);
     return color;
 };
 Color.prototype.getHSV = function () {
