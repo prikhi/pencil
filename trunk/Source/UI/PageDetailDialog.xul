@@ -56,8 +56,8 @@
             <label value=""/>
             <vbox>
                 <hbox>
-                    <textbox size="3" type="number" min="100" id="width"/>
-                    <textbox size="3" type="number" min="100" id="height"/>
+                    <textbox size="3" type="number" min="24" id="width"/>
+                    <textbox size="3" type="number" min="24" id="height"/>
                     <label value="(pixels)"/>
                 </hbox>
             </vbox>
