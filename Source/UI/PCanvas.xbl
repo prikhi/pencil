@@ -487,16 +487,19 @@
 
 
                     //generate the ids
-                    var seed = "" + (this.idSeed ++) + (new Date().getTime());
-
                     Dom.workOn(".//*[@p:name]", shape, function (node) {
-                        var id = node.getAttributeNS(PencilNamespaces.p, "name") + seed;
-                        node.setAttribute("id", id);
-                        node.id = id;
+                        var name = node.getAttributeNS(PencilNamespaces.p, "name");
+                        var oldId = node.getAttribute("id");
+                        if (oldId) return;
+                        
+                        var uuid = Util.newUUID();
+                        node.setAttribute("id", uuid);
+                        node.id = uuid;
+                        
+                        Dom.updateIdRef(shape, name, uuid);
                     });
-
-                    Dom.resolveIdRef(shape, seed);
-
+                    
+                    Dom.renewId(shape);
 
                     // add the newly created shape into the drawing layer
                     this.drawingLayer.appendChild(shape);
@@ -1684,17 +1687,8 @@
                     }
 
                     shape = this.ownerDocument.importNode(shape, true);
-                    //generate the ids
-                    var seed = "" + (this.idSeed ++) + (new Date().getTime());
 
-                    Dom.workOn(".//*[@p:name]", shape, function (node) {
-                        var id = node.getAttributeNS(PencilNamespaces.p, "name") + seed;
-                        node.setAttribute("id", id);
-                        node.id = id;
-                    });
-
-                    Dom.resolveIdRef(shape, seed);
-                    //Dom.renewId(shape);
+                    Dom.renewId(shape);
 
                     this.run(function() {
                         this.drawingLayer.appendChild(shape);
