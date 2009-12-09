@@ -12,7 +12,8 @@
                 id="Evolus.Annotation"
                 displayName="Annotation"
                 description="Shapes for annotations"
-                author="Evolus"
+                author="Duong Thanh An (an.duong@evolus.vn)"
+                url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/Annotation.html"
                 >
     <Properties>
         <PropertyGroup name="Text">
