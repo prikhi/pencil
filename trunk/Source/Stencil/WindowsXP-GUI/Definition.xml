@@ -5,6 +5,13 @@
         id="Evolus.WindowsXP.Widgets"
         displayName="Windows XP Widgets"
         description="Microsoft Windows XP GUI controls">
+    <Properties>
+        <PropertyGroup name="Text">
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">Tahoma|normal|normal|11px</Property>
+            <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#000000ff</Property>
+        </PropertyGroup>
+    </Properties>
+
     <Shape id="Label" displayName="Label" icon="Icons/label.png">
         <Properties>
             <PropertyGroup>
@@ -12,8 +19,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="label" displayName="Label" type="PlainText">Label</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px|none</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
 
@@ -53,13 +60,13 @@
     <Shape id="Button" displayName="Button" icon="Icons/button.png">
         <Properties>
             <PropertyGroup>
-                <Property name="box" type="Dimension">67,22</Property>
+                <Property name="box" type="Dimension">80,25</Property>
             </PropertyGroup>
 
             <PropertyGroup name="Text">
                 <Property name="buttonText" displayName="Caption" type="PlainText">Button</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Alignment" type="Alignment">1,1</Property>
             </PropertyGroup>
 
@@ -165,13 +172,13 @@
     <Shape id="Combo" displayName="Combo Box" icon="Icons/combobox.png">
         <Properties>
             <PropertyGroup>
-                <Property name="box" type="Dimension">179,20</Property>
+                <Property name="box" type="Dimension">180,20</Property>
             </PropertyGroup>
 
             <PropertyGroup name="Text">
                 <Property name="buttonText" displayName="Caption" type="PlainText">Combo box</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Alignment" type="Alignment">0,1</Property>
             </PropertyGroup>
 
@@ -292,13 +299,13 @@
     <Shape id="TextBox" displayName="Text Box" icon="Icons/textbox.png">
         <Properties>
             <PropertyGroup>
-                <Property name="box" type="Dimension">179,20</Property>
+                <Property name="box" type="Dimension">180,20</Property>
             </PropertyGroup>
 
             <PropertyGroup name="Text">
                 <Property name="textContent" displayName="Caption" type="PlainText">Text box</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Alignment" type="Alignment">0,1</Property>
             </PropertyGroup>
 
@@ -348,8 +355,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="label" displayName="Label" type="PlainText">Radio Button</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
 
@@ -462,8 +469,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="label" displayName="Label" type="PlainText">Checkbox</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
 
@@ -1030,8 +1037,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="label" displayName="Label" type="PlainText">Menu item</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -1137,8 +1144,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="label" displayName="Label" type="PlainText">Group</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
             </PropertyGroup>
         </Properties>
 
@@ -1181,8 +1188,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="tabTitle" displayName="Title" type="PlainText">Tab Title</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Alignment" type="Alignment">1,1</Property>
             </PropertyGroup>
         </Properties>
@@ -1258,8 +1265,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="tabTitle" displayName="Title" type="PlainText">Tab Title</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Alignment" type="Alignment">1,1</Property>
             </PropertyGroup>
         </Properties>
@@ -1380,8 +1387,8 @@
             </PropertyGroup>
             <PropertyGroup name="Text">
                 <Property name="columnTitle" displayName="Title" type="PlainText">Column</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Tahoma|normal|normal|11px</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textAlign" displayName="Alignment" type="Alignment">0,1</Property>
             </PropertyGroup>
         </Properties>
