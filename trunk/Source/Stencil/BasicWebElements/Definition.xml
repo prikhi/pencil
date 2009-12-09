@@ -5,7 +5,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     id="Evolus.BasicWebElements"
     displayName="Basic Web Elements"
-    description="Collection of basic items that are regularly used in web designs. Please note that this collection contains platform-related UI elements."
+    description="Collection of basic items that are regularly used in web designs."
     author="Duong Thanh An"
     url="http://">
     <Properties>
@@ -13,6 +13,13 @@
             <Property name="defaultTextFont" type="Font" displayName="Default Font">'Liberation Sans'|normal|normal|12px</Property>
             <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#000000ff</Property>
             <Property name="defaultLinkColor" type="Color" displayName="Default Link Color">#0000ffff</Property>
+        </PropertyGroup>
+        <PropertyGroup name="Heading">
+            <Property name="defaultH1Font" type="Font" displayName="Heading 1 Font">'Liberation Sans'|bold|normal|24px</Property>
+            <Property name="defaultH2Font" type="Font" displayName="Heading 2 Font">'Liberation Sans'|bold|normal|20px</Property>
+            <Property name="defaultH3Font" type="Font" displayName="Heading 3 Font">'Liberation Sans'|bold|normal|17px</Property>
+            <Property name="defaultH4Font" type="Font" displayName="Heading 4 Font">'Liberation Sans'|bold|normal|14px</Property>
+            <Property name="defaultH5Font" type="Font" displayName="Heading 5 Font">'Liberation Sans'|bold|normal|12px</Property>
         </PropertyGroup>
         <PropertyGroup name="Table: header">
             <Property name="defaultHeaderTextColor" type="Color" displayName="Default Header Text Color">#000000ff</Property>
@@ -67,7 +74,7 @@
         ]]>
     </Script>
 
-    <Shape id="pane" displayName="Pane" icon="Icons/accept.png">
+    <Shape id="pane" displayName="Pane" icon="Icons/pane.png">
         <Properties>
             <PropertyGroup>
                 <Property name="box" type="Dimension">200,300</Property>
@@ -201,7 +208,7 @@
             </foreignObject>
         </p:Content>
     </Shape>
-    <Shape id="combo" displayName="Combo" icon="Icons/accept.png">
+    <Shape id="combo" system="true" displayName="Combo" icon="Icons/combo.png">
         <Properties>
             <PropertyGroup>
                 <Property name="box" type="Dimension">200,25</Property>
@@ -243,7 +250,7 @@
             <text id="text" xml:space="preserve"></text>
         </p:Content>
     </Shape>
-    <Shape id="button" displayName="Button" icon="Icons/accept.png">
+    <Shape id="button" system="true" displayName="Button" icon="Icons/button.png">
         <Properties>
             <PropertyGroup>
                 <Property name="box" type="Dimension">80,25</Property>
@@ -289,7 +296,7 @@
             <text id="text" xml:space="preserve"></text>
         </p:Content>
     </Shape>
-    <Shape id="textbox" displayName="Text Box" icon="Icons/accept.png">
+    <Shape id="textbox" system="true" displayName="Text Box" icon="Icons/textbox.png">
         <Properties>
             <PropertyGroup>
                 <Property name="box" type="Dimension">200,25</Property>
@@ -336,7 +343,7 @@
             <text id="text" xml:space="preserve"></text>
         </p:Content>
     </Shape>
-    <Shape id="textArea" displayName="Text Area" icon="Icons/accept.png">
+    <Shape id="textArea" system="true" displayName="Text Area" icon="Icons/textarea.png">
         <Properties>
             <PropertyGroup>
                 <Property name="box" type="Dimension">300,200</Property>
@@ -408,7 +415,7 @@
             </foreignObject>
         </p:Content>
     </Shape>
-    <Shape id="radio" displayName="Radio" icon="Icons/accept.png">
+    <Shape id="radio" system="true" displayName="Radio" icon="Icons/radio.png">
         <Properties>
             <PropertyGroup>
                 <Property name="selected" type="Bool" displayName="Selected">false</Property>
@@ -451,7 +458,7 @@
             <text id="text" xml:space="preserve"></text>
         </p:Content>
     </Shape>
-    <Shape id="checkbox" displayName="Checkbox" icon="Icons/accept.png">
+    <Shape id="checkbox" system="true" displayName="Checkbox" icon="Icons/checkbox.png">
         <Properties>
             <PropertyGroup>
                 <Property name="selected" type="Bool" displayName="Selected">false</Property>
@@ -494,7 +501,7 @@
             <text id="text" xml:space="preserve"></text>
         </p:Content>
     </Shape>
-    <Shape id="htmlText" displayName="HTML Texts" icon="Icons/rich-text.png">
+    <Shape id="htmlText" displayName="HTML Texts" icon="Icons/html.png">
         <Properties>
             <PropertyGroup>
                 <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="10" p:disabled="!$fixedWidth.value">200,0</Property>
@@ -535,7 +542,7 @@
                 </TextContent>
                 <Color>$textColor</Color>
                 <Font>$textFont</Font>
-                <Box>var size = F.elementSize("textDiv"); new Dimension($fixedWidth.value ? $width.x : size.w, size.h + 5); /* depends $textFont $textContent $customStyle */</Box>
+                <Box>var size = F.elementSize("textDiv"); new Dimension($fixedWidth.value ? $width.x : size.w, size.h); /* depends $textFont $textContent $customStyle */</Box>
             </For>
         </Behaviors>
         <Actions>
@@ -571,7 +578,7 @@
             </foreignObject>
         </p:Content>
     </Shape>
-    <Shape id="htmlLink" displayName="Hyperlink" icon="Icons/rich-text.png">
+    <Shape id="htmlLink" displayName="Hyperlink" icon="Icons/link.png">
         <Properties>
             <PropertyGroup name="Text">
                 <Property name="textContent" displayName="Text Content" type="PlainText"
@@ -597,14 +604,14 @@
                 </TextContent>
                 <Color>$textColor</Color>
                 <Font>$textFont</Font>
-                <Box>var size = F.elementSize("textDiv"); new Dimension(size.w, size.h + 5); /* depends $textFont $textContent $customStyle */</Box>
+                <Box>var size = F.elementSize("textDiv"); new Dimension(size.w, size.h); /* depends $textFont $textContent $customStyle */</Box>
             </For>
         </Behaviors>
         <Actions>
             <Action id="generateLoremShortRichTextBox" displayName="Generate Random Texts">
                 <Impl>
                         <![CDATA[
-                            this.setProperty("textContent", RichText.fromLoremIpsum(10));
+                            this.setProperty("textContent", RichText.fromLoremIpsum(7));
                         ]]>
                 </Impl>
             </Action>
@@ -618,7 +625,79 @@
             </foreignObject>
         </p:Content>
     </Shape>
-    <Shape id="htmlHR" displayName="HR" icon="Icons/rich-text.png">
+    <Shape id="heading" system="true" displayName="Heading" icon="Icons/h1.png">
+        <Properties>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="RichText"
+                p:editInfo="var size = F.elementSize('textDiv'); ({targetName: 'htmlObject', bound: new Bound(0, 0, Math.max(size.w, 80) , Math.max(size.h, 10)), font: $textFont, align: new Alignment(0, 1)})"><![CDATA[Heading level 1]]></Property>
+               <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultH1Font</E></Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultTextColor</E></Property>
+                 <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
+            </PropertyGroup>
+        </Properties>
+
+        <Behaviors>
+            <For ref="textDiv">
+                <Attr>
+                    <Arg>"style"</Arg>
+                    <Arg>
+                        CSS.fromString($customStyle.value)
+                            .set("white-space", "nowrap")
+                            .set("display", "inline-block !important");
+                    </Arg>
+                </Attr>
+            </For>
+            <For ref="htmlObject">
+                <TextContent>
+                    <Arg>$textContent</Arg>
+                    <Arg>false</Arg>
+                    <Arg>true</Arg>
+                </TextContent>
+                <Color>$textColor</Color>
+                <Font>$textFont</Font>
+                <Box>var size = F.elementSize("textDiv"); new Dimension(size.w, size.h); /* depends $textFont $textContent $customStyle */</Box>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="generateLoremShortRichTextBox" displayName="Generate Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("textContent", RichText.fromLoremIpsum(7));
+                        ]]>
+                </Impl>
+            </Action>
+        </Actions>
+
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+
+            <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
+                <div xmlns="http://www.w3.org/1999/xhtml" id="textDiv">
+                </div>
+            </foreignObject>
+        </p:Content>
+    </Shape>
+    <Shortcut displayName="Heading 1" icon="Icons/h1.png" to="heading">
+        <PropertyValue name="textContent"><![CDATA[Heading level 1]]></PropertyValue>
+        <PropertyValue name="textFont"><E>$$defaultH1Font</E></PropertyValue>
+    </Shortcut>
+    <Shortcut displayName="Heading 2" icon="Icons/h2.png" to="heading">
+        <PropertyValue name="textContent"><![CDATA[Heading level 2]]></PropertyValue>
+        <PropertyValue name="textFont"><E>$$defaultH2Font</E></PropertyValue>
+    </Shortcut>
+    <Shortcut displayName="Heading 3" icon="Icons/h3.png" to="heading">
+        <PropertyValue name="textContent"><![CDATA[Heading level 3]]></PropertyValue>
+        <PropertyValue name="textFont"><E>$$defaultH3Font</E></PropertyValue>
+    </Shortcut>
+    <Shortcut displayName="Heading 4" icon="Icons/h4.png" to="heading">
+        <PropertyValue name="textContent"><![CDATA[Heading level 4]]></PropertyValue>
+        <PropertyValue name="textFont"><E>$$defaultH4Font</E></PropertyValue>
+    </Shortcut>
+    <Shortcut displayName="Heading 5" icon="Icons/h5.png" to="heading">
+        <PropertyValue name="textContent"><![CDATA[Heading level 5]]></PropertyValue>
+        <PropertyValue name="textFont"><E>$$defaultH5Font</E></PropertyValue>
+    </Shortcut>
+    
+    <Shape id="htmlHR" displayName="HR" icon="Icons/hr.png">
         <Properties>
             <PropertyGroup>
                 <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="10" p:disabled="!$fixedWidth.value">200,0</Property>
@@ -637,30 +716,6 @@
                 <Box>var size = F.elementSize("textDiv"); new Dimension($width.x, size.h); /* depends $hairLine */</Box>
             </For>
         </Behaviors>
-        <Actions>
-            <Action id="generateLoremShortRichTextBox" displayName="Generate Short Random Texts">
-                <Impl>
-                        <![CDATA[
-                            this.setProperty("textContent", RichText.fromLoremIpsum(10));
-                        ]]>
-                </Impl>
-            </Action>
-            <Action id="generateLoremLongRichTextBox" displayName="Generate Long Random Texts">
-                <Impl>
-                        <![CDATA[
-                            this.setProperty("textContent", RichText.fromLoremIpsum(45));
-                        ]]>
-                </Impl>
-            </Action>
-            <Action id="generateLoremExtraLongRichTextBox" displayName="Generate Longer Random Texts">
-                <Impl>
-                        <![CDATA[
-                            this.setProperty("textContent", RichText.fromLoremIpsum(150));
-                        ]]>
-                </Impl>
-            </Action>
-        </Actions>
-
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
 
             <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
@@ -670,7 +725,7 @@
             </foreignObject>
         </p:Content>
     </Shape>
-    <Shape id="breadCrumb" displayName="Bread Crumb" icon="Icons/rich-text.png">
+    <Shape id="breadCrumb" displayName="Bread Crumb" icon="Icons/bread.png">
         <Properties>
             <PropertyGroup name="Text">
                 <Property name="textContent" displayName="Text Content" type="PlainText"
@@ -739,12 +794,14 @@
             </foreignObject>
         </p:Content>
     </Shape>
-    <Shape id="table" displayName="Table" icon="Icons/rich-text.png">
+    <Shape id="table" displayName="Table" icon="Icons/table.png">
         <Properties>
             <PropertyGroup name="Sizing">
                 <Property name="box" displayName="Size" type="Dimension">300,80</Property>
                 <Property name="useHtmlContent" displayName="Use HTML Content" type="Bool">false</Property>
-                <Property name="padding" displayName="Cell Padding" type="Handle" p:lockX="true" p:minY="0">0,4</Property>
+                <Property name="fixedHeaderHeight" noScale="true" displayName="Fixed Header Height" type="Bool">false</Property>
+                <Property name="padding" displayName="Cell Padding" type="Handle" p:noScale="true" p:lockX="true" p:minY="0">0,4</Property>
+                <Property name="headerHeight" p:disabled="!$fixedHeaderHeight.value" p:noScale="true" displayName="Header Height" type="Handle" p:lockX="true" p:minY="10" p:maxY="$box.h">0,20</Property>
             </PropertyGroup>
             <PropertyGroup name="Columns Width">
                 <Property name="h0" displayName="Column 1 width" type="Handle" p:lockY="true" p:maxX="collection.getMaxXForColumnHandle(0, properties)" p:minX="collection.getMinXForColumnHandle(0, properties)" p:disabled="collection.isColumnHandleDisabled(0, properties)">30,0</Property>
@@ -857,6 +914,7 @@
                                                 .set("padding", $padding.y + "px")
                                                 .set("width", w + "px")
                                                 .set("line-height", "0px")
+                                                .set("text-align", "center")
                                     }
                                 ]
                             };
@@ -903,6 +961,7 @@
                                 );
                             } else {
                                 div.style.unset("line-height");
+                                div.style.unset("text-align");
                                 if ($useHtmlContent.value) {
                                     div._html = content;
                                 } else {
@@ -946,6 +1005,11 @@
                                     _uri: "http://www.w3.org/1999/xhtml",
                                     _children: []
                                 };
+                                if ($fixedHeaderHeight.value) {
+                                    tr.style = new CSS();
+                                    tr.style.set("height", $headerHeight.y + "px");
+                                }
+                            
                                 
                                 table._children.push({
                                     _name: "thead",
