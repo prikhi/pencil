@@ -207,14 +207,30 @@ Dom.htmlEncode = function (text) {
 Dom.renewId = function (shape) {
     var seed = Math.round(Math.random() * 1000);
     Dom.workOn(".//*/@id", shape, function (node) {
-        debug(" -> working on node.value = " + node.value + ", seed: " + seed);
-        node.value = node.value + seed;
-        debug(" -> working on node.value = " + node.value);
+        var uuid = Util.newUUID();
+        Dom.updateIdRef(shape, node.value, uuid);
+        node.value = uuid;
     });
-    Dom.resolveIdRef(shape, seed);
+};
+Dom.updateIdRef = function (shape, oldId, newId) {
+    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask", shape, function (node) {
+        var value = node.value;
+        if (value == "#" + oldId) {
+            value = "#" + newId;
+        } else {
+            value = value.replace(/url\(#([^\)]+)\)/g, function (zero, one) {
+                if (one == oldId) {
+                    return "url(#" + newId + ")";
+                } else {
+                    return zero;
+                }
+            });
+        }
+        node.value = value;
+    });
 };
 Dom.resolveIdRef = function (shape, seed) {
-    Dom.workOn(".//*/@p:filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask", shape, function (node) {
+    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask", shape, function (node) {
         var value = node.value;
         if (value.substring(0, 1) == "#") {
             value += seed;
@@ -536,6 +552,15 @@ Console.dumpError = function (exception, toConsole) {
 };
 
 var Util = {};
+Util.uuidGenerator =
+  Components.classes["@mozilla.org/uuid-generator;1"]
+            .getService(Components.interfaces.nsIUUIDGenerator);
+
+Util.newUUID = function () {
+	var uuid = Util.uuidGenerator.generateUUID();
+	return uuid.toString().replace(/[^0-9A-Z]+/gi, "");
+};
+
 Util.instanceToken = "" + (new Date()).getTime();
 Util.getInstanceToken = function () {
     return Util.instanceToken;
