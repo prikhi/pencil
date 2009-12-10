@@ -48,6 +48,10 @@ CollectionSettingEditor.prototype.setPropertyValue = function (name, value) {
 CollectionSettingEditor.prototype.getTargetObjectName = function () {
     return this.collection.displayName;
 };
+CollectionSettingEditor.prototype.usingQuickMode = function () {
+    return true;
+};
+
 CollectionSettingEditor.prototype.open = function () {
     this.propertyWindow = window.openDialog("PropertyDialog.xul", "propertyEditor" + Util.getInstanceToken(), "chrome,dialog,alwaysRaised,dependent", this);
 };

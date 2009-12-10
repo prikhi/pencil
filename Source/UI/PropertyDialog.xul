@@ -23,6 +23,7 @@
 <script src="../PropertyType/StrokeStyle.js"/>
 <script src="../PropertyType/PlainText.js"/>
 <script src="../PropertyType/ShadowStyle.js"/>
+<script src="../PropertyType/Enum.js"/>
 
     <tabbox id="tabBox" flex="1" persist="selectedIndex">
       <tabs id="tabs"></tabs>

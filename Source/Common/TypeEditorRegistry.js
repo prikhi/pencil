@@ -15,3 +15,4 @@ TypeEditorRegistry.registerTypeEditor(Alignment, "paligneditor");
 TypeEditorRegistry.registerTypeEditor(StrokeStyle, "pstrokeeditor");
 TypeEditorRegistry.registerTypeEditor(PlainText, "pplaintexteditor");
 TypeEditorRegistry.registerTypeEditor(ShadowStyle, "pshadowstyleeditor");
+TypeEditorRegistry.registerTypeEditor(Enum, "penumeditor");

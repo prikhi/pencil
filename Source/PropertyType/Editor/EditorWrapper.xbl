@@ -17,35 +17,39 @@
                 this.label = document.getAnonymousElementByAttribute(this, "aid", "label");
                 this.checkbox = document.getAnonymousElementByAttribute(this, "aid", "checkbox");
 
-                var tagName = this.getAttribute("editor");
-                this.editor = document.createElementNS(PencilNamespaces.xul, tagName);
-                if (this.hasAttribute("value")) {
-                    this.editor.setAttribute("value", this.getAttribute("value"));
-                    this.removeAttributeNS(PencilNamespaces.p, "null");
-                    this.isInitiallyNull = false;
-                } else {
-                    
-                    this.editor.setAttribute("disabled", true);
-                    this.setAttributeNS(PencilNamespaces.p, "p:null", true);
-                    this.isInitiallyNull = true;
-                    
-                    //try to set the initial value, which is the first available value in case of multiple diff value of target set
-                    if (this.hasAttribute("initial-value")) {
-                        this.editor.setAttribute("value", this.getAttribute("initial-value"));
-                    }
-                }
-                
-                
-                
-                this.checkbox.addEventListener("command", function(event) {
-                    if (thiz.checkbox.checked) {
-                        thiz.editor.removeAttribute("disabled");
+                try {
+                    var tagName = this.getAttribute("editor");
+                    this.editor = document.createElementNS(PencilNamespaces.xul, tagName);
+                    if (this.hasAttribute("value")) {
+                        this.editor.setAttribute("value", this.getAttribute("value"));
+                        this.removeAttributeNS(PencilNamespaces.p, "null");
+                        this.isInitiallyNull = false;
                     } else {
-                        thiz.editor.setAttribute("disabled", true);
+                        
+                        this.editor.setAttribute("disabled", true);
+                        this.setAttributeNS(PencilNamespaces.p, "p:null", true);
+                        this.isInitiallyNull = true;
+                        
+                        //try to set the initial value, which is the first available value in case of multiple diff value of target set
+                        if (this.hasAttribute("initial-value")) {
+                            this.editor.setAttribute("value", this.getAttribute("initial-value"));
+                        }
                     }
-                }, false);
-                
-                this.box.appendChild(this.editor);
+                    
+                    
+                    this.checkbox.addEventListener("command", function(event) {
+                        if (thiz.checkbox.checked) {
+                            thiz.editor.removeAttribute("disabled");
+                        } else {
+                            thiz.editor.setAttribute("disabled", true);
+                        }
+                    }, false);
+                    
+                    this.editor._property = this._property;                    
+                    this.box.appendChild(this.editor);
+                } catch (e) {
+                    Console.dumpError(e);
+                }
             ]]>
             </constructor>
             <method name="setEditor">
@@ -61,14 +65,6 @@
                 <![CDATA[
                     this.label.value = name;
                     this.checkbox.label = name;
-                ]]>
-                </body>
-            </method>        
-            <method name="setTypeMeta">
-                <parameter name="meta"/>
-                <body>
-                <![CDATA[
-                    this.editor.meta = meta;
                 ]]>
                 </body>
             </method>        

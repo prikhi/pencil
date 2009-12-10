@@ -77,7 +77,9 @@ PropertyPageEditor.prototype.setPropertyValue = function (name, value) {
 PropertyPageEditor.prototype.getTargetObjectName = function () {
     return this.targetObject.getName();
 };
-
+PropertyPageEditor.prototype.usingQuickMode = function () {
+    return false;
+};
 
 
 Pencil.registerEditor(PropertyPageEditor);
