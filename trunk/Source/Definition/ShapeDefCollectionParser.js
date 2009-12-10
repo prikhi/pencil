@@ -128,16 +128,30 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
                 alert(e);
                 throw "Invalid property type: " + type;
             }
+            var literal = Dom.getText(propNode);
+            
             property.initialValue = property.type.fromString(Dom.getText(propNode));
 
             try {
                 var s = Config.get(ShapeDefCollectionParser.getCollectionPropertyConfigName (collection.id, property.name));
-                property.value = property.type.fromString(s);
+                if (typeof(s) != "undefined" && s != null) {
+                    property.value = property.type.fromString(s);
+                } else {
+                    property.value = property.initialValue;
+                }
             } catch (e) {
                 property.value = property.initialValue;
             }
 
-            debug([property.name, property.value]);
+            //parsing meta
+            Dom.workOn("./@p:*", propNode, function (metaAttribute) {
+                var metaValue = metaAttribute.nodeValue;
+                metaValue = metaValue.replace(/\$([a-z][a-z0-9]*)/gi, function (zero, one) {
+                    property.relatedProperties[one] = true;
+                    return "properties." + one;
+                });
+                property.meta[metaAttribute.localName] = metaValue;
+            });
 
             group.properties.push(property);
             collection.properties[property.name] = property;

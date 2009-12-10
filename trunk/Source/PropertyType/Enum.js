@@ -4,21 +4,26 @@ function Enum(value) {
 Enum.fromString = function(literal) {
     return new Enum(literal);
 };
+Enum.getValuesFromMeta = function (meta) {
+    var literals = eval(meta.enumValues);
+
+    var values = [];
+    for (var i in literals) {
+        if (literals[i].match(/^([^\|]+)\|(.+)$/)) {
+            values.push({value: new Enum(RegExp.$1),
+                         label: RegExp.$2});
+        }
+    }
+    
+    return values;
+};
 Enum.getValues = function (def) {
     try {
     
         //return from cache, if any
         if (def._enumValues_parsed) return def._enumValues_parsed;
         
-        var literals = eval(def.meta.enumValues);
-
-        var values = [];
-        for (var i in literals) {
-            if (literals[i].match(/^([^\|]+)\|(.+)$/)) {
-                values.push({value: new Enum(RegExp.$1),
-                             label: RegExp.$2});
-            }
-        }
+        var values = Enum.getValuesFromMeta(def.meta);
         
         //cache it
         def._enumValues_parsed = values;

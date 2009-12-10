@@ -13,6 +13,10 @@ function clean() {
 PropertyDialog.setupReally = function () {
     try {
         var editor = PropertyDialog.editor;
+        
+        if (editor.usingQuickMode()) {
+            document.documentElement.getButton("accept").setAttribute("label", "Save");
+        }
 
         var tabs = document.getElementById("tabs");
         var tabPanels = document.getElementById("tabPanels");
@@ -45,11 +49,13 @@ PropertyDialog.setupReally = function () {
                 var tagName = TypeEditorRegistry.getTypeEditor(property.type);
                 var editorWrapper = document.createElementNS(PencilNamespaces.xul, "peditorwrapper");
 
+                editorWrapper._property = property;
                 editorWrapper.setAttribute("editor", tagName);
                 editorWrapper.setAttribute("name", property.displayName);
                 var value = editor.properties[property.name];
-                if (value) editorWrapper.setAttribute("value", value.toString());
-                else {
+                if (value){
+                    editorWrapper.setAttribute("value", value.toString());
+                } else {
                     value = editor.getPropertyValue(property.name);
                     if (value) {
                         editorWrapper.setAttribute("initial-value", value.toString());
@@ -58,9 +64,7 @@ PropertyDialog.setupReally = function () {
 
                 vbox.appendChild(editorWrapper);
 
-
                 PropertyDialog.propertyMap[property.name] = editorWrapper;
-
             }
         }
         if (tabs.parentNode.selectedIndex < 0) tabs.parentNode.selectedIndex = 0;
@@ -95,7 +99,7 @@ PropertyDialog.doApply = function () {
             PropertyDialog.editor.setPropertyValue(name, value);
         }
     }
-    return false;
+    return PropertyDialog.editor.usingQuickMode();
 };
 PropertyDialog.doCancel = function () {
     return true;

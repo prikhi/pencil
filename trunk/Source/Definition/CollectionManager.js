@@ -104,9 +104,10 @@ CollectionManager.loadStencils = function() {
     var parser = new ShapeDefCollectionParser();
     CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/Common/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/Annotation/Definition.xml"));
+    CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/BasicWebElements/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/Gtk.GUI/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/WindowsXP-GUI/Definition.xml"));
-    CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/BasicWebElements/Definition.xml"));
+    CollectionManager.addShapeDefCollection(parser.parseURL("../Stencil/Native.GUI/Definition.xml"));
 
     CollectionManager.loadUserDefinedStencils();
     PrivateCollectionManager.loadPrivateCollections();

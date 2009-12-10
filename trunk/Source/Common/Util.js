@@ -764,6 +764,10 @@ Util.writeDirToZip = function (dir, writer, prefix) {
     }
 };
 
+function debugx(ex) {
+    var value = eval("(" + ex + ")");
+    debug(ex + ": " + value);
+}
 function debug(value) {
     dump("DEBUG: " + value + "\n");
 }
