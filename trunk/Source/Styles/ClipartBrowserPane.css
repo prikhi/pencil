@@ -82,6 +82,14 @@ pclipartbrowserpane div.SearchResult .Inner .Item .Info span strong {
     font-size: 13px;
 }
 
+input[type=checkbox], input[type=radio] {
+    vertical-align: top;
+    position: relative;
+    bottom: 2px;
+}
+input[type=radio] {
+    bottom: 2px;
+}
 
 hbox div.BottomPane {
 	padding: 10px;

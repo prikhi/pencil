@@ -299,7 +299,7 @@
             <menu label="Tools" id="tools-menu" accesskey="T">
                 <menupopup>
                     <menuitem label="Stencil Generator..." oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
-                    <menuitem label="Clipart Browser..." oncommand="window.openDialog('ClipartBrowser.xul', 'ClipartBrowser', 'chrome,centerscreen', Pencil.activeCanvas)"/>
+                    <menuitem label="Clipart Browser..." oncommand="if (!Pencil._clipartShowing) { window.openDialog('ClipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
                     <menuseparator/>
                     <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
 

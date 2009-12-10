@@ -469,6 +469,36 @@ Svg.optimizeSpeed = function(target, on) {
         target.removeAttributeNS(PencilNamespaces.p, "moving");
     }
 };
+Svg.UNIT = ["em", "ex", "px", "pt", "pc", "cm", "mm", "in", "%"];
+Svg.getWidth = function (dom) {
+    try {
+        var width = Dom.getSingle("/svg:svg/@width", dom).nodeValue;
+        for (var i = 0; i < Svg.UNIT.length; i++) {
+            if (width.indexOf(Svg.UNIT[i]) != -1) {
+                width = width.substring(0, width.length - Svg.UNIT[i].length);
+            }
+        }
+        return parseInt(width, 10);
+    } catch (e) {
+        debug(new XMLSerializer().serializeToString(dom));
+        Console.dumpError(e);
+    }
+    return 0;
+};
+Svg.getHeight = function (dom) {
+    try {
+        var height = Dom.getSingle("/svg:svg/@height", dom).nodeValue;
+        for (var i = 0; i < Svg.UNIT.length; i++) {
+            if (height.indexOf(Svg.UNIT[i]) != -1) {
+                height = height.substring(0, height.length - Svg.UNIT[i].length);
+            }
+        }
+        return parseInt(height, 10);
+    } catch (e) {
+        Console.dumpError(e);
+    }
+    return 0;
+};
 
 
 Local = {};
