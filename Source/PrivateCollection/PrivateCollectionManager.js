@@ -64,7 +64,7 @@ PrivateCollectionManager.addShapeCollection = function (collection, dontUpdate) 
     }
     if (!dontUpdate) {
         PrivateCollectionManager.savePrivateCollections();
-        PrivateCollectionManager.reloadCollectionPane();
+        PrivateCollectionManager.reloadCollectionPanes();
     }
 };
 PrivateCollectionManager.getPrivateCollectionFile = function () {
@@ -92,11 +92,23 @@ PrivateCollectionManager.addShapeToCollection = function (collection, shapeDef, 
     PrivateCollectionManager.privateShapeDef.shapeDefMap[shapeDef.id] = shapeDef;
     if (!dontUpdate) {
         PrivateCollectionManager.savePrivateCollections();
-        PrivateCollectionManager.reloadCollectionPane();
+        PrivateCollectionManager.reloadCollectionPanes();
     }
 };
-PrivateCollectionManager.reloadCollectionPane = function () {
+PrivateCollectionManager.reloadCollectionPanes = function () {
     Pencil.privateCollectionPane.reloadCollections();
+};
+PrivateCollectionManager.deleteShape = function (collection, shapeDef) {
+    if (!Util.confirm("Are you sure you want to delete " + shapeDef.displayName + "?",
+                      "Warning: deleting a shape makes shapes created by that shape uneditable.")) return;
+    for (var i = 0; i < PrivateCollectionManager.privateShapeDef.collections.length; i++) {
+        if (PrivateCollectionManager.privateShapeDef.collections[i].id == collection.id) {
+            PrivateCollectionManager.privateShapeDef.collections[i].deleteShape(shapeDef);
+            PrivateCollectionManager.savePrivateCollections();
+            PrivateCollectionManager.reloadCollectionPanes();
+            return;
+        }
+    }
 };
 PrivateCollectionManager.deleteCollection = function (collection) {
     if (!Util.confirm("Are you sure you want to delete " + collection.displayName + "?",
@@ -105,7 +117,7 @@ PrivateCollectionManager.deleteCollection = function (collection) {
         if (PrivateCollectionManager.privateShapeDef.collections[i].id == collection.id) {
             PrivateCollectionManager.privateShapeDef.collections.splice(i, 1);
             PrivateCollectionManager.savePrivateCollections();
-            PrivateCollectionManager.reloadCollectionPane();
+            PrivateCollectionManager.reloadCollectionPanes();
             return;
         }
     }
@@ -116,7 +128,7 @@ PrivateCollectionManager.deleteAllCollection = function () {
 
     PrivateCollectionManager.privateShapeDef.collections = [];
     PrivateCollectionManager.savePrivateCollections();
-    PrivateCollectionManager.reloadCollectionPane();
+    PrivateCollectionManager.reloadCollectionPanes();
 };
 PrivateCollectionManager.exportCollection = function (collection) {
     try {

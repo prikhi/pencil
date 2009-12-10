@@ -17,6 +17,7 @@
                 this.importCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "importCollectionMenuItem");
                 this.exportCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "exportCollectionMenuItem");
                 this.deleteCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "deleteCollectionMenuItem");
+                this.deleteShapeMenuItem = document.getAnonymousElementByAttribute(this, "aid", "deleteShapeMenuItem");
 
                 var id = "popup" + Math.round(1000 * Math.random());
                 this.popup.setAttribute("id", id);
@@ -56,14 +57,15 @@
                         }
                         thiz.exportCollectionMenuItem.disabled = !hasCollection;
                         thiz.deleteCollectionMenuItem.disabled = !hasCollection;
+                        var hasShapeDef = false;
                         if (collection) {
                             var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
-                            var hasShapeDef = false;
-                            if (defNode) {
+                            if (defNode && defNode._def) {
                                 hasShapeDef = true;
-                                thiz.currentShapeDef = defNode;
+                                thiz.currentShapeDef = defNode._def;
                             }
                         }
+                        thiz.deleteShapeMenuItem.disabled = !hasShapeDef;
                     } catch (e) { Console.dumpError(e);}
                 }, false);
                 this.importCollectionMenuItem.addEventListener("command", function (event) {
@@ -80,6 +82,12 @@
                     //debug("delete collection menuitem clicked");
                     if (thiz.currentCollection) {
                         PrivateCollectionManager.deleteCollection(thiz.currentCollection);
+                    }
+                }, false);
+                this.deleteShapeMenuItem.addEventListener("command", function (event) {
+                    //debug("delete collection menuitem clicked");
+                    if (thiz.currentCollection && thiz.currentShapeDef) {
+                        PrivateCollectionManager.deleteShape(thiz.currentCollection, thiz.currentShapeDef);
                     }
                 }, false);
                 this.removeAllCollectionMenuItem.addEventListener("command", function (event) {
@@ -223,7 +231,8 @@
             </vbox>
             <popupset>
                 <popup aid="contextPopup">
-                    <!--<menuitem aid="hideMenuItem" label="Hide this collection" />-->
+                    <menuitem aid="deleteShapeMenuItem" label="Delete selected shape" />
+                    <menuseparator/>
                     <menuitem aid="importCollectionMenuItem" label="Import new private collection..." />
                     <menuitem aid="exportCollectionMenuItem" label="Export this collection..." />
                     <menuitem aid="deleteCollectionMenuItem" label="Delete this collection" />
