@@ -1723,7 +1723,6 @@
             </handler>
             <handler event="dragdrop">
                 <![CDATA[
-                    debug("dorp");
                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     if (this.lastAcceptedDragObserver) {
                         try {

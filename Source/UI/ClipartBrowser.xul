@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
-<?xml-stylesheet href="../Styles/MainWindow.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/ClipartBrowserPane.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/SearchBar.css" type="text/css"?>
 
@@ -38,6 +36,7 @@
         <hbox pack="end">
             <div class="BottomPane" xmlns="http://www.w3.org/1999/xhtml">
                 <div class="Navigation">
+                    <label for="scaleImage"><input type="checkbox" id="scaleImage" value="1" checked="checked" /> Scale image to smaller size when copy to Pencil.</label>
                     <a href="javascript:;" class="Previous Disabled" id="goPrevious">
                         <span class="Previous">« Previous results</span>
                     </a>

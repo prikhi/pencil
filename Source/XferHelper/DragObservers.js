@@ -16,9 +16,9 @@ function ShapeDefDragObserver(canvas) {
 ShapeDefDragObserver.prototype = {
     getSupportedFlavours : function () {
         var flavours = new FlavourSet();
-        
+
         flavours.appendFlavour("pencil/def");
-        
+
         return flavours;
     },
     onDragOver: function (evt, flavour, session){},
@@ -26,11 +26,11 @@ ShapeDefDragObserver.prototype = {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var defId = transferData.data;
         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
-        
+
         var loc = this.canvas.getEventLocation(evt);
-        
+
         if (loc.x <0 || loc.y < 0) return;
-        
+
         this.canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
     }
 };
@@ -50,10 +50,8 @@ PrivateShapeDefDragObserver.prototype = {
     onDrop: function (evt, transferData, session) {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var defId = transferData.data;
-        debug("drop: " + defId);
 
         var def = PrivateCollectionManager.locateShapeDefinition(defId);
-        debug("found def: " + def);
 
         var loc = this.canvas.getEventLocation(evt);
 
@@ -73,9 +71,9 @@ function ShapeShortcutDragObserver(canvas) {
 ShapeShortcutDragObserver.prototype = {
     getSupportedFlavours : function () {
         var flavours = new FlavourSet();
-        
+
         flavours.appendFlavour("pencil/shortcut");
-        
+
         return flavours;
     },
     onDragOver: function (evt, flavour, session){},
@@ -83,14 +81,14 @@ ShapeShortcutDragObserver.prototype = {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var defId = transferData.data;
         var shortcut = CollectionManager.shapeDefinition.locateShortcut(defId);
-        
+
         var def = shortcut.shape;
         var overridingValueMap = shortcut.propertyMap;
-        
+
         var loc = this.canvas.getEventLocation(evt);
-        
+
         if (loc.x <0 || loc.y < 0) return;
-        
+
         this.canvas.insertShape(def, new Bound(loc.x, loc.y, null, null), overridingValueMap);
     }
 };
@@ -105,22 +103,22 @@ function RichTextDragObserver(canvas) {
 RichTextDragObserver.prototype = {
     getSupportedFlavours : function () {
         var flavours = new FlavourSet();
-        
+
         flavours.appendFlavour("text/html");
-        
+
         return flavours;
     },
     onDragOver: function (evt, flavour, session){},
     onDrop: function (evt, transferData, session) {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var html = transferData.data;
-        
+
         try {
             var xhtml = Dom.toXhtml(html);
-            
+
             var textPaneDef = CollectionManager.shapeDefinition.locateDefinition(RichTextXferHelper.SHAPE_DEF_ID);
             if (!textPaneDef) return;
-            
+
             this.canvas.insertShape(textPaneDef, null);
             if (this.canvas.currentController) {
                 this.canvas.currentController.setProperty(RichTextXferHelper.SHAPE_CONTENT_PROP_NAME, new RichText(xhtml));
@@ -128,7 +126,7 @@ RichTextDragObserver.prototype = {
         } catch (e) {
             throw e;
         }
-        
+
     }
 };
 
@@ -142,9 +140,9 @@ function FileDragObserver(canvas) {
 FileDragObserver.prototype = {
     getSupportedFlavours : function () {
         var flavours = new FlavourSet();
-        
+
         flavours.appendFlavour("text/x-moz-url");
-        
+
         return flavours;
     },
     onDragOver: function (evt, flavour, session){},
@@ -153,9 +151,9 @@ FileDragObserver.prototype = {
         var url = transferData.data;
         if (!url.match(/^file:\/\/.*\.([a-zA-Z0-9]+)/)) return;
         var fileType = RegExp.$1.toLowerCase();
-        
+
         debug(["got: ", url, fileType]);
-        
+
         var loc = this.canvas.getEventLocation(evt);
 
         if (FileDragObserver.fileTypeHandler[fileType]) {
@@ -170,17 +168,17 @@ FileDragObserver.fileTypeHandler = {
         try {
             var def = CollectionManager.shapeDefinition.locateDefinition(PNGImageXferHelper.SHAPE_DEF_ID);
             if (!def) return;
-            
+
             if (Config.get("document.EmbedImages") == null){
                 Config.set("document.EmbedImages", false);
             }
             var embedImages = Config.get("document.EmbedImages")
-            
+
             canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
             if (!canvas.currentController) return;
-            
+
             var controller = canvas.currentController;
-            
+
             var handler = function (imageData) {
                 debug("handler called: " + imageData);
                 var dim = new Dimension(imageData.w, imageData.h);
@@ -190,7 +188,7 @@ FileDragObserver.fileTypeHandler = {
                     controller.setProperty("fillColor", Color.fromString("#ffffff00"));
                 }
             };
-            
+
             if (!embedImages) {
                 debug([embedImages, url]);
                 ImageData.fromUrl(url, handler);
@@ -225,42 +223,52 @@ FileDragObserver.fileTypeHandler = {
 Pencil.registerDragObserver(FileDragObserver);
 
 function handleSVGData(svg, canvas, loc) {
-    var domParser = new DOMParser();
-    
-    var dom = domParser.parseFromString(svg, "text/xml");
     try {
-        var width = parseInt(Dom.getSingle("/svg:svg/@width", dom).nodeValue, 10);
-        var height = parseInt(Dom.getSingle("/svg:svg/@height", dom).nodeValue, 10);
-        var origDim = new Dimension(width, height);
-        
+        var domParser = new DOMParser();
+
+        var dom = domParser.parseFromString(svg, "text/xml");
+        var fromOC = dom.documentElement.getAttributeNS(PencilNamespaces.p, "ImageSource");
+        var width = Svg.getWidth(dom);
+        var height = Svg.getHeight(dom);
+
         var g = dom.createElementNS(PencilNamespaces.svg, "g");
         while (dom.documentElement.childNodes.length > 0) {
             var firstChild = dom.documentElement.firstChild;
             dom.documentElement.removeChild(firstChild);
             g.appendChild(firstChild);
         }
+
+        if (fromOC) {
+            g.setAttributeNS(PencilNamespaces.p, "p:ImageSource", fromOC);
+            if (fromOC == "OpenClipart.org") {
+                Dom.renewId(g, /([a-zA-Z0-9]+)/i);
+            }
+        }
         dom.replaceChild(g, dom.documentElement);
-        
+
         var def = CollectionManager.shapeDefinition.locateDefinition(FileDragObserver.SVG_SHAPE_DEF_ID);
         if (!def) return;
-        
-        if (width > canvas.width || height > canvas.height) {
-            var rw = width / canvas.width;
-            var rh = height / canvas.height;
-            
-            var r = Math.max(rw, rh);
-            
-            width = Math.round(width / r);
-            height = Math.round(height / r);
-        }
-        
-        canvas.insertShape(def, new Bound(loc.x - Math.round(width / 2), loc.y - Math.round(height / 2), null, null));
+
+        canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
         if (canvas.currentController) {
             var controller = canvas.currentController;
-            var dim = new Dimension(width, height);
+            var w = width;
+            var h = height;
+
+            if ((w > 200 || h > 200) && Config.get("clipartbrowser.scale")) {
+                if (w > h) {
+                    h = h / (w / 200);
+                    w = 200;
+                } else {
+                    w = w / (h / 200);
+                    h = 200;
+                }
+            }
+
+            var dim = new Dimension(w, h);
             controller.setProperty("svgXML", new PlainText(Dom.serializeNode(dom.documentElement)));
             controller.setProperty("box", dim);
-            controller.setProperty("originalDim", origDim);
+            controller.setProperty("originalDim", new Dimension(width, height));
         }
 
     } catch (e) {
@@ -275,9 +283,9 @@ function SVGDragObserver(canvas) {
 SVGDragObserver.prototype = {
     getSupportedFlavours : function () {
         var flavours = new FlavourSet();
-        
+
         flavours.appendFlavour("image/svg+xml");
-        
+
         return flavours;
     },
     onDragOver: function (evt, flavour, session){},
@@ -298,16 +306,16 @@ function PNGDragObserver(canvas) {
 PNGDragObserver.prototype = {
     getSupportedFlavours : function () {
         var flavours = new FlavourSet();
-        
+
         flavours.appendFlavour("pencil/png");
-        
+
         return flavours;
     },
     onDragOver: function (evt, flavour, session){},
     onDrop: function (evt, transferData, session) {
     	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var url = transferData.data;
-        
+
         var loc = this.canvas.getEventLocation(evt);
 
         this._handleImageFile(this.canvas, url, loc, "transparent");
@@ -316,27 +324,37 @@ PNGDragObserver.prototype = {
         try {
             var def = CollectionManager.shapeDefinition.locateDefinition(PNGImageXferHelper.SHAPE_DEF_ID);
             if (!def) return;
-            
+
             if (Config.get("document.EmbedImages") == null) {
                 Config.set("document.EmbedImages", false);
             }
             var embedImages = Config.get("document.EmbedImages")
-            
+
             canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
             if (!canvas.currentController) return;
-            
+
             var controller = canvas.currentController;
-            
+
             var handler = function (imageData) {
-                debug("handler called: " + imageData);
-                var dim = new Dimension(imageData.w, imageData.h);
+                var w = imageData.w;
+                var h = imageData.h;
+                if ((w > 200 || h > 200) && Config.get("clipartbrowser.scale")) {
+                    if (w > h) {
+                        h = h / (w / 200);
+                        w = 200;
+                    } else {
+                        w = w / (h / 200);
+                        h = 200;
+                    }
+                }
+                var dim = new Dimension(w, h);
                 controller.setProperty("imageData", imageData);
                 controller.setProperty("box", dim);
                 if (transparent) {
                     controller.setProperty("fillColor", Color.fromString("#ffffff00"));
                 }
             };
-            
+
             //if (!embedImages) {
             //    ImageData.fromUrl(url, handler);
             //} else {
@@ -346,6 +364,6 @@ PNGDragObserver.prototype = {
         } catch (e) {
             Console.dumpError(e);
         }
-    },
+    }
 };
 Pencil.registerDragObserver(PNGDragObserver);

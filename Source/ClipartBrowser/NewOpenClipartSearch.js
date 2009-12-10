@@ -96,11 +96,20 @@ OpenClipartSearch2.prototype.buildSearchUri = function (query, options) {
 
     return url + param;
 };
+OpenClipartSearch2.prototype.formatType = function(type) {
+    if (type) {
+        var idx = type.indexOf("/");
+        if (idx != -1) {
+            return type.substring(idx + 1).toUpperCase();
+        }
+    }
+    return "Unknow type";
+};
 
 OpenClipartSearch2.prototype.searchImpl = function(query, options, callback) {
     this.options = this.merge(this.options, options);
     var url = this.buildSearchUri(query, this.options);
-    debug(url);
+
     for (var i = 0; i < this.req.length; i++) {
         this.req[i].abort();
         this.req[i].onreadystatechange = null;
@@ -110,26 +119,25 @@ OpenClipartSearch2.prototype.searchImpl = function(query, options, callback) {
     var thiz = this;
     debug("OpenClipart: searching '" + query + "'");
     WebUtil.get(url, function(response) {
-        var result = thiz.parseSearchResult(response);
+        var r = thiz.parseSearchResult(response);
         if (callback) {
-            callback(result);
+            callback(r.result, r.resultCount);
         }
     }, this.req);
 };
 
 OpenClipartSearch2.prototype.parseSearchResult  = function (response) {
-    var r = [];
+    var r = {result: [], resultCount: 0};
+    if (!response) return r;
     try {
         response = eval(response);
-        //debug(response[0].toSource());
-
+        r.resultCount = response.length;
         for (var i = 0; i < response.length; i++) {
             var item = {name: response[i].upload_name, author: response[i].user_real_name, desc: response[i].upload_description, images: []};
             for (var j = 0; j < response[i].files.length; j++) {
-                item.images.push({src: response[i].files[j].download_url, type: response[i].files[j].file_format_info.mime_type, typeName: "", size: response[i].files[j].file_rawsize});
+                item.images.push({src: response[i].files[j].download_url, type: response[i].files[j].file_format_info.mime_type, typeName: this.formatType(response[i].files[j].file_format_info.mime_type), size: response[i].files[j].file_rawsize});
             }
-            //debug(item.toSource());
-            r.push(item);
+            r.result.push(item);
         }
     } catch (e) {
         Console.dumpError(e);

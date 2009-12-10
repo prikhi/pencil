@@ -40,13 +40,14 @@ SearchManager = {
 
 handleOnload = function() {
     if (window.arguments && window.arguments.length > 0) {
-        SearchManager.activeCanvas = window.arguments[0];
-        SearchManager.activeCanvas._clipartShowing = true;
+        SearchManager.Pencil = window.arguments[0];
+        SearchManager.Pencil._clipartShowing = true;
+        SearchManager.activeCanvas = SearchManager.Pencil.activeCanvas;
     }
 }
 handleOnUnload = function() {
-    if (SearchManager.activeCanvas) {
-        SearchManager.activeCanvas._clipartShowing = false;
+    if (SearchManager.Pencil) {
+        SearchManager.Pencil._clipartShowing = false;
     }
 }
 

@@ -60,7 +60,6 @@
                 this.insertMenuItem.addEventListener("command", function (event) {
                     if (thiz.currentImage) {
                         debug("insert: " + thiz.currentImage._img.src);
-                        debug("ac: " + SearchManager.activeCanvas);
                         if (SearchManager.activeCanvas) {
                             thiz.doCopy(thiz.currentImage._img);
                             SearchManager.activeCanvas.doPaste();
@@ -69,6 +68,20 @@
                 }, false);
             ]]>
             </constructor>
+            <method name="_injectSvgInfo">
+                <parameter name="svg"/>
+                <body>
+                <![CDATA[
+                    try {
+                        var g = Dom.parseToNode(svg);
+                        g.setAttributeNS(PencilNamespaces.p, "p:ImageSource", "OpenClipart.org");
+                        return new XMLSerializer().serializeToString(g);
+                    } catch (e) {
+                        Console.dumpError(e);
+                    }
+                ]]>
+                </body>
+            </method>
             <method name="doCopy">
                 <parameter name="image"/>
                 <body>
@@ -81,14 +94,15 @@
                         var svgXMLSS   = Components.classes["@mozilla.org/supports-string;1"].
                                                 createInstance(Components.interfaces.nsISupportsString);
                         if (!svgXMLSS) return false;
-                        svgXMLSS.data = image._svg;
+
+                        svgXMLSS.data = this._injectSvgInfo(image._svg);
 
                         var trans = Components.classes["@mozilla.org/widget/transferable;1"].
                                                 createInstance(Components.interfaces.nsITransferable);
                         if (!trans) return false;
 
                         trans.addDataFlavor("image/svg+xml");
-                        trans.setTransferData("image/svg+xml", svgXMLSS, image._svg.length * 2);
+                        trans.setTransferData("image/svg+xml", svgXMLSS, svgXMLSS.data.length * 2);
 
                         var clipId = Components.interfaces.nsIClipboard;
                         var clip   = Components.classes["@mozilla.org/widget/clipboard;1"].getService(clipId);
@@ -112,6 +126,7 @@
                 <parameter name="images"/>
                 <body>
                 <![CDATA[
+                    this.searchAborted = false;
                     this.rq = [];
 
                     Dom.empty(this.contentBox);
@@ -151,12 +166,18 @@
 
                         if (img.type == "image/svg+xml") {
                             WebUtil.get(img.src, function(svg) {
-                                img._svg = svg;
-                                var domParser = new DOMParser();
+                                if (!svg ||  thiz.searchAborted) return;
                                 try {
+                                    img._svg = svg;
+                                    var domParser = new DOMParser();
                                     var dom = domParser.parseFromString(svg, "text/xml");
-                                    var width = parseInt(Dom.getSingle("/svg:svg/@width", dom).nodeValue, 10);
-                                    var height = parseInt(Dom.getSingle("/svg:svg/@height", dom).nodeValue, 10);
+                                    if (!dom) return;
+
+                                    var width = Svg.getWidth(dom);
+                                    var height = Svg.getHeight(dom);
+                                    debug("width: " + width);
+                                    debug("height: " + height);
+
                                     var scale = parseFloat(thiz.IMAGE_WIDTH / width);
                                     if (height > width) {
                                         scale = parseFloat(thiz.IMAGE_HEIGHT / height);
@@ -206,15 +227,6 @@
                                     spanInfo.setAttribute("class", "Info");
 
                                     spanInfo = thiz._buildInfoNode(spanInfo, img.displayName, "SVG", img.size, width, height);
-
-                                    /*spanInfo.innerHTML =
-                                            '<h2>' + document.createTextNode(img.displayName) + '</h2><a title="Public Domain" rel="license" ' +
-                                            'href="#">' +
-                                            '<img src="chrome://pencil/content/UI/Icons/pd.png" title="Public Domain"/></a>' +
-
-                                            '<span><strong>SVG</strong> (' + img.size + ') ' + width + 'x' + height + '</span>';
-                                    */
-
                                     button.appendChild(spanInfo);
 
                                     loaded++;
@@ -230,7 +242,7 @@
                             }, thiz.rq);
                         } else {
                             WebUtil.getMetadata(img.src, function(size) {
-
+                                if (thiz.searchAborted) return;
                                 //img._png = Base64.encode(png, true);
 
                                 //debug("getMetadata - s: " + size);
@@ -239,6 +251,7 @@
                                 var _image = document.createElementNS(PencilNamespaces.html, "img");
 
                                 _image.onload = function(exx) {
+                                    if (thiz.searchAborted) return;
                                     //debug("getMetadata - w: " + _image.width + ", h: " + _image.height);
                                     var ww = _image.width;
                                     var hh = _image.height;
@@ -259,14 +272,6 @@
                                     spanInfo.setAttribute("class", "Info");
 
                                     spanInfo = thiz._buildInfoNode(spanInfo, img.displayName, img.typeName, Math.round(size / 1024) + 'KB', ww, hh);
-
-                                    /*spanInfo.innerHTML =
-                                            '<h2>' + img.displayName + '</h2><a title="Public Domain" rel="license" ' +
-                                            'href="#">' +
-                                            '<img src="chrome://pencil/content/UI/Icons/pd.png" title="Public Domain"/></a>' +
-                                            '<span><strong>' + img.typeName + '</strong> (' + Math.round(size / 1024) + 'KB) ' + ww + 'x' + hh + '</span>';
-                                    */
-
                                     button.appendChild(spanInfo);
 
                                     loaded++;
@@ -322,6 +327,9 @@
                     s.appendChild(document.createTextNode(typeName));
                     n.appendChild(s);
 
+                    if (/^\d+$/.test(size)) {
+                        size = Math.round(parseInt(size) / 1024) + "KB";
+                    }
                     n.appendChild(document.createTextNode(" (" + size + ") " + w + "x" + h));
                     span.appendChild(n);
 
@@ -339,6 +347,7 @@
                             this.rq[i].onreadystatechange = null;
                         }
                     }
+                    this.searchAborted = true;
                 ]]>
                 </body>
             </method>
@@ -350,14 +359,15 @@
                     try {
                         var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
                         debug("start draging: " + imgNode._img.src);
-
+                        var thiz = this;
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
                                 netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                 debug("dragging started");
                                 transferData.data = new TransferData();
                                 if (imgNode._img.type == "image/svg+xml") {
-                                    transferData.data.addDataForFlavour("image/svg+xml", imgNode._img._svg);
+                                    var svg = thiz._injectSvgInfo(imgNode._img._svg);
+                                    transferData.data.addDataForFlavour("image/svg+xml", svg);
                                 } else {
                                     transferData.data.addDataForFlavour("pencil/png", imgNode._img.src);
                                 }

@@ -46,6 +46,8 @@
                 this.limit60 = document.getElementById("limit60");
                 this.limit120 = document.getElementById("limit120");
 
+                this.scaleImage = document.getElementById("scaleImage");
+
                 this.loadingEl = document.getElementById("loading-box");
 
                 this.searchOptions = {
@@ -60,6 +62,7 @@
                     thiz.limit60.className = "BrowseLimitLink";
                     thiz.limit120.className = "BrowseLimitLink";
 
+                    thiz.searchOptions.offset = 0;
                     thiz.searchOptions.limit = 24;
                     thiz.doSearch();
                 }, false);
@@ -68,6 +71,7 @@
                     thiz.limit24.className = "BrowseLimitLink";
                     thiz.limit120.className = "BrowseLimitLink";
 
+                    thiz.searchOptions.offset = 0;
                     thiz.searchOptions.limit = 60;
                     thiz.doSearch();
                 }, false);
@@ -76,27 +80,35 @@
                     thiz.limit60.className = "BrowseLimitLink";
                     thiz.limit24.className = "BrowseLimitLink";
 
+                    thiz.searchOptions.offset = 0;
                     thiz.searchOptions.limit = 120;
                     thiz.doSearch();
                 }, false);
 
                 this.goNext.addEventListener("click", function (e) {
+                    if (thiz.goNext.className.indexOf("Disabled") != -1) return;
                     thiz.searchOptions.offset += thiz.searchOptions.limit;
-                    thiz.goPrevious.className = "Previous";
                     thiz.doSearch();
                 }, false);
 
                 this.goPrevious.addEventListener("click", function (e) {
+                    if (thiz.goPrevious.className.indexOf("Disabled") != -1) return;
                     thiz.searchOptions.offset -= thiz.searchOptions.limit;
-                    thiz.goNext.className = "Next";
                     if (thiz.searchOptions.offset <= 0) {
                         thiz.searchOptions.offset = 0;
-                        thiz.goPrevious.className = "Previous Disabled";
-                    } else {
-                        thiz.goPrevious.className = "Previous";
                     }
                     thiz.doSearch();
                 }, false);
+                this.scaleImage.addEventListener("change", function (event) {
+                    debug(thiz.scaleImage.checked);
+                    Config.set("clipartbrowser.scale", thiz.scaleImage.checked);
+                }, false);
+
+                if (Config.get("clipartbrowser.scale") == null) {
+                    Config.set("clipartbrowser.scale", true);
+                }
+
+                this.scaleImage.checked = Config.get("clipartbrowser.scale");
 
                 this._needToBuildPopup = true;
                 this.updateDisplay();
@@ -242,6 +254,7 @@
                 var textValue = textBox.value;
                 if (textValue) {
                     textBox._formHistSvc.addEntry(textBox.getAttribute("autocompletesearchparam"), textValue);
+                    this.searchOptions.offset = 0;
                     this.doSearch(textValue);
                 }
             ]]></body>
@@ -254,12 +267,17 @@
                 if (this.currentEngine != null) {
                     if (!query) query = this.lastQuery;
                     if (!query) return;
+
+                    thiz.goNext.className = "Next Disabled";
+                    thiz.goPrevious.className = "Previous Disabled";
+
                     this.lastQuery = query;
                     this.searchButton.className = "searching";
                     this.loadingEl.style.display = "";
                     this.loadingEl.value = "Searching " + this.currentEngine.name;
                     this.searchResultPane.clearImages();
-                    this.currentEngine.search(query, this.searchOptions, function(res) {
+
+                    this.currentEngine.search(query, this.searchOptions, function(res, resultCount) {
                         try {
                             if (res.length > 0) {
                                 thiz.goNext.className = "Next";
@@ -276,13 +294,17 @@
                                         });
                                     }
                                 }
-
                                 thiz.loadingEl.value = "Loading 1/" + images.length + "...";
                                 thiz.searchResultPane.addImages(images);
                                 //thiz.searchButton.className = "search-go-button";
                             } else {
                                 thiz.loadingEl.value = "No matching results";
                                 thiz.searchButton.className = "search-go-button";
+                            }
+                            if (thiz.searchOptions.offset >= thiz.searchOptions.limit) {
+                                thiz.goPrevious.className = "Previous";
+                            } else if (resultCount >= thiz.searchOptions.limit) {
+                                thiz.goNext.className = "Next";
                             }
                         } catch (e) {
                             error(e);
