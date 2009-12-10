@@ -4,7 +4,15 @@
     this.description = null;
 
     this.shapeDefs = [];
-}
+};
+/* public void */ PrivateCollection.prototype.deleteShape = function (shapeDef) {
+    for (var i = 0; i < this.shapeDefs.length; i++) {
+        if (this.shapeDefs[i].id == shapeDef.id) {
+            this.shapeDefs.splice(i, 1);
+            return;
+        }
+    }
+};
 /* public String */ PrivateCollection.prototype.toXMLDom = function () {
     var xml = '<p:Collection p:Id="' + this.id + '" p:Name="' + this.displayName + '" p:Description="' + this.description + '">\n';
         xml += '<p:Groups>\n\t';
