@@ -32,6 +32,9 @@ cp -R ./XPI/* ./Outputs/XPI/
 find ./Outputs/XPI/ -name .svn | xargs -i rm -Rf {}
 
 cp -R ./Outputs/Pencil/* ./Outputs/XPI/chrome/content/
+mkdir -p ./Outputs/XPI/chrome/icons/default/
+cp ./Outputs/Pencil/Icons/pencil.ico ./Outputs/XPI/chrome/icons/default/pencilMainWindow.ico
+cp ./Outputs/Pencil/Icons/pencil.xpm ./Outputs/XPI/chrome/icons/default/pencilMainWindow.xpm
 
 ./replacer.sh ./Outputs/XPI/install.rdf
 
@@ -61,6 +64,10 @@ find ./Outputs/Linux/ -name .svn | xargs -i rm -Rf {}
 mkdir -p ./Outputs/Linux/chrome/content
 cp -R ./Outputs/Pencil/* ./Outputs/Linux/chrome/content/
 
+mkdir -p ./Outputs/Linux/chrome/icons/default/
+cp ./Outputs/Pencil/Icons/pencil.ico ./Outputs/Linux/chrome/icons/default/pencilMainWindow.ico
+cp ./Outputs/Pencil/Icons/pencil.xpm ./Outputs/Linux/chrome/icons/default/pencilMainWindow.xpm
+
 ./replacer.sh ./Outputs/Linux/application.ini
 chmod +x ./Outputs/Linux/pencil
 
@@ -83,6 +90,10 @@ find ./Outputs/Win32/ -name .svn | xargs -i rm -Rf {}
 
 mkdir -p ./Outputs/Win32/app/chrome/content/
 cp -R ./Outputs/Pencil/* ./Outputs/Win32/app/chrome/content/
+
+mkdir -p ./Outputs/Win32/app/chrome/icons/default/
+cp ./Outputs/Pencil/Icons/pencil.ico ./Outputs/Win32/app/chrome/icons/default/pencilMainWindow.ico
+cp ./Outputs/Pencil/Icons/pencil.xpm ./Outputs/Win32/app/chrome/icons/default/pencilMainWindow.xpm
 
 ./replacer.sh ./Outputs/Win32/app/application.ini
 ./replacer.sh ./Outputs/Win32/setup.nsi
