@@ -8,8 +8,20 @@ export FXMINVER='3.0b3'
 export FXMAXVER='3.6.*'
 export XRMINVER='1.9'
 export XRMAXVER='1.9.2.*'
+
 rm -Rf ./Outputs/
 mkdir -p ./Outputs
+
+echo "----------------------"
+echo "* Cleaning up source *"
+echo "----------------------"
+rm -Rf ./Outputs/Pencil/
+mkdir ./Outputs/Pencil/
+cp -R ../Source/* ./Outputs/Pencil/
+find ./Outputs/Pencil/ -name .svn | xargs -i rm -Rf {}
+
+./replacer.sh ./Outputs/Pencil/UI/Window.xul
+./replacer.sh ./Outputs/Pencil/Common/Pencil.js
 
 echo "----------------"
 echo "* Building XPI *"
@@ -17,12 +29,11 @@ echo "----------------"
 rm -Rf ./Outputs/XPI/
 mkdir ./Outputs/XPI/
 cp -R ./XPI/* ./Outputs/XPI/
-cp -R ../Source/* ./Outputs/XPI/chrome/content/
 find ./Outputs/XPI/ -name .svn | xargs -i rm -Rf {}
 
+cp -R ./Outputs/Pencil/* ./Outputs/XPI/chrome/content/
+
 ./replacer.sh ./Outputs/XPI/install.rdf
-./replacer.sh ./Outputs/XPI/chrome/content/UI/Window.xul
-./replacer.sh ./Outputs/XPI/chrome/content/Common/Pencil.js
 
 echo "Compressing XPI file..."
 cd ./Outputs/XPI/
@@ -38,21 +49,20 @@ cp -R ./XPI/update.rdf ./Outputs/
 
 rm -Rf ./Outputs/XPI/
 
-echo "-------------------------------------------"
-echo "* Building Linux Shared XULRunner version *"
-echo "-------------------------------------------"
+echo "-------------------------------------"
+echo "* Building Linux Shared XRE version *"
+echo "-------------------------------------"
 rm -Rf ./Outputs/Linux/
 mkdir ./Outputs/Linux/
 cp -R ./Linux/* ./Outputs/Linux/
 cp -R ./XULRunner/* ./Outputs/Linux/
-mkdir -p ./Outputs/Linux/chrome/content
-cp -R ../Source/* ./Outputs/Linux/chrome/content/
 find ./Outputs/Linux/ -name .svn | xargs -i rm -Rf {}
 
-./replacer.sh ./Outputs/Linux/chrome/content/UI/Window.xul
-./replacer.sh ./Outputs/Linux/chrome/content/Common/Pencil.js
+mkdir -p ./Outputs/Linux/chrome/content
+cp -R ./Outputs/Pencil/* ./Outputs/Linux/chrome/content/
+
 ./replacer.sh ./Outputs/Linux/application.ini
-chmod +x ./Outputs/Linux/*.sh
+chmod +x ./Outputs/Linux/pencil
 
 echo "Compressing..."
 cd ./Outputs/Linux/
@@ -60,5 +70,28 @@ tar -czvf ../Pencil-$VERSION-$BUILD-linux-gtk.tar.gz * > /dev/null
 cd ../../
 rm -Rf ./Outputs/Linux/
 
+
+echo "---------------------------------------------"
+echo "* Building Win32 Installer with Private XRE *"
+echo "---------------------------------------------"
+rm -Rf ./Outputs/Win32/
+mkdir ./Outputs/Win32/
+cp -R ./Win32/* ./Outputs/Win32/
+mkdir -p ./Outputs/Win32/app
+cp -R ./XULRunner/* ./Outputs/Win32/app/
+find ./Outputs/Win32/ -name .svn | xargs -i rm -Rf {}
+
+mkdir -p ./Outputs/Win32/app/chrome/content/
+cp -R ./Outputs/Pencil/* ./Outputs/Win32/app/chrome/content/
+
+./replacer.sh ./Outputs/Win32/app/application.ini
+./replacer.sh ./Outputs/Win32/setup.nsi
+
+cd Outputs/Win32
+makensis pencil.nsi && makensis setup.nsi
+cd ../../
+rm -Rf ./Outputs/Win32/
+
+rm -Rf ./Outputs/Pencil/
 
 echo "Done!"
