@@ -8,6 +8,8 @@ PrivateShapeDefParser.prototype.parseNode = function (dom) {
     collection.id = dom.getAttribute("p:Id");
     collection.displayName = dom.getAttribute("p:Name");
     collection.description = dom.getAttribute("p:Description");
+    collection.author = dom.getAttribute("p:Author");
+    collection.infoUrl = dom.getAttribute("p:InfoUrl");
 
     debug("    loading collection: id: " + collection.id + ", name: " + collection.displayName);
 

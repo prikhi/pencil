@@ -9,13 +9,13 @@ function handleOnload() {
     descText = document.getElementById("descText");
     descHtml = document.getElementById("descHtml");
     icon = document.getElementById("icon");
-    
+
     returnValueHolder = window.arguments[1];
     message = window.arguments[0];
 
     //setup
     document.title = "Evolus Pencil";
-    
+
     if (message.title) {
         Dom.empty(titleText);
         titleText.appendChild(document.createTextNode(message.title));
@@ -33,9 +33,9 @@ function handleOnload() {
         descText.parentNode.removeChild(descText);
         descHtml.parentNode.removeChild(descHtml);
     }
-        
+
     var dialog = document.documentElement;
-    
+
     if (message.type == "info") {
         dialog.buttons = "accept";
         icon.className = "message-icon";
@@ -56,7 +56,7 @@ function handleOnload() {
     setButtonLabel("accept", message.acceptLabel ? message.acceptLabel : "OK");
     setButtonLabel("cancel", message.cancelLabel ? message.cancelLabel : "Cancel");
     setButtonLabel("extra1", message.extraLabel ? message.extraLabel : "Apply");
-    
+
 }
 function setButtonLabel(dlgtype, label) {
     var dialog = document.documentElement;

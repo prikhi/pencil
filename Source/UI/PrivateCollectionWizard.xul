@@ -4,9 +4,8 @@
 <wizard id="pencilPrivateCollectionWizard"
         title="Create Private Collection Wizard"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        onwizardfinish="PrivateCollectionWizard.onFinish();"
-        width="550"
-        height="400">
+        minwidth="550"
+        onwizardfinish="PrivateCollectionWizard.onFinish();">
 
 <script src="../Common/PencilNamespaces.js"/>
 <script src="../Common/IO.js"/>
@@ -16,10 +15,6 @@
 <script src="../PrivateCollection/PrivateShapeDef.js"/>
 <script src="../PrivateCollection/PrivateCollectionManager.js"/>
 <script src="../Common/PrivateCollectionWizard.js"/>
-
-    <stringbundleset id="strbundles">
-        <stringbundle id="pencilMessages" src="chrome://mtv/locale/pencil.properties"/>
-    </stringbundleset>
 
     <wizardpage description="Select an existing private collection or create new private collection" onpageadvanced="return PrivateCollectionWizard.checkCollection();">
         <label value="Select private collection:" class="Primary"/>
@@ -41,7 +36,7 @@
                 </columns>
                 <rows>
                     <row align="center">
-                        <hbox align="right" style="width:60px">
+                        <hbox align="right" style="width:75px">
                             <label control="collectionName" value="Name:" />
                         </hbox>
                         <textbox id="collectionName" size="32" maxlength="255" />
@@ -66,7 +61,7 @@
                 </columns>
                 <rows>
                     <row align="center">
-                        <hbox align="right" style="width:60px">
+                        <hbox align="right" style="width:75px">
                             <label control="shapeName" value="Name:" />
                         </hbox>
                         <textbox id="shapeName" size="32" maxlength="255" />

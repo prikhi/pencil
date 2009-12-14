@@ -445,7 +445,7 @@ Svg.expandRectTo = function (rect, p) {
     } else if (p.x > rect.x + rect.width) {
         rect.width = p.x - rect.x;
     }
-    
+
     if (p.y < rect.y) {
         rect.height += rect.y - p.y;
         rect.y = p.y;
@@ -556,7 +556,7 @@ Local.createTempDir = function (prefix) {
     var seed = Math.round(Math.random() * 1000000);
 
     dir.append(prefix + "-" + seed);
-    
+
     dir.create(dir.DIRECTORY_TYPE, 0777);
 
     return dir;
@@ -675,7 +675,7 @@ Util.error = function(title, description, buttonLabel) {
     var message = {type: "error",
                     title: title,
                     description: description ? description : null,
-                    acceptLabel: buttonLabel ? buttonLabel : null };
+                    cancelLabel: buttonLabel ? buttonLabel : null };
 
     var returnValueHolder = {};
     var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
@@ -774,7 +774,7 @@ Util.compress = function (dir, zipFile) {
     var writer = Components.classes["@mozilla.org/zipwriter;1"]
                           .createInstance(Components.interfaces.nsIZipWriter);
     writer.open(zipFile, PR_RDWR | PR_CREATE_FILE | PR_TRUNCATE);
-    
+
     Util.writeDirToZip(dir, writer, "");
     writer.close();
 };
@@ -782,9 +782,9 @@ Util.writeDirToZip = function (dir, writer, prefix) {
     var items = dir.directoryEntries;
     while (items.hasMoreElements()) {
         var file = items.getNext().QueryInterface(Components.interfaces.nsIFile);
-        
+
         var itemPath = prefix + file.leafName;
-        
+
         if (file.isDirectory()) {
             writer.addEntryDirectory(itemPath, file.lastModifiedTime * 1000, false);
             Util.writeDirToZip(file, writer, itemPath + "/");
@@ -835,13 +835,13 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
     var channel = ioService.newChannelFromURI(uri);
 
     var httpChannel = channel.QueryInterface(Components.interfaces.nsIHttpChannel);
-    
+
     var listener = {
         foStream: null,
         file: downloadTargetFile,
         listener: listener,
         size: 0,
-        
+
         writeMessage: function (message) {
             if (this.listener && this.listener.onMessage) {
                 this.listener.onMessage(message);
@@ -856,22 +856,22 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
 
             if (this.canceled) return;
-            
+
             try {
                 if (!this.foStream) {
                     this.foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
                                              .createInstance(Components.interfaces.nsIFileOutputStream);
                     this.writeMessage("Start receiving file...");
-                    
+
                     this.downloaded = 0;
-                    
+
                     this.foStream.init(this.file, 0x04 | 0x08 | 0x20, 0664, 0);
                 }
 
                 try {
                     this.size = parseInt(httpChannel.getResponseHeader("Content-Length"), 10);
                 } catch (e) { }
-                
+
                 var bStream = Components.classes["@mozilla.org/binaryinputstream;1"].
                                 createInstance(Components.interfaces.nsIBinaryInputStream);
 
@@ -895,7 +895,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
             netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
-            
+
             this.foStream.close();
             this.writeMessage("Done");
             this.listener.onDone();
@@ -929,20 +929,20 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             throw Components.results.NS_NOINTERFACE;
         }
     }; //listener
-    
-    var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"]  
-                        .createInstance(Components.interfaces.nsIFileInputStream);  
-    inputStream.init(uploadFile, 0x04 | 0x08, 0644, 0x04); // file is an nsIFile instance   
+
+    var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+                        .createInstance(Components.interfaces.nsIFileInputStream);
+    inputStream.init(uploadFile, 0x04 | 0x08, 0644, 0x04); // file is an nsIFile instance
 
     var uploadChannel = channel.QueryInterface(Components.interfaces.nsIUploadChannel);
     var mime = "application/octet-stream";
-    
+
     if (options && options.mime) mime = options.mime;
-    
+
     uploadChannel.setUploadStream(inputStream, mime, -1);
 
     httpChannel.requestMethod = "POST";
-    
+
     if (options && options.headers) {
         for (name in options.headers) {
             httpChannel.setRequestHeader(name, options.headers[name], false);

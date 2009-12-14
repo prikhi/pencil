@@ -13,11 +13,14 @@
                 this.contentBox = document.getAnonymousElementByAttribute(this, "aid", "contentBox");
                 this.popup = document.getAnonymousElementByAttribute(this, "aid", "contextPopup");
                 this.removeAllCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "removeAllCollectionMenuItem");
-                //this.editMenuItem = document.getAnonymousElementByAttribute(this, "aid", "editMenuItem");
+                this.editCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "editCollectionMenuItem");
                 this.importCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "importCollectionMenuItem");
                 this.exportCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "exportCollectionMenuItem");
                 this.deleteCollectionMenuItem = document.getAnonymousElementByAttribute(this, "aid", "deleteCollectionMenuItem");
                 this.deleteShapeMenuItem = document.getAnonymousElementByAttribute(this, "aid", "deleteShapeMenuItem");
+                this.editShapeMenuItem = document.getAnonymousElementByAttribute(this, "aid", "editShapeMenuItem");
+                this.aboutMenuItem = document.getAnonymousElementByAttribute(this, "aid", "aboutMenuItem");
+                this.sepAboutMenuItem = document.getAnonymousElementByAttribute(this, "aid", "sepAboutMenuItem");
 
                 var id = "popup" + Math.round(1000 * Math.random());
                 this.popup.setAttribute("id", id);
@@ -57,6 +60,7 @@
                         }
                         thiz.exportCollectionMenuItem.disabled = !hasCollection;
                         thiz.deleteCollectionMenuItem.disabled = !hasCollection;
+                        thiz.editCollectionMenuItem.disabled = !hasCollection;
                         var hasShapeDef = false;
                         if (collection) {
                             var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
@@ -66,6 +70,15 @@
                             }
                         }
                         thiz.deleteShapeMenuItem.disabled = !hasShapeDef;
+                        thiz.editShapeMenuItem.disabled = !hasShapeDef;
+                        if (collection) {
+                            thiz.aboutMenuItem.setAttribute("label", "About " + thiz.currentCollection.displayName);
+                            thiz.aboutMenuItem.style.display = '';
+                            thiz.sepAboutMenuItem.style.display = '';
+                        } else {
+                            thiz.aboutMenuItem.style.display = 'none';
+                            thiz.sepAboutMenuItem.style.display = 'none';
+                        }
                     } catch (e) { Console.dumpError(e);}
                 }, false);
                 this.importCollectionMenuItem.addEventListener("command", function (event) {
@@ -84,6 +97,63 @@
                         PrivateCollectionManager.deleteCollection(thiz.currentCollection);
                     }
                 }, false);
+                this.editCollectionMenuItem.addEventListener("command", function (event) {
+                    if (thiz.currentCollection) {
+                        var data = {
+                            collectionName: thiz.currentCollection.displayName,
+                            collectionDescription: thiz.currentCollection.description,
+                            collectionAuthor: thiz.currentCollection.author,
+                            collectionInfoUrl: thiz.currentCollection.infoUrl,
+                            valueHolder: {}
+                        };
+                        var d = window.openDialog('chrome://pencil/content/UI/PrivateCollectionDialog.xul', 'PrivateCollectionDialog', 'chrome,centerscreen,modal', data);
+                        var valueHolder = data.valueHolder;
+                        if (!valueHolder.collectionName) return;
+
+                        thiz.currentCollection.displayName = valueHolder.collectionName;
+                        thiz.currentCollection.description = valueHolder.collectionDescription;
+                        thiz.currentCollection.author = valueHolder.collectionAuthor;
+                        thiz.currentCollection.infoUrl = valueHolder.collectionInfoUrl;
+
+                        PrivateCollectionManager.savePrivateCollections();
+                        thiz.reloadCollections();
+                    }
+                }, false);
+                this.editShapeMenuItem.addEventListener("command", function (event) {
+                    if (thiz.currentCollection && thiz.currentShapeDef) {
+                        var data = {
+                            shapeName: thiz.currentShapeDef.displayName,
+                            valueHolder: {}
+                        };
+                        var d = window.openDialog('chrome://pencil/content/UI/PrivateShapeDialog.xul', 'PrivateShapeDialog', 'chrome,centerscreen,modal', data);
+                        var valueHolder = data.valueHolder;
+                        if (!valueHolder.shapeName) return;
+
+                        thiz.currentShapeDef.displayName = valueHolder.shapeName;
+                        if (valueHolder.changeIcon) {
+                            var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+                            file.initWithPath(valueHolder.shapeIcon);
+
+                            var ios = Components.classes["@mozilla.org/network/io-service;1"].
+                                            getService(Components.interfaces.nsIIOService);
+                            var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+                                                    createInstance(Components.interfaces.nsIFileInputStream);
+                            istream.init(file, -1, -1, false);
+
+                            var bstream = Components.classes["@mozilla.org/binaryinputstream;1"].
+                                                    createInstance(Components.interfaces.nsIBinaryInputStream);
+                            bstream.setInputStream(istream);
+                            var bytes = bstream.readBytes(bstream.available());
+                            istream.close();
+                            bstream.close();
+
+                            var base64 = Base64.encode(bytes, true);
+                            thiz.currentShapeDef.iconData = "data:image/png;base64," + base64;
+                        }
+                        PrivateCollectionManager.savePrivateCollections();
+                        thiz.reloadCollections();
+                    }
+                }, false);
                 this.deleteShapeMenuItem.addEventListener("command", function (event) {
                     //debug("delete collection menuitem clicked");
                     if (thiz.currentCollection && thiz.currentShapeDef) {
@@ -93,6 +163,21 @@
                 this.removeAllCollectionMenuItem.addEventListener("command", function (event) {
                     //debug("remove all menuitem clicked");
                     PrivateCollectionManager.deleteAllCollection();
+                }, false);
+
+                this.aboutMenuItem.addEventListener("command", function (event) {
+                    if (thiz.currentCollection) {
+                        var collection = thiz.currentCollection;
+                        var detail = "<div>" + Dom.htmlEncode(collection.description) + "</div><ul>";
+                        if (collection.author) {
+                            detail += "<li><strong>Author</strong>: " + Dom.htmlEncode(collection.author) + "</li>";
+                        }
+                        if (collection.author) {
+                            detail += "<li><strong>More information</strong>: <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
+                        }
+                        detail += "</ul>"
+                        Util.info(collection.displayName, new RichText(detail));
+                    }
                 }, false);
 
                 this.dragObserver = {
@@ -231,13 +316,17 @@
             </vbox>
             <popupset>
                 <popup aid="contextPopup">
-                    <menuitem aid="deleteShapeMenuItem" label="Delete selected shape" />
+                    <menuitem aid="editShapeMenuItem" label="Edit this shape..." />
+                    <menuitem aid="deleteShapeMenuItem" label="Delete this shape" />
                     <menuseparator/>
                     <menuitem aid="importCollectionMenuItem" label="Import new private collection..." />
                     <menuitem aid="exportCollectionMenuItem" label="Export this collection..." />
-                    <menuitem aid="deleteCollectionMenuItem" label="Delete this collection" />
+                    <menuitem aid="editCollectionMenuItem" label="Edit this collection..." />
                     <menuseparator/>
+                    <menuitem aid="deleteCollectionMenuItem" label="Delete this collection" />
                     <menuitem aid="removeAllCollectionMenuItem" label="Delete all collections" />
+                    <menuseparator aid="sepAboutMenuItem"/>
+                    <menuitem aid="aboutMenuItem" label="About..." />
                 </popup>
             </popupset>
         </xbl:content>
