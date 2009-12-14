@@ -299,7 +299,7 @@
             </menu>
             <menu label="Tools" id="tools-menu" accesskey="T">
                 <menupopup>
-                    <menuitem label="Stencil Generator..." oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
+                    <menuitem label="Stencil Generator..." oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen');"/>
                     <menuitem label="Clipart Browser..." oncommand="if (!Pencil._clipartShowing) { window.openDialog('ClipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
                     <menuseparator/>
                     <!--<menuitem label="DOM Inspector" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');"/>-->
@@ -315,7 +315,7 @@
             </menu>
             <menu label="Help" id="help-menu" accesskey="H">
                 <menupopup>
-                    <menuitem label="About..." oncommand="Util.info('%name% Version: %version%, build %build%.', 'Copyright (c) 2009 Evolus. All rights reserved. This software is released under the terms of the GPL. Use it at your own risk.');"/>
+                    <menuitem label="About..." oncommand="window.open('AboutDialog.xul', 'pencilAboutDialog', 'chrome,centerscreen,modal,minimizable=false');//Util.info('%name% Version: %version%, build %build%.', 'Copyright (c) 2009 Evolus. All rights reserved. This software is released under the terms of the GPL. Use it at your own risk.');"/>
                 </menupopup>
             </menu>
         </menubar>

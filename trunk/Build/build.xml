@@ -34,6 +34,9 @@
         <antcall target="replacer">
             <param name="filename" value="${OUTPUTS}/Pencil/UI/Window.xul" />
         </antcall>
+        <antcall target="replacer">
+            <param name="filename" value="${OUTPUTS}/Pencil/UI/AboutDialog.xul" />
+        </antcall>
     </target>
 
     <target name="xpi">
@@ -64,27 +67,6 @@
             <param name="filename" value="${OUTPUTS}/update.rdf" />
         </antcall>
         <delete dir="${OUTPUTS}/XPI" />
-    </target>
-
-    <target name="xulrunner">
-        <echo message="------------------------------" />
-        <echo message="${message}" />
-        <mkdir dir="${OUTPUTS}/${PLATFORM}" />
-        <copy todir="${OUTPUTS}/${PLATFORM}" failonerror="false" >
-            <fileset dir="./${PLATFORM}/xulrunner" />
-        </copy>
-        <copy todir="${OUTPUTS}/${PLATFORM}/chrome/pencil@evolus.vn">
-            <fileset dir="../Source" />
-        </copy>
-        <antcall target="replacer">
-            <param name="filename" value="${OUTPUTS}/${PLATFORM}/application.ini" />
-        </antcall>
-        <antcall target="replacer">
-            <param name="filename" value="${OUTPUTS}/${PLATFORM}/chrome/pencil@evolus.vn/Common/Pencil.js" />
-        </antcall>
-        <antcall target="replacer">
-            <param name="filename" value="${OUTPUTS}/${PLATFORM}/chrome/pencil@evolus.vn/UI/Window.xul" />
-        </antcall>
     </target>
 
     <target name="win32">

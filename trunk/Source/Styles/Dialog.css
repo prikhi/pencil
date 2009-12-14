@@ -78,8 +78,33 @@ dialog hbox.Body vbox html|a {
   -moz-margin-end: 20px;
 }
 
-
-
+#pencilAboutDialog > vbox > hbox {
+	margin: 10px;
+}
+#pencilAboutDialog > vbox > hbox:first-child {
+	background-color: highlight;
+	color: highlighttext;
+}
+#pencilAboutDialog hbox.Title {
+	margin-top: 2px;
+}
+#pencilAboutDialog hbox.Title label {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+#pencilAboutDialog textbox[readonly="true"] {
+	padding: 0;
+	margin: 0;
+}
+#pencilAboutDialog textbox[readonly="true"],
+#pencilAboutDialog textbox[readonly="true"] hbox,
+#pencilAboutDialog textbox[readonly="true"] textarea {
+	background-color: -moz-field;
+	color: -moz-fieldtext;
+}
+#pencilAboutDialog textbox[readonly="true"] hbox {
+	padding: 3px;
+}
 
 
 
