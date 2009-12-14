@@ -35,10 +35,10 @@
                     </tabs>
                     <tabpanels flex="1" id="aboutBoxTabPanels">
                         <tabpanel>
-                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value=""></textbox>
+                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Dương Thành An&#13;Nguyễn Tiến Dũng"></textbox>
                         </tabpanel>
                         <tabpanel>
-                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly"/>
+                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Maxime Delorme&#13;Frederic Vandaele&#13;brainiac.kalel@gmail.com"/>
                         </tabpanel>
                         <tabpanel>
                             <textbox id="licenseText" flex="1" multiline="true" readonly="true" rows="13" class="Readonly"/>
