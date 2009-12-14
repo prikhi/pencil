@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <bindings xmlns="http://www.mozilla.org/xbl"
-          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-          xmlns:html="http://www.w3.org/1999/xhtml"
-          xmlns:svg="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-          >
+        xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        >
     <binding id="canvas">
         <implementation>
             <constructor>
@@ -144,7 +144,7 @@
                     if (!thiz || !thiz.handleMouseUp) {
                         document.removeEventListener("mouseup", arguments.callee, false);
                         return;
-                     }
+                    }
                     thiz.handleMouseUp(event);
                 }, false);
                 this.svg.ownerDocument.addEventListener("mousemove", function (event) {
@@ -491,14 +491,14 @@
                         var name = node.getAttributeNS(PencilNamespaces.p, "name");
                         var oldId = node.getAttribute("id");
                         if (oldId) return;
-                        
+
                         var uuid = Util.newUUID();
                         node.setAttribute("id", uuid);
                         node.id = uuid;
-                        
+
                         Dom.updateIdRef(shape, name, uuid);
                     });
-                    
+
                     Dom.renewId(shape);
 
                     // add the newly created shape into the drawing layer
@@ -641,7 +641,7 @@
                     tick("begin");
 
                     this._button = event.button;
-                    
+
                     var thiz = this;
                     var isInControlLayer = Dom.findUpward(event.originalTarget, function (node) {
                         return (node == thiz.controlLayer);
@@ -833,8 +833,8 @@
                     //is it from an html:a?
                     var a = Dom.findUpward(event.originalTarget, function (node) {
                         return (node && node.nodeType == 1
-                                     && node.localName.toLowerCase() == "a"
-                                     && node.namespaceURI == PencilNamespaces.html);
+                                    && node.localName.toLowerCase() == "a"
+                                    && node.namespaceURI == PencilNamespaces.html);
                     });
 
                     if (!a) return;
@@ -842,8 +842,8 @@
                     //is this html:a inside an svg:foreignObject?
                     var foreignObject = Dom.findUpward(a, function (node) {
                         return (node && node.nodeType == 1
-                                     && node.localName == "foreignObject"
-                                     && node.namespaceURI == PencilNamespaces.svg);
+                                    && node.localName == "foreignObject"
+                                    && node.namespaceURI == PencilNamespaces.svg);
                     });
 
                     //ok, it is then prevent it
@@ -1190,12 +1190,12 @@
                     var textualData = new XMLSerializer().serializeToString(transferableData.dataNode);
 
                     var systemString   = Components.classes["@mozilla.org/supports-string;1"].
-                                           createInstance(Components.interfaces.nsISupportsString);
+                                            createInstance(Components.interfaces.nsISupportsString);
                     if (!systemString) return false;
                     systemString.data  = textualData;
 
                     var trans = Components.classes["@mozilla.org/widget/transferable;1"].
-                                           createInstance(Components.interfaces.nsITransferable);
+                                            createInstance(Components.interfaces.nsITransferable);
                     if (!trans) return false;
 
                     trans.addDataFlavor("text/unicode");
@@ -1217,7 +1217,7 @@
                             svgXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + svgXML;
 
                             var svgXMLSS   = Components.classes["@mozilla.org/supports-string;1"].
-                                                   createInstance(Components.interfaces.nsISupportsString);
+                                                    createInstance(Components.interfaces.nsISupportsString);
                             if (!svgXMLSS) return false;
                             svgXMLSS.data = svgXML;
 
@@ -1588,7 +1588,7 @@
                             collections: PrivateCollectionManager.privateShapeDef.collections,
                             valueHolder: {}
                         };
-                        var d = window.openDialog('chrome://pencil/content/UI/CreatePrivateCollectionWizard.xul', 'CreatePrivateCollectionWizard', 'chrome,centerscreen,modal', data);
+                        var d = window.openDialog('chrome://pencil/content/UI/PrivateCollectionWizard.xul', 'CreatePrivateCollectionWizard', 'chrome,centerscreen,modal', data);
 
                         var valueHolder = data.valueHolder;
                         if (!valueHolder.shapeName) return;
@@ -1733,7 +1733,7 @@
             </handler>
         </handlers>
         <xbl:content xmlns:xbl="http://www.mozilla.org/xbl"
-                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+                xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
             <popupset>
                 <popup aid="contextPopup">
                     <menu label="Arrangement" aid="arrangementMenu" p:for="Shape,TargetSet">
@@ -1750,7 +1750,8 @@
                     <menuitem label="Group" command="groupCommand" p:for="TargetSet" key="groupKey"/>
                     <menuitem label="Ungroup" command="unGroupCommand" p:for="Group" key="unGroupKey"/>
                     <menuitem label="Delete" p:for="Shape,TargetSet,Group" oncommand="this._canvas.deleteSelected();"/>
-					<menuitem label="Add to My Collections..." p:for="Shape,Group" oncommand="this._canvas.addSelectedToMyCollection();"/>
+                    <menuitem label="Add to My Collections..." p:for="Shape,Group" oncommand="this._canvas.addSelectedToMyCollection();"/>
+                    <menuseparator/>
                     <menuitem aid="propertyMenuItem" label="Properties..." p:for="Shape,Group,TargetSet"/>
                 </popup>
             </popupset>

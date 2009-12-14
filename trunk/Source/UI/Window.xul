@@ -25,6 +25,7 @@
 <script src="../Common/IO.js"/>
 <script src="../Common/Lorem.js"/>
 <script src="../Common/CSS.js"/>
+<script src="../Common/Base64.js"/>
 
 <script src="../Common/PencilNamespaces.js"/>
 <script src="../Common/Config.js"/>
@@ -301,8 +302,9 @@
                     <menuitem label="Stencil Generator..." oncommand="window.open('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen')"/>
                     <menuitem label="Clipart Browser..." oncommand="if (!Pencil._clipartShowing) { window.openDialog('ClipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
                     <menuseparator/>
-                    <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
+                    <!--<menuitem label="DOM Inspector" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');"/>-->
 
+                    <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
                     <menuitem label="Manage Export Template..." command="manageExportTemplateCommand"/>
                 </menupopup>
             </menu>

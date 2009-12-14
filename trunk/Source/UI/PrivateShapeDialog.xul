@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/PrivateCollectionWizard.css" type="text/css"?>
+<dialog id="pencilEditPrivateShapeDialog" title="Edit private shape information"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        buttons="accept,cancel"
+        buttonlabelaccept="Apply"
+        buttonlabelcancel="Cancel"
+        persist="screenX screenY width height"
+        ondialogaccept="return PrivateShapeDialog.onFinish();"
+        minwidth="400">
+
+<script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/IO.js"/>
+<script src="../Common/Util.js"/>
+
+<script src="../PrivateCollection/PrivateCollection.js"/>
+<script src="../PrivateCollection/PrivateShapeDef.js"/>
+<script src="../PrivateCollection/PrivateCollectionManager.js"/>
+<script src="../Common/PrivateShapeDialog.js"/>
+
+    <hbox id="shapeDefinition">
+        <groupbox flex="1">
+            <caption label="Shape definition"/>
+            <grid>
+            <columns>
+                <column />
+                <column flex="1"/>
+            </columns>
+            <rows>
+                <row align="center">
+                    <hbox align="right" style="width:65px">
+                        <label control="shapeName" value="Name:" />
+                    </hbox>
+                    <textbox id="shapeName" size="32" maxlength="255" />
+                </row>
+                <row align="center">
+                    <hbox align="right">
+                        <label control="icon" value="Icon:" />
+                    </hbox>
+                    <hbox>
+                        <textbox id="shapeIcon" size="32" maxlength="255" flex="1"  disabled="true"/>
+                        <button id="browse" label="Browse..." disabled="true" oncommand="PrivateShapeDialog.browseIconFile();"></button>
+                    </hbox>
+                </row>
+                <row align="left">
+                    <hbox align="right"></hbox>
+                    <checkbox id="changeIcon" label="Change icon" checked="false" oncommand="if (!this.checked) {document.getElementById('shapeIcon').disabled=true;document.getElementById('browse').disabled=true;} else {document.getElementById('shapeIcon').disabled=false;document.getElementById('browse').disabled=false;}"/>
+                </row>
+            </rows>
+            </grid>
+        </groupbox>
+    </hbox>
+
+</dialog>

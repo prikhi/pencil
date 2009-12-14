@@ -71,7 +71,12 @@ dialog hbox.Body vbox html|a {
     color: highlight;
 }
 
-
+.message-icon {
+  list-style-image: url("chrome://global/skin/icons/information-48.png");
+  width: 48px;
+  height: 48px;
+  -moz-margin-end: 20px;
+}
 
 
 
