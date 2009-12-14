@@ -13,6 +13,10 @@
             <![CDATA[
                 this.textBox = document.getAnonymousElementByAttribute(this, "aid", "textBox");
                 
+                if (this._property && this._property.meta) {
+                    this.setTypeMeta(this._property.meta);
+                }
+                
                 if (this.hasAttribute("value")) this.setValue(PlainText.fromString(this.getAttribute("value")));
 
             ]]>
@@ -29,7 +33,12 @@
                 <parameter name="plainText"/>
                 <body>
                 <![CDATA[
+                    if (plainText.value.indexOf("\r") >= 0 || plainText.value.indexOf("\n") >= 0) {
+                        this.textBox.setAttribute("multiline", true);
+                        this.textBox.setAttribute("height", "80");
+                    }
                     this.textBox.value = plainText.value;
+                    this.textBox.setAttribute("value", plainText.value);
                 ]]>
                 </body>
             </method>        
