@@ -21,6 +21,7 @@ cp -R ../Source/* ./Outputs/Pencil/
 find ./Outputs/Pencil/ -name .svn | xargs -i rm -Rf {}
 
 ./replacer.sh ./Outputs/Pencil/UI/Window.xul
+./replacer.sh ./Outputs/Pencil/UI/AboutDialog.xul
 ./replacer.sh ./Outputs/Pencil/Common/Pencil.js
 
 echo "----------------"
