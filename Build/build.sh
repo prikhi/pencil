@@ -9,9 +9,9 @@ export FXMAXVER='3.6.*'
 export XRMINVER='1.9'
 export XRMAXVER='1.9.2.*'
 
+prep() {
 rm -Rf ./Outputs/
 mkdir -p ./Outputs
-
 echo "----------------------"
 echo "* Cleaning up source *"
 echo "----------------------"
@@ -23,7 +23,9 @@ find ./Outputs/Pencil/ -name .svn | xargs -i rm -Rf {}
 ./replacer.sh ./Outputs/Pencil/UI/Window.xul
 ./replacer.sh ./Outputs/Pencil/UI/AboutDialog.xul
 ./replacer.sh ./Outputs/Pencil/Common/Pencil.js
+}
 
+xpi() {
 echo "----------------"
 echo "* Building XPI *"
 echo "----------------"
@@ -52,7 +54,9 @@ cp -R ./XPI/update.rdf ./Outputs/
 ./replacer.sh ./Outputs/update.rdf
 
 rm -Rf ./Outputs/XPI/
+}
 
+linux() {
 echo "-------------------------------------"
 echo "* Building Linux Shared XRE version *"
 echo "-------------------------------------"
@@ -78,7 +82,43 @@ tar -czvf ../Pencil-$VERSION-$BUILD-linux-gtk.tar.gz * > /dev/null
 cd ../../
 rm -Rf ./Outputs/Linux/
 
+}
 
+fedorarpm()  {
+echo "--------------------------------------"
+echo "* Building Fedora RPM with Shared XRE *"
+echo "--------------------------------------"
+rm -Rf ./Outputs/RPM/
+export BUILDROOT=./Outputs/RPM/buildroot
+
+export OUTPUT=$BUILDROOT/usr/lib/evolus-pencil-$VERSION
+mkdir -p $OUTPUT/
+cp -R ./XULRunner/* $OUTPUT/
+./replacer.sh $OUTPUT/application.ini
+
+mkdir -p $OUTPUT/chrome/content/
+cp -R ./Outputs/Pencil/* $OUTPUT/chrome/content/
+mkdir -p $OUTPUT/chrome/icons/default/
+cp ./Outputs/Pencil/Icons/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
+cp ./Outputs/Pencil/Icons/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
+
+cp -R ./Fedora-RPM/* ./Outputs/RPM/
+./replacer.sh $BUILDROOT/usr/bin/evoluspencil
+chmod 775 $BUILDROOT/usr/bin/evoluspencil
+
+./replacer.sh ./Outputs/RPM/evolus-pencil.spec
+
+find ./Outputs/RPM/ -name .svn | xargs -i rm -Rf {}
+
+cd $BUILDROOT
+BUILDROOTASB=`pwd`
+find . -type f | sed s#./usr/#/usr/#g >> ../evolus-pencil.spec
+
+cd ..
+rpmbuild -ba --buildroot "$BUILDROOTASB" ./evolus-pencil.spec
+}
+
+win32() {
 echo "---------------------------------------------"
 echo "* Building Win32 Installer with Private XRE *"
 echo "---------------------------------------------"
@@ -102,8 +142,19 @@ cp ./Outputs/Pencil/Icons/pencil.xpm ./Outputs/Win32/app/chrome/icons/default/pe
 cd Outputs/Win32
 makensis pencil.nsi && makensis setup.nsi
 cd ../../
-rm -Rf ./Outputs/Win32/
+}
 
+cleanup() {
+rm -Rf ./Outputs/Win32/
 rm -Rf ./Outputs/Pencil/
+}
+
+prep
+xpi
+linux
+win32
+fedorarpm
+cleanup
 
 echo "Done!"
+
