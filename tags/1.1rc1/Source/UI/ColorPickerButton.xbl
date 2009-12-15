@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:html="http://www.w3.org/1999/xhtml" 
+	      xmlns:svg="http://www.w3.org/2000/svg"
+	      xmlns:xlink="http://www.w3.org/1999/xlink"
+	      xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+	      >
+    <binding id="colorbutton">
+        <implementation>
+            <constructor>
+            <![CDATA[
+                this.button = document.getAnonymousElementByAttribute(this, "aid", "button");
+                this.popup = document.getAnonymousElementByAttribute(this, "aid", "popup");
+                this.picker = document.getAnonymousElementByAttribute(this, "aid", "picker");
+                this.selectButton = document.getAnonymousElementByAttribute(this, "aid", "selectButton");
+                
+                var thiz = this;
+                //generate id
+                var popupId = "popup" + (new Date().getTime()) + Math.ceil(Math.random() * 10000);
+                this.popup.setAttribute("id", popupId);
+                this.button.setAttribute("popup", popupId);
+                
+                //event
+                this.picker.addEventListener("modify", function (event) {
+                    event.stopPropagation();
+                    Dom.emitEvent("change", thiz, {});
+                }, false)
+            ]]>
+            </constructor>
+            <property name="color">
+                <getter>
+                    return this.picker.getValue();
+                </getter>
+                <setter>
+                    this.picker.setValue(val);
+                    return val;
+                </setter>
+            </property>
+        </implementation>
+        <xbl:content xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+            <toolbarbutton aid="button" xbl:inherits="image,disabled"/>
+            <panel aid="popup" position="after_start">
+                <pcoloreditor aid="picker" color="#ffffffff" onselect="runEditorCommand('hilitecolor', this.color); this.parentNode.hidePopup();"/>
+            </panel>
+        </xbl:content>
+    </binding>
+</bindings>

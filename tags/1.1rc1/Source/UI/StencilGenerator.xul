@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/StencilGenerator.css" type="text/css"?>
+<dialog id="stencilGenerator"
+    	title="Stencil Generator"
+    	xmlns:html="http://www.w3.org/1999/xhtml"
+    	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        style="padding: 10px;"
+        buttons="accept,cancel"
+        buttonlabelaccept="Generate stencil"
+        buttonlabelcancel="Close"
+        height="300"
+        width="500"
+        ondialogaccept="StencilGenerator.generateStencil();return false;"
+        ondialogcancel="return true;">
+
+    <script src="../Common/Util.js"></script>
+    <script src="../Common/IO.js"></script>
+    <script src="../Common/Base64.js"></script>
+    <script src="../Common/StencilGenerator.js"></script>
+
+	<hbox>
+		<label style="padding-top:6px;">Select folder: </label>
+		<textbox id="folder" flex="1" value=""/>
+		<button id="buttonSelect" label="Select folder" oncommand="StencilGenerator.onSelectFolder()"/>
+	</hbox>
+    <vbox style="margin-top:5px;">
+        <hbox>
+            <checkbox id="checkSubFolder" label="Search subfolders" checked="true"></checkbox>
+            <spacer flex="1"/>
+            <html:div id="infoPane" style="display:none;">
+                <html:img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH1gcGCTQnjgmrTQAAAblJREFUOMu1k99LU3EYxj/HnUZz6RSnmD8mIVJLGa4JlRd6E4FXaaBC7kKlGtTNwn+kgoK5C73wKieIQhfRjaIUeTRXgmKIOvyVuQUby6OHs283S8axxSR8Lp/v+zzfB573hf+EZCSaHo20AF3AU8PTK+CNEvROZzVIi6cGuj04HcXYiyxoOqSEYHZph5ejCwCtmSZ5hl/8/i437lo7kiwTTWjEf2kcHus011fwsO06gC9TYDToKLVZUFMS5cUW6ipt1FXasOWbSR7p3GyoArj7LwOOtRTvw1us78VPuN1Ykk+r+1yymgHsmfOy0aDmcgGRmEpoeo3NqMriyi7hb9/pvNPA8sbBqRaMCYbeftig+VoZ7qsVmEx5bP9I8KDNhctRyMelHYAXWRMoQW8/jPQVWM2UlBQhIfEzoWK+YCK8usc7JYIS9Ppz2YOp5/cXENFJjtQohdW9PAndQAl6pZy2a2YYocbmha5rIjL3TMyFnGJmGPG3WTmLh0+Z8ASwtKImvnJRjp3qP2uNaQTc7evcujeGw9lDktsAgTMl+Dx+5URgTXM5HdMfOF2Nj4HXgAnwLX9ZHOQ88BsD35QxiIh6fgAAAABJRU5ErkJggg==" style="padding:0;margin:0;border:none;"/>
+                <label id="labelInfo" value="" style="float:left;margin-left:16px;margin-top:-15px;"/>
+            </html:div>
+        </hbox>
+    </vbox>
+    <vbox>
+        <label>Name: </label>
+        <textbox id="name" value=""/>
+        <label>Description: </label>
+        <textbox id="desc" value=""/>
+        <label>Author: </label>
+        <textbox id="author" value=""/>
+        <label>Web site: </label>
+        <textbox id="url" value=""/>
+    </vbox>
+</dialog>

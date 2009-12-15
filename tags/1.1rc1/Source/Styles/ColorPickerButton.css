@@ -1,0 +1,28 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+@namespace svg url(http://www.w3.org/2000/svg);
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+pcolorbutton {
+    -moz-binding: url(../UI/ColorPickerButton.xbl#colorbutton);
+}
+pcolorbutton panel {
+    padding: 1em;
+}
+pcolorbutton panel > hbox {
+    -moz-box-flex: 1;
+    -moz-box-pack: end;
+    padding-top: 1em;
+}
+pcolorbutton panel > hbox button {
+    margin: 0px;
+    font-size: .9em;
+}
+pcolorbutton > toolbarbutton > box {
+    width: 16px;
+    height: 16px;
+    background: red;
+}
+xpcolorbutton pcoloreditor label[aid='opacityText'],
+xpcolorbutton pcoloreditor scale[aid='opacity'] {
+    display: none;
+}

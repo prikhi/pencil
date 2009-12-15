@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<overlay id="textToolOverlay"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <tabs id="sideBoxTabs">
+        <tab label="Shape Properties"/>
+    </tabs>
+    <tabpanels flex="1" id="sideBoxTabPanels">
+        <tabpanel>
+            <tree flex="1" id="propertyTable" editable="true">
+              <treecols>
+                <treecol id="sender" label="Name" flex="1"/>
+                <treecol id="subject" label="Value" flex="1"/>
+              </treecols>
+              <treechildren>
+                <treeitem>
+                  <treerow>
+                    <treecell label="joe@somewhere.com" editable="false"/>
+                    <treecell label="Top secret plans"/>
+                  </treerow>
+                </treeitem>
+                <treeitem>
+                  <treerow>
+                    <treecell label="mel@whereever.com" editable="false"/>
+                    <treecell label="Let's do lunch"/>
+                  </treerow>
+                </treeitem>
+              </treechildren>
+            </tree>
+        </tabpanel>
+    </tabpanels>
+</overlay>
+

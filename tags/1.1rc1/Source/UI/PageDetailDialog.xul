@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
+<?xml-stylesheet href="../Styles/Dialog.css" type="text/css"?>
+<dialog id="pencilPageDialog" title="New Page"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        buttons="accept,cancel"
+        buttonlabelaccept="Apply"
+        buttonlabelcancel="Cancel"
+        persist="lastsize screenX screenY width height"
+        lastsize="800x600"
+        ondialogaccept="return handleDialogAccept();"
+        ondialogcancel="return handleDialogCancel();">
+
+<script src="../Common/Config.js"/>
+<script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/Util.js"/>
+<script src="../Common/PageDetailDialog.js"/>
+    <commandset>
+    </commandset>
+    <keyset>
+    </keyset>
+    <vbox class="Header">
+        <label class="Name" value="Create new page" id="nameText"/>
+        <label class="Description" value="Please enter the page properties" id="descText"/>
+    </vbox>
+    <vbox>
+        <hbox>
+            <label value="Page title"/>
+            <textbox id="pageTitle"/>
+        </hbox>
+        <hbox>
+            <label value="Page size"/>
+            <hbox>
+                <menulist id="size">
+                    <menupopup>
+                        <menuitem label="Last used (800x600)" value="xxxx" id="lastUsedItem" style="display: none;"/>
+                        <menuitem label="Fit current view ()" value="" id="bestFitItem" style="display: none;"/>
+                        <menuitem label="Custom size..." value=""/>
+                        <menuseparator/>
+                        <menuitem p:predefined="true" label="Compact Web page (800x600)" value="800x600"/>
+                        <menuitem p:predefined="true" label="Normal Web page (1024x768)" value="1024x768"/>
+                        <menuitem p:predefined="true" label="Large Web page (1280x800)" value="1280x800"/>
+                        <menuitem p:predefined="true" label="A4 at 90dpi" value="774x1052"/>
+                        <menuitem p:predefined="true" label="A4 at 300dpi" value="2480x3508"/>
+                    </menupopup>
+                </menulist>
+                <box style="display: none;">
+                    <html:a href="#">Configure sizes...</html:a>
+                </box>
+            </hbox>
+        </hbox>
+        <hbox>
+            <label value=""/>
+            <vbox>
+                <hbox>
+                    <textbox size="3" type="number" min="24" id="width"/>
+                    <textbox size="3" type="number" min="24" id="height"/>
+                    <label value="(pixels)"/>
+                </hbox>
+            </vbox>
+        </hbox>
+        <hbox>
+            <label value="Background"/>
+            <hbox>
+                <menulist id="backgroundPage"><menupopup>
+                        <menuitem label="[Blank background]" value=""/>
+                        <menuseparator/></menupopup>
+                </menulist>
+                <checkbox id="dimBackground" label="Dim background" checked="false"/>
+            </hbox>
+        </hbox>
+    </vbox>
+</dialog>

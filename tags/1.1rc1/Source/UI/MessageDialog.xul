@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
+<?xml-stylesheet href="../Styles/Dialog.css" type="text/css"?>
+<dialog id="pencilMessageDialog" title="New Page"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        buttons="accept,cancel"
+        buttonlabelaccept="Apply"
+        buttonlabelcancel="Cancel"
+        persist=""
+        ondialogaccept="return handleDialogAccept();"
+        ondialogextra1="return handleDialogExtra1();"
+        ondialogcancel="return handleDialogCancel();">
+
+<script src="../Common/PencilNamespaces.js"/>
+<script src="../Common/Util.js"/>
+<script src="../PropertyType/RichText.js"/>
+<script src="../Common/MessageDialog.js"/>
+    <commandset>
+    </commandset>
+    <keyset>
+    </keyset>
+    <hbox class="Body">
+        <image class="message-icon" id="icon"/>
+        <vbox>
+            <description id="titleText">a</description>
+            <description id="descText">a</description>
+            <html:div id="descHtml" xmlns="http://www.w3.org/1999/xhtml"></html:div>
+        </vbox>
+    </hbox>
+</dialog>

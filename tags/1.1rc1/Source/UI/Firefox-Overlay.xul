@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<overlay id="pencil-overlay"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
+<script src="chrome://pencil/content/Common/Util.js" />
+<script src="chrome://pencil/content/Common/PencilNamespaces.js" />
+<script src="chrome://pencil/content/Common/FirefoxOverlay.js" />
+
+    <menupopup id="menu_ToolsPopup">
+        <menuitem id="pencil-launcher" label="Pencil Sketching..." style="list-style-image: url(chrome://pencil/content/Icons/16.png)"
+            oncommand="window.open('chrome://pencil/content/UI/Window.xul', '_blank', 'chrome,resizable,centerscreen');"/>
+        <menu label="Send Page to Pencil Document...">
+            <menupopup id="pencil_sendToMenuPopup">
+            </menupopup>
+        </menu>
+    </menupopup>
+</overlay>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
+<?xml-stylesheet href="../Styles/Dialog.css" type="text/css"?>
+<dialog id="pencilAboutDialog" title="About Pencil"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        buttons="cancel"
+        buttonlabelcancel="Close"
+        minwidth="400">
+
+<script src="../Common/Util.js"/>
+<script src="../Common/IO.js"/>
+<script src="../Common/AboutDialog.js"/>
+
+    <vbox>
+        <hbox flex="1">
+            <vbox><image src="chrome://pencil/content/Icons/48.png"/></vbox>
+            <vbox flex="1">
+                <hbox class="Title"><label>Evolus Pencil</label></hbox>
+                <hbox>
+                    <vbox flex="1"><label>Copyright (c) 2009 Evolus Co., Ltd</label></vbox>
+                    <vbox><label>version %version% build %build%</label></vbox>
+                </hbox>
+            </vbox>
+        </hbox>
+        <hbox>
+            <vbox flex="1">
+                <tabbox id="aboutBox">
+                    <tabs id="aboutBoxTabs">
+                        <tab label="Authors"/>
+                        <tab label="Contributors"/>
+                        <tab label="License"/>
+                    </tabs>
+                    <tabpanels flex="1" id="aboutBoxTabPanels">
+                        <tabpanel>
+                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Dương Thành An&#13;Nguyễn Tiến Dũng"></textbox>
+                        </tabpanel>
+                        <tabpanel>
+                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Maxime Delorme&#13;Frederic Vandaele&#13;brainiac.kalel@gmail.com"/>
+                        </tabpanel>
+                        <tabpanel>
+                            <textbox id="licenseText" flex="1" multiline="true" readonly="true" rows="13" class="Readonly"/>
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
+            </vbox>
+        </hbox>
+    </vbox>
+
+</dialog>
