@@ -730,17 +730,17 @@ Util.getNodeMetadata = function (node, name) {
     return node.getAttributeNS(PencilNamespaces.p, name);
 };
 Util.generateIcon = function (target, width, height, padding, iconPath, callback) {
-    if (!target || !target.getGeometry) {
+    if (!target || !target.svg) {
         return;
     }
 
-    var geo = target.getGeometry();
-    if (!geo) {
+    var bound = target.svg.getBoundingClientRect();
+    if (!bound) {
         return;
     }
 
-    var w = geo.dim.w;
-    var h = geo.dim.h;
+    var w = bound.width;
+    var h = bound.height;
 
     if (w > h) {
         height = h / (w / 64);
@@ -748,27 +748,71 @@ Util.generateIcon = function (target, width, height, padding, iconPath, callback
         width = w / (h / 64);
     }
 
+    var ctm = Svg.getCTM(target.svg);
     var svg = document.createElementNS(PencilNamespaces.svg, "svg");
+
     svg.setAttribute("width", "" + (width + padding * 2) + "px");
     svg.setAttribute("height", "" + (height + padding * 2) + "px");
 
     var content = target.svg.cloneNode(true);
-    content.removeAttribute("transform");
     content.removeAttribute("id");
+    content.removeAttribute("transform");
 
-    content.setAttribute("transform", "translate(" + padding + ", " + padding + ") scale(" + width / geo.dim.w + ", " + height / geo.dim.h + ")");
+    var transform = "rotate(" + (Svg.getAngle(ctm.a, ctm.b)) + ") scale(" + width / bound.width + ", " + height / bound.height + ")";
+    content.setAttribute("transform", transform);
 
     svg.appendChild(content);
 
-    if (iconPath) {
-        Pencil.rasterizer.rasterizeDOM(svg, iconPath, function () {});
-    } else {
-        Pencil.rasterizer.rasterizeDOMToUrl(svg, function (data) {
-            if (callback) {
-                callback(data.url);
-            }
-        });
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+    var id = "__generate_icon_iframe__";
+    var iframe = document.createElementNS(PencilNamespaces.html, "html:iframe");
+    var container = document.body;
+    if (!container) container = document.documentElement;
+    var box = document.createElement("box");
+    box.setAttribute("id", id);
+    box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
+
+    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
+    iframe.setAttribute("src", "blank.html");
+
+    box.appendChild(iframe);
+    var eb = container.getElementsByAttribute("id", id);
+    if (eb && eb[0]) {
+        container.removeChild(eb[0]);
     }
+    container.appendChild(box);
+
+    box.style.MozBoxPack = "start";
+    box.style.MozBoxAlign = "start";
+
+    var win = iframe.contentWindow;
+    win.document.body.setAttribute("style", "padding: 0px; margin: 0px;");
+
+    var tempFile = Local.newTempFile(Util.newUUID(), "svg");
+    Dom.serializeNodeToFile(svg, tempFile);
+
+    var url = ios.newFileURI(tempFile).spec;
+    win.addEventListener("DOMContentLoaded", function () {
+        var doc = iframe.contentWindow.document;
+        var g = doc.documentElement.firstChild;
+        if (!g) return;
+
+        var bound = g.getBoundingClientRect();
+        var transform = g.getAttribute("transform");
+        transform = "translate(" + (padding - bound.left) + " , " + (padding - bound.top) + ") " + transform;
+        g.setAttribute("transform", transform);
+        if (iconPath) {
+            Pencil.rasterizer.rasterizeDOM(g.parentNode, iconPath, function () {});
+        } else {
+            Pencil.rasterizer.rasterizeDOMToUrl(g.parentNode, function (data) {
+                if (callback) {
+                    callback(data.url);
+                }
+            });
+        }
+    }, false);
+    win.location.href = url;
 };
 Util.compress = function (dir, zipFile) {
     var writer = Components.classes["@mozilla.org/zipwriter;1"]
