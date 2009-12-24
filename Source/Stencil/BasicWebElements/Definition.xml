@@ -550,6 +550,7 @@
                 <Impl>
                         <![CDATA[
                             this.setProperty("textContent", RichText.fromLoremIpsum(10));
+                            this.setProperty("fixedWidth", new Bool(true));
                         ]]>
                 </Impl>
             </Action>
@@ -557,6 +558,7 @@
                 <Impl>
                         <![CDATA[
                             this.setProperty("textContent", RichText.fromLoremIpsum(45));
+                            this.setProperty("fixedWidth", new Bool(true));
                         ]]>
                 </Impl>
             </Action>
@@ -564,6 +566,7 @@
                 <Impl>
                         <![CDATA[
                             this.setProperty("textContent", RichText.fromLoremIpsum(150));
+                            this.setProperty("fixedWidth", new Bool(true));
                         ]]>
                 </Impl>
             </Action>
