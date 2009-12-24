@@ -9,7 +9,7 @@ function Rasterizer(format) {
     var box = document.createElement("box");
     box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
 
-    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
+    iframe.setAttribute("style", "border: none; min-width: 200px; min-height: 200px; width: 201px; height: 201px; xvisibility: hidden;");
     iframe.setAttribute("src", "blank.html");
     
     debug(iframe);
@@ -36,12 +36,15 @@ function Rasterizer(format) {
                 
                 if (!event.originalTarget._isRasterizeFrame) return;
                 if (!thiz.nextHandler) return;
+                
+                debug("Export now...");
 
                 var f = thiz.nextHandler;
                 thiz.nextHandler = null;
                 f();
                 
             }, false);
+            iframe.contentDocument.documentElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
             iframe.contentWindow._initialized = true;
         }
     }, false);
