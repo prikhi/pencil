@@ -299,6 +299,7 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function () {
     var ctm = this.textEditingInfo.target.getScreenCTM();
     var svgCTM = this.canvas.svg.getScreenCTM();
     
+    //tricky dx, dy: screenCTM of SVG and screen location of its parent is not the same.
     var dx = this.canvas.svg.parentNode.boxObject.screenX - svgCTM.e;
     var dy = this.canvas.svg.parentNode.boxObject.screenY - svgCTM.f;
     
@@ -320,6 +321,22 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function () {
         y += this.textEditingInfo.bound.y - 1;
         width = this.textEditingInfo.bound.w + 4;
         height = this.textEditingInfo.bound.h + 4;
+    }
+    
+    if (x < 0) {
+        width += x;
+        x = 0;
+    }
+    if (y < 0) {
+        height += y;
+        y = 0;
+    }
+    
+    if (width + x > boxObject.width) {
+        width = boxObject.width - x;
+    }
+    if (height + y > boxObject.height) {
+        height = boxObject.height - y;
     }
     
     OnScreenTextEditor.richTextEditorPane.setAttribute("left", x);
