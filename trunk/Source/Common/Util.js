@@ -293,7 +293,15 @@ Dom.newDOMElement = function (spec, doc) {
 
     for (name in spec) {
         if (name.match(/^_/)) continue;
-        e.setAttribute(name, spec[name]);
+        
+        if (name.match(/^([^:]+):(.*)$/)) {
+            var prefix = RegExp.$1;
+            var localName = RegExp.$2;
+            var uri = PencilNamespaces[prefix];
+            e.setAttributeNS(uri, name, spec[name]);
+        } else {
+            e.setAttribute(name, spec[name]);
+        }
     }
 
     if (spec._text) {

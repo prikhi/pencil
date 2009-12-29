@@ -209,10 +209,12 @@ Shape.prototype.getGeometry = function () {
     if (!geo.dim) {
         geo.dim = {};
         var bbox = this.svg.getBBox();
-        geo.dim.w = bbox.width;
-        geo.dim.h = bbox.height;
+        if (bbox) {
+            geo.dim.w = bbox.width;
+            geo.dim.h = bbox.height;
 
-        geo.loc = {x: bbox.x, y: bbox.y};
+            geo.loc = {x: bbox.x, y: bbox.y};
+        }
     }
 
     return geo;
