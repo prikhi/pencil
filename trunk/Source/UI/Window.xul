@@ -26,6 +26,7 @@
 <script src="../Common/Lorem.js"/>
 <script src="../Common/CSS.js"/>
 <script src="../Common/Base64.js"/>
+<script src="../Common/DockingManager.js"/>
 
 <script src="../Common/PencilNamespaces.js"/>
 <script src="../Common/Config.js"/>
@@ -149,6 +150,7 @@
         <command id="bringForwardCommand" oncommand="Pencil.activeCanvas.currentController.bringForward();"/>
         <command id="sendBackwardCommand" oncommand="Pencil.activeCanvas.currentController.sendBackward();"/>
         <command id="sendToBackCommand" oncommand="Pencil.activeCanvas.currentController.sendToBack();"/>
+        <command id="formatPainterCommand" oncommand="Pencil.activeCanvas.beginFormatPainter();"/>
 
         <command id="hideHeavyElementsCommand" oncommand="Pencil.toggleShowHeavyElements();"/>
 
@@ -351,6 +353,9 @@
                 <toolbarbutton image="Icons/up.png" label="Bring Forward" tooltiptext="Bring Forward" command="bringForwardCommand"/>
                 <toolbarbutton image="Icons/down.png" label="Send Backward" tooltiptext="Send Backward" command="sendBackwardCommand"/>
                 <toolbarbutton image="Icons/bottom.png" label="Send to Back" tooltiptext="Send to Back" command="sendToBackCommand"/>
+            </hbox>
+            <hbox id="FormatToolbar" class="ToolbarSection">
+                <toolbarbutton image="Icons/format-painter-16.png" label="Format painter" tooltiptext="Copy shape format" id="toolbarFormatPainterCommand" type="checkbox" command="formatPainterCommand"/>
             </hbox>
             <!--
             <textbox id="foo" size="20" onkeypress="if (event.keyCode == event.DOM_VK_RETURN) { var x = eval(document.getElementById('foo').value, window); if (x) alert(x); this.focus(); this.select();}"/>

@@ -2,6 +2,12 @@ function Shape(canvas, svg) {
     this.svg = svg;
     this.canvas = canvas;
 
+    if (!this.svg.getAttribute("id")) {
+        var uuid = Util.newUUID();
+        this.svg.setAttribute("id", uuid);
+    }
+    this.id = this.svg.getAttribute("id");
+
     var defId = this.canvas.getType(svg);
     this.def = CollectionManager.shapeDefinition.locateDefinition(defId);
     if (!this.def) {
@@ -21,6 +27,8 @@ function Shape(canvas, svg) {
         }
         this.targetMap[name] = target;
     }
+
+    this.dockingManager = new DockingManager(this);
 }
 Shape.prototype.getName = function () {
     return this.def.displayName;
@@ -45,7 +53,7 @@ Shape.prototype.setInitialPropertyValues = function (overridingValueMap) {
 
     for (var name in this.def.propertyMap) {
         var value = null;
-        
+
         if (overridingValueMap && overridingValueMap[name]) {
             var spec = overridingValueMap[name];
             if (spec.initialValueExpression) {
@@ -189,7 +197,7 @@ Shape.prototype.locatePropertyNode = function (name) {
     return Dom.getSingle("./p:property[@name='" + name +"']", this.metaNode);
 };
 Shape.prototype.storeProperty = function (name, value) {
-    debug("setting: " + name + " = " + value.toString());
+    //debug("setting: " + name + " = " + value.toString());
     var propNode = this.locatePropertyNode(name);
     if (!propNode) {
         propNode = this.metaNode.ownerDocument.createElementNS(PencilNamespaces.p, "p:property");
@@ -222,21 +230,23 @@ Shape.prototype.getGeometry = function () {
 
 //new imple for geometry editing
 
-Shape.prototype.moveBy = function (dx, dy) {
+Shape.prototype.moveBy = function (dx, dy, targetSet, moving) {
     var matrix = this.svg.ownerSVGElement.createSVGTransform().matrix;
     matrix = matrix.translate(dx, dy);
     var ctm = this.svg.getTransformToElement(this.svg.parentNode);
-    
+
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
+
+    this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
 };
-Shape.prototype.scaleTo = function (w, h) {
+Shape.prototype.scaleTo = function (nw, nh, group) {
     if (this.def.propertyMap["box"]) {
         var box = this.getProperty("box");
-        var fw = w / box.w;
-        var fh = h / box.h;
+        var fw = nw / box.w;
+        var fh = nh / box.h;
 
-        this.storeProperty("box", new Dimension(w, h));
+        this.storeProperty("box", new Dimension(nw, nh));
 
         //scale the handle
         for (name in this.def.propertyMap) {
@@ -244,16 +254,17 @@ Shape.prototype.scaleTo = function (w, h) {
             if (p.type != Handle || p.meta.noScale) continue;
 
             var h = this.getProperty(name);
-            debug("before: " + [h.x, h.y]);
+            //debug("before: " + [h.x, h.y]);
             h.x = h.x * fw;
             h.y = h.y * fh;
 
-            debug("after: " + [h.x, h.y]);
+            //debug("after: " + [h.x, h.y]);
 
             this.storeProperty(name, h);
         }
 
         this.applyBehaviorForProperty("box");
+        this.dockingManager.handleScaleTo(nw, nh, box.w, box.h, group);
     } else {
         error(this.def.displayName + " does not support scaling.");
     }
@@ -261,11 +272,11 @@ Shape.prototype.scaleTo = function (w, h) {
 Shape.prototype.rotateBy = function (da) {
     debug("rotateBy: " + da);
     var ctm = this.svg.getTransformToElement(this.svg.parentNode);
-    
+
     var x = 0, y = 0;
-    
+
     var box = this.getProperty("box");
-    
+
     if (box) {
         x = box.w / 2;
         y = box.h / 2;
@@ -276,19 +287,21 @@ Shape.prototype.rotateBy = function (da) {
     }
 
     center = Svg.pointInCTM(x, y, ctm);
-    
+
     ctm = ctm.translate(x, y);
     ctm = ctm.rotate(da);
     ctm = ctm.translate(0 - x, 0 - y);
-    
+
     Svg.ensureCTM(this.svg, ctm);
+
+    this.dockingManager.handleRotateBy(da);
 };
 Shape.prototype.getBounding = function (to) {
     var context = to ? to : this.canvas.drawingLayer;
     var ctm = this.svg.getTransformToElement(context);
-    
+
     var bbox = this.svg.getBBox();
-    
+
     var p = Svg.pointInCTM(bbox.x, bbox.y, ctm);
     var rect = {
         x: p.x,
@@ -296,11 +309,11 @@ Shape.prototype.getBounding = function (to) {
         width: 0,
         height: 0
     };
-    
+
     Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x + bbox.width, bbox.y, ctm));
     Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x + bbox.width, bbox.y + bbox.height, ctm));
     Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x, bbox.y + bbox.height, ctm));
-    
+
     return rect;
 };
 Shape.prototype.supportScaling = function () {
@@ -313,8 +326,6 @@ Shape.prototype.getBoundingRect = function () {
     var rect = {x: 0, y: 0, width: 0, height: 0};
     try {
         rect = this.svg.getBBox();
-    } catch (e) {}
-
     if (rect == null) {
         rect = {x: 0, y: 0, width: 0, height: 0};
     }
@@ -322,6 +333,7 @@ Shape.prototype.getBoundingRect = function () {
 
     var rect = Svg.getBoundRectInCTM(rect, ctm.inverse());
     rect = {x: rect.left, y: rect.top, width: rect.right - rect.left, height: rect.bottom - rect.top};
+    } catch (e) { }
 
     return this.canvas.getZoomedRect(rect);
 };
@@ -406,7 +418,7 @@ Shape.prototype.setPositionSnapshot = function () {
 */
     this._pSnapshot = {lastDX: 0, lastDY: 0};
 };
-Shape.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
+Shape.prototype.moveFromSnapshot = function (dx, dy, dontNormalize, targetSet) {
 /*
     var v = Svg.vectorInCTM({x: dx, y: dy},
                             this._pSnapshot.ctm,
@@ -425,8 +437,8 @@ Shape.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
     this._pSnapshot.translate.matrix.e = v.x;
     this._pSnapshot.translate.matrix.f = v.y;
 */
-    
-    this.moveBy(dx - this._pSnapshot.lastDX, dy - this._pSnapshot.lastDY);
+
+    this.moveBy(dx - this._pSnapshot.lastDX, dy - this._pSnapshot.lastDY, targetSet);
     this._pSnapshot.lastDX = dx;
     this._pSnapshot.lastDY = dy;
 };
@@ -444,6 +456,7 @@ Shape.prototype.normalizePositionToGrid = function () {
     this.clearPositionSnapshot();
 };
 Shape.prototype.deleteTarget = function () {
+    this.dockingManager.deleteTarget();
     this.svg.parentNode.removeChild(this.svg);
 };
 Shape.prototype.bringForward = function () {
@@ -459,6 +472,7 @@ Shape.prototype.bringForward = function () {
                 } else {
                     parentNode.appendChild(this.svg);
                 }
+                this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
@@ -471,6 +485,7 @@ Shape.prototype.bringToFront = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.appendChild(this.svg);
+                this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
@@ -483,6 +498,7 @@ Shape.prototype.sendBackward = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, previous);
+                this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
@@ -495,11 +511,11 @@ Shape.prototype.sendToBack = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, parentNode.firstChild);
+                this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
 };
-
 Shape.prototype.getTextEditingInfo = function (editingEvent) {
     var infos = [];
 
@@ -617,7 +633,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 align: align,
                                 type: RichText
                             };
-                            
+
                             break;
                         }
                     }
@@ -630,11 +646,11 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
             }
         }
     }
-    
+
     if (infos.length == 0) return null;
-    
+
     if (!editingEvent || !editingEvent.origTarget) return infos[0];
-    
+
     var min = 200000;
     var selectedInfo = null;
     for (var i = 0; i < infos.length; i ++) {
@@ -644,13 +660,13 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
         var dx = editingEvent.clientX - c.x;
         var dy = editingEvent.clientY - c.y;
         var d = Math.sqrt(dx * dx + dy * dy);
-        
+
         if (d < min) {
             selectedInfo = info;
             min = d;
         }
     }
-    
+
     return selectedInfo;
 };
 
@@ -666,6 +682,7 @@ Shape.prototype.lock = function () {
 };
 
 Shape.prototype.markAsMoving = function (moving) {
+    this.dockingManager.moving = moving;
     Svg.optimizeSpeed(this.svg, moving);
 };
 Shape.prototype.performAction = function (id) {
@@ -675,4 +692,35 @@ Shape.prototype.performAction = function (id) {
     shapeAction.implFunction.apply(this, []);
 }
 
+Shape.prototype.getAttachedSlots = function () {
+    var r = [];
+    var props = this.getPropertyGroups();
+    for (var t in props) {
+        for (var k in props[t].properties) {
+            var p = props[t].properties[k];
+            if (p.type == Attachment) {
+                var at = this.getProperty(p.name);
+                if (at && at.defId) {
+                    r.push(p);
+                }
+            }
+        }
+    }
+    return r;
+};
+Shape.prototype.canDetach = function () {
+    var props = this.getPropertyGroups();
+    for (var t in props) {
+        for (var k in props[t].properties) {
+            var p = props[t].properties[k];
+            if (p.type == Attachment) {
+                var at = this.getProperty(p.name);
+                if (at && at.defId) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+};
 

@@ -2,6 +2,12 @@ function Group(canvas, svg) {
     this.svg = svg;
     this.canvas = canvas;
 
+    if (!this.svg.getAttribute("id")) {
+        var uuid = Util.newUUID();
+        this.svg.setAttribute("id", uuid);
+    }
+    this.id = this.svg.getAttribute("id");
+
     this.targets = [];
     var thiz = this;
     Dom.workOn("./svg:g[@p:type]", this.svg, function (node) {
@@ -49,6 +55,7 @@ function Group(canvas, svg) {
 
     this.propertyGroup = propertyGroup;
 
+    this.dockingManager = new DockingManager(this);
 }
 Group.prototype.getName = function () {
     return "Group";
@@ -100,18 +107,20 @@ Group.prototype.getMetadata = function (name) {
 
 //new imple for geometry editing
 
-Group.prototype.moveBy = function (dx, dy) {
+Group.prototype.moveBy = function (dx, dy, targetSet, moving) {
     var matrix = this.svg.ownerSVGElement.createSVGTransform().matrix;
     matrix = matrix.translate(dx, dy);
     var ctm = this.svg.getTransformToElement(this.svg.parentNode);
 
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
+
+    this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
 };
-Group.prototype.scaleTo = function (w, h) {
+Group.prototype.scaleTo = function (nw, nh, group) {
     var geo = this.getGeometry();
-    var dw = w / geo.dim.w;
-    var dh = h / geo.dim.h;
+    var dw = nw / geo.dim.w;
+    var dh = nh / geo.dim.h;
     for (t in this.targets) {
         var target = this.targets[t];
 
@@ -123,11 +132,13 @@ Group.prototype.scaleTo = function (w, h) {
         var newW = targetGeo.dim.w * dw;
         var newH = targetGeo.dim.h * dh;
 
-        target.scaleTo(newW, newH);
+        target.scaleTo(newW, newH, true);
 
         bounding = target.getBounding(this.svg);
-        target.moveBy(newX - bounding.x, newY - bounding.y);
+        target.moveBy(newX - bounding.x, newY - bounding.y, true);
     }
+
+    this.dockingManager.handleScaleTo(nw, nh, geo.dim.w, geo.dim.h, group);
 };
 Group.prototype.rotateBy = function (da) {
     debug("rotateBy: " + da);
@@ -143,6 +154,7 @@ Group.prototype.rotateBy = function (da) {
     ctm = ctm.translate(0 - x, 0 - y);
 
     Svg.ensureCTM(this.svg, ctm);
+    this.dockingManager.handleRotateBy(da);
 };
 Group.prototype.getBounding = function (to) {
     var context = to ? to : this.canvas.drawingLayer;
@@ -247,7 +259,7 @@ Group.prototype.setPositionSnapshot = function () {
 */
     this._pSnapshot = {lastDX: 0, lastDY: 0};
 };
-Group.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
+Group.prototype.moveFromSnapshot = function (dx, dy, dontNormalize, targetSet) {
 /*
     var v = Svg.vectorInCTM({x: dx, y: dy},
                             this._pSnapshot.ctm,
@@ -267,7 +279,7 @@ Group.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
     this._pSnapshot.translate.matrix.f = v.y;
 */
 
-    this.moveBy(dx - this._pSnapshot.lastDX, dy - this._pSnapshot.lastDY);
+    this.moveBy(dx - this._pSnapshot.lastDX, dy - this._pSnapshot.lastDY, targetSet);
     this._pSnapshot.lastDX = dx;
     this._pSnapshot.lastDY = dy;
 };
@@ -281,6 +293,7 @@ Group.prototype.clearPositionSnapshot = function () {
 };
 
 Group.prototype.deleteTarget = function () {
+    this.dockingManager.deleteTarget();
     this.svg.parentNode.removeChild(this.svg);
 };
 Group.prototype.bringForward = function () {
@@ -295,6 +308,7 @@ Group.prototype.bringForward = function () {
             } else {
                 parentNode.appendChild(this.svg);
             }
+            this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
@@ -305,6 +319,7 @@ Group.prototype.bringToFront = function () {
             var parentNode = this.svg.parentNode;
             parentNode.removeChild(this.svg);
             parentNode.appendChild(this.svg);
+            this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
@@ -315,6 +330,7 @@ Group.prototype.sendBackward = function () {
             var parentNode = this.svg.parentNode;
             parentNode.removeChild(this.svg);
             parentNode.insertBefore(this.svg, previous);
+            this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
@@ -325,10 +341,10 @@ Group.prototype.sendToBack = function () {
             var parentNode = this.svg.parentNode;
             parentNode.removeChild(this.svg);
             parentNode.insertBefore(this.svg, parentNode.firstChild);
+            this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
-
 Group.prototype.getTextEditingInfo = function () {
     var info = null;
     return info;
@@ -345,6 +361,7 @@ Group.prototype.lock = function () {
 };
 
 Group.prototype.markAsMoving = function (moving) {
+    this.dockingManager.moving = moving;
     Svg.optimizeSpeed(this.svg, moving);
 };
 

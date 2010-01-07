@@ -1,7 +1,7 @@
 function GeometryEditor() {
     this.svgElement = null;
     this.canvas = null;
-    
+
     this.resetAccomulatedChanges();
 }
 
@@ -324,6 +324,9 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
         return;
     }
 
+    if (this.targetObject.dockingManager) {
+        this.targetObject.dockingManager.altKey = event.altKey;
+    }
 
     var uPoint1 = Svg.vectorInCTM(new Point(this.oX, this.oY), this.geo.ctm);
     var uPoint2 = Svg.vectorInCTM(new Point(event.clientX, event.clientY), this.geo.ctm);
@@ -414,7 +417,7 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
 
     newGeo.ctm = this.oGeo.ctm.translate(dx, dy);
     newGeo.dim = new Dimension(Math.round(this.oGeo.dim.w + dw), Math.round(this.oGeo.dim.h + dh));
-    
+
     var p = Svg.vectorInCTM(new Point(dx, dy), this.geo.ctm.inverse(), true);
     this.adx = p.x;
     this.ady = p.y;
@@ -539,7 +542,7 @@ GeometryEditor.prototype.rotate = function (from, to, event) {
     newGeo.loc = this.geo.loc ? this.geo.loc : null;
 
     this.setEditorGeometry(newGeo);
-    
+
     this.ada = a;
 };
 GeometryEditor.prototype.validateGeometry = function (geo, matrix, locking) {

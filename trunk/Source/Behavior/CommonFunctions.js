@@ -36,6 +36,12 @@ F.getRelativeLocation = function (handle, box) {
         return handle.y < y2 ? "left" : "bottom";
     }
 };
+F.rotate = function(a, o, rad) {
+    return {
+        x: (a.x - o.x) * Math.cos(rad) - (a.y - o.y) * Math.sin(rad) + o.x,
+        y: (a.x - o.x) * Math.sin(rad) - (a.y - o.y) * Math.cos(rad) + o.y
+    };
+};
 F.newDOMElement = function (spec) {
     var e = spec._uri ? this._target.ownerDocument.createElementNS(spec._uri, spec._name) : this._target.ownerDocument.createElement(spec._name);
 

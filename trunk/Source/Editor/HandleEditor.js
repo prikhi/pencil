@@ -112,6 +112,10 @@ HandleEditor.prototype.handleMouseMove = function (event) {
     event.preventDefault();
     if (!this.currentHandle) return;
 
+    if (this.targetObject.dockingManager) {
+        this.targetObject.dockingManager.altKey = event.altKey;
+    }
+
     var uPoint1 = Svg.vectorInCTM(new Point(this.oX, this.oY), this.geo.ctm);
     var uPoint2 = Svg.vectorInCTM(new Point(event.clientX, event.clientY), this.geo.ctm);
 

@@ -265,6 +265,38 @@ Pencil.behaviors.DomContent = function (xmlText) {
 
     if (domNode) this.appendChild(domNode);
 };
+Pencil.behaviors.AttachmentContent = function (attachment) {
+
+    Dom.empty(this);
+
+    if (!attachment.defId) return;
+
+    var canvas = Dom.findUpward(this, function (node) {
+        return node.namespaceURI == PencilNamespaces.xul && node.localName == "pcanvas";
+    });
+
+    var targetSVG = this.ownerDocument.getElementById(attachment.targetId);
+    if (targetSVG) {
+        var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
+
+        while (targetSVG.firstChild) {
+            var node = targetSVG.firstChild;
+            targetSVG.removeChild(node);
+            if (node.namespaceURI == PencilNamespaces.svg) {
+                g.appendChild(node);
+            }
+        }
+
+        var ctm = targetSVG.getTransformToElement(this);
+        Svg.ensureCTM(g, ctm);
+
+        targetSVG.parentNode.removeChild(targetSVG);
+        Dom.renewId(g);
+        g.setAttribute("id", attachment.targetId);
+
+        this.appendChild(g);
+    }
+};
 Pencil.behaviors.RichTextFit = function (width) {
     Svg.setWidth(this, width);
     Svg.setHeight(this, 900);

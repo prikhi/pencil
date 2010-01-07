@@ -11,6 +11,13 @@ pcanvas {
 }
 pcanvas svg {
 }
+pcanvas svg|g[p|type='Shape'] {
+	cursor: move;
+}
+pcanvas.Painter,
+pcanvas.Painter svg|g[p|type='Shape'] {
+    cursor: url(../UI/Icons/format-painter-16.png) 16 16, default !important;
+}
 pcanvas > box {
     padding: 0px 4px 4px 0px;
     background-color: #666;
@@ -38,7 +45,7 @@ pcanvas g[p|type='ControlLayer'] rect[p|type='RangeBound'] {
     fill: none;
     stroke: highlight;
     stroke-dasharray: 3,3;
-    
+
     visibility: hidden;
 }
 pcanvas g[p|type='ControlLayer'] rect[p|type='RangeBound'][p|on='true'] {

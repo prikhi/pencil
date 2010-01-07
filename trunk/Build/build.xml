@@ -48,9 +48,9 @@
         <copy todir="${OUTPUTS}/XPI/chrome/content">
             <fileset dir="${OUTPUTS}/Pencil" />
         </copy>
-        <mkdir dir="${OUTPUTS}/XPI/app/chrome/icons/default" />
-        <copy tofile="${OUTPUTS}/XPI/app/chrome/icons/default/pencilMainWindow.ico" file="${OUTPUTS}/Pencil/Icons/pencil.ico" />
-        <copy tofile="${OUTPUTS}/XPI/app/chrome/icons/default/pencilMainWindow.xpm" file="${OUTPUTS}/Pencil/Icons/pencil.xpm" />
+        <mkdir dir="${OUTPUTS}/XPI/chrome/icons/default" />
+        <copy tofile="${OUTPUTS}/XPI/chrome/icons/default/pencilMainWindow.ico" file="${OUTPUTS}/Pencil/Icons/pencil.ico" />
+        <copy tofile="${OUTPUTS}/XPI/chrome/icons/default/pencilMainWindow.xpm" file="${OUTPUTS}/Pencil/Icons/pencil.xpm" />
         <antcall target="replacer">
             <param name="filename" value="${OUTPUTS}/XPI/install.rdf" />
         </antcall>

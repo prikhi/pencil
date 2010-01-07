@@ -9,7 +9,7 @@ Pencil.buildRecentFileMenu = function (files) {
         }
     }
     menu.removeAttribute("disabled");
-    
+
     for (var i = 0; i < files.length; i ++) {
         var path = files[i];
         var menuItem = document.createElementNS(PencilNamespaces.xul, "menuitem");
@@ -29,14 +29,14 @@ Pencil.postBoot = function() {
             Pencil.controller.loadDocument(path);
         }
     }, false);
-    
+
     Pencil.buildRecentFileMenu();
-    
+
     if (window.arguments) {
         var cmdLine = window.arguments[0];
         if (cmdLine) {
             cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
-            
+
             var filePath = ""
             var i = 0;
             while (true) {
@@ -60,8 +60,8 @@ Pencil.postBoot = function() {
             }
         }
     }
-    
-    
+
+
     Pencil.updateGUIForHeavyElementVisibility();
 };
 Pencil.getBestFitSize = function () {
@@ -70,31 +70,31 @@ Pencil.getBestFitSize = function () {
 };
 Pencil.toggleShowHeavyElements = function () {
     var show = Config.get("view.showHeavyElements", true);
-    
+
     Config.set("view.showHeavyElements", !show);
-    
+
     Pencil.updateGUIForHeavyElementVisibility();
 };
 Pencil.updateGUIForHeavyElementVisibility = function () {
     var hideHeavyElementsMenuItem = document.getElementById("hideHeavyElementsMenuItem");
     var showHeavyElements = Config.get("view.showHeavyElements", true);
-    
+
     if (showHeavyElements) {
         hideHeavyElementsMenuItem.removeAttribute("checked");
     } else {
         hideHeavyElementsMenuItem.setAttribute("checked", true);
     }
-    
+
     document.documentElement.setAttributeNS(PencilNamespaces.p, "p:hide-heavy", showHeavyElements ? "false" : "true");
 };
 Pencil.insertPNGImage = function (url, w, h, x, y) {
     var imageData = new ImageData(w, h, url);
     var def = CollectionManager.shapeDefinition.locateDefinition(PNGImageXferHelper.SHAPE_DEF_ID);
     if (!def) return;
-    
+
     var canvas = Pencil.activeCanvas;
     if (!canvas) return;
-    
+
     canvas.insertShape(def, new Bound(x, y, null, null));
     if (canvas.currentController) {
         var dim = new Dimension(imageData.w, imageData.h);

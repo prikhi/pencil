@@ -154,6 +154,25 @@ Pencil.invalidateSharedEditor = function() {
         }
     }
 };
+Pencil.setPainterCommandChecked = function (v) {
+    var painterCommand = document.getElementById("toolbarFormatPainterCommand");
+    if (painterCommand) {
+        painterCommand.checked = v;
+        if (!v) {
+            var canvasList = Pencil.getCanvasList();
+            for (var i = 0; i < canvasList.length; i++) {
+                Dom.removeClass(canvasList[i], "Painter");
+            }
+        }
+    }
+};
+Pencil.getCanvasList = function () {
+    var r = [];
+    Dom.workOn("//xul:pcanvas", document.documentElement, function (node) {
+        r.push(node);
+    });
+    return r;
+};
 Pencil.setupCommands = function () {
     var canvas = Pencil.activeCanvas;
     var target = canvas ? canvas.currentController : null;
@@ -191,6 +210,8 @@ Pencil.setupCommands = function () {
     Pencil._enableCommand("bringForwardCommand", target && target.bringForward);
     Pencil._enableCommand("sendBackwardCommand", target && target.sendBackward);
     Pencil._enableCommand("sendToBackCommand", target && target.sendToBack);
+
+    Pencil._enableCommand("formatPainterCommand", canvas && canvas.beginFormatPainter && target && (target.constructor == Group || target.constructor == Shape));
 
     Pencil._enableCommand("copyCommand", canvas && canvas.doCopy && target);
     Pencil._enableCommand("cutCommand", canvas && canvas.doCopy && target);
