@@ -396,7 +396,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                 </foreignObject>
             </p:Content>
     </Shape>
-        
+
     <Shape id="Bitmap" displayName="Bitmap Image" icon="Icons/bitmap.png">
         <Properties>
             <PropertyGroup>

@@ -11,9 +11,6 @@ function Rasterizer(format) {
 
     iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
     iframe.setAttribute("src", "blank.html");
-    
-    debug(iframe);
-    debug(iframe.contentWindow);
 
     box.appendChild(iframe);
     container.appendChild(box);
@@ -24,23 +21,22 @@ function Rasterizer(format) {
     var thiz = this;
 
     this.nextHandler = null;
-    
+
     window.addEventListener("DOMFrameContentLoaded", function (event) {
         debug("DOMFrameContentLoaded, " + iframe.contentWindow);
-        
         if (!iframe.contentWindow._initialized) {
             debug("Initializing content window");
             iframe.contentWindow._isRasterizeFrame = true;
             iframe.contentWindow.addEventListener("MozAfterPaint", function (event) {
-                debug("MozAfterPaint: " + [event, event.originalTarget]);
-                
+                debug("MozAfterPaint: " + [event, event.originalTarget, iframe.contentWindow.document]);
+
                 if (!event.originalTarget._isRasterizeFrame) return;
                 if (!thiz.nextHandler) return;
                 
                 var f = thiz.nextHandler;
                 thiz.nextHandler = null;
                 f();
-                
+
             }, false);
             iframe.contentDocument.documentElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
             iframe.contentWindow._initialized = true;

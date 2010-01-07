@@ -64,7 +64,24 @@ Dom.registerEvent = function (target, event, handler, capture) {
 Dom.disableEvent = function (node, event) {
     Dom.registerEvent(node, event, function(ev) {Dom.cancelEvent(ev);}, true );
 };
-
+Dom.cancelEvent = function (e) {
+    var event = Dom.getEvent(e);
+    if (event.preventDefault) event.preventDefault();
+    else event.returnValue = false;
+};
+Dom.addClass = function (node, className) {
+    if ((" " + node.className + " ").indexOf(" " + className + " ") >= 0) return;
+    node.className += " " + className;
+};
+Dom.removeClass = function (node, className) {
+    if (node.className == className) {
+        node.className = "";
+        return;
+    }
+    var re = new RegExp("(^" + className + " )|( " + className + " )|( " + className + "$)", "g");
+    var reBlank = /(^[ ]+)|([ ]+$)/g;
+    node.className = node.className.replace(re, " ").replace(reBlank, "");
+};
 Dom.findUpward = function (node, evaluator) {
     try {
         if (node == null) {
@@ -213,7 +230,7 @@ Dom.renewId = function (shape) {
     });
 };
 Dom.updateIdRef = function (shape, oldId, newId) {
-    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask", shape, function (node) {
+    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask | .//*/@childRef | .//@p:parentRef", shape, function (node) {
         var value = node.value;
         if (value == "#" + oldId) {
             value = "#" + newId;
@@ -230,7 +247,7 @@ Dom.updateIdRef = function (shape, oldId, newId) {
     });
 };
 Dom.resolveIdRef = function (shape, seed) {
-    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask", shape, function (node) {
+    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask | .//*/@childRef | .//@p:parentRef", shape, function (node) {
         var value = node.value;
         if (value.substring(0, 1) == "#") {
             value += seed;
@@ -293,7 +310,7 @@ Dom.newDOMElement = function (spec, doc) {
 
     for (name in spec) {
         if (name.match(/^_/)) continue;
-        
+
         if (name.match(/^([^:]+):(.*)$/)) {
             var prefix = RegExp.$1;
             var localName = RegExp.$2;

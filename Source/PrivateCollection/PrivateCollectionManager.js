@@ -64,7 +64,7 @@ PrivateCollectionManager.addShapeCollection = function (collection, dontUpdate) 
     }
     if (!dontUpdate) {
         PrivateCollectionManager.savePrivateCollections();
-        PrivateCollectionManager.reloadCollectionPanes();
+        PrivateCollectionManager.reloadCollectionPane();
     }
 };
 PrivateCollectionManager.getPrivateCollectionFile = function () {
@@ -92,10 +92,10 @@ PrivateCollectionManager.addShapeToCollection = function (collection, shapeDef, 
     PrivateCollectionManager.privateShapeDef.shapeDefMap[shapeDef.id] = shapeDef;
     if (!dontUpdate) {
         PrivateCollectionManager.savePrivateCollections();
-        PrivateCollectionManager.reloadCollectionPanes();
+        PrivateCollectionManager.reloadCollectionPane();
     }
 };
-PrivateCollectionManager.reloadCollectionPanes = function () {
+PrivateCollectionManager.reloadCollectionPane = function () {
     Pencil.privateCollectionPane.reloadCollections();
 };
 PrivateCollectionManager.deleteShape = function (collection, shapeDef) {
@@ -105,7 +105,7 @@ PrivateCollectionManager.deleteShape = function (collection, shapeDef) {
         if (PrivateCollectionManager.privateShapeDef.collections[i].id == collection.id) {
             PrivateCollectionManager.privateShapeDef.collections[i].deleteShape(shapeDef);
             PrivateCollectionManager.savePrivateCollections();
-            PrivateCollectionManager.reloadCollectionPanes();
+            PrivateCollectionManager.reloadCollectionPane();
             return;
         }
     }
@@ -117,7 +117,7 @@ PrivateCollectionManager.deleteCollection = function (collection) {
         if (PrivateCollectionManager.privateShapeDef.collections[i].id == collection.id) {
             PrivateCollectionManager.privateShapeDef.collections.splice(i, 1);
             PrivateCollectionManager.savePrivateCollections();
-            PrivateCollectionManager.reloadCollectionPanes();
+            PrivateCollectionManager.reloadCollectionPane();
             return;
         }
     }
@@ -128,7 +128,7 @@ PrivateCollectionManager.deleteAllCollection = function () {
 
     PrivateCollectionManager.privateShapeDef.collections = [];
     PrivateCollectionManager.savePrivateCollections();
-    PrivateCollectionManager.reloadCollectionPanes();
+    PrivateCollectionManager.reloadCollectionPane();
 };
 PrivateCollectionManager.exportCollection = function (collection) {
     try {

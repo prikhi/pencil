@@ -315,6 +315,7 @@ Controller.prototype.loadDocument = function (uri) {
         file = fp.file;
     } else {
         try {
+            if (uri.indexOf("-") == 0) return;
             //assume uri is a nsILocalFile
             file = uri.QueryInterface(Components.interfaces.nsILocalFile);
         } catch (e1) {
@@ -324,8 +325,12 @@ Controller.prototype.loadDocument = function (uri) {
                 file.initWithPath("" + uri);
 
             } catch (e){
-                //assume uri is a real uri
-                file = fileHandler.getFileFromURLSpec(uri).QueryInterface(Components.interfaces.nsILocalFile);
+                try {
+                    //assume uri is a real uri
+                    file = fileHandler.getFileFromURLSpec(uri).QueryInterface(Components.interfaces.nsILocalFile);
+                } catch(e) {
+                    Console.dumpError(e);
+                }
             }
         }
         if (!file.exists()) {
@@ -738,11 +743,11 @@ Controller.prototype.exportDocument = function () {
         lastSelection: this.lastSelection ? this.lastSelection : null
     };
     window.openDialog("ExportWizard.xul", "", "chrome,centerscreen,modal", data);
-    
+
     if (!data.selection) return;
-    
+
     this.lastSelection = data.selection;
-    
+
     try {
         var exporter = Pencil.getDocumentExporterById(data.selection.exporterId);
 
@@ -751,19 +756,19 @@ Controller.prototype.exportDocument = function () {
         var destFile = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
         destFile.initWithPath(data.selection.targetPath);
-        
+
         if (exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_DIRECTORY) {
             if (!destFile.exists()) {
                 destFile.create(destFile.DIRECTORY_TYPE, 0777);
             }
         }
-        
+
         var pagesDir = exporter.getRasterizedPageDestination(destFile);
 
         if (!pagesDir.exists()) {
             pagesDir.create(pagesDir.DIRECTORY_TYPE, 0777);
         }
-        
+
         //populating friendly-id. WARN: side-effect!
         var usedFriendlyIds = [];
         for (var i = 0; i < this.doc.pages.length; i ++) {
@@ -771,10 +776,10 @@ Controller.prototype.exportDocument = function () {
             var fid = p.generateFriendlyId(usedFriendlyIds);
             p.properties.fid = fid;
         }
-    
+
 
         var pages = [];
-        
+
         if (data.selection.pageMode == "only") {
             for (var i = 0; i < this.doc.pages.length; i ++) {
                 var p = this.doc.pages[i];
@@ -785,7 +790,7 @@ Controller.prototype.exportDocument = function () {
         } else {
             pages = this.doc.pages;
         }
-        
+
         var thiz = this;
         var starter = function (listener) {
             var pageExtraInfos = {};
@@ -804,7 +809,7 @@ Controller.prototype.exportDocument = function () {
                     //signal progress
                     var task = "Exporting page " + page.properties.name + "...";
                     listener.onProgressUpdated(task, pageIndex + 1, pages.length);
-                    
+
                     var friendlyId = page.properties.fid;
 
                     var file = pagesDir.clone();
@@ -861,29 +866,29 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
     //properties
     var propertyContainerNode = dom.createElementNS(PencilNamespaces.p, "Properties");
     dom.documentElement.appendChild(propertyContainerNode);
-    
+
     var docProperties = {};
 
     for (name in this.doc.properties) {
         docProperties[name] = this.doc.properties[name];
     }
-    
+
     //enriching with additional properties
     var d = new Date();
     docProperties["exportTime"] = d;
     docProperties["exportTimeShort"] = "" + d.getFullYear() + (d.getMonth() + 1) + d.getDate();
-    
+
     if (this.isBoundToFile()) {
         docProperties["path"] = this.filePath;
-        
+
         var epFile = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
-                             
+
         epFile.initWithPath(this.filePath);
-        
+
         docProperties["fileName"] = epFile.leafName;
     }
-    
+
     for (name in docProperties) {
         var propertyNode = dom.createElementNS(PencilNamespaces.p, "Property");
         propertyContainerNode.appendChild(propertyNode);
@@ -899,20 +904,20 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
     for (i in pages) {
         var page = pages[i];
         var pageNode = page.toNode(dom, "no content");
-        
+
         //ugly walkarround for Gecko d-o-e bug (https://bugzilla.mozilla.org/show_bug.cgi?id=98168)
         //we have to reparse the provided notes as XHTML and append it directly to the dom
         if (page.properties.note) {
             var xhtml = "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + page.properties.note + "</div>";
             var node = Dom.parseToNode(xhtml, dom);
-            
+
             this._populateLinkTargetsInNote(node);
-            
+
             var noteNode = dom.createElementNS(PencilNamespaces.p, "Note");
             noteNode.appendChild(node);
             pageNode.appendChild(noteNode);
         }
-        
+
         pageContainerNode.appendChild(pageNode);
 
         if (!pageExtraInfos[page.properties.id]) continue;
@@ -934,7 +939,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             linkNode.setAttribute("target", linking.pageId);
             linkNode.setAttribute("targetName", targetPage.properties.name);
             linkNode.setAttribute("targetFid", targetPage.properties.fid);
-            
+
             linkNode.setAttribute("x", linking.geo.x);
             linkNode.setAttribute("y", linking.geo.y);
             linkNode.setAttribute("w", linking.geo.w);
@@ -948,7 +953,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
     Dom.serializeNodeToFile(dom, xmlFile);
 
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
-    
+
     try {
         exporter.export(this.doc, exportSelection, destFile, xmlFile, function () {
             xmlFile.remove(true);
@@ -967,9 +972,9 @@ Controller.prototype._populateLinkTargetsInNote = function (htmlNode) {
         if (!id) {
             id = link.getAttribute("href").substring(4);
         }
-        
+
         var page = thiz.doc.getPageById(id);
-        
+
         if (!page) return;
         link.setAttribute("page-name", page.properties.name);
         link.setAttribute("page-fid", page.properties.fid);
@@ -981,7 +986,7 @@ Controller.prototype._populateLinkTargetsInNote = function (htmlNode) {
             fid = link.getAttribute("href").substring(5);
         }
         var page = thiz.doc.getPageByFid(fid);
-        
+
         if (!page) return;
         link.setAttribute("page-name", page.properties.name);
         link.setAttribute("page-id", page.properties.id);
@@ -993,7 +998,7 @@ Controller.prototype._populateLinkTargetsInNote = function (htmlNode) {
             name = link.getAttribute("href").substring(6);
         }
         var page = thiz.doc.getFirstPageByName(name);
-        
+
         if (!page) return;
         link.setAttribute("page-fid", page.properties.fid);
         link.setAttribute("page-id", page.properties.id);

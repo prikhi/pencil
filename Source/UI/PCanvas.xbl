@@ -13,6 +13,8 @@
                 this.xferHelpers = [];
                 this.dragObservers = [];
 
+                this.painterPropertyMap = this.getPainterPropertyMap();
+
                 //building the content as: box >> svg
                 var thiz = this;
 
@@ -516,6 +518,7 @@
                     }
 
                     this.selectShape(shape);
+                    DockingManager.enableDocking(this.currentController);
                 ]]>
                 </body>
             </method>
@@ -633,12 +636,18 @@
                 ]]>
                 </body>
             </method>
-
             <method name="handleMouseDown">
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
                     tick("begin");
+
+                    var canvasList = Pencil.getCanvasList();
+                    for (var i = 0; i < canvasList.length; i++) {
+                        if (canvasList[i] != this) {
+                            canvasList[i].selectNone();
+                        }
+                    };
 
                     this._button = event.button;
 
@@ -668,6 +677,8 @@
                         this.currentRange = {w: this.lastMousePos.x, y: this.lastMousePos.y, width: 0, height: 0};
 
                         this._sayTargetChanged();
+                        this.endFormatPainter();
+
                         return;
                     }
 
@@ -725,8 +736,6 @@
                             if (top != this.lastTop || event.ctrlKey || event.button != 0) {
                                 this.reClick = false;
                                 this._attachEditors(controller);
-
-
                             } else {
                                 if (event.detail != 2) this.reClick = true;
                             }
@@ -823,6 +832,32 @@
                         this.currentRange = null;
                         this._sayTargetChanged();
                     }
+
+                    try {
+                        DockingManager.enableDocking(this.currentController);
+
+                        var canvas = Dom.findUpward(event.originalTarget, function (node) {
+                            return node.namespaceURI == PencilNamespaces.xul && node.localName == "pcanvas";
+                        });
+                        if (canvas && canvas == this && this.currentController) {
+                            if (this.isFormatPainterAvailable() && Pencil._painterSourceTarget.svg != this.currentController.svg) {
+                                var currentTargetProperties = this.currentController.getProperties();
+                                for (var i = 0; i < this.painterPropertyMap.length; i++) {
+                                    var name = this.painterPropertyMap[i];
+                                    var p1 = Pencil._painterSourceProperties[name];
+                                    var p2 = currentTargetProperties[name];
+                                    if (p1 && p2) {
+                                        debug("copy: " + name);
+                                        this.currentController.setProperty(name, Pencil._painterSourceProperties[name]);
+                                    }
+                                }
+                                return;
+                            }
+                            this.endFormatPainter();
+                        }
+                    } catch (e) {
+                        Console.dumpError(e);
+                    }
                 ]]>
                 </body>
             </method>
@@ -876,6 +911,9 @@
                         //this.oY = newY;
 
                         this.hasMoved = true;
+                        if (this.currentController.dockingManager) {
+                            this.currentController.dockingManager.altKey = event.altKey;
+                        }
                         this.currentController.moveFromSnapshot(dx, dy);
                         tick("after move");
                         return;
@@ -958,7 +996,8 @@
 
 
                         this.run(function () {
-                            this.currentController.moveBy(dx, dy);
+                            //this.currentController.moveBy(dx, dy);
+                            this.currentController.moveBy(dx, dy, false, true);
                         }, this);
 
                         this.invalidateEditors();
@@ -1006,6 +1045,7 @@
                 <body>
                 <![CDATA[
                     try {
+                        this._lastEvent = event;
                         Dom.workOn("./xul:menuseparator", this.popup, function (sep) {
                             sep.style.display = "";
                         });
@@ -1065,6 +1105,9 @@
                             }
                         }
 
+                        //this.buildAttachMenuItem();
+                        //this.buildDetachMenuItem();
+
                         var childs = this.popup.childNodes;
                         var shouldHideNextSeparator = true;
                         var foundVisibleItem = false;
@@ -1103,6 +1146,153 @@
                         Console.dumpError(e);
                     }
                 ]]>
+                </body>
+            </method>
+            <method name="buildAttachMenuItem">
+                <body>
+                <![CDATA[
+                    if (this.attachToMenu) {
+                        this.popup.removeChild(this.attachToMenu);
+                        this.attachToMenu = null;
+                    }
+                    if (!this.currentController) return;
+                    if (this.currentController.supportAttach && this.currentController.supportAttach()) {
+                        var thiz = this;
+                        var container = this.currentController.getAttachContainer();
+                        this.attachToMenu = document.createElementNS(PencilNamespaces.xul, "menu");
+                        this.attachToMenu.setAttribute("label", Util.getString("canvas.merge"));
+                        var attachSlots = this.currentController.getAttachSlots();
+                        if (attachSlots.length == 1) {
+                            this.attachToMenu = document.createElementNS(PencilNamespaces.xul, "menuitem");
+                        }
+                        var menu = this.popup.insertBefore(this.attachToMenu, document.getAnonymousElementByAttribute(this, "aid", "addToMyCollections"));
+                        if (attachSlots.length > 1) {
+                            menu.appendChild(document.createElementNS(PencilNamespaces.xul, "menupopup"));
+                        }
+                        for (var i = 0; i < attachSlots.length; i++) {
+                            var displayName = attachSlots[i].displayName;
+                            var tool = container.getProperty(attachSlots[i].name);
+                            if (tool && tool != "") {
+                                displayName += " (" + tool.targetName + ")";
+                            }
+                            if (attachSlots.length == 1) {
+                                this.attachToMenu.setAttribute("label", Util.getString("canvas.merge") + " (" + displayName + ")");
+                                this.attachToMenu._container = container;
+                                this.attachToMenu._attachSlot = attachSlots[0];
+                            } else {
+                                var item = document.createElementNS(PencilNamespaces.xul, "menuitem");
+                                menu.firstChild.appendChild(item);
+                                item.setAttribute("label", displayName);
+                                item._container = container;
+                                item._attachSlot = attachSlots[i];
+                            }
+                        }
+                        this.attachToMenu.addEventListener("command", function (event) {
+                            try {
+                                var containerNode = Dom.findUpward(event.originalTarget, function (node) { return node._container; });
+                                var attachSlotNode = Dom.findUpward(event.originalTarget, function (node) { return node._attachSlot; });
+                                if (containerNode && containerNode._container && attachSlotNode && attachSlotNode._attachSlot && containerNode._container._target) {
+                                    var target = containerNode._container._target;
+                                    var defId = target.def.id;
+                                    var name = target.getName ? target.getName() : "";
+                                    var metaNode = Dom.getSingle("./p:metadata", target.svg);
+                                    var ctm = target.svg.getTransformToElement(thiz.drawingLayer);
+                                    var cctm = containerNode._container.svg.getTransformToElement(thiz.drawingLayer);
+                                    //var uuid = Util.newUUID();
+                                    //target.svg.setAttribute("id", uuid);
+                                    var uuid = target.svg.getAttribute("id");
+                                    containerNode._container.setProperty(attachSlotNode._attachSlot.name, new Attachment(defId, uuid, name, metaNode, ctm, cctm));
+                                    thiz.selectShape(containerNode._container.svg);
+                                }
+                            } catch (e) {
+                                Console.dumpError(e);
+                            }
+                        }, false);
+                    }
+                 ]]>
+                </body>
+            </method>
+            <method name="buildDetachMenuItem">
+                <body>
+                <![CDATA[
+                    if (this.detachFromMenu) {
+                        this.popup.removeChild(this.detachFromMenu);
+                        this.detachFromMenu = null;
+                    }
+                    if (!this.currentController) return;
+                    if (this.currentController.canDetach && this.currentController.canDetach()) {
+                        var thiz = this;
+                        var container = this.currentController;
+                        this.detachFromMenu = document.createElementNS(PencilNamespaces.xul, "menu");
+                        this.detachFromMenu.setAttribute("label", Util.getString("canvas.split"));
+                        var attachedSlots = this.currentController.getAttachedSlots();
+                        if (attachedSlots.length == 1) {
+                            this.detachFromMenu = document.createElementNS(PencilNamespaces.xul, "menuitem");
+                        }
+                        var menu = this.popup.insertBefore(this.detachFromMenu, document.getAnonymousElementByAttribute(this, "aid", "addToMyCollections"));
+                        if (attachedSlots.length > 1) {
+                            menu.appendChild(document.createElementNS(PencilNamespaces.xul, "menupopup"));
+                        }
+                        for (var i = 0; i < attachedSlots.length; i++) {
+                            var displayName = attachedSlots[i].displayName;
+                            var tool = container.getProperty(attachedSlots[i].name);
+                            if (tool && tool != "") {
+                                displayName += " (" + tool.targetName + ")";
+                            }
+                            if (attachedSlots.length == 1) {
+                                this.detachFromMenu.setAttribute("label", Util.getString("canvas.split") + " " + displayName);
+                                this.detachFromMenu._container = container;
+                                this.detachFromMenu._detachSlot = attachedSlots[0];
+                            } else {
+                                var item = document.createElementNS(PencilNamespaces.xul, "menuitem");
+                                menu.firstChild.appendChild(item);
+                                item.setAttribute("label", displayName);
+                                item._container = container;
+                                item._detachSlot = attachedSlots[i];
+                            }
+                        }
+                        this.detachFromMenu.addEventListener("command", function (event) {
+                            try {
+                                var containerNode = Dom.findUpward(event.originalTarget, function (node) { return node._container; });
+                                var detachSlotNode = Dom.findUpward(event.originalTarget, function (node) { return node._detachSlot; });
+                                if (containerNode && containerNode._container && detachSlotNode && detachSlotNode._detachSlot) {
+                                    var attachment = containerNode._container.getProperty(detachSlotNode._detachSlot.name);
+                                    if (attachment && attachment.defId) {
+                                        var shapeDef = CollectionManager.shapeDefinition.locateDefinition(attachment.defId);
+                                        if (shapeDef) {
+                                            thiz.insertShapeImpl_(shapeDef, containerNode._container.getBounding());
+                                            var controller = thiz.currentController;
+                                            if (controller) {
+                                                Svg.ensureCTM(controller.svg, attachment.ctm);
+                                                var metaNode = Dom.parseToNode(attachment.metaData);
+                                                if (metaNode) {
+                                                    Dom.workOn("./p:property", metaNode, function (node) {
+                                                        var name = node.getAttribute("name");
+                                                        var value = Dom.getText(node);
+                                                        controller.setProperty(name, value);
+                                                    });
+                                                }
+                                                //var g = document.getElementById(attachment.targetId);
+                                                var octm = attachment.cctm;
+                                                var cctm = containerNode._container.svg.getTransformToElement(thiz.drawingLayer);
+                                                //var matrix = containerNode._container.svg.createSVGTransform().matrix;;
+                                                //matrix = matrix.multiply(octm);
+                                                //var ctm = g.getTransformToElement(thiz.drawingLayer);
+                                                //Svg.ensureCTM(controller.svg, ctm);
+                                                controller.moveBy(cctm.e - octm.e, cctm.f - octm.f);
+                                            }
+                                        }
+                                        containerNode._container.setProperty(detachSlotNode._detachSlot.name, new Attachment(null, null, null));
+                                        thiz.selectShape(containerNode._container.svg);
+                                        thiz.invalidateEditors();
+                                    }
+                                }
+                            } catch (e) {
+                                Console.dumpError(e);
+                            }
+                        }, false);
+                    }
+                 ]]>
                 </body>
             </method>
             <method name="insertEditorContextMenuItem">
@@ -1185,6 +1375,13 @@
                     if (!this.currentController) return;
 
                     var transferableData = this.currentController.createTransferableData();
+
+                    transferableData.dataNode.removeAttribute("p:parentRef");
+                    var metaNode = Dom.getSingle(".//p:metadata", transferableData.dataNode);
+                    var childTargetsNode = Dom.getSingle("./p:childTargets", metaNode);
+                    if (childTargetsNode) {
+                        childTargetsNode.parentNode.removeChild(childTargetsNode);
+                    }
 
                     //serialize to string
                     var textualData = new XMLSerializer().serializeToString(transferableData.dataNode);
@@ -1308,7 +1505,7 @@
                     this.drawingLayer.appendChild(g);
 
                     for (t in targets) {
-                        targets[t].moveBy(0 - rect.x, 0 - rect.y);
+                        targets[t].moveBy(0 - rect.x, 0 - rect.y, true);
                     }
 
                     g.setAttribute("transform", "translate(" + [rect.x, rect.y] + ")");
@@ -1688,6 +1885,19 @@
 
                     shape = this.ownerDocument.importNode(shape, true);
 
+                    //generate the ids
+                    Dom.workOn(".//*[@p:name]", shape, function (node) {
+                        var name = node.getAttributeNS(PencilNamespaces.p, "name");
+                        var oldId = node.getAttribute("id");
+                        if (oldId) return;
+
+                        var uuid = Util.newUUID();
+                        node.setAttribute("id", uuid);
+                        node.id = uuid;
+
+                        Dom.updateIdRef(shape, name, uuid);
+                    });
+
                     Dom.renewId(shape);
 
                     this.run(function() {
@@ -1697,9 +1907,60 @@
                             var bbox = this.currentController.getBounding();
                             this.currentController.moveBy(bound.x - bbox.x - Math.round(bbox.width/2), bound.y - bbox.y - Math.round(bbox.height/2), true);
                         }
-                        //this.ensureControllerInView();
+                        this.ensureControllerInView();
+                        DockingManager.enableDocking(this.currentController);
                     }, this);
                     this.invalidateEditors();
+                ]]>
+                </body>
+            </method>
+            <method name="beginFormatPainter">
+                <body>
+                <![CDATA[
+                    if (this.isFormatPainterAvailable()) {
+                        return this.endFormatPainter();
+                    }
+                    if (!this.currentController) return;
+                    try {
+                        var target = this.currentController;
+                        if (target && (target.constructor == Shape || target.constructor == Group)) {
+                            Pencil._painterSourceTarget = target;
+                            Pencil._painterSourceProperties = target.getProperties();
+                            var canvasList = Pencil.getCanvasList();
+                            for (var i = 0; i < canvasList.length; i++) {
+                                Dom.addClass(canvasList[i], "Painter");
+                            }
+                        }
+                    } catch (e) {
+                        Console.dumpError(e);
+                    }
+                ]]>
+                </body>
+            </method>
+            <method name="endFormatPainter">
+                <body>
+                <![CDATA[
+                    Pencil._painterSourceTarget = null;
+                    Pencil._painterSourceProperties = null;
+                    Pencil.setPainterCommandChecked(false);
+                    return true;
+                ]]>
+                </body>
+            </method>
+            <method name="isFormatPainterAvailable">
+                <body>
+                <![CDATA[
+                    return Pencil._painterSourceTarget && Pencil._painterSourceProperties;
+                ]]>
+                </body>
+            </method>
+            <method name="getPainterPropertyMap">
+                <body>
+                <![CDATA[
+                    var ppm = Config.get("painterPropertyMap", "fillColor,foreColor,textColor,strokeColor,borderColor," +
+                              "strokeStyle,textAlign,textFont,shadowStyle,shadowColor," +
+                              "withBlur,withShadow,textPadding");
+                    return ppm.split(",");
                 ]]>
                 </body>
             </method>
