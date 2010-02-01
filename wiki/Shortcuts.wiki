@@ -93,5 +93,6 @@
 || Moving  1 px            || =>           ↑ ↓ → ←           ||
 || Moving 20 px            || => Shift   + ↑ ↓ → ←           ||
 || Moving  5 px            || => control + ↑ ↓ → ←           ||
-
-(1) shortcuts available in my own version of Pencil (not yet available)
+=Hide heavy elements
+||hide heavy element|| => control al + H                           ||
+||Export document|| => control al + E                           ||
