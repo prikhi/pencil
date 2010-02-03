@@ -64,3 +64,10 @@ r116
  * Improvement in provided collections
 r123
  * Adding Native GUI Collection
+r140
+ * refresh of the about dialog
+r147
+ * FormatPainter as in your preferred text editor
+ * DockingManager: Try it out by having two shapes, a larger one below a smaller one which
+is completely inside the larger one. Then try moving the larger one and
+see the effect. 
