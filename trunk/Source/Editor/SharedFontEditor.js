@@ -48,16 +48,20 @@ SharedFontEditor.prototype._applyValue = function () {
     var thiz = this;
     Pencil.activeCanvas.run(function() {
         this.setProperty(SharedFontEditor.PROPERTY_NAME, thiz.font);
-        debug("applied: " + thiz.font);
     }, this.target)
 };
 SharedFontEditor.prototype.attach = function (target) {
     this.target = target;
-    this.font = target.getProperty(SharedFontEditor.PROPERTY_NAME, "any");
+    if (target.getTextEditingInfo && target.getTextEditingInfo()) {
+        this.font = target.getTextEditingInfo().font;
+    } else {
+        this.font = target.getProperty(SharedFontEditor.PROPERTY_NAME, "any");
+    }
     if (!this.font)  {
         this.detach();
         return;
     }
+
     this.fontList.disabled = false;
     this.pixelFontSize.disabled = false;
     this.boldButton.disabled = false;
