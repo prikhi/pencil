@@ -363,26 +363,26 @@ Pencil.behaviors.MaintainGlobalDef = function (id, contentFragement) {
     var pcanvas = Dom.findUpward(this, function (node) {
         return (node.localName == "pcanvas") && node.drawingLayer;
     });
-    
+
     if (!pcanvas) {
         error("Failed to maintain def, pcanvas is not found.");
         return;
     }
-    
+
     debug(pcanvas);
-    
+
     var drawingLayer = pcanvas.drawingLayer;
     var defs = Dom.getSingle("./svg:defs[@id='" + id + "']", drawingLayer);
-    
+
     if (defs) return;   //TODO: re-validate?
-    
+
     debug("defs not found, create now");
-    
+
     defs = this.ownerDocument.createElementNS(PencilNamespaces.svg, "defs");
     var contentFragement = this.ownerDocument == contentFragement.ownerDocument ? contentFragement : this.ownerDocument.importNode(contentFragement, true);
     defs.appendChild(contentFragement);
     defs.setAttribute("id", id);
-    
+
     var firstChild = drawingLayer.firstChild;
     if (firstChild) {
         drawingLayer.insertBefore(defs, firstChild);

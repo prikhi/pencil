@@ -7,32 +7,32 @@
 ShapeDefCollectionParser.prototype.injectEntityDefs = function (content, file) {
 	//getting the current local
 	var locale = Config.getLocale();
-	
+
 	var dtdFile = file.parent.clone();
 	dtdFile.append(locale + ".dtd");
-	
+
 	if (!dtdFile.exists()) {
 		dtdFile = file.parent.clone();
 		dtdFile.append("default.dtd");
-		
+
 		if (!dtdFile.exists()) {
 		    dtdFile = file.parent.clone();
 		    dtdFile.append("en-US.dtd");
-		
+
 		    if (!dtdFile.exists()) {
 			    return content;
 		    }
 		}
 	}
-	
+
 	var dtdContent = FileIO.read(dtdFile, ShapeDefCollectionParser.CHARSET);
-	
+
 	var doctypeContent = "<!DOCTYPE Shapes [\n" + dtdContent + "\n]>\n";
-	
+
 	content = content.replace(/(<Shapes)/, function (zero, one) {
 			return doctypeContent + one;
 		});
-	
+
 	return content;
 };
 ShapeDefCollectionParser.CHARSET = "UTF-8";
@@ -57,11 +57,11 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         var fileContents = FileIO.read(file, ShapeDefCollectionParser.CHARSET);
         var domParser = new DOMParser();
 
-        
+
         fileContents = this.injectEntityDefs(fileContents, file)
         debug("---- AFTER INJECTION ----");
         debug(fileContents.substring(0, 200));
-        
+
         var dom = domParser.parseFromString(fileContents, "text/xml");
 
         return this.parse(dom, uri);
@@ -129,7 +129,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
                 throw "Invalid property type: " + type;
             }
             var literal = Dom.getText(propNode);
-            
+
             property.initialValue = property.type.fromString(Dom.getText(propNode));
 
             try {
@@ -168,7 +168,9 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     shapeDef.system = shapeDefNode.getAttribute("system") == "true";
     shapeDef.collection = collection;
     var iconPath = shapeDefNode.getAttribute("icon");
-    iconPath = collection.url.substring(0, collection.url.lastIndexOf("/") + 1) + iconPath;
+    if (iconPath.indexOf("data:image") != 0) {
+        iconPath = collection.url.substring(0, collection.url.lastIndexOf("/") + 1) + iconPath;
+    }
     shapeDef.iconPath = iconPath;
 
     var parser = this;
@@ -285,22 +287,24 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 /* public Shortcut */ ShapeDefCollectionParser.prototype.parseShortcut = function (shortcutNode, collection) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
     var shortcut = new Shortcut();
-    
+
     shortcut.displayName = shortcutNode.getAttribute("displayName");
     shortcut.system = shortcutNode.getAttribute("system") == "true";
     shortcut.collection = collection;
     var iconPath = shortcutNode.getAttribute("icon");
-    iconPath = collection.url.substring(0, collection.url.lastIndexOf("/") + 1) + iconPath;
+    if (iconPath.indexOf("data:image") != 0) {
+        iconPath = collection.url.substring(0, collection.url.lastIndexOf("/") + 1) + iconPath;
+    }
     shortcut.iconPath = iconPath;
 
     var shapeId = collection.id + ":" + shortcutNode.getAttribute("to");
     var shapeDef = collection.getShapeDefById(shapeId);
-    
+
     if (!shapeDef) throw "Bad shortcut. Target shape def is not found: " + shapeId;
-    
+
     shortcut.shape = shapeDef;
     shortcut.id = "system:ref:" + shortcut.displayName.replace(/[^a-z0-9]+/gi, "_").toLowerCase() + shortcut.shape.id;
-    
+
     //parse property values
     Dom.workOn(".//p:PropertyValue", shortcutNode, function (propValueNode) {
         var name = propValueNode.getAttribute("name");

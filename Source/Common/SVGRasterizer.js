@@ -9,7 +9,7 @@ function Rasterizer(format) {
     var box = document.createElement("box");
     box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
 
-    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
+    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; visibility: hidden;");
     iframe.setAttribute("src", "blank.html");
 
     box.appendChild(iframe);
@@ -23,7 +23,7 @@ function Rasterizer(format) {
     this.nextHandler = null;
 
     window.addEventListener("DOMFrameContentLoaded", function (event) {
-        debug("DOMFrameContentLoaded, " + iframe.contentWindow);
+        debug("Rasterizer: DOMFrameContentLoaded, " + iframe.contentWindow);
         if (!iframe.contentWindow._initialized) {
             debug("Initializing content window");
             iframe.contentWindow._isRasterizeFrame = true;
@@ -32,7 +32,7 @@ function Rasterizer(format) {
 
                 if (!event.originalTarget._isRasterizeFrame) return;
                 if (!thiz.nextHandler) return;
-                
+
                 var f = thiz.nextHandler;
                 thiz.nextHandler = null;
                 f();
@@ -158,17 +158,21 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
     this.win.location.href = url;
 };
 Rasterizer.prototype.rasterizeDOMToUrl = function (svgNode, callback) {
-    this._width = svgNode.width.baseVal.value;
-    this._height = svgNode.height.baseVal.value;
+    try {
+        this._width = svgNode.width.baseVal.value;
+        this._height = svgNode.height.baseVal.value;
 
-    var thiz = this;
-    this._saveNodeToTempFileAndLoad(svgNode, function () {
-        try {
-            thiz.rasterizeWindowToUrl(callback);
-        } catch (e) {
-            Console.dumpError(e);
-        }
-    });
+        var thiz = this;
+        this._saveNodeToTempFileAndLoad(svgNode, function () {
+            try {
+                thiz.rasterizeWindowToUrl(callback);
+            } catch (e) {
+                Console.dumpError(e);
+            }
+        });
+    } catch(e) {
+        Console.dumpError(e);
+    }
 };
 Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, preprocessor) {
 
