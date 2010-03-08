@@ -71,14 +71,19 @@ StencilGenerator.onload = function (event) {
                 if (index < name.length - 1) {
                     name = name.substring(index + 1);
                     var ext = Util.getFileExtension(name);
-                    if (ext != null && ".jpg|.png|.gif|.bmp|.svg".indexOf(ext) != -1 && !StencilGenerator.imageExisted(uris[i].spec)) {
+                    if (ext != null && ".jpg|.png|.gif|.bmp|.svg".indexOf(ext.toLowerCase()) != -1 && !StencilGenerator.imageExisted(uris[i].spec)) {
                         var item = Dom.newDOMElement({
                             _name: "listitem",
                             _uri: PencilNamespaces.xul,
                             label: name
                         });
+                        var id = name.lastIndexOf(".");
+                        if (id != -1) {
+                            name = name.substring(0, id);
+                        }
+                        item._label = name;
                         item._uri = uris[i];
-                        item._ext = ext;
+                        item._ext = ext.toLowerCase();
                         StencilGenerator.imageList.appendChild(item);
                     }
                 }
@@ -175,7 +180,7 @@ StencilGenerator.fillStencilData = function (data) {
 StencilGenerator.initStencils = function () {
     try {
         document.getElementById("stencilInformation").style.display = "none";
-        StencilGenerator.preloadStencils(function (stencils) {
+        StencilGenerator.preloadStencils(function (stencils, listener) {
             if (stencils && stencils.length > 0) {
                 debug("preloadStencils completed: " + stencils.length);
 
@@ -212,13 +217,17 @@ StencilGenerator.initStencils = function () {
                             }
                         } catch(e) { error(e); }
 
+                        if (scale > 1) {
+                            scale = 1;
+                        }
+
                         m.setAttribute("width", item.box.width * scale  + 4);
                         m.setAttribute("height", item.box.height * scale + 4);
                         //m.setAttribute("transform", "scale(" + scale + ") translate(" + (0 - item.box.x) + " " + (0 - item.box.y) + ")");
 
                         //g.setAttribute("width", item.box.width * scale);
                         //g.setAttribute("height", item.box.height * scale);
-                        g.setAttribute("transform", "translate(2, 2) scale(" + scale + ")");
+                        g.setAttribute("transform", "translate(2, 2)" + (scale != 1) ? " scale(" + scale + ")" : "");
 
                         g.appendChild(Dom.parseToNode(item.data));
                         g1.appendChild(g);
@@ -252,6 +261,8 @@ StencilGenerator.initStencils = function () {
 
                 document.getElementById("stencilSelectedCountLabel").value = stencils.length + " stencils selected.";
             }
+
+            listener.onTaskDone();
             StencilGenerator.stencilName.focus();
             document.getElementById("stencilInformation").style.display = "";
         });
@@ -270,94 +281,88 @@ StencilGenerator.preloadStencils = function (callback) {
         for (var i = 0; i < imageCount; i++) {
             stencils.push(StencilGenerator.imageList.getItemAtIndex(i));
         }
-        StencilGenerator.loadStencil(result, stencils, 0, callback);
+        var starter = function (listener) {
+            StencilGenerator.loadStencil(result, stencils, 0, callback, listener);
+        }
+        window.openDialog("ProgressDialog.xul", "pencilStencilGeneratorDialog" + Util.getInstanceToken(), "centerscreen,model", "Getting data...", starter);
     } else {
         callback(null);
+    }
+};
+StencilGenerator.createData = function (node, defNode, metaNode) {
+    var box = node.getBBox();
+    var transform = node.getAttribute("transform");
+    if (transform && transform.indexOf("translate") != -1) {
+        return "<g xmlns=\"http://www.w3.org/2000/svg\">" + Dom.serializeNode(defNode) + Dom.serializeNode(metaNode) + Dom.serializeNode(node) + "</g>";
+    } else {
+        return "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"translate(" + (0 - box.x) + "," + (0 - box.y) + ")\">" + Dom.serializeNode(defNode) + Dom.serializeNode(metaNode) + Dom.serializeNode(node) + "</g>";
     }
 };
 StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
     try {
         var stencils = [];
         var id = 0;
+
+        var defNode = Dom.getSingle("./svg:defs", svgDocument.documentElement);
+        var metaNode = Dom.getSingle("./svg:metadata", svgDocument.documentElement);
+
         Dom.workOn("//*[@inkscape:groupmode='layer']/*", svgDocument.documentElement, function (path) {
             var box = path.getBBox();
             stencils.push({
                 id: "svg_" + index + "_" + id,
-                label: item.label + " " + index + "_"  + id,
+                label: item._label + " " + index + "_"  + id,
                 type: "SVG",
                 box: box,
-                data: "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"translate(" + (0 - box.x) + "," + (0 - box.y) + ")\">" + Dom.serializeNode(path) + "</g>",
+                data: StencilGenerator.createData(path, defNode, metaNode),
                 img: item
             });
             id++;
         });
+
+        if (id == 0 && svgDocument.documentElement) {
+            var path = svgDocument.documentElement;
+            if (path.getBBox) {
+                var box = path.getBBox();
+                stencils.push({
+                    id: "svg_" + index + "_" + id,
+                    label: item._label,
+                    type: "SVG",
+                    box: box,
+                    data: "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"translate(" + (0 - box.x) + "," + (0 - box.y) + ")\">" + Dom.serializeNode(path) + "</g>",
+                    img: item
+                });
+            }
+        }
         return stencils;
     } catch (e) {
         Console.dumpError(e);
     }
 };
-StencilGenerator.loadStencil = function (result, stencils, index, callback) {
+StencilGenerator.loadStencil = function (result, stencils, index, callback, listener) {
     try {
-        if (!StencilGenerator.svgFrame) {
-            StencilGenerator.svgFrame = document.createElementNS(PencilNamespaces.html, "iframe");
-
-            var container = document.body;
-            if (!container) container = document.documentElement;
-            var box = document.createElement("box");
-            box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
-
-            StencilGenerator.svgFrame.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; xvisibility: hidden;");
-            StencilGenerator.svgFrame.setAttribute("src", "blank.html");
-
-            box.appendChild(StencilGenerator.svgFrame);
-            container.appendChild(box);
-
-            box.style.MozBoxPack = "start";
-            box.style.MozBoxAlign = "start";
-
-            window.addEventListener("DOMFrameContentLoaded", function () {
-                //debug("DOMFrameContentLoaded " + [index, StencilGenerator.svgFrame.contentWindow.document]);
-                if (!StencilGenerator.svgFrame.contentWindow.initialized) {
-                    StencilGenerator.svgFrame.contentWindow.addEventListener("MozAfterPaint", function (event) {
-                        var _index = StencilGenerator.svgFrame._index;
-                        var _stencils = StencilGenerator.svgFrame._stencils;
-                        var _result = StencilGenerator.svgFrame._result;
-                        _result = _result.concat(StencilGenerator.createSVGStencils(_stencils[_index], StencilGenerator.svgFrame.contentWindow.document, _index));
-                        if (_index + 1 >= _stencils.length) {
-                            return callback(_result);
-                        } else {
-                            StencilGenerator.loadStencil(_result, _stencils, _index + 1, callback);
-                        }
-                    }, false);
-                    StencilGenerator.svgFrame.contentDocument.documentElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
-                    StencilGenerator.svgFrame.contentWindow.initialized = true;
-                }
-            }, false);
-
-            StencilGenerator.svgFrame.contentWindow.document.body.setAttribute("style", "padding: 0px; margin: 0px;");
-        }
-
         if (index < stencils.length) {
-            StencilGenerator.svgFrame._stencils = stencils;
-            StencilGenerator.svgFrame._result = result;
-            StencilGenerator.svgFrame._index = index;
-
+            listener.onProgressUpdated("Getting data... ", index, stencils.length);
             if (".png|.jpg|.gif|.bmp".indexOf(stencils[index]._ext) != -1) {
                 var img = new Image();
+
+                img._stencils = stencils;
+                img._result = result;
+                img._index = index;
+
                 img.onerror = function () {
-                    var _index = StencilGenerator.svgFrame._index;
-                    var _stencils = StencilGenerator.svgFrame._stencils;
-                    var _result = StencilGenerator.svgFrame._result;
+                    var _index = img._index;
+                    var _stencils = img._stencils;
+                    var _result = img._result;
                     if (_index + 1 >= _stencils.length) {
-                        return callback(_result);
+                        return callback(_result, listener);
                     } else {
-                        StencilGenerator.loadStencil(_result, _stencils, _index + 1, callback);
+                        StencilGenerator.loadStencil(_result, _stencils, _index + 1, callback, listener);
                     }
                 };
                 img.onload = function () {
-                    var _index = StencilGenerator.svgFrame._index;
-                    var _stencils = StencilGenerator.svgFrame._stencils;
-                    var _result = StencilGenerator.svgFrame._result;
+                    var _index = img._index;
+                    var _stencils = img._stencils;
+                    var _result = img._result;
                     var box = {
                         width: img.naturalWidth,
                         height: img.naturalHeight
@@ -368,7 +373,7 @@ StencilGenerator.loadStencil = function (result, stencils, index, callback) {
                         var data = Base64.encode(fileData, true);
                         var st = {
                             id: "img_" + _index,
-                            label: _stencils[_index].label,
+                            label: _stencils[_index]._label,
                             type: _stencils[_index]._ext.toUpperCase(),
                             img: _stencils[_index],
                             iconData: "data:image/png;base64," + data,
@@ -377,9 +382,9 @@ StencilGenerator.loadStencil = function (result, stencils, index, callback) {
                         };
                         _result = _result.concat(st);
                         if (_index + 1 >= _stencils.length) {
-                            return callback(_result);
+                            return callback(_result, listener);
                         } else {
-                            StencilGenerator.loadStencil(_result, _stencils, _index + 1, callback);
+                            StencilGenerator.loadStencil(_result, _stencils, _index + 1, callback, listener);
                         }
                     } catch(e) {
                         Console.dumpError(e);
@@ -387,6 +392,49 @@ StencilGenerator.loadStencil = function (result, stencils, index, callback) {
                 };
                 img.src = stencils[index]._uri.spec;
             } else {
+                if (!StencilGenerator.svgFrame) {
+                    StencilGenerator.svgFrame = document.createElementNS(PencilNamespaces.html, "iframe");
+
+                    var container = document.body;
+                    if (!container) container = document.documentElement;
+                    var box = document.createElement("box");
+                    box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
+
+                    StencilGenerator.svgFrame.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; visibility: hidden;");
+                    StencilGenerator.svgFrame.setAttribute("src", "blank.html");
+
+                    box.appendChild(StencilGenerator.svgFrame);
+                    container.appendChild(box);
+
+                    box.style.MozBoxPack = "start";
+                    box.style.MozBoxAlign = "start";
+
+                    window.addEventListener("DOMFrameContentLoaded", function () {
+                        debug("DOMFrameContentLoaded " + [index, StencilGenerator.svgFrame.contentWindow.document]);
+                        if (!StencilGenerator.svgFrame.contentWindow.initialized) {
+                            StencilGenerator.svgFrame.contentWindow.addEventListener("MozAfterPaint", function (event) {
+                                if (!StencilGenerator.svgFrame._stencils) return;
+                                var _stencils = StencilGenerator.svgFrame._stencils;
+                                var _index = StencilGenerator.svgFrame._index;
+                                var _result = StencilGenerator.svgFrame._result;
+                                _result = _result.concat(StencilGenerator.createSVGStencils(_stencils[_index], StencilGenerator.svgFrame.contentWindow.document, _index));
+                                if (_index + 1 >= _stencils.length) {
+                                    return callback(_result, listener);
+                                } else {
+                                    StencilGenerator.loadStencil(_result, _stencils, _index + 1, callback, listener);
+                                }
+                            }, false);
+                            StencilGenerator.svgFrame.contentDocument.documentElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
+                            StencilGenerator.svgFrame.contentWindow.initialized = true;
+                        }
+                    }, false);
+
+                    StencilGenerator.svgFrame.contentWindow.document.body.setAttribute("style", "padding: 0px; margin: 0px;");
+                }
+
+                StencilGenerator.svgFrame._stencils = stencils;
+                StencilGenerator.svgFrame._result = result;
+                StencilGenerator.svgFrame._index = index;
                 StencilGenerator.svgFrame.contentWindow.location.href = stencils[index]._uri.spec;
             }
         }
@@ -420,7 +468,6 @@ StencilGenerator.getImageFileData = function (url) {
     return file_data;
 };
 StencilGenerator.onFinish = function () {
-    debug("onFinish");
     StencilGenerator.createCollection();
     return false;
 };
@@ -476,7 +523,7 @@ StencilGenerator.createCollection = function () {
                     }
                 };
 
-                var index = 0;
+                var index = -1;
                 var run = function () {
                     try {
                         index++;
@@ -524,9 +571,7 @@ StencilGenerator.createCollection = function () {
                         debug("stencilCreated: " + index);
 
                         if (StencilGenerator.stencils[index].box.width > 0 && StencilGenerator.stencils[index].box.height > 0) {
-                            var shape = StencilGenerator.buildShape(StencilGenerator.stencils[index].id, StencilGenerator.stencils[index].label,
-                                        StencilGenerator.stencils[index].iconData, StencilGenerator.stencils[index].box.width, StencilGenerator.stencils[index].box.height,
-                                        StencilGenerator.stencils[index].data, StencilGenerator.stencils[index].box, StencilGenerator.stencils[index].type);
+                            var shape = StencilGenerator.buildShape(StencilGenerator.stencils[index]);
                             s += shape;
                             listener.onProgressUpdated("Creating stencils... ", index + iconGenerated, totalStep);
                         }
@@ -584,14 +629,14 @@ StencilGenerator.pickFile = function(defaultName) {
     if (fp.show() == nsIFilePicker.returnCancel) return false;
     return fp.file;
 };
-StencilGenerator.buildShape = function(id, name, icon, w, h, data, box, type) {
-    if (type != "SVG") {
+StencilGenerator.buildShape = function(shapeDef) {
+    if (shapeDef.type != "SVG") {
         return (
-            "<Shape id=\"" + id + "\" displayName=\"" + name + "\" icon=\"" + icon + "\">\n" +
+            "<Shape id=\"" + shapeDef.id + "\" displayName=\"" + shapeDef.label + "\" icon=\"" + shapeDef.iconData + "\">\n" +
             "        <Properties>\n" +
             "            <PropertyGroup>\n" +
-            "                <Property name=\"box\" type=\"Dimension\" p:lockRatio=\"true\">" + w + "," + h + "</Property>\n" +
-            "                <Property name=\"imageData\" type=\"ImageData\"><![CDATA[" + w + "," + h + ",data:image/png;base64," + data + "]]></Property>\n" +
+            "                <Property name=\"box\" type=\"Dimension\" p:lockRatio=\"true\">" + shapeDef.box.width + "," + shapeDef.box.height + "</Property>\n" +
+            "                <Property name=\"imageData\" type=\"ImageData\"><![CDATA[" + shapeDef.box.width + "," + shapeDef.box.height + ",data:image/png;base64," + shapeDef.data + "]]></Property>\n" +
             "                <Property name=\"withBlur\" type=\"Bool\" displayName=\"With Shadow\">false</Property>\n" +
             "            </PropertyGroup>\n" +
             "            <PropertyGroup name=\"Background\">\n" +
@@ -690,7 +735,7 @@ StencilGenerator.buildShape = function(id, name, icon, w, h, data, box, type) {
             "                <g id=\"container\">\n" +
             "                    <rect id=\"bgRect\" style=\"fill: none; stroke: none;\"/>\n" +
             "                    <g id=\"imageContainer\">\n" +
-            "                        <image id=\"image\" x=\"0\" y=\"0\" rx=\"" + w + "\" ry=\"" + h + "\"/>\n" +
+            "                        <image id=\"image\" x=\"0\" y=\"0\" rx=\"" + shapeDef.box.width + "\" ry=\"" + shapeDef.box.height + "\"/>\n" +
             "                    </g>\n" +
             "                </g>\n" +
             "            </defs>\n" +
@@ -700,14 +745,14 @@ StencilGenerator.buildShape = function(id, name, icon, w, h, data, box, type) {
             "    </Shape>");
     } else {
         return (
-            "<Shape id=\"" + id + "\" displayName=\"" + name + "\" icon=\"" + icon + "\" xmlns=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:p=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns:cc=\"http://web.resource.org/cc/\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n" +
+            "<Shape id=\"" + shapeDef.id + "\" displayName=\"" + shapeDef.label + "\" icon=\"" + shapeDef.iconData + "\" xmlns=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:p=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns:cc=\"http://web.resource.org/cc/\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n" +
             "        <Properties>\r\n" +
             "            <PropertyGroup>\r\n" +
-            "                <Property name=\"box\" type=\"Dimension\">" + w + "," + h + "</Property>\r\n" +
-            "                <Property name=\"originalDim\" type=\"Dimension\">" + w + "," + h + "</Property>\r\n" +
+            "                <Property name=\"box\" type=\"Dimension\">" + shapeDef.box.width + "," + shapeDef.box.height + "</Property>\r\n" +
+            "                <Property name=\"originalDim\" type=\"Dimension\">" + shapeDef.box.width + "," + shapeDef.box.height + "</Property>\r\n" +
             "            </PropertyGroup>\r\n" +
             "            <PropertyGroup>\r\n" +
-            "                <Property name=\"svgXML\" displayName=\"SVG XML\" type=\"PlainText\"><![CDATA[" + data + "]]></Property>\r\n" +
+            "                <Property name=\"svgXML\" displayName=\"SVG XML\" type=\"PlainText\"><![CDATA[" + shapeDef.data + "]]></Property>\r\n" +
             "            </PropertyGroup>\r\n" +
             "        </Properties>\r\n" +
             "        <Behaviors>\r\n" +
@@ -750,414 +795,10 @@ StencilGenerator.buildShape = function(id, name, icon, w, h, data, box, type) {
             "            </Action>\r\n" +
             "        </Actions>\r\n" +
             "        <p:Content xmlns=\"http://www.w3.org/2000/svg\">\r\n" +
-            "            <rect id=\"bgRect\" style=\"fill: #000000; fill-opacity: 0; stroke: none;\" x=\"0\" y=\"0\" rx=\"" + w + "\" ry=\"" + h + "\"/>" +
+            "            <rect id=\"bgRect\" style=\"fill: #000000; fill-opacity: 0; stroke: none;\" x=\"0\" y=\"0\" rx=\"" + shapeDef.box.width + "\" ry=\"" + shapeDef.box.height + "\"/>" +
             "            <g id=\"container\"></g>\r\n" +
             "        </p:Content>\r\n" +
             "    </Shape>");
     }
 };
-/*
-StencilGenerator = {
-
-    onLoad: function() {
-        progressStatus = document.getElementById("progress");
-        var dialog = document.documentElement;
-        buttonGenerate = dialog.getButton("accept");
-        buttonGenerate.setAttribute('disabled', true);
-    },
-
-
-    onSelectFolder : function() {
-        var folder = StencilGenerator._pickFolder();
-        if (folder) {
-            var text = document.getElementById("folder");
-            if (text) {
-                text.value = folder.path;
-                document.getElementById("name").value = unescape(StencilGenerator._getName(text.value));
-                if (document.getElementById("desc").value == "") {
-                    document.getElementById("desc").value = "Created by Stencil Generator";
-                }
-                if (document.getElementById("author").value == "") {
-                    document.getElementById("author").value = "Stencil Generator";
-                }
-                if (document.getElementById("url").value == "") {
-                    document.getElementById("url").value = "http://evolus.vn/Pencil";
-                }
-
-                document.getElementById("infoPane").style.display = "";
-
-                debug("getting images...");
-                labelInfo.value = "Searching images...";
-
-                StencilGenerator.images = StencilGenerator._getImages(folder.path);
-                StencilGenerator.imgSize = [];
-
-                debug("getting images data...");
-                labelInfo.value = "Getting images data...";
-                StencilGenerator.prepareGenerateStencilDone = false;
-                StencilGenerator._prepareGenerateStencil(0);
-            }
-        }
-    },
-
-    generateStencil: function() {
-        if (StencilGenerator.prepareGenerateStencilDone) {
-            StencilGenerator._completeGenerateStencil();
-        }
-    },
-
-    _completeGenerateStencil: function() {
-        var images = StencilGenerator.images;
-        if (images.length == 0) {
-            return;
-        }
-
-        var name = document.getElementById("name").value;
-        var desc = document.getElementById("desc").value;
-        var author = document.getElementById("author").value;
-        var url = document.getElementById("url").value;
-        var f = StencilGenerator._pickFile(name + ".zip");
-        if (f) {
-            buttonGenerate.setAttribute('disabled', true);
-            var starter = function (listener) {
-                var s = "<Shapes xmlns=\"http://www.evolus.vn/Namespace/Pencil\" \n" +
-                        "		xmlns:p=\"http://www.evolus.vn/Namespace/Pencil\" \n" +
-                        "		xmlns:svg=\"http://www.w3.org/2000/svg\" \n" +
-                        "		xmlns:xlink=\"http://www.w3.org/1999/xlink\" \n" +
-                        "		id=\""+StencilGenerator._generateId(name)+".Icons\" \n" +
-                        "		displayName=\""+name+"\" \n" +
-                        "		description=\""+desc+"\" \n" +
-                        "		author=\""+author+"\" \n" +
-                        "		url=\""+url+"\">\n\n";
-
-                debug("creating shapes...");
-                var index = -1;
-
-                var run = function () {
-                    try {
-                        index++;
-                        if (index >= images.length) {
-                            s += "</Shapes>";
-
-                            try {
-                                var stream = StencilGenerator._toInputStream(s);
-                                var zipWriter = Components.Constructor("@mozilla.org/zipwriter;1", "nsIZipWriter");
-                                var zipW = new zipWriter();
-
-                                zipW.open(f, 0x04 | 0x08 | 0x20 /*PR_RDWR | PR_CREATE_FILE | PR_TRUNCATE*);
-                                zipW.comment = "Stencil collection";
-                                zipW.addEntryDirectory("Icons", new Date(), false);
-
-                                zipW.addEntryStream("Definition.xml", new Date(), Components.interfaces.nsIZipWriter.COMPRESSION_DEFAULT, stream, false);
-
-                                if (stream) {
-                                    stream.close();
-                                }
-
-                                for (var i = 0; i < images.length; i++) {
-                                    var theFile = FileIO.open(images[i].path);
-                                    var n = StencilGenerator._getName(images[i].path);
-                                    try {
-                                        zipW.addEntryFile("Icons/" + n, Components.interfaces.nsIZipWriter.COMPRESSION_DEFAULT, theFile, false);
-                                        listener.onProgressUpdated("", i + 1, images.length * 2);
-                                    } catch (eex) { ; }
-                                }
-
-                                zipW.close();
-                            } catch (e5) {
-                                Console.dumpError(e5, "stdout");
-                            }
-
-                            Util.info("Stencil collection created.");
-                            debug("stencil collection created.");
-
-                            buttonGenerate.setAttribute('disabled', false);
-
-                            listener.onTaskDone();
-                            return;
-                        }
-
-                        //debug("current index: " + index);
-
-                        if (StencilGenerator.imgSize[index].w > 0 && StencilGenerator.imgSize[index].h > 0) {
-                            var fileData = StencilGenerator._readBinaryFile(images[index]);
-                            var base64 = Base64.encode(fileData, true);
-                            var shapeName = StencilGenerator._getName(images[index].path), sn = shapeName;
-                            var id = shapeName.indexOf(".");
-                            if (id != -1) {
-                                sn = shapeName.substring(0, id);
-                            }
-
-                            var shape = StencilGenerator._buildShape(StencilGenerator._generateId(sn), sn, shapeName, StencilGenerator.imgSize[index].w, StencilGenerator.imgSize[index].h, base64);
-
-                            s += shape;
-                            listener.onProgressUpdated("Generating stencils... ", index + 1, images.length);
-                        }
-
-                        window.setTimeout(run, 10);
-                    } catch (e2) {
-                        Console.dumpError(e2, "stdout");
-                    }
-                };
-                run();
-            }
-
-            //take a shower, doit together!!!
-            window.openDialog("ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "centerscreen,model", "Generating stencils...", starter);
-        }
-    },
-
-    _readBinaryFile: function(file) {
-        var ios = Components.classes["@mozilla.org/network/io-service;1"].
-                                getService(Components.interfaces.nsIIOService);
-
-        var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
-                                createInstance(Components.interfaces.nsIFileInputStream);
-        istream.init(file, -1, -1, false);
-
-        var bstream = Components.classes["@mozilla.org/binaryinputstream;1"].
-                                createInstance(Components.interfaces.nsIBinaryInputStream);
-        bstream.setInputStream(istream);
-
-        var bytes = bstream.readBytes(bstream.available());
-
-        istream.close();
-        bstream.close();
-
-        return bytes;
-    },
-
-    _toInputStream: function(s, b) {
-        var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-                                .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-        if (!b) {
-            converter.charset = "UTF-8";
-        }
-        var stream = converter.convertToInputStream(s);
-        return stream;
-    },
-
-    _prepareGenerateStencil: function(i) {
-        try {
-            if (i >= StencilGenerator.images.length) {
-                StencilGenerator.prepareGenerateStencilDone = true;
-                debug(StencilGenerator.images.length + " images found.");
-                if (StencilGenerator.images.length > 0) {
-                    labelInfo.value = StencilGenerator.images.length + " image" + (StencilGenerator.images.length > 1 ? "s" : "") + " found.";
-                    buttonGenerate.setAttribute('disabled', false);
-                } else {
-                    labelInfo.value = "No images found.";
-                    buttonGenerate.setAttribute('disabled', true);
-                }
-                return true;
-            }
-
-            labelInfo.value = "Getting images data: " + (Math.round((i + 1) * 100 / StencilGenerator.images.length)) + "%";
-            debug("getting size: " + (i + 1) + "/" + StencilGenerator.images.length + " -> " + StencilGenerator.images[i].path);
-
-            var fileData = StencilGenerator._readBinaryFile(StencilGenerator.images[i]);
-            var base64 = Base64.encode(fileData, true);
-            var img = new Image();
-
-            img.onerror = function() {
-                StencilGenerator.imgSize.push({'w': 0, 'h': 0});
-                setTimeout("StencilGenerator._prepareGenerateStencil(" + (i + 1) + ")", 10);
-            }
-            img.onload = function() {
-                StencilGenerator.imgSize.push({'w': img.width, 'h': img.height});
-                setTimeout("StencilGenerator._prepareGenerateStencil(" + (i + 1) + ")", 10);
-            }
-            img.src = "data:image/png;base64," + base64;
-        } catch (e) {
-            error(e);
-        }
-    },
-
-    _generateId: function(s) {
-        if (s) {
-            return s.replace(new RegExp('[^0-9a-zA-Z\\-]+', 'g'), "_");
-        }
-        return "";
-    },
-
-    _getImages : function(path) {
-        try {
-            var images = new Array();
-            var aFolder = FileIO.open(path);
-            var fileEntries = aFolder.directoryEntries;
-            while (fileEntries.hasMoreElements()) {
-                var next = fileEntries.getNext().QueryInterface(Components.interfaces.nsILocalFile);
-                if (next.isFile() && /(\.png|\.jpg|\.bmp)$/.test(next.path)) {
-                    images.push(next);
-                } else if (chkSubfolder.checked && next.isDirectory()) {
-                    var sub = StencilGenerator._getImages(next.path);
-                    for (var i = 0; i < sub.length; i++) {
-                        images.push(sub[i]);
-                    }
-                }
-            }
-            return images;
-        } catch (e) {
-            error(e);
-            return new Array();
-        }
-    },
-
-    _getName: function(path) {
-        path = StencilGenerator._makeUri(FileIO.open(path));
-        if (path && path.charAt(path.length - 1) == "/") {
-            path = path.substring(0, path.length - 1);
-        }
-        if (path.match(/\/(.[^\/]+)$/)) {
-            return RegExp.$1;
-        }
-    },
-
-    _makeUri: function(file) {
-        var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-                                            .getService(Components.interfaces.nsIIOService);
-        var ff = ioService.newFileURI(file);
-        return ff.prePath + ff.path;
-    },
-
-    _pickFolder: function() {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        var nsIFilePicker = Components.interfaces.nsIFilePicker;
-        var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-        fp.init(window, "Select a Folder", nsIFilePicker.modeGetFolder);
-        fp.appendFilters(nsIFilePicker.filterAll);
-        if (fp.show() == nsIFilePicker.returnCancel) return false;
-        return fp.file;
-    },
-
-    _pickFile: function(defaultName) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        var nsIFilePicker = Components.interfaces.nsIFilePicker;
-        var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-        fp.init(window, "Select a File", nsIFilePicker.modeSave);
-        fp.appendFilters(nsIFilePicker.filterAll);
-        fp.defaultExtension = "zip";
-        if (defaultName) {
-            fp.defaultString = defaultName;
-        }
-        if (fp.show() == nsIFilePicker.returnCancel) return false;
-        return fp.file;
-    },
-
-    _buildShape: function(id, name, icon, w, h, data) {
-        return (
-            "<Shape id=\""+id+"\" displayName=\""+name+"\" icon=\"Icons/"+icon+"\">\n" +
-            "        <Properties>\n" +
-            "            <PropertyGroup>\n" +
-            "                <Property name=\"box\" type=\"Dimension\" p:lockRatio=\"true\">"+w+","+h+"</Property>\n" +
-            "                <Property name=\"imageData\" type=\"ImageData\"><![CDATA["+w+","+h+",data:image/png;base64,"+data+"]]></Property>\n" +
-            "                <Property name=\"withBlur\" type=\"Bool\" displayName=\"With Shadow\">false</Property>\n" +
-            "            </PropertyGroup>\n" +
-            "            <PropertyGroup name=\"Background\">\n" +
-            "                <Property name=\"fillColor\" displayName=\"Background Color\" type=\"Color\">#ffffff00</Property>\n" +
-            "                <Property name=\"strokeColor\" displayName=\"Border Color\" type=\"Color\">#000000ff</Property>\n" +
-            "                <Property name=\"strokeStyle\" displayName=\"Border Style\" type=\"StrokeStyle\">0|</Property>\n" +
-            "            </PropertyGroup>\n" +
-            "        </Properties>\n" +
-            "        <Behaviors>\n" +
-            "            <For ref=\"imageContainer\">\n" +
-            "                <Scale>\n" +
-            "                    <Arg>$box.w / $imageData.w</Arg>\n" +
-            "                    <Arg>$box.h / $imageData.h</Arg>\n" +
-            "                </Scale>\n" +
-            "            </For>\n" +
-            "            <For ref=\"bgRect\">\n" +
-            "                <Box>$box.narrowed(0 - $strokeStyle.w)</Box>\n" +
-            "                <StrokeColor>$strokeColor</StrokeColor>\n" +
-            "                <StrokeStyle>$strokeStyle</StrokeStyle>\n" +
-            "                <Fill>$fillColor</Fill>\n" +
-            "                <Transform>\"translate(\" + [0 - $strokeStyle.w / 2, 0 - $strokeStyle.w / 2] + \")\"</Transform>\n" +
-            "            </For>\n" +
-            "            <For ref=\"image\">\n" +
-            "                <Image>$imageData</Image>\n" +
-            "            </For>\n" +
-            "            <For ref=\"bgCopy\">\n" +
-            "                <ApplyFilter>$withBlur</ApplyFilter>\n" +
-            "                <Visibility>$withBlur</Visibility>\n" +
-            "            </For>\n" +
-            "        </Behaviors>\n" +
-            "        <Actions>\n" +
-            "            <Action id=\"toOriginalSize\" displayName=\"To Original Size\">\n" +
-            "                <Impl>\n" +
-            "                    <![CDATA[\n" +
-            "                        var data = this.getProperty(\"imageData\");\n" +
-            "                        this.setProperty(\"box\", new Dimension(data.w, data.h));\n" +
-            "                    ]]>\n" +
-            "                    </Impl>\n" +
-            "            </Action>\n" +
-            "            <Action id=\"fixRatioW\" displayName=\"Correct Ratio by Width\">\n" +
-            "                <Impl>\n" +
-            "                    <![CDATA[\n" +
-            "                        var data = this.getProperty(\"imageData\");\n" +
-            "                        var box = this.getProperty(\"box\");\n" +
-            "                        var h = Math.round(box.w * data.h / data.w);\n" +
-            "                        this.setProperty(\"box\", new Dimension(box.w, h));\n" +
-            "                    ]]>\n" +
-            "                    </Impl>\n" +
-            "            </Action>\n" +
-            "            <Action id=\"fixRatioH\" displayName=\"Correct Ratio by Height\">\n" +
-            "                <Impl>\n" +
-            "                    <![CDATA[\n" +
-            "                        var data = this.getProperty(\"imageData\");\n" +
-            "                        var box = this.getProperty(\"box\");\n" +
-            "                        var w = Math.round(box.h * data.w / data.h);\n" +
-            "                        this.setProperty(\"box\", new Dimension(w, box.h));\n" +
-            "                    ]]>\n" +
-            "                    </Impl>\n" +
-            "            </Action>\n" +
-            "            <Action id=\"selectExternalFile\" displayName=\"Load Linked Image...\">\n" +
-            "                <Impl>\n" +
-            "                    <![CDATA[\n" +
-            "                        var thiz = this;\n" +
-            "                        ImageData.prompt(function(data) {\n" +
-            "                            if (!data) return;\n" +
-            "                            thiz.setProperty(\"imageData\", data);\n" +
-            "                            thiz.setProperty(\"box\", new Dimension(data.w, data.h));\n" +
-            "                            if (data.data.match(/\\.png$/)) {\n" +
-            "                                thiz.setProperty(\"fillColor\", Color.fromString(\"#ffffff00\"));\n" +
-            "                            }\n" +
-            "                        });\n" +
-            "                    ]]>\n" +
-            "                    </Impl>\n" +
-            "            </Action>\n" +
-            "            <Action id=\"selectExternalFileEmbedded\" displayName=\"Load Embedded Image...\">\n" +
-            "                <Impl>\n" +
-            "                    <![CDATA[\n" +
-            "                        var thiz = this;\n" +
-            "                        ImageData.prompt(function(data) {\n" +
-            "                            if (!data) return;\n" +
-            "                            thiz.setProperty(\"imageData\", data);\n" +
-            "                            thiz.setProperty(\"box\", new Dimension(data.w, data.h));\n" +
-            "                            if (data.data.match(/\\.png$/)) {\n" +
-            "                                thiz.setProperty(\"fillColor\", Color.fromString(\"#ffffff00\"));\n" +
-            "                            }\n" +
-            "                        }, \"embedded\");\n" +
-            "                    ]]>\n" +
-            "                    </Impl>\n" +
-            "            </Action>\n" +
-            "        </Actions>\n" +
-            "        <p:Content xmlns:p=\"http://www.evolus.vn/Namespace/Pencil\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
-            "            <defs>\n" +
-            "                <filter id=\"imageShading\" height=\"1.2558399\" y=\"-0.12792\" width=\"1.06396\" x=\"-0.03198\">\n" +
-            "                    <feGaussianBlur stdDeviation=\"1.3325\" in=\"SourceAlpha\"/>\n" +
-            "                </filter>\n" +
-            "                <g id=\"container\">\n" +
-            "                    <rect id=\"bgRect\" style=\"fill: none; stroke: none;\"/>\n" +
-            "                    <g id=\"imageContainer\">\n" +
-            "                        <image id=\"image\" x=\"0\" y=\"0\"/>\n" +
-            "                    </g>\n" +
-            "                </g>\n" +
-            "            </defs>\n" +
-            "            <use xlink:href=\"#container\" id=\"bgCopy\" transform=\"translate(1, 1)\" p:filter=\"url(#imageShading)\" style=\" opacity:0.6;\"/>\n" +
-            "            <use xlink:href=\"#container\"/>\n" +
-            "        </p:Content>\n" +
-            "    </Shape>");
-    }
-}
-*/
 window.addEventListener("load", function(){ StencilGenerator.onload(); }, false);
