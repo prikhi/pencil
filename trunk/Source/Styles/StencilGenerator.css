@@ -2,7 +2,7 @@
 
 .Stencil {
 	/*text-align: center;*/
-	height: 180px;
+	height: 170px;
 	width: 550px;
 
 	padding: 0;
@@ -12,7 +12,7 @@
 	padding: 0px;
 	margin: 0;
 
-	height: 180px;
+	height: 170px;
 	width: 550px;
 
 	overflow: auto;
