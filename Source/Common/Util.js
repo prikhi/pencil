@@ -242,6 +242,13 @@ Dom.updateIdRef = function (shape, oldId, newId) {
                     return zero;
                 }
             });
+            value = value.replace(/url\("\#([^"]+)"\)/g, function (zero, one) {
+                if (one == oldId) {
+                    return "url(#" + newId + ")";
+                } else {
+                    return zero;
+                }
+            });
         }
         node.value = value;
     });
@@ -253,6 +260,9 @@ Dom.resolveIdRef = function (shape, seed) {
             value += seed;
         } else {
             value = value.replace(/url\(#([^\)]+)\)/g, function (zero, one) {
+                return "url(#" + one + seed + ")";
+            });
+            value = value.replace(/url\("\#([^"]+)"\)/g, function (zero, one) {
                 return "url(#" + one + seed + ")";
             });
         }
@@ -771,8 +781,10 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
         if (width > maxWidth || height > maxHeight) {
             if (width > height) {
                 height = height / (width / maxWidth);
+                width = maxWidth;
             } else {
                 width = width / (height / maxHeight);
+                height = maxHeight;
             }
         }
 
