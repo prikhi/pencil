@@ -238,7 +238,7 @@ Shape.prototype.moveBy = function (dx, dy, targetSet, moving) {
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
 
-    this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
+    //this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
 };
 Shape.prototype.scaleTo = function (nw, nh, group) {
     if (this.def.propertyMap["box"]) {
@@ -264,7 +264,7 @@ Shape.prototype.scaleTo = function (nw, nh, group) {
         }
 
         this.applyBehaviorForProperty("box");
-        this.dockingManager.handleScaleTo(nw, nh, box.w, box.h, group);
+        //this.dockingManager.handleScaleTo(nw, nh, box.w, box.h, group);
     } else {
         error(this.def.displayName + " does not support scaling.");
     }

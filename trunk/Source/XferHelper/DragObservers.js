@@ -12,6 +12,10 @@ Pencil.installDragObservers = function (canvas) {
 
 function ShapeDefDragObserver(canvas) {
     this.canvas = canvas;
+    this.name = "ShapeDefDragObserver";
+    this.aboutToDelete = false;
+    this.deleteDiscarded = false;
+    this.lastDragEnterTS = new Date().getTime();
 }
 ShapeDefDragObserver.prototype = {
     getSupportedFlavours : function () {
@@ -21,17 +25,73 @@ ShapeDefDragObserver.prototype = {
 
         return flavours;
     },
-    onDragOver: function (evt, flavour, session){},
-    onDrop: function (evt, transferData, session) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        var defId = transferData.data;
+    onDragEnter: function (event, session) {
+        var now = new Date().getTime();
+        var delta = now - this.lastDragEnterExitEventTS;
+        this.lastDragEnterExitEventTS = now;
+        
+        if (this.aboutToDelete) {
+            this.deleteDiscarded = true;
+            return;
+        }
+        
+        if (delta < 500) return;
+        
+        var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
+        var defId = null;
+        try {
+            defId = transferData.first.first.data;
+        } catch (e) {
+            return;
+        }
+        
+        debug("onDragEnter, defId: " + defId);
         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
 
-        var loc = this.canvas.getEventLocation(evt);
+        var loc = this.canvas.getEventLocation(event);
 
-        if (loc.x <0 || loc.y < 0) return;
-
-        this.canvas.insertShape(def, new Bound(loc.x, loc.y, null, null));
+        this.canvas.insertShapeImpl_(def, new Bound(loc.x, loc.y, null, null));
+        
+        //fake move marking:
+        this.canvas.startFakeMove(event);
+        
+        this.commited = false;
+        this.hasDrag = true;
+    },
+    exit: function () {
+        this.aboutToDelete = false;
+        if (this.deleteDiscarded) {
+            return;
+        }
+        
+        if (!this.commited && this.hasDrag) {
+            this.canvas.deleteSelected();
+        }
+        
+        this.hasDrag = false;
+    },
+    onDragExit: function (event, session) {
+        var thiz = this;
+        
+        this.aboutToDelete = true;
+        this.deleteDiscarded = false;
+        
+        window.setTimeout(function () {
+            thiz.exit();
+        }, 300);
+    },
+    onDragOver: function (event, flavour, session) {
+        if (!this.commited && this.hasDrag) {
+            if (event.clientX != this._lastScreenX || event.clientY != this._lastScreenY) {
+                this.canvas.handleMouseMove(event, "fake");
+                this._lastScreenX = event.clientX;
+                this._lastScreenY = event.clientY;
+            }
+        }
+    },
+    onDrop: function (event, transferData, session) {
+        this.commited = true;
+        this.canvas.finishMoving();
     }
 };
 
@@ -39,25 +99,84 @@ Pencil.registerDragObserver(ShapeDefDragObserver);
 
 function PrivateShapeDefDragObserver(canvas) {
     this.canvas = canvas;
+    this.name = "PrivateShapeDefDragObserver";
+    this.aboutToDelete = false;
+    this.deleteDiscarded = false;
+    this.lastDragEnterTS = new Date().getTime();
 }
 PrivateShapeDefDragObserver.prototype = {
     getSupportedFlavours : function () {
         var flavours = new FlavourSet();
-        flavours.appendFlavour("pencil/privateDef");
+        flavours.appendFlavour("pencil/privatedef");
         return flavours;
     },
-    onDragOver: function (evt, flavour, session){},
-    onDrop: function (evt, transferData, session) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        var defId = transferData.data;
 
+    onDragEnter: function (event, session) {
+        var now = new Date().getTime();
+        var delta = now - this.lastDragEnterExitEventTS;
+        this.lastDragEnterExitEventTS = now;
+        
+        if (this.aboutToDelete) {
+            this.deleteDiscarded = true;
+            return;
+        }
+        
+        if (delta < 500) return;
+        
+        var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
+        var defId = null;
+        try {
+            defId = transferData.first.first.data;
+        } catch (e) {
+            return;
+        }
+        
         var def = PrivateCollectionManager.locateShapeDefinition(defId);
+        
+        var loc = this.canvas.getEventLocation(event);
 
-        var loc = this.canvas.getEventLocation(evt);
-
-        if (loc.x <0 || loc.y < 0) return;
-
-        this.canvas.insertPrivateShape(def, new Bound(loc.x, loc.y, null, null));
+        this.canvas.insertPrivateShapeImpl_(def, new Bound(loc.x, loc.y, null, null));
+        
+        //fake move marking:
+        this.canvas.startFakeMove(event);
+        
+        this.commited = false;
+        this.hasDrag = true;
+    },
+    exit: function () {
+        this.aboutToDelete = false;
+        if (this.deleteDiscarded) {
+            return;
+        }
+        
+        if (!this.commited && this.hasDrag) {
+            this.canvas.deleteSelected();
+        }
+        
+        this.hasDrag = false;
+    },
+    onDragExit: function (event, session) {
+        var thiz = this;
+        
+        this.aboutToDelete = true;
+        this.deleteDiscarded = false;
+        
+        window.setTimeout(function () {
+            thiz.exit();
+        }, 300);
+    },
+    onDragOver: function (event, flavour, session) {
+        if (!this.commited && this.hasDrag) {
+            if (event.clientX != this._lastScreenX || event.clientY != this._lastScreenY) {
+                this.canvas.handleMouseMove(event, "fake");
+                this._lastScreenX = event.clientX;
+                this._lastScreenY = event.clientY;
+            }
+        }
+    },
+    onDrop: function (event, transferData, session) {
+        this.commited = true;
+        this.canvas.finishMoving();
     }
 };
 
@@ -67,6 +186,9 @@ Pencil.registerDragObserver(PrivateShapeDefDragObserver);
 
 function ShapeShortcutDragObserver(canvas) {
     this.canvas = canvas;
+    this.aboutToDelete = false;
+    this.deleteDiscarded = false;
+    this.lastDragEnterTS = new Date().getTime();
 }
 ShapeShortcutDragObserver.prototype = {
     getSupportedFlavours : function () {
@@ -76,20 +198,75 @@ ShapeShortcutDragObserver.prototype = {
 
         return flavours;
     },
-    onDragOver: function (evt, flavour, session){},
-    onDrop: function (evt, transferData, session) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-        var defId = transferData.data;
+    
+    onDragEnter: function (event, session) {
+        var now = new Date().getTime();
+        var delta = now - this.lastDragEnterExitEventTS;
+        this.lastDragEnterExitEventTS = now;
+        
+        if (this.aboutToDelete) {
+            this.deleteDiscarded = true;
+            return;
+        }
+        
+        if (delta < 500) return;
+        
+        var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
+        var defId = null;
+        try {
+            defId = transferData.first.first.data;
+        } catch (e) {
+            return;
+        }
+        
         var shortcut = CollectionManager.shapeDefinition.locateShortcut(defId);
-
         var def = shortcut.shape;
         var overridingValueMap = shortcut.propertyMap;
+        
+        var loc = this.canvas.getEventLocation(event);
 
-        var loc = this.canvas.getEventLocation(evt);
-
-        if (loc.x <0 || loc.y < 0) return;
-
-        this.canvas.insertShape(def, new Bound(loc.x, loc.y, null, null), overridingValueMap);
+        this.canvas.insertShapeImpl_(def, new Bound(loc.x, loc.y, null, null), overridingValueMap);
+        
+        //fake move marking:
+        this.canvas.startFakeMove(event);
+        
+        this.commited = false;
+        this.hasDrag = true;
+    },
+    exit: function () {
+        this.aboutToDelete = false;
+        if (this.deleteDiscarded) {
+            return;
+        }
+        
+        if (!this.commited && this.hasDrag) {
+            this.canvas.deleteSelected();
+        }
+        
+        this.hasDrag = false;
+    },
+    onDragExit: function (event, session) {
+        var thiz = this;
+        
+        this.aboutToDelete = true;
+        this.deleteDiscarded = false;
+        
+        window.setTimeout(function () {
+            thiz.exit();
+        }, 300);
+    },
+    onDragOver: function (event, flavour, session) {
+        if (!this.commited && this.hasDrag) {
+            if (event.clientX != this._lastScreenX || event.clientY != this._lastScreenY) {
+                this.canvas.handleMouseMove(event, "fake");
+                this._lastScreenX = event.clientX;
+                this._lastScreenY = event.clientY;
+            }
+        }
+    },
+    onDrop: function (event, transferData, session) {
+        this.commited = true;
+        this.canvas.finishMoving();
     }
 };
 

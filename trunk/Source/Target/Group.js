@@ -115,7 +115,7 @@ Group.prototype.moveBy = function (dx, dy, targetSet, moving) {
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
 
-    this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
+    //this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
 };
 Group.prototype.scaleTo = function (nw, nh, group) {
     var geo = this.getGeometry();
@@ -138,7 +138,7 @@ Group.prototype.scaleTo = function (nw, nh, group) {
         target.moveBy(newX - bounding.x, newY - bounding.y, true);
     }
 
-    this.dockingManager.handleScaleTo(nw, nh, geo.dim.w, geo.dim.h, group);
+    //this.dockingManager.handleScaleTo(nw, nh, geo.dim.w, geo.dim.h, group);
 };
 Group.prototype.rotateBy = function (da) {
     debug("rotateBy: " + da);

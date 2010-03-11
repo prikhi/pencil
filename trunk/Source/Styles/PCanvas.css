@@ -7,7 +7,7 @@ pcanvas {
     background-color: transparent;
     -moz-box-align: center;
     -moz-box-pack: center;
-    padding: 1em;
+    padding: .7em;
 }
 pcanvas svg {
 }

@@ -116,7 +116,7 @@ pcollectionpane .Collection .Content > div {
     padding: .3em;
 
     vertical-align: top;
-
+	font-size: .85em;
 }
 pcollectionpane .Collection .Content > div:hover {
     background-color: highlight;
@@ -135,6 +135,7 @@ pcollectionpane .Collection .Content > div label {
     display: block;
 	overflow: hidden;
 	font: -moz-list;
+	font-size: 1em;
 }
 
 

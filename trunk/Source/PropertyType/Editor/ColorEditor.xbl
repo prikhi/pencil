@@ -17,6 +17,7 @@
                 this.previewBox = document.getAnonymousElementByAttribute(this, "aid", "previewBox");
                 this.opacity = document.getAnonymousElementByAttribute(this, "aid", "opacity");
                 this.opacityText = document.getAnonymousElementByAttribute(this, "aid", "opacityText");
+                this.dropperButton = document.getAnonymousElementByAttribute(this, "aid", "dropperButton");
                 
                 this.colorCode._control = this;
 
@@ -71,8 +72,28 @@
                     this.setValue(Color.fromString(this.getAttribute("value")));
                 }
                 
+                var onColorProbed = function (color) {
+                    thiz.onColorProbed(color);
+                };
+                
+                if (ColorDropper.isAvailable()) {
+                    this.dropperButton.addEventListener("command", function (event) {
+                        ColorDropper.begin(onColorProbed, thiz);
+                    }, false);
+                } else {
+                    this.dropperButton.style.display = "none";
+                }
             ]]>
             </constructor>
+            <method name="onColorProbed">
+                <parameter name="color"/>
+                <body>
+                <![CDATA[
+                    this.colorCode.value = color.toRGBString();
+                    this._handleColorCodeChange();
+                ]]>
+                </body>
+            </method>        
             <method name="setTypeMeta">
                 <parameter name="meta"/>
                 <body>
@@ -147,7 +168,10 @@
                 <pwheelcolorpicker aid="colorPicker" flex="1" xbl:inherits="disabled,color=value"/>
                 <vbox>
                     <label value="HTML code" xbl:inherits="disabled"/>
-                    <textbox aid="colorCode" xbl:inherits="disabled"/>
+                    <hbox>
+                        <textbox aid="colorCode" xbl:inherits="disabled" flex="1" style="min-width: 50px;" size="8"/>
+                        <button aid="dropperButton" image="moz-icon://stock/stock_3d-color-picker?size=16" style="min-width: 0px; margin: 0px; pargin-left: 3px;"/>
+                    </hbox>
                     <label value="Opacity: 100%" xbl:inherits="disabled" aid="opacityText"/>
                     <scale aid="opacity" min="0" max="100" xbl:inherits="disabled"/>
                     <label value="Preview" xbl:inherits="disabled"/>

@@ -841,22 +841,53 @@ Controller.prototype.exportDocument = function () {
     }
 };
 Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBackground) {
-    var links = [];
+    var bgLinks = [];
 
     if (page.properties.background && includeBackground) {
         var bgPage = this.doc.getPageById(page.properties.background);
         if (bgPage) {
-            links = this._getPageLinks(bgPage, pageExtraInfos, true);
+            bgLinks = this._getPageLinks(bgPage, pageExtraInfos, true);
         }
     }
 
-    if (!pageExtraInfos[page.properties.id]) return links;
-
-    var extra = pageExtraInfos[page.properties.id];
-    var linkings = extra.objectsWithLinking;
-    for (var j = 0; j < linkings.length; j ++) {
-        links.push(linkings[j]);
+    var extra = null;
+    
+    if (pageExtraInfos[page.properties.id]) {
+    
+        extra = pageExtraInfos[page.properties.id];
+        
+    } else {
+        // the current page is not processed for linking
+        // this may because it is not included in exporting
+        // so, do this manually here
+        
+        var node = page._view.canvas.drawingLayer;
+        extra = {};
+        var processor = new LinkingGeometryPreprocessor(extra);
+        processor.process(node);
+        
+        pageExtraInfos[page.properties.id] = extra;
     }
+
+    var thisPageLinks = extra.objectsWithLinking;
+    
+    var links = [];
+    
+    for (var j = 0; j < thisPageLinks.length; j ++) {
+        links.push(thisPageLinks[j]);
+    }
+    
+    for (var j = 0; j < bgLinks.length; j ++) {
+        links.push(bgLinks[j]);
+    }
+    
+    
+    debug("Returning links for page: " + page.properties.fid);
+    for (var j = 0; j < links.length; j ++) {
+        var targetPage = this.doc.getPageById(links[j].pageId);
+        debug("\t" + targetPage.properties.fid);
+    }
+    
 
     return links;
 };
@@ -1120,21 +1151,35 @@ function LinkingGeometryPreprocessor(pageExtraInfo) {
     this.pageExtraInfo = pageExtraInfo;
 }
 LinkingGeometryPreprocessor.prototype.process = function (doc) {
-    var objects = Dom.getList("//svg:g[@p:RelatedPage]", doc);
+    var objects = Dom.getList(".//svg:g[@p:RelatedPage]", doc);
     objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];
+    
 
     for (var i = 0; i < objects.length; i ++) {
         var g = objects[i];
-        var bounding = g.getBoundingClientRect();
+        
+        var boundingObject = g.ownerSVGElement;
+        
+        if (boundingObject.parentNode && boundingObject.parentNode.getBoundingClientRect) {
+            boundingObject = boundingObject.parentNode;
+        }
+        
+        var rect = boundingObject.getBoundingClientRect();
+        var dx = rect.left;
+        var dy = rect.top;
+        
+        debug("dx, dy: " + [dx, dy]);
+
+        rect = g.getBoundingClientRect();
         var linkingInfo = {
             pageId: g.getAttributeNS(PencilNamespaces.p, "RelatedPage"),
             geo: {
-                x: bounding.left,
-                y: bounding.top,
-                w: bounding.width,
-                h: bounding.height
+                x: rect.left - dx,
+                y: rect.top - dy,
+                w: rect.width,
+                h: rect.height
             }
         };
         if (!linkingInfo.pageId) continue;

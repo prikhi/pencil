@@ -751,6 +751,25 @@
                 ]]>
                 </body>
             </method>
+            <method name="finishMoving">
+                <body>
+                <![CDATA[
+                    if (this.controllerHeld && this.currentController && this.currentController.markAsMoving) {
+                        this.currentController.markAsMoving(false);
+                        this.currentController.clearPositionSnapshot();
+                        this.invalidateEditors();
+
+                        Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+                    }
+                    if (this.controllerHeld && this.hasMoved) {
+                        //just to save state
+                        this.run(function() {}, this);
+                    }
+                    this.removeAttributeNS(PencilNamespaces.p, "holding");
+                    this.controllerHeld = false;
+                ]]>
+                </body>
+            </method>
             <method name="handleMouseUp">
                 <parameter name="event"/>
                 <body>
@@ -891,11 +910,15 @@
             </method>
             <method name="handleMouseMove">
                 <parameter name="event"/>
+                <parameter name="fake"/>
                 <body>
                 <![CDATA[
                     if (this._button != 0) return;
-                    event.preventDefault();
-                    event.stopPropagation();
+                    
+                    if (!fake) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
 
                     if (this.controllerHeld && this.currentController) {
                         tick("start");
@@ -1876,7 +1899,7 @@
                     debug("inserting private shape: " + shapeDef.displayName + ", id: " + shapeDef.id);
                     var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
                     g.appendChild(shapeDef.content);
-
+                    
                     //validate
                     var shape = Dom.getSingle("/svg:g[@p:type='Shape' or @p:type='Group']", g);
                     if (!shape) {
@@ -1901,12 +1924,18 @@
                     Dom.renewId(shape);
 
                     this.run(function() {
+                        shape.style.visibility = "hidden";
+                        this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
+                        
                         this.drawingLayer.appendChild(shape);
                         this.selectShape(shape);
                         if (bound) {
                             var bbox = this.currentController.getBounding();
                             this.currentController.moveBy(bound.x - bbox.x - Math.round(bbox.width/2), bound.y - bbox.y - Math.round(bbox.height/2), true);
                         }
+                        shape.style.visibility = "visible";
+                        this.removeAttributeNS(PencilNamespaces.p, "holding");
+
                         this.ensureControllerInView();
                         DockingManager.enableDocking(this.currentController);
                     }, this);
@@ -1964,32 +1993,137 @@
                 ]]>
                 </body>
             </method>
+            <method name="startFakeMove">
+                <parameter name="event"/>
+                <body>
+                <![CDATA[
+                    this._button = 0;
+                    this.currentController = this.getSelectedTargets()[0];
+                    this.controllerHeld = true;
+
+                    this.oX = Math.round(event.clientX / this.zoom);
+                    this.oY = Math.round(event.clientY / this.zoom);
+                    this.oldPos = this.currentController.getGeometry();
+
+                    this.currentController.setPositionSnapshot();
+
+                    this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
+                    this.reClick = false;
+
+                    this.hasMoved = false;
+                    this.lastTop = top;
+                    this._sayTargetChanged();
+                ]]>
+                </body>
+            </method>
+            <method name="checkDnDEventTimestamp">
+                <parameter name="event"/>
+                <body>
+                <![CDATA[
+                    var now = new Date().getTime();
+                    if (!this.lastDragEnterExitEventTS) {
+                        this.lastDragEnterExitEventTS = now;
+                        return true;
+                    }
+                    var delta = now - this.lastDragEnterExitEventTS;
+                    
+                    debug("Even ts delta: " + delta);
+                    
+                    this.lastDragEnterExitEventTS = now;
+                    
+                    return delta > 500;
+                ]]>
+                </body>
+            </method>
         </implementation>
         <handlers>
-            <handler event="dragover">
+            <handler event="dragenter">
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                    this.lastAcceptedDragObserver = null;
+                    if (!Dom.isChildOf(event.originalTarget, this.svg)) return;
+                    debug("PCanvas: drag enter, " + event.originalTarget.localName);
+
+                    // find the first DO that accepts this drag session, use its for subsequence events
+                    // in the same session
+                    
+                    this.currentDragObserver = null;
                     for (var i in this.dragObservers) {
                         var observer = this.dragObservers[i];
                         try {
-                            var accepted = nsDragAndDrop.dragOver(event, observer);
+                            var accepted = nsDragAndDrop.dragEnter(event, observer);
                             if (accepted) {
-                                this.lastAcceptedDragObserver = observer;
+                                this.currentDragObserver = observer;
                                 break;
                             }
-                        } catch (e) {}
+                        } catch (e) { Console.dumpError(e); }
                     }
+                ]]>
+            </handler>
+            <handler event="dragexit">
+                <![CDATA[
+                    if (!Dom.isChildOf(event.originalTarget, this.svg)) return;
+                    debug("PCanvas: drag exit, " + event.originalTarget.localName);
+                    if (!this.currentDragObserver) return;
+                    
+                    try {
+                        nsDragAndDrop.dragExit(event, this.currentDragObserver);
+                    } catch (e) { Console.dumpError(e); }
+                ]]>
+            </handler>
+            <handler event="dragend">
+                <![CDATA[
+                    debug("drag end...");
+                ]]>
+            </handler>
+            <handler event="dragover">
+                <![CDATA[
+                    tick("PCanvas: drag over");
+                    
+                    if (!this.currentDragObserver) return;
+                    
+                    try {
+                        nsDragAndDrop.dragOver(event, this.currentDragObserver);
+                    } catch (e) { Console.dumpError(e); }
+                    
+                    /*
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
+                    if (!this.currentDragProcessed) {
+                        tick("drag over");
+                        this.lastAcceptedDragObserver = null;
+                        for (var i in this.dragObservers) {
+                            var observer = this.dragObservers[i];
+                            try {
+                                var accepted = nsDragAndDrop.dragOver(event, observer);
+                                if (accepted) {
+                                    this.lastAcceptedDragObserver = observer;
+                                    break;
+                                }
+                            } catch (e) { Console.dumpError(e); }
+                        }
+                        
+                        this.currentDragProcessed = true;
+                    }
+                    
+                    if (this.hasDrag) {
+                        if (event.clientX != this._lastScreenX || event.clientY != this._lastScreenY) {
+                            this.handleMouseMove(event, "fake");
+                            this._lastScreenX = event.clientX;
+                            this._lastScreenY = event.clientY;
+                        }
+                        
+                    }
+                    */
                 ]]>
             </handler>
             <handler event="dragdrop">
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                    if (this.lastAcceptedDragObserver) {
-                        try {
-                            nsDragAndDrop.drop(event, this.lastAcceptedDragObserver);
-                        } catch (e) {}
-                    }
+                    debug("PCanvas: drag drop");
+                    
+                    if (!this.currentDragObserver) return;
+                    
+                    try {
+                        nsDragAndDrop.drop(event, this.currentDragObserver);
+                    } catch (e) { Console.dumpError(e); }
                 ]]>
             </handler>
         </handlers>

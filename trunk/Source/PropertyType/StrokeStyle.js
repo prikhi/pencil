@@ -16,3 +16,7 @@ StrokeStyle.fromString = function(literal) {
 StrokeStyle.prototype.toString = function () {
     return this.w + "|" + this.array;
 };
+StrokeStyle.prototype.condensed = function (ratio) {
+    return new StrokeStyle(this.w * (1 + ratio), this.array);
+};
+

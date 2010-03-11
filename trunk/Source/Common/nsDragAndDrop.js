@@ -400,18 +400,20 @@ var nsDragAndDrop = {
              count < transferData.dataList.length);
       
       try {
-          var imageNode = null;
+          var imageNode = document.getElementById("blankImage");
           
+          /*
           try {
               var defNode = Dom.findUpward(aEvent.originalTarget, function (node) { return node._def; });
               if (defNode && defNode.firstChild && defNode.firstChild.localName == "img") {
                 imageNode = defNode.firstChild;
               }
           } catch (e) {Console.dumpError(e)}
+          */
 
         this.mDragService.invokeDragSessionWithImage(aEvent.target, transArray,
                                                      region, dragAction.action,
-                                                     imageNode, 20, 20, aEvent, aEvent.dataTransfer);
+                                                     imageNode, 1, 1, aEvent, aEvent.dataTransfer);
       }
       catch(ex) {
         // this could be because the user pressed escape to
@@ -436,23 +438,10 @@ var nsDragAndDrop = {
   dragOver: function (aEvent, aDragDropObserver)
     { 
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-      if (!("onDragOver" in aDragDropObserver)) 
-        return false;
       if (!this.checkCanDrop(aEvent, aDragDropObserver))
-        return false;
-      var flavourSet = aDragDropObserver.getSupportedFlavours();
-      for (var flavour in flavourSet.flavourTable)
-        {
-          if (this.mDragSession.isDataFlavorSupported(flavour))
-            {
-              aDragDropObserver.onDragOver(aEvent, 
-                                           flavourSet.flavourTable[flavour], 
-                                           this.mDragSession);
-              aEvent.stopPropagation();
-              return true;
-            }
-        }
-        return false;
+        return;
+      if ("onDragOver" in aDragDropObserver)
+        aDragDropObserver.onDragOver(aEvent, this.mDragSession);
     },
 
   mDragSession: null,
@@ -478,6 +467,7 @@ var nsDragAndDrop = {
       if (this.mDragSession.canDrop) {
         var flavourSet = aDragDropObserver.getSupportedFlavours();
         var transferData = nsTransferable.get(flavourSet, this.getDragData, true);
+
         // hand over to the client to respond to dropped data
         var multiple = "canHandleMultipleItems" in aDragDropObserver && aDragDropObserver.canHandleMultipleItems;
         var dropData = multiple ? transferData : transferData.first.first;
@@ -519,11 +509,24 @@ var nsDragAndDrop = {
    **/
   dragEnter: function (aEvent, aDragDropObserver)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
       if (!this.checkCanDrop(aEvent, aDragDropObserver))
-        return;
-      if ("onDragEnter" in aDragDropObserver)
-        aDragDropObserver.onDragEnter(aEvent, this.mDragSession);
+        return false;
+      var flavourSet = aDragDropObserver.getSupportedFlavours();
+      for (var flavour in flavourSet.flavourTable)
+        {
+          if (this.mDragSession.isDataFlavorSupported(flavour))
+            {
+              if (aDragDropObserver.onDragEnter) {
+                  aDragDropObserver.onDragEnter(aEvent, 
+                                               this.mDragSession);
+              }
+              
+              aEvent.stopPropagation();
+              return true;
+            }
+        }
+        return false;
+    
     },  
     
   /** 
@@ -574,6 +577,7 @@ var nsDragAndDrop = {
       this.mDragSession.canDrop = this.mDragSession.sourceNode != aEvent.target;
       if ("canDrop" in aDragDropObserver)
         this.mDragSession.canDrop &= aDragDropObserver.canDrop(aEvent, this.mDragSession);
+        
       return true;
     },
 
