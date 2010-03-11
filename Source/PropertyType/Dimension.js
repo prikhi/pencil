@@ -6,8 +6,8 @@ Dimension.REG_EX = /^([0-9\.\-]+)\,([0-9\.\-]+)$/;
 Dimension.fromString = function(literal) {
     var dim = new Dimension();
     if (literal.match(Dimension.REG_EX)) {
-        dim.w = parseInt(RegExp.$1);
-        dim.h = parseInt(RegExp.$2);
+        dim.w = parseFloat(RegExp.$1);
+        dim.h = parseFloat(RegExp.$2);
     }
     
     return dim;

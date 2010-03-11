@@ -25,6 +25,8 @@
 <script src="../PropertyType/ShadowStyle.js"/>
 <script src="../PropertyType/Enum.js"/>
 
+<script src="../Common/ColorDroppers.js"/>
+
     <tabbox id="tabBox" flex="1" persist="selectedIndex">
       <tabs id="tabs"></tabs>
       <tabpanels id="tabPanels"></tabpanels>

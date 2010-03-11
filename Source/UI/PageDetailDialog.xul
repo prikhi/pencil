@@ -41,6 +41,8 @@
                         <menuitem label="Custom size..." value=""/>
                         <menuseparator/>
                         <menuitem p:predefined="true" label="Compact Web page (800x600)" value="800x600"/>
+                        <menuitem p:predefined="true" label="960 Web page (960x600)" value="960x600"/>
+                        <menuitem p:predefined="true" label="960 Web page - long (960x900)" value="960x900"/>
                         <menuitem p:predefined="true" label="Normal Web page (1024x768)" value="1024x768"/>
                         <menuitem p:predefined="true" label="Large Web page (1280x800)" value="1280x800"/>
                         <menuitem p:predefined="true" label="A4 at 90dpi" value="774x1052"/>

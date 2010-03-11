@@ -93,6 +93,11 @@ Dom.findUpward = function (node, evaluator) {
         return Dom.findUpward(node.parentNode, evaluator);
     } catch (e) { return null; }
 };
+Dom.isChildOf = function (childNode, parentNode) {
+    return Dom.findUpward(childNode, function (node) {
+        return node == parentNode;
+    });
+};
 Dom.doUpward = function (node, evaluator, worker) {
     if (node == null) {
         return;

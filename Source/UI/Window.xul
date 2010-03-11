@@ -112,6 +112,8 @@
 <script src="../Exporter/ODTExporter.js"/>
 <script src="../Exporter/OOConversionExporter.js"/>
 
+<script src="../Common/ColorDroppers.js"/>
+
     <popupset>
     </popupset>
     <commandset>
@@ -387,8 +389,8 @@
             <hbox>
                 <tabbox id="sideBox" width="300" persist="width">
                     <tabs id="sideBoxTabs">
-                        <tab label="Shape Collections"/>
-                        <tab label="My Collections"/>
+                        <tab label="Collections"/>
+                        <tab label="My Stuffs"/>
                     </tabs>
                     <tabpanels flex="1" id="sideBoxTabPanels">
                         <tabpanel>
@@ -414,5 +416,6 @@
             </hbox>
         </stack>
     </hbox>
+    <html:img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oBEAgTHGn1p6MAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAADUlEQVQI12P4//8/AwAI/AL+XJ/P2gAAAABJRU5ErkJggg==" width="1" height="1" style="display: none;" id="blankImage"/>
 </window>
 

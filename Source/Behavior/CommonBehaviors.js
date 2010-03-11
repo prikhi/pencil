@@ -183,29 +183,84 @@ Pencil.behaviors.Transform = function (s) {
     this.setAttribute("transform", t);
 }
 //D objects
+Pencil.behaviors.D._lastX = 0;
+Pencil.behaviors.D._lastY = 0;
+Pencil.behaviors.D._setLastLocation = function (x, y) {
+    Pencil.behaviors.D._lastX = x;
+    Pencil.behaviors.D._lastY = y;
+};
+
 function M(x, y) {
+    Pencil.behaviors.D._setLastLocation(x, y);
     return "M " + x + " " + y;
 }
 function L(x, y) {
+    Pencil.behaviors.D._setLastLocation(x, y);
     return "L " + x + " " + y;
 }
 function C(x1, y1, x2, y2, x, y) {
+    Pencil.behaviors.D._setLastLocation(x2, y2);
     return "C " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + x + " " + y;
 }
 function S(x2, y2, x, y) {
+    Pencil.behaviors.D._setLastLocation(x2, y2);
     return "S " + x2 + " " + y2 + " " + x + " " + y;
 }
 function Q(x1, y1, x, y) {
+    Pencil.behaviors.D._setLastLocation(x, y);
     return "Q " + x1 + " " + y1 + " " + x + " " + y;
 }
 function T(x, y) {
+    Pencil.behaviors.D._setLastLocation(x, y);
     return "T " + x + " " + y;
 }
 function a(rx, ry, f1, f2, f3, x, y) {
+    Pencil.behaviors.D._setLastLocation(x, y);
     return "a " + rx + " " + ry + " " + f1 + " " + f2 + " " + f3 + " " + x + " " + y;
 }
 function A(rx, ry, f1, f2, f3, x, y) {
+    Pencil.behaviors.D._setLastLocation(x, y);
     return "A " + rx + " " + ry + " " + f1 + " " + f2 + " " + f3 + " " + x + " " + y;
+}
+const DEFAULT_SKETCHY_SEG_SIZE = 20;
+
+function sk(x1, y1, x2, y2, d, noMove) {
+    var dx = x2 - x1;
+    var dy = y2 - y1;
+    var l = Math.sqrt(dx * dx + dy * dy);
+    var segment = d ? d : DEFAULT_SKETCHY_SEG_SIZE;
+    
+    segment = Math.min(segment, l / 2);
+    
+    var count = Math.floor(l / segment);
+    var segmentRandom = segment / 3;
+    
+    var al = 0;
+    var x0 = x1;
+    var y0 = y1;
+    
+    var result = [];
+    
+    if (!noMove) result.push(M(x1, y1));
+    
+    for (var i = 0; i < count - 1; i ++) {
+        al = al + Math.round(segment + Math.random() * segmentRandom - segmentRandom / 2);
+        var x = x1 + (dx * al / l) + Math.random() - 0.5;
+        var y = y1 + (dy * al / l) + Math.random() - 0.5;
+        
+        result.push(L(x, y));
+    }
+    
+    result.push(L(x2, y2));
+    
+    Pencil.behaviors.D._setLastLocation(x2, y2);
+    
+    return result.join(" ");
+}
+function skTo(x, y, d) {
+    return sk(Pencil.behaviors.D._lastX, Pencil.behaviors.D._lastY, x, y,
+        d ? d : DEFAULT_SKETCHY_SEG_SIZE,
+        "noMove");
 }
 var z = "z";
 

@@ -20,6 +20,10 @@ button[disabled].AttachedAction {
 #mainBox splitter {
     opacity: 0;
 }
+#sideBox,
+#sideBox tabs {
+    min-width: 100px;
+}
 toolbox {
     padding-bottom: .3em;
 }

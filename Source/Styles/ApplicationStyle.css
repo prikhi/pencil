@@ -89,3 +89,9 @@ toolbar label {
 treechildren::-moz-tree-row {
     height: 1.8em;
 }
+window[p|probing],
+window[p|probing] *,
+dialog[p|probing],
+dialog[p|probing] * {
+    cursor: url(moz-icon://stock/stock_3d-color-picker?size=16) 0 16, default !important;
+}

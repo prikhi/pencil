@@ -64,6 +64,22 @@ Pencil.postBoot = function() {
 
     Pencil.updateGUIForHeavyElementVisibility();
 };
+function czInitComponent() {
+	try {
+		const cid = "@iosart.com/Utils/ColorZilla;1";
+		gCZComponent = Components.classes[cid].createInstance();
+		gCZComponent = gCZComponent.QueryInterface(Components.interfaces.mozIColorZilla);
+	} catch (err) {
+		dump("Couldn't get object: " + err + "\n");
+		return;
+	}
+}
+
+function czGetScreenColor(x, y) {
+	var col = gCZComponent.GetPixel(x, y);
+	return col;
+}
+
 Pencil.getBestFitSize = function () {
     var mainViewPanel = document.getElementById("mainViewPanel");
     return [mainViewPanel.boxObject.width - 50, mainViewPanel.boxObject.height - 50].join("x");
