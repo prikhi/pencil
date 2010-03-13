@@ -181,7 +181,7 @@
                         var label = document.createElementNS(PencilNamespaces.html, "label");
                         label.appendChild(document.createTextNode(def.displayName));
                         button.appendChild(label);
-                        
+
                         button.setAttribute("ptype", def.constructor.name);
                     }
                 ]]>
@@ -227,8 +227,70 @@
                 ]]>
                 </body>
             </method>
+            <field name="DnDObserver" readonly="true">
+            <![CDATA[({
+                mOuter: this,
+
+                onDrop: function (aEvent, aXferData, aDragSession) {
+                    debug("haha");
+                },
+
+                getSupportedFlavours: function () {
+                    var flavourSet = new FlavourSet();
+                    flavourSet.appendFlavour("text/unicode");
+                    flavourSet.appendFlavour("text/x-moz-url");
+                    flavourSet.appendFlavour("application/x-moz-file", "nsIFile");
+                    return flavourSet;
+                }
+            })]]></field>
         </implementation>
         <handlers>
+            <handler event="dragover">
+            <![CDATA[
+                var dragService = Components.classes["@mozilla.org/widget/dragservice;1"].getService(Components.interfaces.nsIDragService);
+                var dragSession = dragService.getCurrentSession();
+
+                //var supported = dragSession.isDataFlavorSupported("text/x-moz-url");
+                //if (!supported)
+                    supported = dragSession.isDataFlavorSupported("application/x-moz-file");
+
+                if (supported)
+                    dragSession.canDrop = true;
+            ]]>
+            </handler>
+            <handler event="dragdrop">
+            <![CDATA[
+                debug("dragdrop");
+                var dragService = Components.classes["@mozilla.org/widget/dragservice;1"].getService(Components.interfaces.nsIDragService);
+                var dragSession = dragService.getCurrentSession();
+                var _ios = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
+
+                if (dragSession.sourceNode)
+                    return;
+
+                var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+                //trans.addDataFlavor("text/x-moz-url");
+                trans.addDataFlavor("application/x-moz-file");
+
+                for (var i = 0; i < dragSession.numDropItems; i++) {
+                    var uri = null;
+
+                    dragSession.getData(trans, i);
+                    var flavor = {}, data = {}, length = {};
+                    trans.getAnyTransferData(flavor, data, length);
+                    if (data) {
+                        var file = data.value.QueryInterface(Components.interfaces.nsIFile);
+                        if (file) {
+                            try {
+                                CollectionManager.installCollectionFromFile(file);
+                            } catch (e) {
+                                Util.error("Install new collection", "Could not install collection '" + file.leafName.replace(/\.[^\.]+$/, "") + "'. The file may be corrupted.");
+                            }
+                        }
+                    }
+                }
+            ]]>
+            </handler>
         </handlers>
         <xbl:content xmlns:xbl="http://www.mozilla.org/xbl"
                  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
