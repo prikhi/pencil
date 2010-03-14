@@ -1,6 +1,6 @@
 function TargetSetXferHelper(canvas) {
     this.canvas = canvas;
-    
+
     this.type = TargetSetXferHelper.MIME_TYPE;
 }
 TargetSetXferHelper.MIME_TYPE = "pencil/target-set";
@@ -16,25 +16,25 @@ TargetSetXferHelper.prototype.handleData = function (data, length) {
 
     var parser = new DOMParser();
     var dom = parser.parseFromString(xml, "text/xml");
-    
+
     //validate
     var shapes = Dom.getList("/svg:*/svg:g[@p:type]", dom);
-    
+
     if (!shapes) {
         throw "Bad data in the clipboard";
     }
-    
+
     var importedShapes = [];
-    
+
     var grid = Pencil.getGridSize()
 
     var dx = Math.round(Math.random() * 50);
     dx = dx - (dx % grid.w);
-    
+
     var dy = Math.round(Math.random() * 50);
     dy = dy - (dy % grid.h);
 
-    this.canvas.run( function () {    
+    this.canvas.run( function () {
         for (i in shapes) {
             shape = this.canvas.ownerDocument.importNode(shapes[i], true);
             Dom.renewId(shape);
@@ -42,12 +42,15 @@ TargetSetXferHelper.prototype.handleData = function (data, length) {
             importedShapes.push(shape);
         }
         this.canvas.selectMultiple(importedShapes)
-        
+
         this.canvas.ensureControllerInView();
+        for (var t in this.canvas.currentController.targets) {
+            this.canvas.snappingHelper.updateSnappingGuide(this.canvas.currentController.targets[t]);
+        }
     }, this);
-    
+
     this.canvas.invalidateEditors();
-    
+
 };
 
 Pencil.registerXferHelper(TargetSetXferHelper);

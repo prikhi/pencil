@@ -1,35 +1,29 @@
 var CanvasImpl = {};
 
 CanvasImpl.setupGrid = function () {
-    return;
-    var size = Pencil.getGridSize();
-    
-    var nH = this.width / size.w + 1;
-    var nV = this.height / size.h + 1;
-    
     if (this.gridContainer) {
-        //Dom.empty(this.gridContainer);
+        Dom.empty(this.gridContainer);
     } else {
-        var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
-        g.setAttributeNS(PencilNamespaces.p, "p:name", "grids");
-        g.setAttribute("transform", "translate(-0.5, -0.5)");
-        this.bgLayer.appendChild(g);
-        this.gridContainer = g;
+        this.gridContainer = document.createElementNS(PencilNamespaces.svg, "svg:g");
+        this.gridContainer.setAttributeNS(PencilNamespaces.p, "p:name", "grids");
+        this.gridContainer.setAttribute("transform", "translate(-0.5, -0.5)");
+        this.bgLayer.appendChild(this.gridContainer);
     }
-    
-    for (var i = this.nHGridPainted; i < nH; i ++) {
-        var p = this.ownerDocument.createElementNS(PencilNamespaces.svg, "path");
-        this.gridContainer.appendChild(p);
-        
-        p.setAttribute("d", [M(Math.round(i * size.w * this.zoom), -1), L(Math.round(i * size.w * this.zoom), this.height + 1)].join(" "));
+
+    if (Config.get("grid.enabled") == null) {
+        Config.set("grid.enabled", true);
     }
-    for (var i = this.nVGridPainted; i < nV; i ++) {
-        var p = this.ownerDocument.createElementNS(PencilNamespaces.svg, "path");
-        this.gridContainer.appendChild(p);
-        
-        p.setAttribute("d", [M(-1, Math.round(i * size.h * this.zoom)), L(this.width + 1, Math.round(i * size.h * this.zoom))].join(" "));
+    if (Config.get("grid.enabled")) {
+        var grid = Pencil.getGridSize();
+        var z = this.zoom ? this.zoom : 1;
+        for (var i = grid.w * z; i < this.width * z; i += grid.w * z) {
+            var line = document.createElementNS(PencilNamespaces.svg, "svg:line");
+            line.setAttribute("x1", i);
+            line.setAttribute("y1", grid.h * z);
+            line.setAttribute("x2", i);
+            line.setAttribute("y2", this.height * z);
+            line.setAttribute("style", "stroke-dasharray: 1, " + grid.w * z + ";");
+            this.gridContainer.appendChild(line);
+        }
     }
-    
-    this.nHGridPainted = Math.max(this.nHGridPainted, nH);
-    this.nVGridPainted = Math.max(this.nVGridPainted, nV);
 };

@@ -119,6 +119,9 @@ TargetSet.prototype.getName = function () {
     return "Multiple objects";
 };
 TargetSet.prototype.deleteTarget = function () {
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(t, true);
+    }
     for (i in this.targets) this.targets[i].deleteTarget();
 };
 
@@ -171,6 +174,10 @@ TargetSet.prototype.makeSameHorizontalSpace = function () {
     }
 
 	this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 function compareRectY(a, b) {
@@ -222,6 +229,10 @@ TargetSet.prototype.makeSameVerticalSpace = function () {
     }
 
 	this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 TargetSet.prototype.alignLeft = function () {
@@ -241,6 +252,10 @@ TargetSet.prototype.alignLeft = function () {
         this.targets[i].moveBy(Math.round(delta), 0, true);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 
@@ -261,6 +276,10 @@ TargetSet.prototype.alignTop = function () {
         this.targets[i].moveBy(0, Math.round(delta), true);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 
@@ -283,6 +302,10 @@ TargetSet.prototype.alignCenter = function () {
         this.targets[i].moveBy(Math.round(delta), 0, true);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 TargetSet.prototype.alignMiddle = function () {
@@ -304,6 +327,10 @@ TargetSet.prototype.alignMiddle = function () {
         this.targets[i].moveBy(0, Math.round(delta), true);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 TargetSet.prototype.alignRight = function () {
@@ -324,6 +351,10 @@ TargetSet.prototype.alignRight = function () {
         this.targets[i].moveBy(Math.round(delta), 0, true);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 
@@ -345,6 +376,10 @@ TargetSet.prototype.alignBottom = function () {
         this.targets[i].moveBy(0, Math.round(delta), true);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 TargetSet.prototype.makeSameWidth = function () {
     var mostTarget = null;
@@ -367,6 +402,10 @@ TargetSet.prototype.makeSameWidth = function () {
         this.targets[i].setProperty("box", box);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 TargetSet.prototype.makeSameHeight = function () {
     var mostTarget = null;
@@ -389,6 +428,10 @@ TargetSet.prototype.makeSameHeight = function () {
         this.targets[i].setProperty("box", box);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 
 TargetSet.prototype.makeSameMinWidth = function () {
@@ -412,6 +455,10 @@ TargetSet.prototype.makeSameMinWidth = function () {
         this.targets[i].setProperty("box", box);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
 TargetSet.prototype.makeSameMinHeight = function () {
     var mostTarget = null;
@@ -434,9 +481,11 @@ TargetSet.prototype.makeSameMinHeight = function () {
         this.targets[i].setProperty("box", box);
     }
     this.canvas.invalidateEditors();
+
+    for (var t in this.targets) {
+        this.canvas.snappingHelper.updateSnappingGuide(this.targets[t]);
+    }
 };
-
-
 
 
 TargetSet.prototype.bringForward = function () {

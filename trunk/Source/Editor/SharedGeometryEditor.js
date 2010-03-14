@@ -83,7 +83,7 @@ SharedGeomtryEditor.prototype.handleCommandEvent = function () {
         if (dx != 0 || dy != 0) {
             this.targetObject.moveBy(dx, dy);
         }
-        
+
         if (this.targetObject.supportScaling()) {
             this.targetObject.scaleTo(this.shapeWidthTextBox.value, this.shapeHeightTextBox.value);
         }
@@ -91,7 +91,8 @@ SharedGeomtryEditor.prototype.handleCommandEvent = function () {
         if (da != 0) {
             this.targetObject.rotateBy(da);
         }
-        
+
+        Pencil.activeCanvas.snappingHelper.updateSnappingGuide(this.targetObject);
         this.invalidate();
     }, this);
 
@@ -116,8 +117,6 @@ SharedGeomtryEditor.prototype.attach = function (targetObject) {
         this.detach();
         return;
     }
-
-    debug("Attaching...");
 
     this.targetObject = targetObject;
 

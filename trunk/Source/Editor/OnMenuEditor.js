@@ -48,13 +48,17 @@ OnMenuEditor.prototype.attach = function (targetObject) {
         menu.appendChild(popup);
         var hasAction = false;
         for (var i in targetObject.def.actions) {
-            hasAction = true;
             var action = targetObject.def.actions[i];
-            var item = doc.createElementNS(PencilNamespaces.xul, "menuitem");
-            item.setAttribute("label", action.displayName);
-            item._actionId = action.id;
+            if (action.displayName) {
+                hasAction = true;
+                var item = doc.createElementNS(PencilNamespaces.xul, "menuitem");
+                item.setAttribute("label", action.displayName);
+                item._actionId = action.id;
 
-            popup.appendChild(item);
+                popup.appendChild(item);
+            } else {
+                debug("system action: " + action.id);
+            }
         }
         if (hasAction) {
             this.canvas.insertEditorContextMenuItem(menu);

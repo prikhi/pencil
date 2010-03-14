@@ -481,6 +481,7 @@ Controller.prototype._createPageView = function (page, callback) {
             page.rasterizeDataCache = null;
         }, false);
 
+        canvas.snappingHelper.rebuildSnappingGuide();
         if (callback) callback();
     }, 200);
 };

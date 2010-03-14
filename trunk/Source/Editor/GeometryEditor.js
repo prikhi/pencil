@@ -357,6 +357,9 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
     var dy = 0;
     var dh = 0;
 
+    var controller = this.canvas.currentController;
+    var bound = controller.getBounding();
+
     //HORIZONTAL
     if (!locking.width) {
         dx = matrix.dx * mdx;
@@ -371,6 +374,27 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
 
             var delta = newXNormalized - newX;
 
+            var snap = this.canvas.snappingHelper.findSnapping(true, false, {
+                vertical: [
+                    new SnappingData("Left", bound.x + dx, "Left", true, Util.newUUID())
+                ], horizontal: []
+            }, (grid.w / 2) - 1);
+
+            if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
+                this.canvas.snappingHelper.snappedX = true;
+                this.canvas.snappingHelper.snapX = newX;
+                delta = snap.dx;
+            } else {
+                var unsnapX = (this.canvas.snappingHelper.snapX != 0 && (Math.abs(this.canvas.snappingHelper.snapX - newX) > grid.w / 2));
+                if (unsnapX || !this.canvas.snappingHelper.snappedX) {
+                    this.canvas.snappingHelper.snapX = 0;
+                    this.canvas.snappingHelper.snappedX = false;
+                    this.canvas.snappingHelper.clearSnappingGuideX();
+                } else {
+                    delta = snap.dx;
+                }
+            }
+
             dx += delta;
             dw -= delta;
             //console.log(["<--", e, newX, newXNormalized, delta, dx, dw]);
@@ -380,6 +404,26 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             if (newX2Normalized < this._minX2) newX2Normalized = this._minX2;
 
             var delta = newX2Normalized - newX2;
+
+            var snap = this.canvas.snappingHelper.findSnapping(true, false, {
+                vertical: [
+                    new SnappingData("Right", bound.x + bound.width + dw, "Right", true, Util.newUUID())
+                ], horizontal: []
+            }, (grid.w / 2) - 1);
+            if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
+                this.canvas.snappingHelper.snappedX = true;
+                this.canvas.snappingHelper.snapX = newX2;
+                delta = snap.dx;
+            } else {
+                var unsnapX = (this.canvas.snappingHelper.snapX != 0 && (Math.abs(this.canvas.snappingHelper.snapX - newX2) > grid.w / 2));
+                if (unsnapX || !this.canvas.snappingHelper.snappedX) {
+                    this.canvas.snappingHelper.snapX = 0;
+                    this.canvas.snappingHelper.snappedX = false;
+                    this.canvas.snappingHelper.clearSnappingGuideX();
+                } else {
+                    delta = snap.dx;
+                }
+            }
 
             dw += delta;
             //console.log(["-->", newX2, newX2Normalized, delta, dx, dw]);
@@ -397,6 +441,27 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
 
             var delta = newYNormalized - newY;
 
+            var snap = this.canvas.snappingHelper.findSnapping(false, true, {
+                vertical: [],
+                horizontal: [
+                    new SnappingData("Top", bound.y + dy, "Top", true, Util.newUUID())
+                ]
+            }, (grid.w / 2) - 1);
+            if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
+                this.canvas.snappingHelper.snappedY = true;
+                this.canvas.snappingHelper.snapY = newY;
+                delta = snap.dy;
+            } else {
+                var unsnapY = (this.canvas.snappingHelper.snapY != 0 && (Math.abs(this.canvas.snappingHelper.snapY - newY) > grid.w / 2));
+                if (unsnapY || !this.canvas.snappingHelper.snappedY) {
+                    this.canvas.snappingHelper.snapY = 0;
+                    this.canvas.snappingHelper.snappedY = false;
+                    this.canvas.snappingHelper.clearSnappingGuideY();
+                } else {
+                    delta = snap.dy;
+                }
+            }
+
             dy += delta;
             dh -= delta;
         } else {
@@ -406,12 +471,73 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
 
             var delta = newY2Normalized - newY2;
 
+            var snap = this.canvas.snappingHelper.findSnapping(false, true, {
+                vertical: [],
+                horizontal: [
+                    new SnappingData("Bottom", bound.y + bound.height + dh, "Bottom", true, Util.newUUID())
+                ]
+            }, (grid.w / 2) - 1);
+            if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
+                this.canvas.snappingHelper.snappedY = true;
+                this.canvas.snappingHelper.snapY = newY2;
+                delta = snap.dy;
+            } else {
+                var unsnapY = (this.canvas.snappingHelper.snapY != 0 && (Math.abs(this.canvas.snappingHelper.snapY - newY2) > grid.w / 2));
+                if (unsnapY || !this.canvas.snappingHelper.snappedY) {
+                    this.canvas.snappingHelper.snapY = 0;
+                    this.canvas.snappingHelper.snappedY = false;
+                    this.canvas.snappingHelper.clearSnappingGuideY();
+                } else {
+                    delta = snap.dy;
+                }
+            }
+
             dh += delta;
         }
     }
 
+    /*if (snap && ((snap.dx != 0 && !this.canvas.snappingHelper.snappedX) || (snap.dy != 0 && !this.canvas.snappingHelper.snappedY))) {
+        if (snap.dx != 0 && !this.canvas.snappingHelper.snappedX) {
+            this.canvas.snappingHelper.snappedX = true;
+            this.canvas.snappingHelper.snapX = newX;
+            //this.currentController._pSnapshot.lastDX += snap.dx;
+            debug("** snapX");
+        }
+        if (snap.dy != 0 && !this.snappingHelper.snappedY) {
+            this.snappingHelper.snappedY = true;
+            this.snappingHelper.snapY = newY;
+            this.currentController._pSnapshot.lastDY += snap.dy;
+            debug("snapY");
+        }
+        this.currentController.moveBy(snap.dx, snap.dy);
+    } else {
+        var unsnapX = (this.snappingHelper.snapX != 0 && (Math.abs(this.snappingHelper.snapX - newX) > Pencil.UNSNAP));
+        var unsnapY = (this.snappingHelper.snapY != 0 && (Math.abs(this.snappingHelper.snapY - newY) > Pencil.UNSNAP));
+        //debug("unsnap: " + [unsnapX, unsnapY]);
 
-
+        if (!this.snappingHelper.snappedX && !this.snappingHelper.snappedY) {
+            this.currentController.moveFromSnapshot(dx, dy);
+        } else {
+            if (unsnapX || !this.snappingHelper.snappedX) {
+                this.currentController.moveFromSnapshot(dx, this.snappingHelper.snappedY ? this.currentController._pSnapshot.lastDY : dy);
+            }
+            if (unsnapY || !this.snappingHelper.snappedY) {
+                this.currentController.moveFromSnapshot(this.snappingHelper.snappedX ? this.currentController._pSnapshot.lastDX : dx, dy);
+                this.snappingHelper.snapY = 0;
+                this.snappingHelper.snappedY = false;
+            }
+            if (unsnapX || !this.snappingHelper.snappedX) {
+                this.snappingHelper.snapX = 0;
+                this.snappingHelper.snappedX = false;
+            }
+            if (unsnapX) {
+                this.snappingHelper.clearSnappingGuideX();
+            }
+            if (unsnapY) {
+                this.snappingHelper.clearSnappingGuideY();
+            }
+        }
+    }*/
 
     //this.currentAnchor = null;
 

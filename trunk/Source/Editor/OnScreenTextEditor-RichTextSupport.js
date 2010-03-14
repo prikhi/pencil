@@ -1,12 +1,16 @@
 // onscreen richtext editing support functions (private)
 OnScreenTextEditor.richTextEditor = null;
 OnScreenTextEditor.richTextEditorPane = null;
+OnScreenTextEditor.miniToolbarPane = null;
 
 OnScreenTextEditor._runEditorCommand = function(command, arg) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     try {
-        if (typeof(arg) != "undefined") OnScreenTextEditor.richTextEditor.contentDocument.execCommand(command, false, arg);
-        else OnScreenTextEditor.richTextEditor.contentDocument.execCommand(command, false, null);
+        if (typeof(arg) != "undefined") {
+            OnScreenTextEditor.richTextEditor.contentDocument.execCommand(command, false, arg);
+        } else {
+            OnScreenTextEditor.richTextEditor.contentDocument.execCommand(command, false, null);
+        }
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
@@ -74,34 +78,44 @@ OnScreenTextEditor._ensureSupportElements = function () {
 
 OnScreenTextEditor._ensureSupportElementsImpl = function() {
     if (!OnScreenTextEditor.richTextEditor) {
-    
+
         //setup toolbar
         var fontPopup = document.getElementById("fontPopup");
+        var mfontPopup = document.getElementById("mfontPopup");
         var localFonts = Local.getInstalledFonts();
         for (var i in localFonts) {
             var item = document.createElement("menuitem");
             item.setAttribute("label", localFonts[i]);
             item.setAttribute("value", localFonts[i]);
+            //item.setAttribute("style", "font-family:'" + localFonts[i] + "';font-size:14px;font-weight:normal;");
             fontPopup.appendChild(item);
+
+            var item1 = document.createElement("menuitem");
+            item1.setAttribute("label", localFonts[i]);
+            item1.setAttribute("value", localFonts[i]);
+            item1.setAttribute("style", "font-family:'" + localFonts[i] + "';font-size:14px;font-weight:normal;");
+            mfontPopup.appendChild(item1);
         }
         OnScreenTextEditor._enableTextToolbar(false);
-        
+
+        OnScreenTextEditor.miniToolbarPane = document.getElementById("miniToolbar");
         OnScreenTextEditor.richTextEditor = document.getElementById("richTextEditor");
         OnScreenTextEditor.richTextEditorPane = document.getElementById("richTextEditorPane");
-        
+
         OnScreenTextEditor.richTextEditor.contentDocument.designMode = "on";
         OnScreenTextEditor._runEditorCommand("styleWithCSS", true);
-        
+
         OnScreenTextEditor.richTextEditorPane.style.visibility = "hidden";
-        
+        OnScreenTextEditor.miniToolbarPane.style.visibility = "hidden";
+
         document.getElementById("mainToolbox").addEventListener("focus", function (event) {
                 OnScreenTextEditor.shoudClose = false;
         }, true);
-        
+
         OnScreenTextEditor.richTextEditor.contentWindow.addEventListener("blur", function (event) {
-            
+
             OnScreenTextEditor.shoudClose = true;
-            
+
             window.setTimeout(function() {
                 if (!OnScreenTextEditor.shoudClose) {
                     return;
@@ -113,13 +127,15 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
                 OnScreenTextEditor.currentInstance.applyChanges();
                 OnScreenTextEditor._hide();
             }, 20)
-            
+
         }, false);
         OnScreenTextEditor.richTextEditorPane.addEventListener("keypress", function (event) {
             if (event.keyCode == event.DOM_VK_ESCAPE) {
                 OnScreenTextEditor._hide();
             } else if (event.keyCode == event.DOM_VK_RETURN && !event.shiftKey) {
-                OnScreenTextEditor.currentInstance.applyChanges();
+                if (OnScreenTextEditor.currentInstance) {
+                    OnScreenTextEditor.currentInstance.applyChanges();
+                }
                 OnScreenTextEditor._hide();
                 Dom.cancelEvent(event);
             }
@@ -127,42 +143,45 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         var selectListener = function (event) {
             var temp = OnScreenTextEditor.isEditing;
             OnScreenTextEditor.isEditing = false;
-            
-            OnScreenTextEditor._updateListByCommandValue("formatblock", "blockList");
-            OnScreenTextEditor._updateListByCommandValue("fontsize", "edSizeList");
-            OnScreenTextEditor._updateListByCommandValue("fontname", "fontList");
 
-            OnScreenTextEditor._updateColorButtonByCommandValue("forecolor", "textColorButton");
-            OnScreenTextEditor._updateColorButtonByCommandValue("hilitecolor", "hilightColorButton");
+            OnScreenTextEditor._updateListByCommandValue("fontname", "mfontList");
+            OnScreenTextEditor._updateListByCommandValue("fontsize", "mfontSize");
 
-            OnScreenTextEditor._updateButtonByCommandState("bold", "edBoldButton");
-            OnScreenTextEditor._updateButtonByCommandState("italic", "edItalicButton");
-            OnScreenTextEditor._updateButtonByCommandState("underline", "edUnderlineButton");
-            OnScreenTextEditor._updateButtonByCommandState("strikethrough", "edStrikeButton");
-            
+            OnScreenTextEditor._updateButtonByCommandState("bold", "medBoldButton");
+            OnScreenTextEditor._updateButtonByCommandState("italic", "medItalicButton");
+            OnScreenTextEditor._updateButtonByCommandState("underline", "medUnderlineButton");
+            OnScreenTextEditor._updateButtonByCommandState("strikethrough", "medStrikeButton");
+
+            OnScreenTextEditor._updateButtonByCommandState("justifyleft", "malignLeftCommand");
+            OnScreenTextEditor._updateButtonByCommandState("justifycenter", "malignCenterCommand");
+            OnScreenTextEditor._updateButtonByCommandState("justifyright", "malignRightCommand");
+
             OnScreenTextEditor.isEditing = temp;
         };
+
         OnScreenTextEditor.richTextEditor.contentDocument.body.addEventListener("mouseup", selectListener, false);
         OnScreenTextEditor.richTextEditor.contentDocument.body.addEventListener("keypress", selectListener, false);
-        
-        //editor command handlers
-        OnScreenTextEditor._installListCommandHandler("blockList", "formatblock");
-        OnScreenTextEditor._installListCommandHandler("edSizeList", "fontsize");
-        OnScreenTextEditor._installListCommandHandler("fontList", "fontname");
-        
-        OnScreenTextEditor._installColorCommandHandler("textColorButton", "forecolor");
-        OnScreenTextEditor._installColorCommandHandler("hilightColorButton", "hilitecolor");
-        
-        OnScreenTextEditor._installSimpleCommandHandler("edBoldButton", "bold");
-        OnScreenTextEditor._installSimpleCommandHandler("edItalicButton", "italic");
-        OnScreenTextEditor._installSimpleCommandHandler("edUnderlineButton", "underline");
-        OnScreenTextEditor._installSimpleCommandHandler("edStrikeButton", "strikethrough");
-        OnScreenTextEditor._installSimpleCommandHandler("edBulletedListButton", "insertunorderedlist");
-        OnScreenTextEditor._installSimpleCommandHandler("edNumberedListButton", "insertorderedlist");
-        OnScreenTextEditor._installSimpleCommandHandler("edIndentButton", "indent");
-        OnScreenTextEditor._installSimpleCommandHandler("edOutdentButton", "outdent");
-        OnScreenTextEditor._installSimpleCommandHandler("clearButton", "removeformat");
-        OnScreenTextEditor._installSimpleCommandHandler("insertLinkButton", "createlink", "#");
+
+        OnScreenTextEditor._installListCommandHandler("mfontList", "fontname");
+        OnScreenTextEditor._installListCommandHandler("mfontSize", "fontsize");
+
+        OnScreenTextEditor._installColorCommandHandler("mtextColorButton", "forecolor");
+        OnScreenTextEditor._installColorCommandHandler("mhilightColorButton", "hilitecolor");
+
+        OnScreenTextEditor._installSimpleCommandHandler("medBoldButton", "bold");
+        OnScreenTextEditor._installSimpleCommandHandler("medItalicButton", "italic");
+        OnScreenTextEditor._installSimpleCommandHandler("medUnderlineButton", "underline");
+        OnScreenTextEditor._installSimpleCommandHandler("medStrikeButton", "strikethrough");
+        OnScreenTextEditor._installSimpleCommandHandler("malignLeftCommand", "justifyleft");
+        OnScreenTextEditor._installSimpleCommandHandler("malignCenterCommand", "justifycenter");
+        OnScreenTextEditor._installSimpleCommandHandler("malignRightCommand", "justifyright");
+        OnScreenTextEditor._installSimpleCommandHandler("medBulletedListButton", "insertunorderedlist");
+        OnScreenTextEditor._installSimpleCommandHandler("medNumberedListButton", "insertorderedlist");
+        OnScreenTextEditor._installSimpleCommandHandler("medIndentButton", "indent");
+        OnScreenTextEditor._installSimpleCommandHandler("medOutdentButton", "outdent");
+        OnScreenTextEditor._installSimpleCommandHandler("medIncreaseFontButton", "increasefontsize");
+        OnScreenTextEditor._installSimpleCommandHandler("medDecreaseFontButton", "decreasefontsize");
+        OnScreenTextEditor._installSimpleCommandHandler("mclearButton", "removeformat");
     }
 };
 OnScreenTextEditor._installListCommandHandler = function (id, commandName) {
@@ -177,7 +196,7 @@ OnScreenTextEditor._installSimpleCommandHandler = function (id, commandName, val
     doc.getElementById(id).addEventListener("command", function (event) {
         if (!OnScreenTextEditor.isEditing) return;
         if (value) {
-        OnScreenTextEditor._runEditorCommand(commandName, event.originalTarget);
+            OnScreenTextEditor._runEditorCommand(commandName, event.originalTarget);
         } else {
             OnScreenTextEditor._runEditorCommand(commandName);
         }
@@ -188,7 +207,7 @@ OnScreenTextEditor._installColorCommandHandler = function (id, commandName) {
     var picker = doc.getElementById(id);
     picker.addEventListener("change", function (event) {
         if (!OnScreenTextEditor.isEditing) return;
-        OnScreenTextEditor._runEditorCommand(commandName, picker.color.toRGBString());
+        OnScreenTextEditor._runEditorCommand(commandName, picker.color.toRGBAString());
     }, false);
 };
 
@@ -199,8 +218,7 @@ OnScreenTextEditor._updateListByCommandValue = function (commandName, controlId)
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
-    
-    
+
     var control = document.getElementById(controlId);
     if (control.localName == "menulist") {
         if (value == null) return;
@@ -214,7 +232,7 @@ OnScreenTextEditor._updateColorButtonByCommandValue = function (commandName, con
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
-    
+
     var control = document.getElementById(controlId);
     if (control.localName == "pcolorbutton") {
         if (value == null) return;
@@ -228,8 +246,7 @@ OnScreenTextEditor._updateButtonByCommandState = function (commandName, controlI
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
-    
-    
+
     var control = document.getElementById(controlId);
     if (control.localName == "toolbarbutton") {
         control.checked = value ? true : false;
@@ -241,14 +258,15 @@ OnScreenTextEditor._hide = function () {
     OnScreenTextEditor._enableGlobalClipboardKeys(true);
     OnScreenTextEditor._enableTextToolbar(false);
     OnScreenTextEditor.richTextEditorPane.style.visibility = "hidden";
-    
+    OnScreenTextEditor.miniToolbarPane.style.visibility = "hidden";
+
     try {
         if (OnScreenTextEditor.currentInstance) OnScreenTextEditor.currentInstance.canvas.focusableBox.focus();
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
     OnScreenTextEditor.currentInstance = null;
-    
+
     if (OnScreenTextEditor.backedupTarget) {
         for (var i in Pencil.sharedEditors) {
             try {
@@ -272,11 +290,11 @@ OnScreenTextEditor.prototype.applyChanges = function () {
     if (html.match(/^<body[^>]*>([^\0]*)<\/body>$/)) {
         html = RegExp.$1;
     }
-    
+
     this.currentTarget.setProperty(this.textEditingInfo.prop.name, RichText.fromString(html));
 };
 
-OnScreenTextEditor.prototype._setupRichTextEditor = function () {
+OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     for (var i in Pencil.sharedEditors) {
         try {
             Pencil.sharedEditors[i].detach();
@@ -284,10 +302,10 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function () {
             Console.dumpError(e, "stdout");
         }
     }
-    
+
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = "";
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = this.textEditingInfo.value;
-    
+
     if (this.textEditingInfo.font) {
         var font = this.textEditingInfo.font;
         var body = OnScreenTextEditor.richTextEditor.contentDocument.body;
@@ -298,31 +316,30 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function () {
     }
     var ctm = this.textEditingInfo.target.getScreenCTM();
     var svgCTM = this.canvas.svg.getScreenCTM();
-    
+
     //tricky dx, dy: screenCTM of SVG and screen location of its parent is not the same.
     var dx = this.canvas.svg.parentNode.boxObject.screenX - svgCTM.e;
     var dy = this.canvas.svg.parentNode.boxObject.screenY - svgCTM.f;
-    
+
     var boxObject = OnScreenTextEditor.richTextEditorPane.parentNode.boxObject;
-    
+
     var x = ctm.e - boxObject.screenX + dx;
     var y = ctm.f - boxObject.screenY + dy;
     var bbox = this.textEditingInfo.target.getBBox();
-    
+
     var width = Math.max(bbox.width, 100);
     var height = Math.min(Math.max(bbox.height + 2, 50), 500);
-    
-    
+
     var svgContainer = this.canvas.svg.parentNode;
     var geo = this.canvas.getZoomedGeo(this.currentTarget);
-    
+
     if (this.textEditingInfo.bound) {
         x += this.textEditingInfo.bound.x - 1;
         y += this.textEditingInfo.bound.y - 1;
         width = this.textEditingInfo.bound.w + 4;
         height = this.textEditingInfo.bound.h + 4;
     }
-    
+
     if (x < 0) {
         width += x;
         x = 0;
@@ -331,30 +348,49 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function () {
         height += y;
         y = 0;
     }
-    
+
     if (width + x > boxObject.width) {
         width = boxObject.width - x;
     }
     if (height + y > boxObject.height) {
         height = boxObject.height - y;
     }
-    
+
     OnScreenTextEditor.richTextEditorPane.setAttribute("left", x);
     OnScreenTextEditor.richTextEditorPane.setAttribute("top", y);
     OnScreenTextEditor.richTextEditorPane.setAttribute("width", width);
     OnScreenTextEditor.richTextEditorPane.setAttribute("height", height);
-    
+
+    OnScreenTextEditor.miniToolbarPane._oX = event.clientX;
+    OnScreenTextEditor.miniToolbarPane._oY = event.clientY;
+
+    OnScreenTextEditor.miniToolbarPane.setAttribute("left", x);
+    OnScreenTextEditor.miniToolbarPane.setAttribute("top", y - 60);
+    OnScreenTextEditor.miniToolbarPane.setAttribute("width", 265);
+
     OnScreenTextEditor._enableGlobalClipboardKeys(false);
-    OnScreenTextEditor._enableTextToolbar(true);
+    OnScreenTextEditor._enableTextToolbar(false);
     OnScreenTextEditor.richTextEditorPane.style.visibility = "visible";
+    OnScreenTextEditor.miniToolbarPane.style.visibility = "visible";
 
     OnScreenTextEditor.richTextEditor.contentWindow.focus();
     OnScreenTextEditor.richTextEditor.contentWindow.scrollTo(0, 0);
     OnScreenTextEditor._runEditorCommand("selectall");
-    
+
+    OnScreenTextEditor._updateListByCommandValue("fontname", "mfontList");
+    OnScreenTextEditor._updateListByCommandValue("fontsize", "mfontSize");
+
+    OnScreenTextEditor._updateButtonByCommandState("bold", "medBoldButton");
+    OnScreenTextEditor._updateButtonByCommandState("italic", "medItalicButton");
+    OnScreenTextEditor._updateButtonByCommandState("underline", "medUnderlineButton");
+    OnScreenTextEditor._updateButtonByCommandState("strikethrough", "medStrikeButton");
+
+    OnScreenTextEditor._updateButtonByCommandState("justifyleft", "malignLeftCommand");
+    OnScreenTextEditor._updateButtonByCommandState("justifycenter", "malignCenterCommand");
+    OnScreenTextEditor._updateButtonByCommandState("justifyright", "malignRightCommand");
+
     var canvas = Pencil.activeCanvas;
     var target = canvas.currentController;
     OnScreenTextEditor.backedupTarget = target;
     OnScreenTextEditor.isEditing = true;
-    
 };

@@ -7,6 +7,8 @@ window.onerror = function (message, url, code) {
 
 var Pencil = {};
 
+Pencil.SNAP = 4;
+Pencil.UNSNAP = 7;
 Pencil.editorClasses = [];
 Pencil.registerEditor = function (editorClass) {
     Pencil.editorClasses.push(editorClass);
@@ -110,11 +112,13 @@ Pencil.boot = function (event) {
         document.documentElement.addEventListener("p:ContentModified", Pencil._setupUndoRedoCommand, false);
 
         Pencil.postBoot();
-        /*
+
+        //Util.preloadFonts(document);
+
         window.setTimeout(function() {
             Pencil.controller.newDocument();
         }, 500);
-        */
+
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
@@ -244,6 +248,7 @@ Pencil._enableCommand = function (name, condition) {
 Pencil.getGridSize = function () {
     var size = Config.get("edit.gridSize", 5);
     return {w: size, h: size};
+    //return {w: 30, h: 30};
 };
 
 Pencil.getCurrentTarget = function () {

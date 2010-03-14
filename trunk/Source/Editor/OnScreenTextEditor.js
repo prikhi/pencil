@@ -75,7 +75,7 @@ OnScreenTextEditor.prototype.handleShapeDoubleClicked = function (event) {
             this._setupEditor();
         } else if (this.textEditingInfo.type == RichText) {
             OnScreenTextEditor.currentInstance = this;
-            this._setupRichTextEditor();
+            this._setupRichTextEditor(event);
             /*
             var returnValueHolder = {};
             var dialog = window.openDialog("RichTextDialog.xul", "richTextEditor" + Util.getInstanceToken(), "modal,centerscreen", this.textEditingInfo, returnValueHolder);
