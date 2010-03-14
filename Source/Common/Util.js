@@ -60,7 +60,9 @@ Dom.registerEvent = function (target, event, handler, capture) {
     }
     target.addEventListener(event, handler, useCapture);
 };
-
+Dom.getEvent = function (e) {
+    return window.event ? window.event : e;
+};
 Dom.disableEvent = function (node, event) {
     Dom.registerEvent(node, event, function(ev) {Dom.cancelEvent(ev);}, true );
 };

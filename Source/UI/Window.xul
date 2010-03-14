@@ -35,6 +35,7 @@
 <script src="../CanvasHelper/CanvasCareTaker.js"/>
 <script src="../CanvasHelper/CanvasMemento.js"/>
 <script src="../CanvasHelper/CanvasImpl.js"/>
+<script src="../CanvasHelper/SnappingHelper.js"/>
 
 <script src="../PrivateCollection/PrivateCollection.js"/>
 <script src="../PrivateCollection/PrivateShapeDef.js"/>
@@ -75,6 +76,7 @@
 <script src="../PropertyType/RichText.js"/>
 <script src="../PropertyType/ImageData.js"/>
 <script src="../PropertyType/ShadowStyle.js"/>
+<script src="../PropertyType/SnappingData.js"/>
 
 <script src="../Common/TypeEditorRegistry.js"/>
 <script src="../Common/CollectionSettingEditor.js"/>

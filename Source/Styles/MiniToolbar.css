@@ -1,0 +1,9 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+@namespace svg url(http://www.w3.org/2000/svg);
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+#miniToolbar {
+	border: solid 1px #ddd;
+	visibility: hidden;
+	-moz-border-radius: 2px;
+}

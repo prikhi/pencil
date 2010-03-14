@@ -161,6 +161,7 @@ Shape.prototype.evalExpression = function (expression, value) {
             return eval("" + expression);
         }
     } catch (e) {
+        Console.dumpError(e);
         return defaultValue;
     }
 };
@@ -270,7 +271,6 @@ Shape.prototype.scaleTo = function (nw, nh, group) {
     }
 };
 Shape.prototype.rotateBy = function (da) {
-    debug("rotateBy: " + da);
     var ctm = this.svg.getTransformToElement(this.svg.parentNode);
 
     var x = 0, y = 0;
@@ -456,6 +456,7 @@ Shape.prototype.normalizePositionToGrid = function () {
     this.clearPositionSnapshot();
 };
 Shape.prototype.deleteTarget = function () {
+    this.canvas.snappingHelper.updateSnappingGuide(this, true);
     this.dockingManager.deleteTarget();
     this.svg.parentNode.removeChild(this.svg);
 };
@@ -621,7 +622,6 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 }
                             }
                         }
-
                         if (font) {
                             info = {
                                 prop: prop,
@@ -687,9 +687,9 @@ Shape.prototype.markAsMoving = function (moving) {
 };
 Shape.prototype.performAction = function (id) {
     var shapeAction = this.def.actionMap[id];
-    if (!shapeAction) return;
+    if (!shapeAction) { return null; }
 
-    shapeAction.implFunction.apply(this, []);
+    return shapeAction.implFunction.apply(this, []);
 }
 
 Shape.prototype.getAttachedSlots = function () {
@@ -723,4 +723,52 @@ Shape.prototype.canDetach = function () {
     }
     return false;
 };
+Shape.prototype.getSnappingGuide = function () {
+    var b = this.getBounding();
 
+    var vertical = [];
+    var horizontal = [];
+
+    vertical.push(new SnappingData("Left", b.x, "Left", true, this.id, false, b.y, b.y + b.height));
+    vertical.push(new SnappingData("VCenter", b.x + b.width/2, "VCenter", true, this.id, false, b.y, b.y + b.height));
+    vertical.push(new SnappingData("Right", b.x + b.width, "Right", true, this.id, false, b.y, b.y + b.height));
+
+    horizontal.push(new SnappingData("Top", b.y, "Top", false, this.id, false, b.x, b.x + b.width));
+    horizontal.push(new SnappingData("HCenter", b.y + b.height/2, "HCenter", false, this.id, false, b.x, b.x + b.width));
+    horizontal.push(new SnappingData("Bottom", b.y + b.height, "Bottom", false, this.id, false, b.x, b.x + b.width));
+
+    var customSnappingData = this.performAction("getSnappingGuide");
+    if (customSnappingData) {
+        for (var i = 0; i < customSnappingData.length; i++) {
+            if (customSnappingData[i].vertical) {
+                var ik = -1;
+                for (var k = 0; k < vertical.length; k++) {
+                    if (vertical[k].type == customSnappingData[i].type) {
+                        ik = k;
+                    }
+                }
+                if (ik != -1) {
+                    vertical[ik] = customSnappingData[i];
+                } else {
+                    vertical.push(customSnappingData[i]);
+                }
+            } else {
+                var ik = -1;
+                for (var k = 0; k < horizontal.length; k++) {
+                    if (horizontal[k].type == customSnappingData[i].type) {
+                        ik = k;
+                    }
+                }
+                if (ik != -1) {
+                    horizontal[ik] = customSnappingData[i];
+                } else {
+                    horizontal.push(customSnappingData[i]);
+                }
+            }
+        }
+    }
+
+    return {
+        vertical: vertical, horizontal: horizontal
+    }
+};

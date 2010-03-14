@@ -14,6 +14,9 @@ pcanvas svg {
 pcanvas svg|g[p|type='Shape'] {
 	cursor: move;
 }
+pcanvas svg|g[p|type='Shape'][p|locked='true'] {
+	cursor: default;
+}
 pcanvas.Painter,
 pcanvas.Painter svg|g[p|type='Shape'] {
     cursor: url(../UI/Icons/format-painter-16.png) 16 16, default !important;
@@ -80,9 +83,9 @@ pcanvas svg|svg svg|g[p|type][p|moving] * {
     visibility: hidden !important;
 }
 pcanvas g[p|name='Background'] g[p|name='grids'] {
-    opacity: .1;
+    opacity: .3;
 }
-pcanvas g[p|name='Background'] g[p|name='grids'] path {
+pcanvas g[p|name='Background'] g[p|name='grids'] line {
     stroke: #777;
     stroke-width: 1px;
     fill: none;
@@ -102,7 +105,17 @@ pcanvas[p|with-background][p|with-background-dimmer] svg|rect[p|name='Background
     visibility: visible;
     opacity: .2;
 }
-
+pcanvas g[p|name='Snapping'] line {
+	fill: none;
+	stroke: blue;
+	stroke-width: 1;
+	opacity: 0.3;
+}
+pcanvas g[p|name='Snapping'] line.Center,
+pcanvas g[p|name='Snapping'] line.HCenter,
+pcanvas g[p|name='Snapping'] line.VCenter {
+	stroke: magenta;
+}
 
 
 

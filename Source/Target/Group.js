@@ -293,6 +293,7 @@ Group.prototype.clearPositionSnapshot = function () {
 };
 
 Group.prototype.deleteTarget = function () {
+    this.canvas.snappingHelper.updateSnappingGuide(this, true);
     this.dockingManager.deleteTarget();
     this.svg.parentNode.removeChild(this.svg);
 };
@@ -365,6 +366,21 @@ Group.prototype.markAsMoving = function (moving) {
     Svg.optimizeSpeed(this.svg, moving);
 };
 
+Group.prototype.getSnappingGuide = function () {
+    var b = this.getBounding();
 
+    var vertical = [];
+    var horizontal = [];
 
+    vertical.push(new SnappingData("Left", b.x, "Left", true, this.id, false, b.y, b.y + b.height));
+    vertical.push(new SnappingData("VCenter", b.x + b.width/2, "VCenter", true, this.id, false, b.y, b.y + b.height));
+    vertical.push(new SnappingData("Right", b.x + b.width, "Right", true, this.id, false, b.y, b.y + b.height));
 
+    horizontal.push(new SnappingData("Top", b.y, "Top", false, this.id, false, b.x, b.x + b.width));
+    horizontal.push(new SnappingData("HCenter", b.y + b.height/2, "HCenter", false, this.id, false, b.x, b.x + b.width));
+    horizontal.push(new SnappingData("Bottom", b.y + b.height, "Bottom", false, this.id, false, b.x, b.x + b.width));
+
+    return {
+        vertical: vertical, horizontal: horizontal
+    }
+};

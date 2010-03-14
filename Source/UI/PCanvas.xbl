@@ -62,19 +62,20 @@
                 var fixRef = this.svg;
 
                 window.setTimeout(function () {
-                    var matrix = fixTarget.getScreenCTM();
-                    var dx = matrix.e - Math.floor(matrix.e);
-                    var dy = matrix.f - Math.floor(matrix.f);
+                    try {
+                        var matrix = fixTarget.getScreenCTM();
+                        var dx = matrix.e - Math.floor(matrix.e);
+                        var dy = matrix.f - Math.floor(matrix.f);
 
-                    if (dx != 0 || dy != 0) {
-                        matrix = fixRef.getScreenCTM();
-                        dx = matrix.e - Math.floor(matrix.e);
-                        dy = matrix.f - Math.floor(matrix.f);
+                        if (dx != 0 || dy != 0) {
+                            matrix = fixRef.getScreenCTM();
+                            dx = matrix.e - Math.floor(matrix.e);
+                            dy = matrix.f - Math.floor(matrix.f);
 
-                        var t = "translate(" + (0 - dx) + "," + (0 - dy) + ")";
-                        fixTarget.setAttribute("transform", t);
-                    }
-
+                            var t = "translate(" + (0 - dx) + "," + (0 - dy) + ")";
+                            fixTarget.setAttribute("transform", t);
+                        }
+                    } catch (e) { }
                     window.setTimeout(arguments.callee, 1000);
                 }, 1000);
                 this.svg.appendChild(this.topGroup);
@@ -105,7 +106,6 @@
                 rect.setAttributeNS(PencilNamespaces.p, "p:name", "BackgroundDimmer");
                 this.bgLayer.appendChild(rect);
 
-
                 this.topGroup.appendChild(this.bgLayer);
 
                 //create the drawing layer
@@ -129,6 +129,8 @@
                 Svg.setWidth(this.rangeBoundRect, 100);
                 Svg.setHeight(this.rangeBoundRect, 100);
                 this.rangeBoundRect.setAttributeNS(PencilNamespaces.p, "p:type", "RangeBound");
+
+                this.snappingHelper = new SnappingHelper(this);
 
                 this.idSeed = 1;
 
@@ -518,7 +520,10 @@
                     }
 
                     this.selectShape(shape);
+
+                    this.snappingHelper.updateSnappingGuide(this.currentController);
                     DockingManager.enableDocking(this.currentController);
+
                 ]]>
                 </body>
             </method>
@@ -649,6 +654,8 @@
                         }
                     };
 
+                    this.snappingHelper.clearSnappingGuide();
+
                     this._button = event.button;
 
                     var thiz = this;
@@ -725,6 +732,10 @@
 
                             this.oX = Math.round(event.clientX / this.zoom);
                             this.oY = Math.round(event.clientY / this.zoom);
+
+                            this._lastNewX = Math.round(event.clientX / this.zoom);
+                            this._lastNewY = Math.round(event.clientY / this.zoom);
+
                             this.oldPos = this.currentController.getGeometry();
 
                             tick("before setPositionSnapshot");
@@ -758,6 +769,9 @@
                         this.currentController.markAsMoving(false);
                         this.currentController.clearPositionSnapshot();
                         this.invalidateEditors();
+
+                        this.snappingHelper.updateSnappingGuide(this.currentController);
+                        this.snappingHelper.clearSnappingGuide();
 
                         Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
                     }
@@ -853,6 +867,18 @@
                     }
 
                     try {
+                        this.snappingHelper.clearSnappingGuide();
+
+                        if (this.currentController) {
+                            if (this.currentController.constructor == TargetSet) {
+                                for (var t in this.currentController.targets) {
+                                    this.snappingHelper.updateSnappingGuide(this.currentController.targets[t]);
+                                }
+                            } else {
+                                this.snappingHelper.updateSnappingGuide(this.currentController);
+                            }
+                        }
+
                         DockingManager.enableDocking(this.currentController);
 
                         var canvas = Dom.findUpward(event.originalTarget, function (node) {
@@ -913,8 +939,9 @@
                 <parameter name="fake"/>
                 <body>
                 <![CDATA[
+                try {
                     if (this._button != 0) return;
-                    
+
                     if (!fake) {
                         event.preventDefault();
                         event.stopPropagation();
@@ -922,6 +949,7 @@
 
                     if (this.controllerHeld && this.currentController) {
                         tick("start");
+
                         if (this.currentController.markAsMoving) this.currentController.markAsMoving(true);
                         tick("after mark");
                         var newX = Math.round(event.clientX / this.zoom);
@@ -930,14 +958,69 @@
                         var dx = newX - this.oX;
                         var dy = newY - this.oY;
 
+                        var accX = Math.abs(newX - this._lastNewX) < 2;
+                        var accY = Math.abs(newY - this._lastNewY) < 2;
+
+                        this._lastNewX = newX;
+                        this._lastNewY = newY;
+
+                        this.currentX = newX;
+                        this.currentY = newY;
+
                         //this.oX = newX;
                         //this.oY = newY;
 
                         this.hasMoved = true;
+
                         if (this.currentController.dockingManager) {
                             this.currentController.dockingManager.altKey = event.altKey;
                         }
-                        this.currentController.moveFromSnapshot(dx, dy);
+
+                        var snap = this.snappingHelper.findSnapping(accX && !this.snappingHelper.snappedX, accY && !this.snappingHelper.snappedY);
+                        //debug("snap: " + [snap.dx, snap.dy, this.snappedX, this.snappedY]);
+                        if (snap && ((snap.dx != 0 && !this.snappingHelper.snappedX && accX) || (snap.dy != 0 && !this.snappingHelper.snappedY && accY))) {
+                            if (snap.dx != 0 && !this.snappingHelper.snappedX) {
+                                this.snappingHelper.snappedX = true;
+                                this.snappingHelper.snapX = newX;
+                                this.currentController._pSnapshot.lastDX += snap.dx;
+                                debug("snapX");
+                            }
+                            if (snap.dy != 0 && !this.snappingHelper.snappedY) {
+                                this.snappingHelper.snappedY = true;
+                                this.snappingHelper.snapY = newY;
+                                this.currentController._pSnapshot.lastDY += snap.dy;
+                                debug("snapY");
+                            }
+                            this.currentController.moveBy(snap.dx, snap.dy);
+                        } else {
+                            var unsnapX = (this.snappingHelper.snapX != 0 && (Math.abs(this.snappingHelper.snapX - newX) > Pencil.UNSNAP));
+                            var unsnapY = (this.snappingHelper.snapY != 0 && (Math.abs(this.snappingHelper.snapY - newY) > Pencil.UNSNAP));
+                            //debug("unsnap: " + [unsnapX, unsnapY]);
+
+                            if (!this.snappingHelper.snappedX && !this.snappingHelper.snappedY) {
+                                this.currentController.moveFromSnapshot(dx, dy);
+                            } else {
+                                if (unsnapX || !this.snappingHelper.snappedX) {
+                                    this.currentController.moveFromSnapshot(dx, this.snappingHelper.snappedY ? this.currentController._pSnapshot.lastDY : dy);
+                                }
+                                if (unsnapY || !this.snappingHelper.snappedY) {
+                                    this.currentController.moveFromSnapshot(this.snappingHelper.snappedX ? this.currentController._pSnapshot.lastDX : dx, dy);
+                                    this.snappingHelper.snapY = 0;
+                                    this.snappingHelper.snappedY = false;
+                                }
+                                if (unsnapX || !this.snappingHelper.snappedX) {
+                                    this.snappingHelper.snapX = 0;
+                                    this.snappingHelper.snappedX = false;
+                                }
+                                if (unsnapX) {
+                                    this.snappingHelper.clearSnappingGuideX();
+                                }
+                                if (unsnapY) {
+                                    this.snappingHelper.clearSnappingGuideY();
+                                }
+                            }
+                        }
+
                         tick("after move");
                         return;
                     }
@@ -957,6 +1040,10 @@
                         this.setRangeBoundStart(x1, y1);
                         this.setRangeBoundSize(w, h);
                     }
+                } catch (ex) {
+                    error(ex);
+                }
+
                 ]]>
                 </body>
             </method>
@@ -1022,6 +1109,14 @@
                             //this.currentController.moveBy(dx, dy);
                             this.currentController.moveBy(dx, dy, false, true);
                         }, this);
+
+                        if (this.currentController.constructor == TargetSet) {
+                            for (var t in this.currentController.targets) {
+                                this.snappingHelper.updateSnappingGuide(this.currentController.targets[t]);
+                            }
+                        } else {
+                            this.snappingHelper.updateSnappingGuide(this.currentController);
+                        }
 
                         this.invalidateEditors();
                         event.preventDefault();
@@ -1534,6 +1629,11 @@
                     g.setAttribute("transform", "translate(" + [rect.x, rect.y] + ")");
 
                     this.selectShape(g);
+
+                    this.snappingHelper.updateSnappingGuide(this.currentController);
+                    for (var t in this.currentController.targets) {
+                        this.snappingHelper.updateSnappingGuide(this.currentController.targets[t], true);
+                    }
                 ]]>
                 </body>
             </method>
@@ -1556,9 +1656,18 @@
                     if (!this.currentController) return;
                     if (this.currentController.constructor != Group) return;
 
+                    // remove group
+                    this.snappingHelper.updateSnappingGuide(this.currentController, true);
+
                     var nodes = this.currentController.ungroup();
 
                     this.selectMultiple(nodes);
+
+                    if (this.currentController.constructor == TargetSet) {
+                        for (var t in this.currentController.targets) {
+                            this.snappingHelper.updateSnappingGuide(this.currentController.targets[t]);
+                        }
+                    }
                 ]]>
                 </body>
             </method>
@@ -1601,6 +1710,7 @@
             <method name="deleteSelectedImpl_">
                 <body>
                 <![CDATA[
+                    //this.snappingHelper.updateSnappingGuide(this.currentController, true);
                     this.currentController.deleteTarget();
                     this.currentController = null;
                     this._detachEditors();
@@ -1899,7 +2009,7 @@
                     debug("inserting private shape: " + shapeDef.displayName + ", id: " + shapeDef.id);
                     var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
                     g.appendChild(shapeDef.content);
-                    
+
                     //validate
                     var shape = Dom.getSingle("/svg:g[@p:type='Shape' or @p:type='Group']", g);
                     if (!shape) {
@@ -1926,7 +2036,7 @@
                     this.run(function() {
                         shape.style.visibility = "hidden";
                         this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
-                        
+
                         this.drawingLayer.appendChild(shape);
                         this.selectShape(shape);
                         if (bound) {
@@ -1937,6 +2047,7 @@
                         this.removeAttributeNS(PencilNamespaces.p, "holding");
 
                         this.ensureControllerInView();
+                        this.snappingHelper.updateSnappingGuide(this.currentController);
                         DockingManager.enableDocking(this.currentController);
                     }, this);
                     this.invalidateEditors();
@@ -2026,11 +2137,11 @@
                         return true;
                     }
                     var delta = now - this.lastDragEnterExitEventTS;
-                    
+
                     debug("Even ts delta: " + delta);
-                    
+
                     this.lastDragEnterExitEventTS = now;
-                    
+
                     return delta > 500;
                 ]]>
                 </body>
@@ -2044,7 +2155,7 @@
 
                     // find the first DO that accepts this drag session, use its for subsequence events
                     // in the same session
-                    
+
                     this.currentDragObserver = null;
                     for (var i in this.dragObservers) {
                         var observer = this.dragObservers[i];
@@ -2063,7 +2174,7 @@
                     if (!Dom.isChildOf(event.originalTarget, this.svg)) return;
                     debug("PCanvas: drag exit, " + event.originalTarget.localName);
                     if (!this.currentDragObserver) return;
-                    
+
                     try {
                         nsDragAndDrop.dragExit(event, this.currentDragObserver);
                     } catch (e) { Console.dumpError(e); }
@@ -2077,16 +2188,16 @@
             <handler event="dragover">
                 <![CDATA[
                     tick("PCanvas: drag over");
-                    
+
                     if (!this.currentDragObserver) return;
-                    
+
                     try {
                         nsDragAndDrop.dragOver(event, this.currentDragObserver);
                     } catch (e) { Console.dumpError(e); }
-                    
+
                     /*
                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                    
+
                     if (!this.currentDragProcessed) {
                         tick("drag over");
                         this.lastAcceptedDragObserver = null;
@@ -2100,17 +2211,17 @@
                                 }
                             } catch (e) { Console.dumpError(e); }
                         }
-                        
+
                         this.currentDragProcessed = true;
                     }
-                    
+
                     if (this.hasDrag) {
                         if (event.clientX != this._lastScreenX || event.clientY != this._lastScreenY) {
                             this.handleMouseMove(event, "fake");
                             this._lastScreenX = event.clientX;
                             this._lastScreenY = event.clientY;
                         }
-                        
+
                     }
                     */
                 ]]>
@@ -2118,9 +2229,9 @@
             <handler event="dragdrop">
                 <![CDATA[
                     debug("PCanvas: drag drop");
-                    
+
                     if (!this.currentDragObserver) return;
-                    
+
                     try {
                         nsDragAndDrop.drop(event, this.currentDragObserver);
                     } catch (e) { Console.dumpError(e); }

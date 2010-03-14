@@ -7,7 +7,7 @@
         <hbox id="colorToolbar" class="ToolbarSection" align="center">
             <label value="Color:"/>
             <pcolorbutton id="textColorButton" tooltiptext="Change text color" image="moz-icon://stock/stock_text_color_foreground?size=menu"/>
-            <pcolorbutton id="hilightColorButton" tooltiptext="Change text highlight color" image="moz-icon://stock/stock_text_color_hilight?size=menu"/>
+            <pcolorbutton id="hilightColorButton" tooltiptext="Change text highlight color" image="moz-icon://stock/stock_text_color_background?size=menu"/>
             <pcolorbutton id="strokeColorButton" tooltiptext="Change stroke color" image="Icons/color-stroke.png"/>
             <pcolorbutton id="fillColorButton" tooltiptext="Change background fill color" image="Icons/color-fill.png"/>
         </hbox>

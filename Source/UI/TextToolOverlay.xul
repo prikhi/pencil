@@ -82,6 +82,46 @@
         <vbox id="richTextEditorPane" top="0" left="0" width="1" height="1" style="border: dashed 1px highlight; background: #fff;">
             <editor id="richTextEditor" type="html" flex="1" src="editor-blank.html"/>
         </vbox>
+        <vbox id="miniToolbar" top="0" left="0" width="0" height="0" style="visibility: hidden;">
+            <toolbox>
+                <toolbar>
+                    <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-bold?size=menu" class="ed-toolbar-button" id="medBoldButton" tooltiptext="Bold"/>
+                    <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-italic?size=menu" class="ed-toolbar-button" id="medItalicButton" tooltiptext="Italic"/>
+                    <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-underline?size=menu" class="ed-toolbar-button" id="medUnderlineButton" tooltiptext="Underline"/>
+                    <toolbarbutton type="checkbox" image="moz-icon://stock/format-text-strikethrough?size=menu" class="ed-toolbar-button" id="medStrikeButton" tooltiptext="Strike through"/>
+                    <toolbarbutton type="radio" group="AlignRadioGroup" image="Icons/Editor/text_left.png" tooltiptext="Align left" class="ed-toolbar-button" id="malignLeftCommand"/>
+                    <toolbarbutton type="radio" group="AlignRadioGroup" image="Icons/Editor/text_center.png" tooltiptext="Align center" class="ed-toolbar-button" id="malignCenterCommand"/>
+                    <toolbarbutton type="radio" group="AlignRadioGroup" image="Icons/Editor/text_right.png" tooltiptext="Align right" class="ed-toolbar-button" id="malignRightCommand"/>
+                    <toolbarbutton image="Icons/Editor/bulleted-list.png" class="ed-toolbar-button" id="medBulletedListButton" tooltiptext="Unordered list"/>
+                    <toolbarbutton image="Icons/Editor/numbered-list.png" class="ed-toolbar-button" id="medNumberedListButton" tooltiptext="Ourdered list"/>
+                    <toolbarbutton image="moz-icon://stock/format-indent-more?size=menu" class="ed-toolbar-button" id="medIndentButton" tooltiptext="Indent"/>
+                    <toolbarbutton image="moz-icon://stock/format-indent-less?size=menu" class="ed-toolbar-button" id="medOutdentButton" tooltiptext="Outdent"/>
+                    <toolbarbutton image="moz-icon://stock/edit-clear?size=menu" class="ed-toolbar-button" id="mclearButton" tooltiptext="Clear format"/>
+                </toolbar>
+                <toolbar>
+                    <menulist class="PropertyList" id="mfontList" sizetopopup="none" style="width:105px;">
+                        <menupopup id="mfontPopup">
+                            <menuitem label="Font" value="" class="NameItem"/>
+                        </menupopup>
+                    </menulist>
+                    <menulist class="PropertyList" id="mfontSize" sizetopopup="none" style="width:55px;">
+                        <menupopup id="msizePopup">
+                            <menuitem label="Size" value=""/>
+                            <menuitem label="1" value="1"/>
+                            <menuitem label="2" value="2"/>
+                            <menuitem label="3" value="3"/>
+                            <menuitem label="4" value="4"/>
+                            <menuitem label="5" value="5"/>
+                            <menuitem label="6" value="6"/>
+                            <menuitem label="7" value="7"/>
+                        </menupopup>
+                    </menulist>
+                    <toolbarbutton image="Icons/Editor/increase_text_size.png" class="ed-toolbar-button" id="medIncreaseFontButton" tooltiptext="Increase font size"/>
+                    <toolbarbutton image="Icons/Editor/decrease_text_size.png" class="ed-toolbar-button" id="medDecreaseFontButton" tooltiptext="Decrease font size"/>
+                    <pcolorbutton id="mtextColorButton" tooltiptext="Change text color" class="ed-toolbar-button" image="moz-icon://stock/stock_text_color_foreground?size=menu"/>
+                    <pcolorbutton id="mhilightColorButton" tooltiptext="Background color" class="ed-toolbar-button" image="moz-icon://stock/stock_text_color_background?size=menu"/>
+                </toolbar>
+            </toolbox>
+        </vbox>
     </stack>
 </overlay>
-
