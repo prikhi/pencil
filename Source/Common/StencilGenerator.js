@@ -262,7 +262,7 @@ StencilGenerator.initStencils = function () {
                 document.getElementById("stencilSelectedCountLabel").value = stencils.length + " stencils selected.";
             }
 
-            listener.onTaskDone();
+            if (listener) listener.onTaskDone();
             StencilGenerator.stencilName.focus();
             document.getElementById("stencilInformation").style.display = "";
         });
@@ -286,7 +286,7 @@ StencilGenerator.preloadStencils = function (callback) {
         }
         window.openDialog("ProgressDialog.xul", "pencilStencilGeneratorDialog" + Util.getInstanceToken(), "centerscreen,model", "Getting data...", starter);
     } else {
-        callback(null);
+        callback(null, null);
     }
 };
 StencilGenerator.createData = function (node, defNode, metaNode) {

@@ -177,6 +177,8 @@
 
         <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
         <command id="manageExportTemplateCommand" oncommand="window.openDialog('ExportTemplateManagementDialog.xul', '', 'modal,centerscreen,chrome')"/>
+
+        <command id="shapeFilterCommand" oncommand="Pencil.collectionPane.shapeFilter.focus();"/>
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="accel" key="N"/>
@@ -232,6 +234,8 @@
 
         <key id="moveLeftKey"  command="moveLeftCommand" modifiers="accel shift" keycode="VK_PAGE_UP"/>
         <key id="moveRightKey" command="moveRightCommand" modifiers="accel shift" keycode="VK_PAGE_DOWN"/>
+
+        <key id="shapeFilter" command="shapeFilterCommand" modifiers="accel ctrl" key="Q"/>
 
     </keyset>
     <keyset>
