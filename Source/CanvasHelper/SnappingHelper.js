@@ -53,6 +53,19 @@ SnappingHelper.prototype.clearSnappingGuideY = function () {
         Dom.empty(this.snappingGuideContainerY);
     }
 };
+SnappingHelper.prototype.updateSnappingDataFromBackground = function (page) {
+    this.rebuildSnappingGuide();
+    if (!page || !page._view || !page._view.canvas) {
+        return;
+    };
+    var bgSnappingData = page._view.canvas.snappingHelper.snappingGuide;
+    if (bgSnappingData) {
+        for (var i in bgSnappingData) {
+            //debug("copy snappingdata from bg: " + bgSnappingData[i]);
+            this.snappingGuide[i] = bgSnappingData[i];
+        }
+    }
+};
 SnappingHelper.prototype.rebuildSnappingGuide = function () {
     if (!this.snappingEnabled) return;
     var thiz = this;
