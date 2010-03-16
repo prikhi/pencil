@@ -35,7 +35,21 @@ pcollectionpane hbox.Heading button label {
 pcollectionpane hbox.Heading:hover toolbarbutton {
     opacity: 1;
 }
-
+pcollectionpane vbox[aid="filterPanel"] {
+	overflow: auto;
+    background-color: threedface;
+    border: solid 1px;
+    border-color: threedshadow;
+	border-bottom: none;
+	padding: 0;
+	margin: 0;
+}
+pcollectionpane vbox[aid="filterPanel"] textbox {
+	margin: 2px;
+}
+pcollectionpane vbox[aid="filterPanel"] textbox image {
+	list-style-image: url("../UI/Icons/collection-filter.png");
+}
 pcollectionpane vbox[aid="contentBox"] {
     overflow: auto;
     background-color: #ccc;
@@ -49,7 +63,8 @@ pcollectionpane .Collection + .Collection {
     margin-top: 2em;
     border-top: solid 1px highlighttext;
 }
-pcollectionpane *[pcollapsed='true'].Collection + .Collection {
+pcollectionpane *[pcollapsed='true'].Collection + .Collection,
+pcollectionpane *[_hidden='true'].Collection + .Collection {
     margin-top: 0em;
 }
 pcollectionpane .Collection > hbox:first-child {

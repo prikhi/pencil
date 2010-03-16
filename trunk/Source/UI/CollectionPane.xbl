@@ -19,6 +19,8 @@
                 this.showHiddenMenu = document.getAnonymousElementByAttribute(this, "aid", "showHiddenMenu");
                 this.aboutMenuItem = document.getAnonymousElementByAttribute(this, "aid", "aboutMenuItem");
 
+                this.shapeFilter = document.getAnonymousElementByAttribute(this, "aid", "shapeFilter");
+
                 var id = "popup" + Math.round(1000 * Math.random());
                 this.popup.setAttribute("id", id);
                 this.contentBox.setAttribute("context", id);
@@ -118,6 +120,16 @@
 
                     editor.open();
                 }, false);
+                this.shapeFilter.addEventListener("keyup", function (event) {
+                    //debug(thiz.shapeFilter.value);
+                    if (event.keyCode == 27) {
+                        thiz.shapeFilter.value = "";
+                    }
+                    if (thiz.shapeFilter.value != thiz._lastFilterQuery) {
+                        thiz._lastFilterQuery = thiz.shapeFilter.value;
+                        thiz.filterShapes(thiz._lastFilterQuery);
+                    }
+                }, false);
             ]]>
             </constructor>
             <method name="addShapeCollection">
@@ -159,6 +171,8 @@
 
                     div.setAttribute("class", "Content");
 
+                    collection._shapeCount = 0;
+
                     var thiz = this;
                     for (var i in collection.shapeDefs) {
                         var def = collection.shapeDefs[i];
@@ -166,6 +180,8 @@
                         var button = document.createElementNS(PencilNamespaces.html, "div");
                         button._def = def;
                         div.appendChild(button);
+
+                        collection._shapeCount++;
 
                         button.addEventListener("draggesture", function (event) {
                             thiz.handleDragStart(event);
@@ -199,6 +215,57 @@
                 ]]>
                 </body>
             </method>
+            <method name="filterShapes">
+                <parameter name="filter"/>
+                <body>
+                <![CDATA[
+                    //debug("filterShapes: " + filter);
+                    var shapes = Dom.getList(".//*[@ptype='ShapeDef' or @ptype='Shortcut']", this.contentBox);
+                    if (shapes) {
+                        for (var i = 0; i < shapes.length; i++) {
+                            var def = shapes[i]._def;
+                            var collectionNode = Dom.findUpward(shapes[i], function (node) { return node._collection; });
+                            //debug([def.displayName, filter]);
+
+                            if (def) {
+                                // not found, hide
+                                if (def.displayName.toLowerCase().indexOf(filter.toLowerCase()) == -1) {
+                                    if (!shapes[i]._hidden) {
+                                        //debug("hide");
+                                        shapes[i]._hidden = true;
+                                        shapes[i].style.display = "none";
+                                        shapes[i].style.visibility = "hidden";
+                                        if (collectionNode && collectionNode._collection) {
+                                            collectionNode._collection._shapeCount--;
+                                            //debug("collection shape: " + [collectionNode._collection.displayName, collectionNode._collection._shapeCount]);
+                                            if (collectionNode._collection._shapeCount <= 0) {
+                                                collectionNode.setAttribute("_hidden", true);
+                                                collectionNode.style.display = "none";
+                                                collectionNode.style.visibility = "hidden";
+                                            }
+                                        }
+                                    }
+                                } else if (shapes[i]._hidden) {
+                                    //debug("show");
+                                    shapes[i].style.display = "";
+                                    shapes[i].style.visibility = "visible";
+                                    shapes[i]._hidden = false;
+                                    if (collectionNode && collectionNode._collection) {
+                                        collectionNode._collection._shapeCount++;
+                                        //debug("collection shape: " + collectionNode._collection._shapeCount);
+                                        if (collectionNode._collection._shapeCount > 0) {
+                                            collectionNode.removeAttribute("_hidden");
+                                            collectionNode.style.display = "";
+                                            collectionNode.style.visibility = "visible";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]]>
+                </body>
+            </method>
             <method name="handleDragStart">
                 <parameter name="event"/>
                 <body>
@@ -227,22 +294,6 @@
                 ]]>
                 </body>
             </method>
-            <field name="DnDObserver" readonly="true">
-            <![CDATA[({
-                mOuter: this,
-
-                onDrop: function (aEvent, aXferData, aDragSession) {
-                    debug("haha");
-                },
-
-                getSupportedFlavours: function () {
-                    var flavourSet = new FlavourSet();
-                    flavourSet.appendFlavour("text/unicode");
-                    flavourSet.appendFlavour("text/x-moz-url");
-                    flavourSet.appendFlavour("application/x-moz-file", "nsIFile");
-                    return flavourSet;
-                }
-            })]]></field>
         </implementation>
         <handlers>
             <handler event="dragover">
@@ -296,8 +347,16 @@
                  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
             <vbox flex="1">
-                   <vbox flex="1" aid="contentBox">
+                <vbox aid="filterPanel" align="left">
+                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + Q)" maxlength="255" size="64">
+                        <hbox>
+                            <deck>
+                                <image />
+                            </deck>
+                        </hbox>
+                    </textbox>
                 </vbox>
+                <vbox flex="1" aid="contentBox"></vbox>
             </vbox>
             <popupset>
                 <popup aid="contextPopup">
