@@ -142,6 +142,7 @@ Page.prototype.isBackgroundValid = function () {
 };
 
 Page.prototype.ensureBackground = function (callback) { // callback: function() {} called when done
+    this._view.canvas.snappingHelper.updateSnappingDataFromBackground(this.getBackgroundPage());
     this._view.canvas.setDimBackground(this.properties.dimBackground);
     var page = this.getBackgroundPage();
     if (this.isBackgroundValid()) {
@@ -196,11 +197,11 @@ Page.prototype.generateFriendlyId = function (usedFriendlyIds) {
     var baseName = this.properties.name.replace(/[^a-z0-9 ]+/gi, "").replace(/[ ]+/g, "_").toLowerCase();
     var name = baseName;
     var seed = 1;
-    
+
     while (usedFriendlyIds.indexOf(name) >= 0) {
-        name = baseName + "_" + (seed ++);    
+        name = baseName + "_" + (seed ++);
     }
-    
+
     usedFriendlyIds.push(name);
     return name;
 };

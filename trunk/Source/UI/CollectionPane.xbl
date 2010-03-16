@@ -348,7 +348,7 @@
 
             <vbox flex="1">
                 <vbox aid="filterPanel" align="left">
-                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + Q)" maxlength="255" size="64">
+                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + F)" maxlength="255" size="64">
                         <hbox>
                             <deck>
                                 <image />

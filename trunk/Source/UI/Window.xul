@@ -235,7 +235,7 @@
         <key id="moveLeftKey"  command="moveLeftCommand" modifiers="accel shift" keycode="VK_PAGE_UP"/>
         <key id="moveRightKey" command="moveRightCommand" modifiers="accel shift" keycode="VK_PAGE_DOWN"/>
 
-        <key id="shapeFilter" command="shapeFilterCommand" modifiers="accel ctrl" key="Q"/>
+        <key id="shapeFilter" command="shapeFilterCommand" modifiers="accel ctrl" key="F"/>
 
     </keyset>
     <keyset>
