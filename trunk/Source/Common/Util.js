@@ -763,7 +763,7 @@ Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancel
     return result;
 }
 Util.beginProgressJob = function(jobName, jobStarter) {
-    var dialog = window.openDialog("ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "centerscreen", jobName, jobStarter);
+    var dialog = window.openDialog("ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "alwaysRaised,centerscreen", jobName, jobStarter);
 };
 Util.setNodeMetadata = function (node, name, value) {
     node.setAttributeNS(PencilNamespaces.p, "p:" + name, value);

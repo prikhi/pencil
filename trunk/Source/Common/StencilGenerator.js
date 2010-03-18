@@ -284,7 +284,7 @@ StencilGenerator.preloadStencils = function (callback) {
         var starter = function (listener) {
             StencilGenerator.loadStencil(result, stencils, 0, callback, listener);
         }
-        window.openDialog("ProgressDialog.xul", "pencilStencilGeneratorDialog" + Util.getInstanceToken(), "centerscreen,model", "Getting data...", starter);
+        Util.beginProgressJob("Getting data...", starter);
     } else {
         callback(null, null);
     }
@@ -589,7 +589,7 @@ StencilGenerator.createCollection = function () {
                 Console.dumpError(e3, "stdout");
             }
         }
-        window.openDialog("ProgressDialog.xul", "pencilStencilGeneratorDialog" + Util.getInstanceToken(), "centerscreen,model", "Creating collection...", starter);
+        Util.beginProgressJob("Creating collection...", starter);
     }
 };
 StencilGenerator.toInputStream = function(s, b) {

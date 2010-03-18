@@ -44,6 +44,7 @@
                             collapsed = (collapsed == "true");
                             collection.setAttribute("pcollapsed", !collapsed);
                             CollectionManager.setCollectionCollapsed(collection._collection, !collapsed);
+                            Pencil.setUpSizeGrip();
                         }
                     }
                 }, false);
