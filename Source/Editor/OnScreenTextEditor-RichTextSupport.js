@@ -93,7 +93,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
             var item1 = document.createElement("menuitem");
             item1.setAttribute("label", localFonts[i]);
             item1.setAttribute("value", localFonts[i]);
-            item1.setAttribute("style", "font-family:'" + localFonts[i] + "';font-size:14px;font-weight:normal;");
+            //item1.setAttribute("style", "font-family:'" + localFonts[i] + "';font-size:14px;font-weight:normal;");
             mfontPopup.appendChild(item1);
         }
         OnScreenTextEditor._enableTextToolbar(false);
@@ -364,9 +364,12 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor.miniToolbarPane._oX = event.clientX;
     OnScreenTextEditor.miniToolbarPane._oY = event.clientY;
 
-    OnScreenTextEditor.miniToolbarPane.setAttribute("left", x);
-    OnScreenTextEditor.miniToolbarPane.setAttribute("top", y - 60);
-    OnScreenTextEditor.miniToolbarPane.setAttribute("width", 265);
+    OnScreenTextEditor.miniToolbarPane.setAttribute("left", ctm.e - boxObject.screenX + dx);
+    OnScreenTextEditor.miniToolbarPane.setAttribute("top", ctm.f - boxObject.screenY + dy - 75);
+
+    var buttonBox = document.getElementById("mclearButton").getBoundingClientRect();
+    var w = buttonBox.left + buttonBox.width + 1 - OnScreenTextEditor.miniToolbarPane.getBoundingClientRect().left;
+    OnScreenTextEditor.miniToolbarPane.setAttribute("width", w);
 
     OnScreenTextEditor._enableGlobalClipboardKeys(false);
     OnScreenTextEditor._enableTextToolbar(false);

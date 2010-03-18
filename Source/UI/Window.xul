@@ -179,6 +179,8 @@
         <command id="manageExportTemplateCommand" oncommand="window.openDialog('ExportTemplateManagementDialog.xul', '', 'modal,centerscreen,chrome')"/>
 
         <command id="shapeFilterCommand" oncommand="Pencil.collectionPane.shapeFilter.focus();"/>
+        <command id="toggleCollectionPaneCommand" oncommand="Pencil.toggleCollectionPane('sideBox');"/>
+
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="accel" key="N"/>
@@ -236,6 +238,7 @@
         <key id="moveRightKey" command="moveRightCommand" modifiers="accel shift" keycode="VK_PAGE_DOWN"/>
 
         <key id="shapeFilter" command="shapeFilterCommand" modifiers="accel ctrl" key="F"/>
+        <key id="toggleCollectionPaneCommandKey" command="toggleCollectionPaneCommand" key="A"/>
 
     </keyset>
     <keyset>
@@ -391,19 +394,27 @@
         </popup>
     </popupset>
     <hbox flex="1" id="mainBox">
+        <hbox>
+            <toolbox>
+                <toolbar orient="vertical">
+                    <toolbarbutton image="Icons/Editor/text_font.png?size=menu" class="ed-toolbar-button" id="autoHideCollectionPane" tooltiptext="Collections (A)" command="toggleCollectionPaneCommand"/>
+                </toolbar>
+            </toolbox>
+        </hbox>
+        <spacer />
         <stack flex="1" id="mainBoxStack">
             <hbox>
-                <tabbox id="sideBox" width="300" persist="width">
+                <tabbox id="sideBox" width="300" persist="width" style="display:none;">
                     <tabs id="sideBoxTabs">
                         <tab label="Collections"/>
                         <tab label="My Stuffs"/>
                     </tabs>
                     <tabpanels flex="1" id="sideBoxTabPanels">
-                        <tabpanel>
-                            <pcollectionpane id="collectionPane" flex="1"/>
+                        <tabpanel id="tabCollectionPane">
+                            <!--<pcollectionpane id="collectionPane" flex="1"/>-->
                         </tabpanel>
-                        <tabpanel>
-                            <privatecollectionpane id="privateCollectionPane" flex="1"/>
+                        <tabpanel id="tabPCollectionPane">
+                            <!--<privatecollectionpane id="privateCollectionPane" flex="1"/>-->
                         </tabpanel>
                     </tabpanels>
                 </tabbox>
@@ -420,6 +431,22 @@
                     </tabpanels>
                 </tabbox>
             </hbox>
+
+            <tabbox id="sideBoxFloat" minwidth="150" width="300" miheight="120" height="455" top="-5" persist="width,height" style="display:none;opacity:0;" class="CollectionPane">
+                <tabs id="sideBoxTabs" class="CollectionPane">
+                    <tab label="Collections" class="CollectionPane"/>
+                    <tab label="My Stuffs" class="CollectionPane"/>
+                </tabs>
+                <tabpanels flex="1" id="sideBoxFloatTabPanels" class="CollectionPane" style="/*-moz-box-shadow: 2px 2px 5px #999;*/">
+                    <tabpanel id="tabCollectionPaneFloat" class="CollectionPane">
+                        <pcollectionpane id="collectionPane" flex="1" class="CollectionPane"/>
+                    </tabpanel>
+                    <tabpanel id="tabPCollectionPaneFloat" class="CollectionPane">
+                        <privatecollectionpane id="privateCollectionPane" flex="1" class="CollectionPane"/>
+                    </tabpanel>
+                </tabpanels>
+            </tabbox>
+            <image id="collectionPaneSizeGrip" src="Icons/size-grip.png" style="display:none;cursor:se-resize;" class="CollectionPane"/>
         </stack>
     </hbox>
     <html:img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oBEAgTHGn1p6MAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAADUlEQVQI12P4//8/AwAI/AL+XJ/P2gAAAABJRU5ErkJggg==" width="1" height="1" style="display: none;" id="blankImage"/>

@@ -97,6 +97,45 @@ Pencil.boot = function (event) {
         Pencil.activeCanvas = null;
         Pencil.setupCommands();
 
+        Pencil.sideBoxFloat = document.getElementById("sideBoxFloat");
+        var collectionPaneSizeGrip = document.getElementById("collectionPaneSizeGrip");
+
+        window.addEventListener("mousedown", function (event) {
+            var target = event.target;
+            if (target.className && target.className == "CollectionPane") {
+                if (Pencil.hideCollectionPaneTimer) {
+                    clearTimeout(Pencil.hideCollectionPaneTimer);
+                    Pencil.hideCollectionPaneTimer = null;
+                }
+
+                if (target.id == "collectionPaneSizeGrip") {
+                    collectionPaneSizeGrip._oX = event.clientX;
+                    collectionPaneSizeGrip._oY = event.clientY;
+
+                    collectionPaneSizeGrip._width = Pencil.sideBoxFloat.getBoundingClientRect().width;
+                    collectionPaneSizeGrip._height = Pencil.sideBoxFloat.getBoundingClientRect().height;
+
+                    collectionPaneSizeGrip._hold = true;
+                }
+            } else {
+                if (Pencil.isCollectionPaneVisibled()) {
+                    Pencil.hideCollectionPane();
+                }
+            }
+        }, true);
+        window.addEventListener("mousemove", function (event) {
+            if (collectionPaneSizeGrip._hold) {
+                var dx = event.clientX - collectionPaneSizeGrip._oX;
+                var dy = event.clientY - collectionPaneSizeGrip._oY;
+                Pencil.sideBoxFloat.setAttribute("width", collectionPaneSizeGrip._width + dx);
+                Pencil.sideBoxFloat.setAttribute("height", collectionPaneSizeGrip._height + dy);
+                Pencil.setUpSizeGrip();
+            }
+        }, true);
+        window.addEventListener("mouseup", function (event) {
+            collectionPaneSizeGrip._hold = false;
+        }, true);
+
         //booting shared editors
         for (var i in Pencil.sharedEditors) {
             try {
@@ -117,7 +156,7 @@ Pencil.boot = function (event) {
 
         window.setTimeout(function() {
             Pencil.controller.newDocument();
-        }, 500);
+        }, 100);
 
     } catch (e) {
         Console.dumpError(e, "stdout");
@@ -243,8 +282,6 @@ Pencil._enableCommand = function (name, condition) {
     }
 };
 
-
-
 Pencil.getGridSize = function () {
     var size = Config.get("edit.gridSize", 5);
     return {w: size, h: size};
@@ -255,7 +292,51 @@ Pencil.getCurrentTarget = function () {
     var canvas = Pencil.activeCanvas;
     return canvas ? canvas.currentController : null;
 };
-
+Pencil.isCollectionPaneVisibled = function () {
+    return Pencil.sideBoxFloat.style.display != 'none';
+}
+Pencil._hideCollectionPane = function (c) {
+    if (c <= 0) {
+        Pencil.sideBoxFloat.style.display = "none";
+        Pencil.hideCollectionPaneTimer = null;
+        Pencil.setUpSizeGrip();
+    } else {
+        Pencil.sideBoxFloat.style.opacity = c;
+        window.setTimeout("Pencil._hideCollectionPane(" + parseFloat(c - 0.2) + ")", 5);
+    }
+};
+Pencil.hideCollectionPane = function () {
+    if (!Pencil.hideCollectionPaneTimer) {
+        Pencil.hideCollectionPaneTimer = window.setTimeout("Pencil._hideCollectionPane(1)", 300);
+    }
+}
+Pencil.setUpSizeGrip = function () {
+    var box = Pencil.sideBoxFloat.getBoundingClientRect();
+    var sizeGrip = document.getElementById("collectionPaneSizeGrip");
+    sizeGrip.setAttribute("left", (box.width - 15));
+    sizeGrip.setAttribute("top", (box.height - 19));
+    sizeGrip.style.display = Pencil.isCollectionPaneVisibled() ? '' : "none";
+};
+Pencil._showCollectionPane = function (c) {
+    if (c == 0) {
+        Pencil.sideBoxFloat.style.display = "";
+        Pencil.setUpSizeGrip();
+    }
+    if (c <= 1) {
+        Pencil.sideBoxFloat.style.opacity = c;
+        window.setTimeout("Pencil._showCollectionPane(" + parseFloat(c + 0.2) + ")", 1);
+    }
+};
+Pencil.showCollectionPane = function () {
+    Pencil._showCollectionPane(0);
+};
+Pencil.toggleCollectionPane = function () {
+    if (Pencil.isCollectionPaneVisibled()) {
+        Pencil._hideCollectionPane(1);
+    } else {
+        Pencil.showCollectionPane();
+    }
+};
 window.addEventListener("load", Pencil.boot, false);
 window.addEventListener("keypress", function(event) {
     if (event.keyCode == event.DOM_VK_F5) {

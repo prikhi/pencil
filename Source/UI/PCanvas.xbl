@@ -978,23 +978,23 @@
 
                         var snap = this.snappingHelper.findSnapping(accX && !this.snappingHelper.snappedX, accY && !this.snappingHelper.snappedY);
                         //debug("snap: " + [snap.dx, snap.dy, this.snappedX, this.snappedY]);
-                        if (snap && ((snap.dx != 0 && !this.snappingHelper.snappedX && accX) || (snap.dy != 0 && !this.snappingHelper.snappedY && accY))) {
+                        if (!event.shiftKey && snap && ((snap.dx != 0 && !this.snappingHelper.snappedX && accX) || (snap.dy != 0 && !this.snappingHelper.snappedY && accY))) {
                             if (snap.dx != 0 && !this.snappingHelper.snappedX) {
                                 this.snappingHelper.snappedX = true;
                                 this.snappingHelper.snapX = newX;
                                 this.currentController._pSnapshot.lastDX += snap.dx;
-                                debug("snapX");
+                                //debug("snapX");
                             }
                             if (snap.dy != 0 && !this.snappingHelper.snappedY) {
                                 this.snappingHelper.snappedY = true;
                                 this.snappingHelper.snapY = newY;
                                 this.currentController._pSnapshot.lastDY += snap.dy;
-                                debug("snapY");
+                                //debug("snapY");
                             }
                             this.currentController.moveBy(snap.dx, snap.dy);
                         } else {
-                            var unsnapX = (this.snappingHelper.snapX != 0 && (Math.abs(this.snappingHelper.snapX - newX) > Pencil.UNSNAP));
-                            var unsnapY = (this.snappingHelper.snapY != 0 && (Math.abs(this.snappingHelper.snapY - newY) > Pencil.UNSNAP));
+                            var unsnapX = event.shiftKey || (this.snappingHelper.snapX != 0 && (Math.abs(this.snappingHelper.snapX - newX) > Pencil.UNSNAP));
+                            var unsnapY = event.shiftKey || (this.snappingHelper.snapY != 0 && (Math.abs(this.snappingHelper.snapY - newY) > Pencil.UNSNAP));
                             //debug("unsnap: " + [unsnapX, unsnapY]);
 
                             if (!this.snappingHelper.snappedX && !this.snappingHelper.snappedY) {

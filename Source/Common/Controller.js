@@ -365,7 +365,7 @@ Controller.prototype.loadDocument = function (uri) {
         Console.dumpError(e, true);
     }
 
-    this._clearView();
+    /*this._clearView();
     document.documentElement.setAttribute("wait-cursor", true);
 
     try {
@@ -392,8 +392,53 @@ Controller.prototype.loadDocument = function (uri) {
                 });
             }
         });
-    }
+    }*/
+    this._loadDocumentImpl(file, path);
 }
+Controller.prototype._loadDocumentImpl = function (file, path) {
+    var thiz = this;
+    var starter = function (listener) {
+        thiz._clearView();
+        document.documentElement.setAttribute("wait-cursor", true);
+
+        try {
+            thiz.doc = XMLDocumentPersister.load(file);
+        } catch (e) {
+            Console.dumpError(e);
+            throw e;
+        }
+        thiz._pageSetupCount = 0;
+        var p = -1;
+
+        function loadPage() {
+            p++;
+            listener.onProgressUpdated("Loading page " + thiz.doc.pages[p].properties.name + "...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
+            thiz._createPageView(thiz.doc.pages[p], function () {
+                thiz._pageSetupCount ++;
+                if (thiz._pageSetupCount == thiz.doc.pages.length) {
+                    thiz._ensureAllBackgrounds(function () {
+                        thiz._setSelectedPageIndex(0);
+
+                        thiz.filePath = path;
+                        Pencil.setTitle(thiz.filePath);
+
+                        thiz.markDocumentSaved();
+                        document.documentElement.removeAttribute("wait-cursor");
+
+                        listener.onTaskDone();
+                    });
+
+                    return true;
+                }
+
+                window.setTimeout(loadPage, 10);
+            });
+        }
+
+        loadPage();
+    }
+    Util.beginProgressJob("Loading document...", starter);
+};
 //---------------------- privates -----
 Controller.prototype._ensureAllBackgrounds = function (callback) {
     this._ensureBackground(0, callback);
@@ -852,43 +897,43 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
     }
 
     var extra = null;
-    
+
     if (pageExtraInfos[page.properties.id]) {
-    
+
         extra = pageExtraInfos[page.properties.id];
-        
+
     } else {
         // the current page is not processed for linking
         // this may because it is not included in exporting
         // so, do this manually here
-        
+
         var node = page._view.canvas.drawingLayer;
         extra = {};
         var processor = new LinkingGeometryPreprocessor(extra);
         processor.process(node);
-        
+
         pageExtraInfos[page.properties.id] = extra;
     }
 
     var thisPageLinks = extra.objectsWithLinking;
-    
+
     var links = [];
-    
+
     for (var j = 0; j < thisPageLinks.length; j ++) {
         links.push(thisPageLinks[j]);
     }
-    
+
     for (var j = 0; j < bgLinks.length; j ++) {
         links.push(bgLinks[j]);
     }
-    
-    
+
+
     debug("Returning links for page: " + page.properties.fid);
     for (var j = 0; j < links.length; j ++) {
         var targetPage = this.doc.getPageById(links[j].pageId);
         debug("\t" + targetPage.properties.fid);
     }
-    
+
 
     return links;
 };
@@ -1156,21 +1201,21 @@ LinkingGeometryPreprocessor.prototype.process = function (doc) {
     objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];
-    
+
 
     for (var i = 0; i < objects.length; i ++) {
         var g = objects[i];
-        
+
         var boundingObject = g.ownerSVGElement;
-        
+
         if (boundingObject.parentNode && boundingObject.parentNode.getBoundingClientRect) {
             boundingObject = boundingObject.parentNode;
         }
-        
+
         var rect = boundingObject.getBoundingClientRect();
         var dx = rect.left;
         var dy = rect.top;
-        
+
         debug("dx, dy: " + [dx, dy]);
 
         rect = g.getBoundingClientRect();

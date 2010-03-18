@@ -55,12 +55,11 @@ Pencil.postBoot = function() {
                 }, 100);
             } else {
                 window.setTimeout(function() {
-                        Pencil.controller.newDocument();
+                    //Pencil.controller.newDocument();
                 }, 100);
             }
         }
     }
-
 
     Pencil.updateGUIForHeavyElementVisibility();
 };
