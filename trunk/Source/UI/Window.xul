@@ -8,7 +8,7 @@
 <?xml-stylesheet href="../Styles/PrivateCollectionPane.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/PCanvas.css" type="text/css"?>
 <?xml-stylesheet href="../Styles/ColorPickerButton.css" type="text/css"?>
-<!--<?xml-stylesheet href="../Styles/MiniToolbar.css" type="text/css"?>-->
+<?xml-stylesheet href="../Styles/MiniToolbar.css" type="text/css"?>
 <?xml-stylesheet href="../PropertyType/Editor/CommonEditors.css" type="text/css"?>
 <?xul-overlay href="GeometryToolOverlay.xul"?>
 <?xul-overlay href="ColorToolOverlay.xul"?>

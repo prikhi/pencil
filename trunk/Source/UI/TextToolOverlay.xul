@@ -99,12 +99,12 @@
                     <toolbarbutton image="moz-icon://stock/edit-clear?size=menu" class="ed-toolbar-button" id="mclearButton" tooltiptext="Clear format"/>
                 </toolbar>
                 <toolbar>
-                    <menulist class="PropertyList" id="mfontList" sizetopopup="none" style="width:105px;">
+                    <menulist class="PropertyList" id="mfontList" sizetopopup="none" flex="1">
                         <menupopup id="mfontPopup">
                             <menuitem label="Font" value="" class="NameItem"/>
                         </menupopup>
                     </menulist>
-                    <menulist class="PropertyList" id="mfontSize" sizetopopup="none" style="width:55px;">
+                    <menulist class="PropertyList" id="mfontSize" sizetopopup="none">
                         <menupopup id="msizePopup">
                             <menuitem label="Size" value=""/>
                             <menuitem label="1" value="1"/>

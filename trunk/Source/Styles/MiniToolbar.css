@@ -3,7 +3,18 @@
 @namespace html url(http://www.w3.org/1999/xhtml);
 
 #miniToolbar {
-	border: solid 1px #ddd;
-	visibility: hidden;
-	-moz-border-radius: 2px;
+    border: solid 1px #ddd;
+	border-bottom: none;
+
+    visibility: hidden;
+
+    -moz-border-radius: 2px;
+    -moz-box-shadow: 2px 2px 3px #999;
+
+}
+#miniToolbar toolbox {
+	padding: 1px;
+}
+#miniToolbar toolbox toolbar {
+	border-bottom: none;
 }
