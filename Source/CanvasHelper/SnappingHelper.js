@@ -115,7 +115,7 @@ SnappingHelper.prototype.sortData = function () {
     this.snappedX = false;
     this.snappedY = false;
 };
-SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap) {
+SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap, shift) {
     if (!this.snappingEnabled) return;
     try {
         if (drawX) {
@@ -129,8 +129,11 @@ SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap) {
         if (!ghost && (!this.canvas.controllerHeld || !this.canvas.currentController || !this.canvas.currentController.getSnappingGuide)) return null;
 
         var _snap = snap ? snap : Pencil.SNAP;
+        if (shift) {
+            _snap = 1;
+        }
 
-        var snappingData = this.findSnappingImpl(this.canvas.currentController, ghost, snap);
+        var snappingData = this.findSnappingImpl(this.canvas.currentController, ghost, _snap);
         var currentDx = _snap + 10, currentDy = _snap + 10;
         var b = !ghost ? this.canvas.currentController.getSnappingGuide() : ghost;
 

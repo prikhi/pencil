@@ -976,7 +976,7 @@
                             this.currentController.dockingManager.altKey = event.altKey;
                         }
 
-                        var snap = this.snappingHelper.findSnapping(accX && !this.snappingHelper.snappedX, accY && !this.snappingHelper.snappedY);
+                        var snap = this.snappingHelper.findSnapping(accX && !this.snappingHelper.snappedX, accY && !this.snappingHelper.snappedY, null, null, event.shiftKey);
                         //debug("snap: " + [snap.dx, snap.dy, this.snappedX, this.snappedY]);
                         if (!event.shiftKey && snap && ((snap.dx != 0 && !this.snappingHelper.snappedX && accX) || (snap.dy != 0 && !this.snappingHelper.snappedY && accY))) {
                             if (snap.dx != 0 && !this.snappingHelper.snappedX) {
