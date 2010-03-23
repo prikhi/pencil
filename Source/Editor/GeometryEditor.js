@@ -259,6 +259,7 @@ GeometryEditor.prototype.handleMouseDown = function (event) {
     var r = minY2 % grid.y;
     this._minY2 = r == 0 ? minY2 : (minY2 + grid.y - r);
 
+    this._minDim = minDim;
 };
 
 GeometryEditor.prototype.handleMouseUp = function (event) {
@@ -342,13 +343,13 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
     var mdy = uPoint2.y - uPoint1.y;
 
     //FIXME: this is a temp. implementation for ratio locking
-    if (locking.ratio) {
+    /*if (locking.ratio) {
         if (matrix.dw) {
             mdy = mdx;
         } else if (matrix.dh) {
             mdx = mdy;
         }
-    }
+    }*/
 
     var newGeo = new Geometry();
 
@@ -369,29 +370,31 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
         //console.log(["before:  ", dx, dw]);
         if (matrix.dx != 0) {
             var newX = e + dx;
-            var newXNormalized = Util.gridNormalize(newX, grid.w);
+            var newXNormalized = locking.ratio ? newX : Util.gridNormalize(newX, grid.w);
             if (newXNormalized > this._maxX1) newXNormalized = this._maxX1;
 
             var delta = newXNormalized - newX;
 
-            var snap = this.canvas.snappingHelper.findSnapping(true, false, {
-                vertical: [
-                    new SnappingData("Left", bound.x + dx, "Left", true, Util.newUUID())
-                ], horizontal: []
-            }, (grid.w / 2) - 1);
+            if (!locking.ratio) {
+                var snap = this.canvas.snappingHelper.findSnapping(true, false, {
+                    vertical: [
+                        new SnappingData("Left", bound.x + dx, "Left", true, Util.newUUID())
+                    ], horizontal: []
+                }, (grid.w / 2) - 1);
 
-            if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
-                this.canvas.snappingHelper.snappedX = true;
-                this.canvas.snappingHelper.snapX = newX;
-                delta = snap.dx;
-            } else {
-                var unsnapX = (this.canvas.snappingHelper.snapX != 0 && (Math.abs(this.canvas.snappingHelper.snapX - newX) > grid.w / 2));
-                if (unsnapX || !this.canvas.snappingHelper.snappedX) {
-                    this.canvas.snappingHelper.snapX = 0;
-                    this.canvas.snappingHelper.snappedX = false;
-                    this.canvas.snappingHelper.clearSnappingGuideX();
-                } else {
+                if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
+                    this.canvas.snappingHelper.snappedX = true;
+                    this.canvas.snappingHelper.snapX = newX;
                     delta = snap.dx;
+                } else {
+                    var unsnapX = (this.canvas.snappingHelper.snapX != 0 && (Math.abs(this.canvas.snappingHelper.snapX - newX) > grid.w / 2));
+                    if (unsnapX || !this.canvas.snappingHelper.snappedX) {
+                        this.canvas.snappingHelper.snapX = 0;
+                        this.canvas.snappingHelper.snappedX = false;
+                        this.canvas.snappingHelper.clearSnappingGuideX();
+                    } else {
+                        delta = snap.dx;
+                    }
                 }
             }
 
@@ -400,65 +403,72 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             //console.log(["<--", e, newX, newXNormalized, delta, dx, dw]);
         } else {
             var newX2 = e + this._w + dw;
-            var newX2Normalized = Util.gridNormalize(newX2, grid.w);
+            var newX2Normalized = locking.ratio ? newX2 : Util.gridNormalize(newX2, grid.w);
             if (newX2Normalized < this._minX2) newX2Normalized = this._minX2;
 
             var delta = newX2Normalized - newX2;
 
-            var snap = this.canvas.snappingHelper.findSnapping(true, false, {
-                vertical: [
-                    new SnappingData("Right", bound.x + bound.width + dw, "Right", true, Util.newUUID())
-                ], horizontal: []
-            }, (grid.w / 2) - 1);
-            if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
-                this.canvas.snappingHelper.snappedX = true;
-                this.canvas.snappingHelper.snapX = newX2;
-                delta = snap.dx;
-            } else {
-                var unsnapX = (this.canvas.snappingHelper.snapX != 0 && (Math.abs(this.canvas.snappingHelper.snapX - newX2) > grid.w / 2));
-                if (unsnapX || !this.canvas.snappingHelper.snappedX) {
-                    this.canvas.snappingHelper.snapX = 0;
-                    this.canvas.snappingHelper.snappedX = false;
-                    this.canvas.snappingHelper.clearSnappingGuideX();
-                } else {
+            if (!locking.ratio) {
+                var snap = this.canvas.snappingHelper.findSnapping(true, false, {
+                    vertical: [
+                        new SnappingData("Right", bound.x + bound.width + dw, "Right", true, Util.newUUID())
+                    ], horizontal: []
+                }, (grid.w / 2) - 1);
+                if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
+                    this.canvas.snappingHelper.snappedX = true;
+                    this.canvas.snappingHelper.snapX = newX2;
                     delta = snap.dx;
+                } else {
+                    var unsnapX = (this.canvas.snappingHelper.snapX != 0 && (Math.abs(this.canvas.snappingHelper.snapX - newX2) > grid.w / 2));
+                    if (unsnapX || !this.canvas.snappingHelper.snappedX) {
+                        this.canvas.snappingHelper.snapX = 0;
+                        this.canvas.snappingHelper.snappedX = false;
+                        this.canvas.snappingHelper.clearSnappingGuideX();
+                    } else {
+                        delta = snap.dx;
+                    }
                 }
             }
 
             dw += delta;
-            //console.log(["-->", newX2, newX2Normalized, delta, dx, dw]);
+            //info(["-->", newX2, newX2Normalized, delta, dx, dw]);
         }
     }
 
-    if (!locking.height && (matrix.dh != 0) ) {
+    if (locking.ratio && matrix.dh == 0) {
+        dy = Math.round(dx * this._minDim.h / this._minDim.w);
+        dh = Math.round(dw * this._minDim.h / this._minDim.w);
+    } else if (!locking.height && (matrix.dh != 0) ) {
         dy = matrix.dy * mdy;
         dh = matrix.dh * mdy;
 
         if (matrix.dy != 0) {
             var newY = f + dy;
-            var newYNormalized = Util.gridNormalize(newY, grid.h);
+            var newYNormalized = locking.ratio ? newY : Util.gridNormalize(newY, grid.h);
             if (newYNormalized > this._maxY1) newYNormalized = this._maxY1;
 
             var delta = newYNormalized - newY;
 
-            var snap = this.canvas.snappingHelper.findSnapping(false, true, {
-                vertical: [],
-                horizontal: [
-                    new SnappingData("Top", bound.y + dy, "Top", true, Util.newUUID())
-                ]
-            }, (grid.w / 2) - 1);
-            if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
-                this.canvas.snappingHelper.snappedY = true;
-                this.canvas.snappingHelper.snapY = newY;
-                delta = snap.dy;
-            } else {
-                var unsnapY = (this.canvas.snappingHelper.snapY != 0 && (Math.abs(this.canvas.snappingHelper.snapY - newY) > grid.w / 2));
-                if (unsnapY || !this.canvas.snappingHelper.snappedY) {
-                    this.canvas.snappingHelper.snapY = 0;
-                    this.canvas.snappingHelper.snappedY = false;
-                    this.canvas.snappingHelper.clearSnappingGuideY();
-                } else {
+            if (!locking.ratio) {
+                var snap = this.canvas.snappingHelper.findSnapping(false, true, {
+                    vertical: [],
+                    horizontal: [
+                        new SnappingData("Top", bound.y + dy, "Top", true, Util.newUUID())
+                    ]
+                }, (grid.w / 2) - 1);
+                if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
+                    this.canvas.snappingHelper.snappedY = true;
+                    this.canvas.snappingHelper.snapY = newY;
                     delta = snap.dy;
+                } else {
+                    var unsnapY = (this.canvas.snappingHelper.snapY != 0 && (Math.abs(this.canvas.snappingHelper.snapY - newY) > grid.w / 2));
+                    if (unsnapY || !this.canvas.snappingHelper.snappedY) {
+                        this.canvas.snappingHelper.snapY = 0;
+                        this.canvas.snappingHelper.snappedY = false;
+                        this.canvas.snappingHelper.clearSnappingGuideY();
+                    } else {
+                        delta = snap.dy;
+                    }
                 }
             }
 
@@ -466,78 +476,42 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             dh -= delta;
         } else {
             var newY2 = f + this._h + dh;
-            var newY2Normalized = Util.gridNormalize(newY2, grid.h);
+            var newY2Normalized = locking.ratio ? newY2 : Util.gridNormalize(newY2, grid.h);
             if (newY2Normalized < this._minY2) newY2Normalized = this._minY2;
 
             var delta = newY2Normalized - newY2;
 
-            var snap = this.canvas.snappingHelper.findSnapping(false, true, {
-                vertical: [],
-                horizontal: [
-                    new SnappingData("Bottom", bound.y + bound.height + dh, "Bottom", true, Util.newUUID())
-                ]
-            }, (grid.w / 2) - 1);
-            if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
-                this.canvas.snappingHelper.snappedY = true;
-                this.canvas.snappingHelper.snapY = newY2;
-                delta = snap.dy;
-            } else {
-                var unsnapY = (this.canvas.snappingHelper.snapY != 0 && (Math.abs(this.canvas.snappingHelper.snapY - newY2) > grid.w / 2));
-                if (unsnapY || !this.canvas.snappingHelper.snappedY) {
-                    this.canvas.snappingHelper.snapY = 0;
-                    this.canvas.snappingHelper.snappedY = false;
-                    this.canvas.snappingHelper.clearSnappingGuideY();
-                } else {
+            if (!locking.ratio) {
+                var snap = this.canvas.snappingHelper.findSnapping(false, true, {
+                    vertical: [],
+                    horizontal: [
+                        new SnappingData("Bottom", bound.y + bound.height + dh, "Bottom", true, Util.newUUID())
+                    ]
+                }, (grid.w / 2) - 1);
+                if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
+                    this.canvas.snappingHelper.snappedY = true;
+                    this.canvas.snappingHelper.snapY = newY2;
                     delta = snap.dy;
+                } else {
+                    var unsnapY = (this.canvas.snappingHelper.snapY != 0 && (Math.abs(this.canvas.snappingHelper.snapY - newY2) > grid.w / 2));
+                    if (unsnapY || !this.canvas.snappingHelper.snappedY) {
+                        this.canvas.snappingHelper.snapY = 0;
+                        this.canvas.snappingHelper.snappedY = false;
+                        this.canvas.snappingHelper.clearSnappingGuideY();
+                    } else {
+                        delta = snap.dy;
+                    }
                 }
             }
 
             dh += delta;
         }
+
+        if (locking.ratio) {
+            dx = Math.round(dy * this._minDim.w / this._minDim.h);
+            dw = Math.round(dh * this._minDim.w / this._minDim.h);
+        }
     }
-
-    /*if (snap && ((snap.dx != 0 && !this.canvas.snappingHelper.snappedX) || (snap.dy != 0 && !this.canvas.snappingHelper.snappedY))) {
-        if (snap.dx != 0 && !this.canvas.snappingHelper.snappedX) {
-            this.canvas.snappingHelper.snappedX = true;
-            this.canvas.snappingHelper.snapX = newX;
-            //this.currentController._pSnapshot.lastDX += snap.dx;
-            debug("** snapX");
-        }
-        if (snap.dy != 0 && !this.snappingHelper.snappedY) {
-            this.snappingHelper.snappedY = true;
-            this.snappingHelper.snapY = newY;
-            this.currentController._pSnapshot.lastDY += snap.dy;
-            debug("snapY");
-        }
-        this.currentController.moveBy(snap.dx, snap.dy);
-    } else {
-        var unsnapX = (this.snappingHelper.snapX != 0 && (Math.abs(this.snappingHelper.snapX - newX) > Pencil.UNSNAP));
-        var unsnapY = (this.snappingHelper.snapY != 0 && (Math.abs(this.snappingHelper.snapY - newY) > Pencil.UNSNAP));
-        //debug("unsnap: " + [unsnapX, unsnapY]);
-
-        if (!this.snappingHelper.snappedX && !this.snappingHelper.snappedY) {
-            this.currentController.moveFromSnapshot(dx, dy);
-        } else {
-            if (unsnapX || !this.snappingHelper.snappedX) {
-                this.currentController.moveFromSnapshot(dx, this.snappingHelper.snappedY ? this.currentController._pSnapshot.lastDY : dy);
-            }
-            if (unsnapY || !this.snappingHelper.snappedY) {
-                this.currentController.moveFromSnapshot(this.snappingHelper.snappedX ? this.currentController._pSnapshot.lastDX : dx, dy);
-                this.snappingHelper.snapY = 0;
-                this.snappingHelper.snappedY = false;
-            }
-            if (unsnapX || !this.snappingHelper.snappedX) {
-                this.snappingHelper.snapX = 0;
-                this.snappingHelper.snappedX = false;
-            }
-            if (unsnapX) {
-                this.snappingHelper.clearSnappingGuideX();
-            }
-            if (unsnapY) {
-                this.snappingHelper.clearSnappingGuideY();
-            }
-        }
-    }*/
 
     //this.currentAnchor = null;
 
@@ -603,9 +577,13 @@ GeometryEditor.prototype.handleMouseMove_old = function (event) {
     this.setEditorGeometry(newGeo);
 };
 GeometryEditor.prototype.getLockingPolicy = function () {
+    if(!this.targetObject)
+        return {x: true, y: true, width: true, height: true, rotation: true, ratio: true};
+
     var allowScalling = this.targetObject.supportScaling();
     if(!this.targetObject.def)
         return {x: false, y: false, width: !allowScalling, height: !allowScalling, rotation: false, ratio: false};
+
     var boxPropDef = this.targetObject.def.propertyMap["box"];
     var lockW = boxPropDef ? (boxPropDef.meta.lockWidth == "true" || boxPropDef.meta.widthExpr) : false;
     var lockH = boxPropDef ? (boxPropDef.meta.lockHeight == "true" || boxPropDef.meta.heightExpr) : false;
@@ -617,6 +595,19 @@ GeometryEditor.prototype.getLockingPolicy = function () {
 GeometryEditor.prototype.getMinDimension = function () {
     //FIXME: this value is picked up from either the current shape box constraint or the system fallback constraint
     var min = { w: 15, h: 15 };
+
+    var w = this.geo.dim.w;
+    var h = this.geo.dim.h;
+
+    var locking = this.getLockingPolicy();
+    if (locking.ratio && (w > 15 || h > 15)) {
+        if (w < h) {
+            min.h = Math.round(min.h * (h / w));
+        } else {
+            min.w = Math.round(min.w * (w / h));
+        }
+    }
+
     return min;
 };
 GeometryEditor.prototype.getGridSize = function () {

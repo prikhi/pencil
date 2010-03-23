@@ -1087,4 +1087,5 @@ Util.getFileExtension = function (path) {
 };
 window.addEventListener("DOMContentLoaded", function () {
     document.documentElement.setAttribute("platform", navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux");
+    Util.platform = navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux";
 }, false);

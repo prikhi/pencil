@@ -178,7 +178,7 @@
         <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
         <command id="manageExportTemplateCommand" oncommand="window.openDialog('ExportTemplateManagementDialog.xul', '', 'modal,centerscreen,chrome')"/>
 
-        <command id="shapeFilterCommand" oncommand="Pencil.collectionPane.shapeFilter.focus();"/>
+        <command id="shapeFilterCommand" oncommand="Pencil.showCollectionPane();Pencil.collectionPane.shapeFilter.focus();"/>
         <command id="toggleCollectionPaneCommand" oncommand="Pencil.toggleCollectionPane('sideBox');"/>
 
     </commandset>

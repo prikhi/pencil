@@ -302,12 +302,16 @@ Pencil._hideCollectionPane = function (c) {
         Pencil.setUpSizeGrip();
     } else {
         Pencil.sideBoxFloat.style.opacity = c;
-        window.setTimeout("Pencil._hideCollectionPane(" + parseFloat(c - 0.2) + ")", 5);
+        window.setTimeout("Pencil._hideCollectionPane(" + parseFloat(c - 0.5) + ")", 1);
     }
 };
 Pencil.hideCollectionPane = function () {
     if (!Pencil.hideCollectionPaneTimer) {
-        Pencil.hideCollectionPaneTimer = window.setTimeout("Pencil._hideCollectionPane(1)", 300);
+        if (Util.platform == "Linux") {
+            Pencil.hideCollectionPaneTimer = window.setTimeout("Pencil._hideCollectionPane(0)", 1);
+        } else {
+            Pencil.hideCollectionPaneTimer = window.setTimeout("Pencil._hideCollectionPane(1)", 300);
+        }
     }
 }
 Pencil.setUpSizeGrip = function () {
@@ -319,20 +323,31 @@ Pencil.setUpSizeGrip = function () {
 };
 Pencil._showCollectionPane = function (c) {
     if (c == 0) {
+        Pencil.sideBoxFloat.style.opacity = 0;
         Pencil.sideBoxFloat.style.display = "";
         Pencil.setUpSizeGrip();
     }
     if (c <= 1) {
         Pencil.sideBoxFloat.style.opacity = c;
-        window.setTimeout("Pencil._showCollectionPane(" + parseFloat(c + 0.2) + ")", 1);
+        window.setTimeout("Pencil._showCollectionPane(" + parseFloat(c + 0.5) + ")", 1);
     }
 };
 Pencil.showCollectionPane = function () {
-    Pencil._showCollectionPane(0);
+    if (Util.platform == "Linux") {
+        Pencil.sideBoxFloat.style.opacity = 1;
+        Pencil.sideBoxFloat.style.display = "";
+        Pencil.setUpSizeGrip();
+    } else {
+        Pencil._showCollectionPane(0);
+    }
 };
 Pencil.toggleCollectionPane = function () {
     if (Pencil.isCollectionPaneVisibled()) {
-        Pencil._hideCollectionPane(1);
+        if (Util.platform == "Linux") {
+            Pencil._hideCollectionPane(0);
+        } else {
+            Pencil._hideCollectionPane(1);
+        }
     } else {
         Pencil.showCollectionPane();
     }
