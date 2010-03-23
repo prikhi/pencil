@@ -108,8 +108,34 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         OnScreenTextEditor.richTextEditorPane.style.visibility = "hidden";
         OnScreenTextEditor.miniToolbarPane.style.visibility = "hidden";
 
+        OnScreenTextEditor.miniToolbarPane.addEventListener("mousedown", function (event) {
+            if (event.button != 0 || !event.originalTarget || (event.originalTarget.nodeName != "toolbar" && event.originalTarget.nodeName != "toolbox" && event.originalTarget.nodeName != "vbox")) return;
+            OnScreenTextEditor.miniToolbarPane._oX = event.clientX;
+            OnScreenTextEditor.miniToolbarPane._oY = event.clientY;
+            OnScreenTextEditor.miniToolbarPane._left = parseInt(OnScreenTextEditor.miniToolbarPane.getAttribute("left"));
+            OnScreenTextEditor.miniToolbarPane._top = parseInt(OnScreenTextEditor.miniToolbarPane.getAttribute("top"));
+            OnScreenTextEditor.miniToolbarPane._hold = true;
+        }, true);
+        window.addEventListener("mousemove", function (event) {
+            if (OnScreenTextEditor.miniToolbarPane._hold) {
+                var dx = event.clientX - OnScreenTextEditor.miniToolbarPane._oX;
+                var dy = event.clientY - OnScreenTextEditor.miniToolbarPane._oY;
+                OnScreenTextEditor.miniToolbarPane.setAttribute("left", OnScreenTextEditor.miniToolbarPane._left + dx);
+                OnScreenTextEditor.miniToolbarPane.setAttribute("top", OnScreenTextEditor.miniToolbarPane._top + dy);
+            }
+        }, true);
+        window.addEventListener("mouseup", function (event) {
+            OnScreenTextEditor.miniToolbarPane._hold = false;
+        }, true);
+
         document.getElementById("mainToolbox").addEventListener("focus", function (event) {
-                OnScreenTextEditor.shoudClose = false;
+            OnScreenTextEditor.shoudClose = false;
+        }, true);
+        document.getElementById("mtextColorButton").addEventListener("focus", function (event) {
+            OnScreenTextEditor.shoudClose = false;
+        }, true);
+        document.getElementById("mhilightColorButton").addEventListener("focus", function (event) {
+            OnScreenTextEditor.shoudClose = false;
         }, true);
 
         OnScreenTextEditor.richTextEditor.contentWindow.addEventListener("blur", function (event) {
@@ -364,12 +390,25 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor.miniToolbarPane._oX = event.clientX;
     OnScreenTextEditor.miniToolbarPane._oY = event.clientY;
 
-    OnScreenTextEditor.miniToolbarPane.setAttribute("left", ctm.e - boxObject.screenX + dx);
-    OnScreenTextEditor.miniToolbarPane.setAttribute("top", ctm.f - boxObject.screenY + dy - 75);
-
+    var mx = ctm.e - boxObject.screenX + dx;
+    var my = ctm.f - boxObject.screenY + dy - 75;
     var buttonBox = document.getElementById("mclearButton").getBoundingClientRect();
-    var w = buttonBox.left + buttonBox.width + 1 - OnScreenTextEditor.miniToolbarPane.getBoundingClientRect().left;
-    OnScreenTextEditor.miniToolbarPane.setAttribute("width", w);
+    var mw = buttonBox.left + buttonBox.width + 1 - OnScreenTextEditor.miniToolbarPane.getBoundingClientRect().left;
+
+    if (mx < 0) {
+        mx = 0;
+    }
+    if (my < 0) {
+        my = y - 70;
+    }
+
+    if (mw + mx > boxObject.width) {
+        mx -= mw;
+    }
+
+    OnScreenTextEditor.miniToolbarPane.setAttribute("left", mx);
+    OnScreenTextEditor.miniToolbarPane.setAttribute("top", my);
+    OnScreenTextEditor.miniToolbarPane.setAttribute("width", mw);
 
     OnScreenTextEditor._enableGlobalClipboardKeys(false);
     OnScreenTextEditor._enableTextToolbar(false);

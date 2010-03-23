@@ -4,17 +4,26 @@
 
 #miniToolbar {
     border: solid 1px #ddd;
-	border-bottom: none;
+
+    background-color: menu;
 
     visibility: hidden;
 
     -moz-border-radius: 2px;
     -moz-box-shadow: 2px 2px 3px #999;
 
+    cursor: move;
+
 }
 #miniToolbar toolbox {
-	padding: 1px;
+    padding: 1px;
+    background-color: menu;
 }
 #miniToolbar toolbox toolbar {
-	border-bottom: none;
+    border-bottom: none;
+
+    padding-bottom: 1px;
+}
+#miniToolbar toolbox toolbar * {
+    cursor: default;
 }
