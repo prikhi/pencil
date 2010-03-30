@@ -138,7 +138,7 @@ Dom.serializer = new XMLSerializer();
 Dom.parseToNode = function (xml, dom) {
     var doc = Dom.parser.parseFromString(xml, "text/xml");
     if (!doc || !doc.documentElement
-             || doc.documentElement.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml") {
+            || doc.documentElement.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml") {
         return null;
     }
     var node = doc.documentElement;
@@ -156,11 +156,11 @@ Dom.serializeNode = function (node) {
 };
 Dom.serializeNodeToFile = function (node, file, additionalContentPrefixes) {
     var fos = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                             .createInstance(Components.interfaces.nsIFileOutputStream);
+                            .createInstance(Components.interfaces.nsIFileOutputStream);
     fos.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
 
     var os = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
-                       .createInstance(Components.interfaces.nsIConverterOutputStream);
+                        .createInstance(Components.interfaces.nsIConverterOutputStream);
 
     // This assumes that fos is the nsIOutputStream you want to write to
     os.init(fos, XMLDocumentPersister.CHARSET, 0, 0x0000);
@@ -549,7 +549,7 @@ Local.getInstalledFonts = function () {
 
     var localFonts;
     var enumerator = Components.classes["@mozilla.org/gfx/fontenumerator;1"]
-                             .getService(Components.interfaces.nsIFontEnumerator);
+                            .getService(Components.interfaces.nsIFontEnumerator);
     var localFontCount = { value: 0 }
     localFonts = enumerator.EnumerateAllFonts(localFontCount);
 
@@ -582,8 +582,8 @@ Local.openExtenstionManager = function() {
 Local.newTempFile = function (prefix, ext) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     var file = Components.classes["@mozilla.org/file/directory_service;1"].
-                         getService(Components.interfaces.nsIProperties).
-                         get("TmpD", Components.interfaces.nsIFile);
+                        getService(Components.interfaces.nsIProperties).
+                        get("TmpD", Components.interfaces.nsIFile);
     var seed = Math.round(Math.random() * 1000000);
 
     file.append(prefix + "-" + seed + "." + ext);
@@ -593,8 +593,8 @@ Local.newTempFile = function (prefix, ext) {
 Local.createTempDir = function (prefix) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     var dir = Components.classes["@mozilla.org/file/directory_service;1"].
-                         getService(Components.interfaces.nsIProperties).
-                         get("TmpD", Components.interfaces.nsIFile);
+                        getService(Components.interfaces.nsIProperties).
+                        get("TmpD", Components.interfaces.nsIFile);
     var seed = Math.round(Math.random() * 1000000);
 
     dir.append(prefix + "-" + seed);
@@ -625,12 +625,12 @@ Console.dumpError = function (exception, toConsole) {
 
 var Util = {};
 Util.uuidGenerator =
-  Components.classes["@mozilla.org/uuid-generator;1"]
+Components.classes["@mozilla.org/uuid-generator;1"]
             .getService(Components.interfaces.nsIUUIDGenerator);
 
 Util.newUUID = function () {
-	var uuid = Util.uuidGenerator.generateUUID();
-	return uuid.toString().replace(/[^0-9A-Z]+/gi, "");
+    var uuid = Util.uuidGenerator.generateUUID();
+    return uuid.toString().replace(/[^0-9A-Z]+/gi, "");
 };
 
 Util.instanceToken = "" + (new Date()).getTime();
@@ -679,12 +679,12 @@ Util.getClipboardImage = function (clipData, length, handler) {
 
     //create a temp file to save
     var file = Components.classes["@mozilla.org/file/directory_service;1"]
-                         .getService(Components.interfaces.nsIProperties)
-                         .get("TmpD", Components.interfaces.nsIFile);
+                        .getService(Components.interfaces.nsIProperties)
+                        .get("TmpD", Components.interfaces.nsIFile);
     file.append("pencil-clipboard-image.png");
 
     var fos = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                             .createInstance(Components.interfaces.nsIFileOutputStream);
+                            .createInstance(Components.interfaces.nsIFileOutputStream);
     fos.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
 
     fos.write(bytes, bytes.length);
@@ -877,7 +877,7 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
 };
 Util.compress = function (dir, zipFile) {
     var writer = Components.classes["@mozilla.org/zipwriter;1"]
-                          .createInstance(Components.interfaces.nsIZipWriter);
+                        .createInstance(Components.interfaces.nsIZipWriter);
     writer.open(zipFile, PR_RDWR | PR_CREATE_FILE | PR_TRUNCATE);
 
     Util.writeDirToZip(dir, writer, "");
@@ -910,6 +910,35 @@ Util.preloadFonts = function (doc) {
     }
     doc.documentElement.appendChild(menupopup);
     Util.fontList = menupopup;
+};
+Util.openDonate = function () {
+    try {
+        var link = "http://evolus.vn/Pencil/HowToDonate.html";
+
+        var mediator = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
+        var ioservice = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
+        var protoservice = Components.classes['@mozilla.org/uriloader/external-protocol-service;1'].getService(Components.interfaces.nsIExternalProtocolService);
+
+        var enumerator = mediator.getEnumerator("navigator:browser");
+        while (enumerator.hasMoreElements()) {
+            var win = enumerator.getNext();
+            if (win) {
+                if ('delayedOpenTab' in win) {
+                    win.delayedOpenTab(link);
+                    return;
+                }
+                win.getBrowser().addTab(link);
+                return;
+            }
+        }
+    } catch (ex) {
+    }
+    try {
+        window.open(link);
+    } catch (ex) {
+        var uri = ioservice.newURI(link, null, null);
+        protoservice.loadUrl(uri);
+    }
 };
 function debugx(ex) {
     var value = eval("(" + ex + ")");
@@ -946,7 +975,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
     netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
 
     var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-                                  .getService(Components.interfaces.nsIIOService);
+                                .getService(Components.interfaces.nsIIOService);
 
     var uri = ioService.newURI(url, null, null);
     var channel = ioService.newChannelFromURI(uri);
@@ -977,7 +1006,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             try {
                 if (!this.foStream) {
                     this.foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                                             .createInstance(Components.interfaces.nsIFileOutputStream);
+                                            .createInstance(Components.interfaces.nsIFileOutputStream);
                     this.writeMessage("Start receiving file...");
 
                     this.downloaded = 0;
