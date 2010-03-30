@@ -35,7 +35,19 @@
                     </tabs>
                     <tabpanels flex="1" id="aboutBoxTabPanels">
                         <tabpanel>
-                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Dương Thành An&#13;Nguyễn Tiến Dũng"></textbox>
+                            <vbox flex="1">
+                                <hbox>
+                                    <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Dương Thành An&#13;Nguyễn Tiến Dũng"></textbox>
+                                </hbox>
+                                <hbox style="padding-top: 5px;">
+                                    <vbox flex="1" >
+                                        <label width="250">Pencil is Free Software (GPL), but if you find it useful, you can support its development :)</label>
+                                    </vbox>
+                                    <vbox>
+                                        <image style="cursor:pointer;" src="Icons/paypal.png" alt="Click to donate" tooltiptext="You can help us make Pencil even better. Consider making a small donation!" onclick="Util.openDonate();" />
+                                    </vbox>
+                                </hbox>
+                            </vbox>
                         </tabpanel>
                         <tabpanel>
                             <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Maxime Delorme&#13;Frederic Vandaele&#13;brainiac.kalel@gmail.com"/>
