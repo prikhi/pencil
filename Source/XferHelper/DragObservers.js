@@ -29,14 +29,14 @@ ShapeDefDragObserver.prototype = {
         var now = new Date().getTime();
         var delta = now - this.lastDragEnterExitEventTS;
         this.lastDragEnterExitEventTS = now;
-        
+
         if (this.aboutToDelete) {
             this.deleteDiscarded = true;
             return;
         }
-        
+
         if (delta < 500) return;
-        
+
         var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
         var defId = null;
         try {
@@ -44,17 +44,17 @@ ShapeDefDragObserver.prototype = {
         } catch (e) {
             return;
         }
-        
+
         debug("onDragEnter, defId: " + defId);
         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
 
         var loc = this.canvas.getEventLocation(event);
 
         this.canvas.insertShapeImpl_(def, new Bound(loc.x, loc.y, null, null));
-        
+
         //fake move marking:
         this.canvas.startFakeMove(event);
-        
+
         this.commited = false;
         this.hasDrag = true;
     },
@@ -63,19 +63,19 @@ ShapeDefDragObserver.prototype = {
         if (this.deleteDiscarded) {
             return;
         }
-        
+
         if (!this.commited && this.hasDrag) {
             this.canvas.deleteSelected();
         }
-        
+
         this.hasDrag = false;
     },
     onDragExit: function (event, session) {
         var thiz = this;
-        
+
         this.aboutToDelete = true;
         this.deleteDiscarded = false;
-        
+
         window.setTimeout(function () {
             thiz.exit();
         }, 300);
@@ -91,7 +91,7 @@ ShapeDefDragObserver.prototype = {
     },
     onDrop: function (event, transferData, session) {
         this.commited = true;
-        this.canvas.finishMoving();
+        this.canvas.finishMoving(event);
     }
 };
 
@@ -115,14 +115,14 @@ PrivateShapeDefDragObserver.prototype = {
         var now = new Date().getTime();
         var delta = now - this.lastDragEnterExitEventTS;
         this.lastDragEnterExitEventTS = now;
-        
+
         if (this.aboutToDelete) {
             this.deleteDiscarded = true;
             return;
         }
-        
+
         if (delta < 500) return;
-        
+
         var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
         var defId = null;
         try {
@@ -130,16 +130,16 @@ PrivateShapeDefDragObserver.prototype = {
         } catch (e) {
             return;
         }
-        
+
         var def = PrivateCollectionManager.locateShapeDefinition(defId);
-        
+
         var loc = this.canvas.getEventLocation(event);
 
         this.canvas.insertPrivateShapeImpl_(def, new Bound(loc.x, loc.y, null, null));
-        
+
         //fake move marking:
         this.canvas.startFakeMove(event);
-        
+
         this.commited = false;
         this.hasDrag = true;
     },
@@ -148,19 +148,19 @@ PrivateShapeDefDragObserver.prototype = {
         if (this.deleteDiscarded) {
             return;
         }
-        
+
         if (!this.commited && this.hasDrag) {
             this.canvas.deleteSelected();
         }
-        
+
         this.hasDrag = false;
     },
     onDragExit: function (event, session) {
         var thiz = this;
-        
+
         this.aboutToDelete = true;
         this.deleteDiscarded = false;
-        
+
         window.setTimeout(function () {
             thiz.exit();
         }, 300);
@@ -176,7 +176,7 @@ PrivateShapeDefDragObserver.prototype = {
     },
     onDrop: function (event, transferData, session) {
         this.commited = true;
-        this.canvas.finishMoving();
+        this.canvas.finishMoving(event);
     }
 };
 
@@ -198,19 +198,19 @@ ShapeShortcutDragObserver.prototype = {
 
         return flavours;
     },
-    
+
     onDragEnter: function (event, session) {
         var now = new Date().getTime();
         var delta = now - this.lastDragEnterExitEventTS;
         this.lastDragEnterExitEventTS = now;
-        
+
         if (this.aboutToDelete) {
             this.deleteDiscarded = true;
             return;
         }
-        
+
         if (delta < 500) return;
-        
+
         var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
         var defId = null;
         try {
@@ -218,18 +218,18 @@ ShapeShortcutDragObserver.prototype = {
         } catch (e) {
             return;
         }
-        
+
         var shortcut = CollectionManager.shapeDefinition.locateShortcut(defId);
         var def = shortcut.shape;
         var overridingValueMap = shortcut.propertyMap;
-        
+
         var loc = this.canvas.getEventLocation(event);
 
         this.canvas.insertShapeImpl_(def, new Bound(loc.x, loc.y, null, null), overridingValueMap);
-        
+
         //fake move marking:
         this.canvas.startFakeMove(event);
-        
+
         this.commited = false;
         this.hasDrag = true;
     },
@@ -238,19 +238,19 @@ ShapeShortcutDragObserver.prototype = {
         if (this.deleteDiscarded) {
             return;
         }
-        
+
         if (!this.commited && this.hasDrag) {
             this.canvas.deleteSelected();
         }
-        
+
         this.hasDrag = false;
     },
     onDragExit: function (event, session) {
         var thiz = this;
-        
+
         this.aboutToDelete = true;
         this.deleteDiscarded = false;
-        
+
         window.setTimeout(function () {
             thiz.exit();
         }, 300);
@@ -266,7 +266,7 @@ ShapeShortcutDragObserver.prototype = {
     },
     onDrop: function (event, transferData, session) {
         this.commited = true;
-        this.canvas.finishMoving();
+        this.canvas.finishMoving(event);
     }
 };
 

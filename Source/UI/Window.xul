@@ -178,8 +178,10 @@
         <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
         <command id="manageExportTemplateCommand" oncommand="window.openDialog('ExportTemplateManagementDialog.xul', '', 'modal,centerscreen,chrome')"/>
 
-        <command id="shapeFilterCommand" oncommand="Pencil.showCollectionPane();Pencil.collectionPane.shapeFilter.focus();"/>
-        <command id="toggleCollectionPaneCommand" oncommand="Pencil.toggleCollectionPane('sideBox');"/>
+        <command id="shapeFilterCommand" oncommand="if (Config.get('collectionPane.floating') &amp;&amp; !Pencil.isCollectionPaneVisibled()) { Pencil.showCollectionPane(); } Pencil.collectionPane.shapeFilter.focus();"/>
+        <command id="toggleCollectionPaneCommand" oncommand="Pencil.toggleCollectionPane();"/>
+
+        <command id="toggleCollectionPaneCommand1" oncommand="Pencil.toggleCollectionPane(true);"/>
 
     </commandset>
     <keyset>
@@ -239,6 +241,7 @@
 
         <key id="shapeFilter" command="shapeFilterCommand" modifiers="accel ctrl" key="F"/>
         <key id="toggleCollectionPaneCommandKey" command="toggleCollectionPaneCommand" key="A"/>
+        <key id="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" modifiers="alt" key="A"/>
 
     </keyset>
     <keyset>
@@ -287,6 +290,11 @@
                     <menuitem label="Redo" key="redoKey" command="redoCommand"/>
                 </menupopup>
             </menu>
+            <menu id="view-menu" label="View" accesskey="V">
+                <menupopup id="view-popup">
+                    <menuitem label="Collection Pane" type="checkbox" checked="false" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
+                </menupopup>
+            </menu>
             <menu label="Shape" id="shape-menu" accesskey="S">
                 <menupopup>
                     <menuitem label="Group" command="groupCommand" key="groupKey"/>
@@ -316,7 +324,7 @@
                     <menuitem label="Stencil Generator..." oncommand="window.openDialog('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen', Pencil);"/>
                     <menuitem label="Clipart Browser..." oncommand="if (!Pencil._clipartShowing) { window.openDialog('ClipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
                     <menuseparator/>
-                    <!--<menuitem label="DOM Inspector" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');"/>-->
+                    <menuitem label="DOM Inspector" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
 
                     <menuitem label="Install New Collection..." command="installNewCollectionCommand"/>
                     <menuitem label="Manage Export Template..." command="manageExportTemplateCommand"/>
@@ -325,6 +333,7 @@
             <menu label="Settings" id="settings-menu" accesskey="t">
                 <menupopup>
                     <menuitem label="Advanced Configurations" oncommand="window.open('chrome://global/content/config.xul', 'aboutConfig', 'chrome')"/>
+                    <!--<menuitem label="Options" oncommand="window.openDialog('SettingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal');"/>-->
                 </menupopup>
             </menu>
             <menu label="Help" id="help-menu" accesskey="H">
@@ -411,10 +420,10 @@
                     </tabs>
                     <tabpanels flex="1" id="sideBoxTabPanels">
                         <tabpanel id="tabCollectionPane">
-                            <!--<pcollectionpane id="collectionPane" flex="1"/>-->
+                            <pcollectionpane id="_collectionPane" flex="1"/>
                         </tabpanel>
                         <tabpanel id="tabPCollectionPane">
-                            <!--<privatecollectionpane id="privateCollectionPane" flex="1"/>-->
+                            <privatecollectionpane id="_privateCollectionPane" flex="1"/>
                         </tabpanel>
                     </tabpanels>
                 </tabbox>
