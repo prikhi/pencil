@@ -40,11 +40,16 @@
                     if (header) {
                         collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
                         if (collection) {
-                            var collapsed = collection.getAttribute("pcollapsed");
-                            collapsed = (collapsed == "true");
-                            collection.setAttribute("pcollapsed", !collapsed);
-                            CollectionManager.setCollectionCollapsed(collection._collection, !collapsed);
-                            Pencil.setUpSizeGrip();
+                            if (event.originalTarget.className == "HideCollection") {
+                                CollectionManager.setCollectionVisible(collection, false);
+                                thiz.reloadCollections();
+                            } else {
+                                var collapsed = collection.getAttribute("pcollapsed");
+                                collapsed = (collapsed == "true");
+                                collection.setAttribute("pcollapsed", !collapsed);
+                                CollectionManager.setCollectionCollapsed(collection._collection, !collapsed);
+                                Pencil.setUpSizeGrip();
+                            }
                         }
                     }
                 }, false);
@@ -157,6 +162,14 @@
                     hbox.appendChild(div);
                     div.setAttribute("flex", "1");
 
+                    var closeButton = document.createElementNS(PencilNamespaces.xul, "image");
+                    hbox.appendChild(closeButton);
+                    closeButton.setAttribute("class", "HideCollection");
+                    closeButton.setAttribute("tooltiptext", "Hide this collection");
+                    closeButton.setAttribute("width", 11);
+                    closeButton.setAttribute("height", 11);
+                    closeButton.setAttribute("src", "Icons/hide-collection.gif");
+
                     var h4 = document.createElementNS(PencilNamespaces.html, "h4");
                     div.appendChild(h4);
                     h4.appendChild(document.createTextNode(collection.displayName));
@@ -180,6 +193,7 @@
                         if (def.system) continue;
                         var button = document.createElementNS(PencilNamespaces.html, "div");
                         button._def = def;
+                        button.setAttribute("title", def.displayName);
                         div.appendChild(button);
 
                         collection._shapeCount++;
@@ -349,7 +363,7 @@
 
             <vbox flex="1">
                 <vbox aid="filterPanel" align="left">
-                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + F)" maxlength="255" size="64">
+                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + F)" maxlength="255" size="1024">
                         <hbox>
                             <deck>
                                 <image />

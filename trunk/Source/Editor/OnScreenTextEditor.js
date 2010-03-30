@@ -34,6 +34,13 @@ OnScreenTextEditor.prototype.install = function (canvas) {
     this.addEditorEvent("blur", function (event) {
         thiz.handleTextBlur(event);
     });
+    this.canvas.addEventListener("p:ShapeInserted", function (ev) {
+        if (thiz.passivated) {
+            thiz.canvas.removeEventListener("p:ShapeInserted", arguments.callee, false);
+            return;
+        }
+        thiz.handleShapeDoubleClicked(ev);
+    }, false);
     this.canvas.addEventListener("p:ShapeDoubleClicked", function (ev) {
         if (thiz.passivated) {
             thiz.canvas.removeEventListener("p:ShapeDoubleClicked", arguments.callee, false);
@@ -72,6 +79,7 @@ OnScreenTextEditor.prototype.handleShapeDoubleClicked = function (event) {
     if (this.textEditingInfo) {
         if (this.textEditingInfo.type == PlainText) {
             //setup
+            this._lastTarget = this.currentTarget;
             this._setupEditor();
         } else if (this.textEditingInfo.type == RichText) {
             OnScreenTextEditor.currentInstance = this;
@@ -142,8 +150,12 @@ OnScreenTextEditor.prototype._setupEditor = function () {
     this._cachedVisibility = this.textEditingInfo.target.style.visibility;
     //this.textEditingInfo.target.style.visibility = "hidden";
     this.svgElement.style.visibility = "visible";
-    this.textEditor.focus();
-    this.textEditor.select();
+
+    var thiz = this;
+    window.setTimeout(function () {
+        thiz.textEditor.focus();
+        thiz.textEditor.select();
+    }, 10);
 };
 OnScreenTextEditor.prototype.handleTextBlur = function (event) {
     this.commitChange();
@@ -156,11 +168,11 @@ OnScreenTextEditor.prototype.handleKeyPress = function (event) {
     }
 };
 OnScreenTextEditor.prototype.commitChange = function () {
-    if (!this.currentTarget || !this.textEditingInfo) return;
+    if (!this._lastTarget || !this.textEditingInfo) return;
     this.textEditingInfo.target.style.visibility = this._cachedVisibility;
     try {
         var plainText = new PlainText(this.textEditor.value);
-        this.currentTarget.setProperty(this.textEditingInfo.prop.name, plainText);
+        this._lastTarget.setProperty(this.textEditingInfo.prop.name, plainText);
         this.canvas.invalidateEditors(this);
     } finally {
         this.svgElement.style.visibility = "hidden";

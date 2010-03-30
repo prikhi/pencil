@@ -85,8 +85,31 @@ Pencil.boot = function (event) {
             Pencil.fixUI();
         }
 
-        Pencil.collectionPane = document.getElementById("collectionPane");
-        Pencil.privateCollectionPane = document.getElementById("privateCollectionPane");
+        if (window.arguments) {
+            var cmdLine = window.arguments[0];
+            if (cmdLine) {
+                cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
+                for (var cc = 0; cc < cmdLine.length; cc++) {
+                    if ("-debug".indexOf(cmdLine.getArgument(cc)) != -1) {
+                        document.getElementById("domInspector").style.display = "";
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (Config.get("collectionPane.floating") == true) {
+            document.getElementById("sideBox").style.display = "none";
+            Pencil.collectionPane = document.getElementById("collectionPane");
+            Pencil.privateCollectionPane = document.getElementById("privateCollectionPane");
+        } else {
+            Config.set("collectionPane.floating", false);
+            document.getElementById("sideBox").style.display = "";
+            Pencil.collectionPane = document.getElementById("_collectionPane");
+            Pencil.privateCollectionPane = document.getElementById("_privateCollectionPane");
+        }
+
+        document.getElementById("floatingCollectionPane").setAttribute("checked", Config.get("collectionPane.floating") == false);
 
         Pencil.controller = new Controller(win);
         Pencil.rasterizer = new Rasterizer("image/png");
@@ -136,6 +159,16 @@ Pencil.boot = function (event) {
             collectionPaneSizeGrip._hold = false;
         }, true);
 
+        window.addEventListener("DOMMouseScroll", function (event) {
+            if (event.VERTICAL_AXIS == event.axis && event.ctrlKey && Pencil.activeCanvas != null) {
+                if (event.detail > 0) {
+                    Pencil.activeCanvas.zoomTo(Pencil.activeCanvas.zoom / 1.25);
+                } else {
+                    Pencil.activeCanvas.zoomTo(Pencil.activeCanvas.zoom * 1.25);
+                }
+            }
+        }, true);
+
         //booting shared editors
         for (var i in Pencil.sharedEditors) {
             try {
@@ -155,7 +188,7 @@ Pencil.boot = function (event) {
         //Util.preloadFonts(document);
 
         window.setTimeout(function() {
-            Pencil.controller.newDocument();
+            //Pencil.controller.newDocument();
         }, 100);
 
     } catch (e) {
@@ -341,15 +374,38 @@ Pencil.showCollectionPane = function () {
         Pencil._showCollectionPane(0);
     }
 };
-Pencil.toggleCollectionPane = function () {
-    if (Pencil.isCollectionPaneVisibled()) {
-        if (Util.platform == "Linux") {
-            Pencil._hideCollectionPane(0);
-        } else {
-            Pencil._hideCollectionPane(1);
+Pencil.toggleCollectionPane = function (dockable) {
+    if (!dockable) {
+        if (Config.get("collectionPane.floating") == true) {
+            if (Pencil.isCollectionPaneVisibled()) {
+                if (Util.platform == "Linux") {
+                    Pencil._hideCollectionPane(0);
+                } else {
+                    Pencil._hideCollectionPane(1);
+                }
+            } else {
+                Pencil.showCollectionPane();
+            }
         }
     } else {
-        Pencil.showCollectionPane();
+        if (!Config.get("collectionPane.floating")) {
+            Config.set("collectionPane.floating", true);
+            document.getElementById("sideBox").style.display = "none";
+            Pencil.collectionPane = document.getElementById("collectionPane");
+            Pencil.privateCollectionPane = document.getElementById("privateCollectionPane");
+            Pencil.collectionPane.reloadCollections();
+            Pencil.privateCollectionPane.reloadCollections();
+        } else {
+            Pencil._hideCollectionPane(0);
+            Config.set("collectionPane.floating", false);
+            document.getElementById("sideBox").style.display = "";
+            Pencil.collectionPane = document.getElementById("_collectionPane");
+            Pencil.privateCollectionPane = document.getElementById("_privateCollectionPane");
+            Pencil.collectionPane.reloadCollections();
+            Pencil.privateCollectionPane.reloadCollections();
+        }
+
+        document.getElementById("floatingCollectionPane").setAttribute("checked", Config.get("collectionPane.floating") == false);
     }
 };
 window.addEventListener("load", Pencil.boot, false);

@@ -22,46 +22,50 @@ Pencil.buildRecentFileMenu = function (files) {
     }
 };
 Pencil.postBoot = function() {
-    var menu = document.getElementById("recentDocumentMenu");
-    menu.addEventListener("command", function (event) {
-        var path = event.originalTarget._path;
-        if (path) {
-            Pencil.controller.loadDocument(path);
-        }
-    }, false);
-
-    Pencil.buildRecentFileMenu();
-
-    if (window.arguments) {
-        var cmdLine = window.arguments[0];
-        if (cmdLine) {
-            cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
-
-            var filePath = ""
-            var i = 0;
-            while (true) {
-                try {
-                    var part = cmdLine.getArgument(i);
-                    if (!part) break;
-                    if (filePath.length > 0) filePath += " ";
-                    if (part.indexOf("application.ini") == -1)
-                        filePath += part;
-                    i ++;
-                } catch (e) { break; }
+    try {
+        var menu = document.getElementById("recentDocumentMenu");
+        menu.addEventListener("command", function (event) {
+            var path = event.originalTarget._path;
+            if (path) {
+                Pencil.controller.loadDocument(path);
             }
-            if (filePath) {
-                window.setTimeout(function () {
-                    Pencil.controller.loadDocument(filePath);
-                }, 100);
-            } else {
-                window.setTimeout(function() {
-                    //Pencil.controller.newDocument();
-                }, 100);
+        }, false);
+
+        Pencil.buildRecentFileMenu();
+
+        if (window.arguments) {
+            var cmdLine = window.arguments[0];
+            if (cmdLine) {
+                cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
+
+                var filePath = ""
+                var i = 0;
+                while (true && cmdLine.length > 0) {
+                    try {
+                        var part = cmdLine.getArgument(i);
+                        if (!part) break;
+                        if (filePath.length > 0) filePath += " ";
+                        if (part.indexOf("application.ini") == -1)
+                            filePath += part;
+                        i ++;
+                    } catch (e) { Console.dumpError(e); break; }
+                }
+                if (filePath && filePath.indexOf("-") != 0) {
+                    window.setTimeout(function () {
+                        Pencil.controller.loadDocument(filePath);
+                    }, 100);
+                } else {
+                    window.setTimeout(function() {
+                        Pencil.controller.newDocument();
+                    }, 100);
+                }
             }
         }
+
+        Pencil.updateGUIForHeavyElementVisibility();
+    } catch (e) {
+        Console.dumpError(e);
     }
-
-    Pencil.updateGUIForHeavyElementVisibility();
 };
 function czInitComponent() {
 	try {

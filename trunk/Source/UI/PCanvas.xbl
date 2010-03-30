@@ -763,6 +763,7 @@
                 </body>
             </method>
             <method name="finishMoving">
+                <parameter name="event"/>
                 <body>
                 <![CDATA[
                     if (this.controllerHeld && this.currentController && this.currentController.markAsMoving) {
@@ -781,6 +782,8 @@
                     }
                     this.removeAttributeNS(PencilNamespaces.p, "holding");
                     this.controllerHeld = false;
+
+                    Dom.emitEvent("p:ShapeInserted", this.currentController.svg, {controller: this.currentController, origTarget: event.originalTarget, clientX: event.clientX, clientY: event.clientY});
                 ]]>
                 </body>
             </method>
@@ -2117,6 +2120,8 @@
                     this.oldPos = this.currentController.getGeometry();
 
                     this.currentController.setPositionSnapshot();
+
+                    OnScreenTextEditor._hide();
 
                     this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
                     this.reClick = false;
