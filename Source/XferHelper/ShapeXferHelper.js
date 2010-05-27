@@ -27,7 +27,7 @@ ShapeXferHelper.prototype.handleData = function (data, length) {
     shape = this.canvas.ownerDocument.importNode(shape, true);
     Dom.renewId(shape);
     if (Config.get("edit.cutAndPasteAtTheSamePlace") == null ){
-        Config.set("edit.cutAndPasteAtTheSamePlace",false);
+        Config.set("edit.cutAndPasteAtTheSamePlace", false);
     }
     if (!Config.get("edit.cutAndPasteAtTheSamePlace")) {
         var grid = Pencil.getGridSize()

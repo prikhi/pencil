@@ -228,6 +228,8 @@
         <key id="copyKey" command="copyCommand" modifiers="accel" key="C"/>
         <key id="cutKey" command="cutCommand" modifiers="accel" key="X"/>
         <key id="pasteKey" command="pasteCommand" modifiers="accel" key="V"/>
+        <key id="deleteKey" modifiers="" keycode="VK_DELETE"/>
+        <key id="selectAllKey" modifiers="accel" key="A"/>
 
         <key id="groupKey" command="groupCommand" modifiers="accel" key="G"/>
         <key id="unGroupKey" command="unGroupCommand" modifiers="accel alt" key="G"/>
@@ -282,12 +284,15 @@
             </menu>
             <menu id="edit-menu" label="Edit" accesskey="E">
                 <menupopup id="edit-popup">
-                    <menuitem label="Copy" key="copyKey" command="copyCommand"/>
-                    <menuitem label="Cut" key="cutKey" command="cutCommand"/>
-                    <menuitem label="Paste" key="pasteKey" command="pasteCommand"/>
-                    <menuseparator/>
                     <menuitem label="Undo" key="undoKey" command="undoCommand"/>
                     <menuitem label="Redo" key="redoKey" command="redoCommand"/>
+                    <menuseparator/>
+                    <menuitem label="Cut" key="cutKey" command="cutCommand"/>
+                    <menuitem label="Copy" key="copyKey" command="copyCommand"/>
+                    <menuitem label="Paste" key="pasteKey" command="pasteCommand"/>
+                    <menuitem label="Delete" key="deleteKey" oncommand="Pencil.activeCanvas.deleteSelected();" id="deleteSelectedCommand"/>
+                    <menuseparator/>
+                    <menuitem label="Select all" key="selectAllKey" oncommand="Pencil.activeCanvas.selectAll();"/>
                 </menupopup>
             </menu>
             <menu id="view-menu" label="View" accesskey="V">
@@ -332,8 +337,8 @@
             </menu>
             <menu label="Settings" id="settings-menu" accesskey="t">
                 <menupopup>
+                    <menuitem label="Options..." oncommand="window.openDialog('SettingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
                     <menuitem label="Advanced Configurations" oncommand="window.open('chrome://global/content/config.xul', 'aboutConfig', 'chrome')"/>
-                    <!--<menuitem label="Options" oncommand="window.openDialog('SettingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal');"/>-->
                 </menupopup>
             </menu>
             <menu label="Help" id="help-menu" accesskey="H">

@@ -69,6 +69,7 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
 
     this._width = page.properties.width;
     this._height = page.properties.height;
+    this._backgroundColor = page.properties.transparentBackground == false ? page.properties.backgroundColor : null;
 
     if (page._view.canvas.hasBackgroundImage) {
         var bgImage = page._view.canvas.backgroundImage.cloneNode(true);
@@ -120,7 +121,12 @@ Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
     ctx.clearRect(0, 0, canvasW, canvasH);
     ctx.save();
     ctx.scale(1, 1);
-    ctx.drawWindow(this.win, 0, 0, w, h, "rgba(255,255,255,0)");
+    if (this._backgroundColor) {
+        var bgr = Color.fromString(this._backgroundColor);
+        ctx.drawWindow(this.win, 0, 0, w, h, bgr.toRGBAString());
+    } else {
+        ctx.drawWindow(this.win, 0, 0, w, h, "rgba(255,255,255,0)");
+    }
     ctx.restore();
 
     data = {
@@ -174,7 +180,7 @@ Rasterizer.prototype.rasterizeDOMToUrl = function (svgNode, callback) {
         Console.dumpError(e);
     }
 };
-Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, preprocessor) {
+Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, preprocessor, backgroundColor) {
 
     this._width = svgNode.width.baseVal.value;
     this._height = svgNode.height.baseVal.value;
@@ -182,14 +188,14 @@ Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, prepr
     var thiz = this;
     this._saveNodeToTempFileAndLoad(svgNode, function () {
         try {
-            thiz.rasterizeWindow(filePath, callback, preprocessor);
+            thiz.rasterizeWindow(filePath, callback, preprocessor, backgroundColor);
         } catch (e) {
             Console.dumpError(e);
         }
     });
 };
 
-Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocessor) {
+Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocessor, backgroundColor) {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
     if (preprocessor && preprocessor.process) {
@@ -227,7 +233,13 @@ Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocesso
     ctx.clearRect(0, 0, canvasW, canvasH);
     ctx.save();
     ctx.scale(1, 1);
-    ctx.drawWindow(this.win, 0, 0, w, h, "rgba(255,255,255,0)");
+
+    if (backgroundColor) {
+        backgroundColor = Color.fromString(backgroundColor);
+        ctx.drawWindow(this.win, 0, 0, w, h, backgroundColor.toRGBAString());
+    } else {
+        ctx.drawWindow(this.win, 0, 0, w, h, "rgba(255,255,255,0)");
+    }
     ctx.restore();
 
     data = canvas.toDataURL("image/png", "");

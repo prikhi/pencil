@@ -42,7 +42,7 @@
                 <menupopup>
                 </menupopup>
             </menulist>
-            <html:div style="margin-left: 1em;">
+            <html:div style="margin-left: 1em;margin-right: 1em;">
                 <html:a onclick="ExportWizard.callManageTemplateDialog();" href="#" style="color: -moz-hyperlinktext; text-decoration: underline; font-size: .9em;">Manage Templates...</html:a>
             </html:div>
         </hbox>

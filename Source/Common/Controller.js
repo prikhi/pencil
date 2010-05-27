@@ -199,10 +199,12 @@ Controller.prototype.duplicatePage = function () {
     var height = page.properties.height;
     var background = page.properties.background;
     var dimBackground = page.properties.dimBackground;
+    var backgroundColor = page.properties.backgroundColor;
+    var transparentBackground = page.properties.transparentBackground;
 
     var id = this._generateId();
 
-    this._addPage(name, id, width, height, background, dimBackground);
+    this._addPage(name, id, width, height, background, dimBackground, backgroundColor, transparentBackground);
     this._setSelectedPageIndex(this.doc.pages.length - 1);
 
     var newPage = this.doc.pages[this.doc.pages.length-1];
@@ -229,10 +231,12 @@ Controller.prototype.newPage = function () {
     var height = returnValueHolder.data.height;
     var background = returnValueHolder.data.background ? returnValueHolder.data.background : null;
     var dimBackground = returnValueHolder.data.dimBackground ? true : false;
+    var backgroundColor = returnValueHolder.data.backgroundColor ? returnValueHolder.data.backgroundColor : "#ffffff";
+    var transparentBackground = returnValueHolder.data.transparentBackground == false ? false : true;
 
     var id = this._generateId();
 
-    this._addPage(name, id, width, height, background, dimBackground);
+    this._addPage(name, id, width, height, background, dimBackground, backgroundColor, transparentBackground);
     this._setSelectedPageIndex(this.doc.pages.length - 1);
     this.markDocumentModified();
 };
@@ -405,36 +409,42 @@ Controller.prototype._loadDocumentImpl = function (file, path) {
             thiz.doc = XMLDocumentPersister.load(file);
         } catch (e) {
             Console.dumpError(e);
-            throw e;
+            document.documentElement.removeAttribute("wait-cursor");
+            Util.error("Could not load document", e.message, "Close");
+            return;
         }
         thiz._pageSetupCount = 0;
         var p = -1;
 
         function loadPage() {
             p++;
-            listener.onProgressUpdated("Loading page " + thiz.doc.pages[p].properties.name + "...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
-            thiz._createPageView(thiz.doc.pages[p], function () {
-                thiz._pageSetupCount ++;
-                if (thiz._pageSetupCount == thiz.doc.pages.length) {
-                    thiz._ensureAllBackgrounds(function () {
-                        thiz._setSelectedPageIndex(0);
+            try {
+                listener.onProgressUpdated("Loading page " + thiz.doc.pages[p].properties.name + "...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
+                thiz._createPageView(thiz.doc.pages[p], function () {
+                    thiz._pageSetupCount ++;
+                    if (thiz._pageSetupCount == thiz.doc.pages.length) {
+                        thiz._ensureAllBackgrounds(function () {
+                            thiz._setSelectedPageIndex(0);
 
-                        thiz.filePath = path;
-                        Pencil.setTitle(thiz.filePath);
+                            thiz.filePath = path;
+                            Pencil.setTitle(thiz.filePath);
 
-                        thiz.markDocumentSaved();
-                        document.documentElement.removeAttribute("wait-cursor");
+                            thiz.markDocumentSaved();
+                            document.documentElement.removeAttribute("wait-cursor");
 
-                        listener.onTaskDone();
-                    });
+                            listener.onTaskDone();
+                        });
 
-                    return true;
-                }
-
-                window.setTimeout(loadPage, 10);
-            });
+                        return true;
+                    }
+                    window.setTimeout(loadPage, 10);
+                });
+            } catch (ex) {
+                document.documentElement.removeAttribute("wait-cursor");
+                listener.onTaskDone();
+                Util.error("Error", e.message, "Close");
+            }
         }
-
         loadPage();
     }
     Util.beginProgressJob("Loading document...", starter);
@@ -467,13 +477,20 @@ Controller.prototype._updatePageFromView = function () {
 Controller.prototype._generateId = function () {
     return (new Date().getTime()) + "_" + Math.round(Math.random() * 10000);
 };
-Controller.prototype._addPage = function (name, id, width, height, background, dimBackground,note) {
+Controller.prototype._addPage = function (name, id, width, height, background, dimBackground, backgroundColor, transparentBackground, note) {
     var page = new Page(this.doc);
     page.properties.name = name;
     page.properties.id = id;
     page.properties.width = width;
     page.properties.height = height;
     page.properties.dimBackground = false;
+
+    if (backgroundColor) {
+        page.properties.backgroundColor = backgroundColor;
+    } else {
+        page.properties.backgroundColor = "#ffffff";
+    }
+
     if (background) {
         page.properties.background = background;
         page.properties.dimBackground = dimBackground;
@@ -504,6 +521,7 @@ Controller.prototype._createPageView = function (page, callback) {
     canvas.setAttribute("flex", 1);
     canvas.setAttribute("width", parseInt(page.properties.width, 10));
     canvas.setAttribute("height", parseInt(page.properties.height, 10));
+
     vbox.appendChild(canvas);
 
     var view = {header: tab, body: tabpanel, canvas: canvas};
@@ -526,6 +544,11 @@ Controller.prototype._createPageView = function (page, callback) {
             page.rasterizeDataCache = null;
         }, false);
 
+        if (page.properties.transparentBackground) {
+            canvas.setBackgroundColor(Color.fromString("#ffffffff"));
+        } else {
+            canvas.setBackgroundColor(Color.fromString(page.properties.backgroundColor));
+        }
         canvas.snappingHelper.rebuildSnappingGuide();
         if (callback) callback();
     }, 200);
@@ -593,6 +616,8 @@ Controller.prototype._modifyPageProperties = function (page, data) {
     page.properties.width = data.width;
     page.properties.height = data.height;
     page.properties.dimBackground = data.dimBackground;
+    page.properties.backgroundColor = data.backgroundColor;
+    page.properties.transparentBackground = data.transparentBackground;
 
     if (data.background) {
         page.properties.background = data.background;
@@ -607,6 +632,11 @@ Controller.prototype._modifyPageProperties = function (page, data) {
     try {
         this.mainViewPanel.setAttributeNS(PencilNamespaces.p, "p:resizing", "true");
         page._view.canvas.setSize(data.width, data.height);
+        if (page.properties.transparentBackground) {
+            page._view.canvas.setBackgroundColor(Color.fromString("#ffffffff"));
+        } else {
+            page._view.canvas.setBackgroundColor(Color.fromString(page.properties.backgroundColor));
+        }
 
         this.mainViewPanel.removeAttributeNS(PencilNamespaces.p, "resizing");
 
@@ -676,6 +706,8 @@ Controller.prototype.editPageProperties = function (page) {
                          id: page.properties.id,
                          width: page.properties.width,
                          height: page.properties.height,
+                         backgroundColor: page.properties.backgroundColor ? page.properties.backgroundColor : null,
+                         transparentBackground: page.properties.transparentBackground == false ? false : true,
                          background: page.properties.background ? page.properties.background : null,
                          dimBackground: page.properties.dimBackground};
     var dialog = window.openDialog("PageDetailDialog.xul",
@@ -1108,8 +1140,8 @@ Controller.prototype.rasterizeCurrentPage = function () {
     if (fp.show() == nsIFilePicker.returnCancel) return false;
     try {
         this._rasterizePage(page, fp.file.path, function () {
-                //Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
-            });
+            Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
+        });
     } catch (e) {
         Console.dumpError(e);
     }
@@ -1133,7 +1165,9 @@ Controller.prototype._rasterizePage = function (page, path, callback, preprocess
     drawingLayer.removeAttribute("id");
     svg.appendChild(drawingLayer);
 
-    Pencil.rasterizer.rasterizeDOM(svg, path, callback, preprocessor);
+    //debug("bgr: " + page.properties.backgroundColor);
+    //debug("trans: " + page.properties.transparentBackground);
+    Pencil.rasterizer.rasterizeDOM(svg, path, callback, preprocessor, page.properties.transparentBackground == false ? page.properties.backgroundColor : null);
 
 };
 Controller.prototype.rasterizeSelection = function () {

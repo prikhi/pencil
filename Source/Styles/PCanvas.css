@@ -23,12 +23,14 @@ pcanvas.Painter svg|g[p|type='Shape'] {
 }
 pcanvas > box {
     padding: 0px 4px 4px 0px;
+	/*padding: 0;*/
     background-color: #666;
     -moz-user-focus: normal;
     margin: 5px 0px 0px 5px;
 }
 pcanvas > box > box {
     margin: -5px 0px 0px -5px;
+	/*margin: 0;*/
     -moz-box-orient: horizontal;
     -moz-box-align: center;
     -moz-box-pack: center;

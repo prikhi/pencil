@@ -115,7 +115,9 @@ Group.prototype.moveBy = function (dx, dy, targetSet, moving) {
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
 
-    //this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
+    //if (Config.get("docking.enabled")) {
+    //   this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
+    //}
 };
 Group.prototype.scaleTo = function (nw, nh, group) {
     var geo = this.getGeometry();
@@ -138,7 +140,9 @@ Group.prototype.scaleTo = function (nw, nh, group) {
         target.moveBy(newX - bounding.x, newY - bounding.y, true);
     }
 
-    //this.dockingManager.handleScaleTo(nw, nh, geo.dim.w, geo.dim.h, group);
+    //if (Config.get("docking.enabled")) {
+    //    this.dockingManager.handleScaleTo(nw, nh, geo.dim.w, geo.dim.h, group);
+    //}
 };
 Group.prototype.rotateBy = function (da) {
     debug("rotateBy: " + da);
@@ -154,7 +158,10 @@ Group.prototype.rotateBy = function (da) {
     ctm = ctm.translate(0 - x, 0 - y);
 
     Svg.ensureCTM(this.svg, ctm);
-    this.dockingManager.handleRotateBy(da);
+
+    //if (Config.get("docking.enabled")) {
+    //    this.dockingManager.handleRotateBy(da);
+    //}
 };
 Group.prototype.getBounding = function (to) {
     var context = to ? to : this.canvas.drawingLayer;

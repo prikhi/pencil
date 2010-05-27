@@ -33,6 +33,7 @@ Pencil.postBoot = function() {
 
         Pencil.buildRecentFileMenu();
 
+        var loaded = false;
         if (window.arguments) {
             var cmdLine = window.arguments[0];
             if (cmdLine) {
@@ -59,9 +60,15 @@ Pencil.postBoot = function() {
                         Pencil.controller.newDocument();
                     }, 100);
                 }
+
+                loaded = true;
             }
         }
-
+        if (!loaded) {
+            window.setTimeout(function() {
+                Pencil.controller.newDocument();
+            }, 100);
+        }
         Pencil.updateGUIForHeavyElementVisibility();
     } catch (e) {
         Console.dumpError(e);
@@ -88,7 +95,7 @@ Pencil.getBestFitSize = function () {
     return [mainViewPanel.boxObject.width - 50, mainViewPanel.boxObject.height - 50].join("x");
 };
 Pencil.toggleShowHeavyElements = function () {
-    var show = Config.get("view.showHeavyElements", true);
+    var show = Config.get("view.showHeavyElements", false);
 
     Config.set("view.showHeavyElements", !show);
 
@@ -96,7 +103,7 @@ Pencil.toggleShowHeavyElements = function () {
 };
 Pencil.updateGUIForHeavyElementVisibility = function () {
     var hideHeavyElementsMenuItem = document.getElementById("hideHeavyElementsMenuItem");
-    var showHeavyElements = Config.get("view.showHeavyElements", true);
+    var showHeavyElements = Config.get("view.showHeavyElements", false);
 
     if (showHeavyElements) {
         hideHeavyElementsMenuItem.removeAttribute("checked");

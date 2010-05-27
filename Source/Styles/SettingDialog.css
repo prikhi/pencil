@@ -1,0 +1,82 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* Preferences Styles */
+#pencil-settings .manual-overwrite-button {
+	min-width: 110px;
+}
+
+#pencil-settings .mainpane-button {
+	min-width: 120px;
+}
+
+#pencil-settings .manage-profile-button {
+	min-width: 150px;
+}
+#pencil-settings #onlyFF3 {
+    margin-top: 8px;
+}
+
+
+/* Overriding styles from
+        http://lxr.mozilla.org/mozilla1.8.0/source/browser/themes/pinstripe/browser/preferences/preferences.css
+*/
+#pencil-settings .paneSelector {
+	/* ours */
+	/*background: url(chrome://pencil/content/UI/Icons/pane-selector-bg.png) repeat 0px #2C4676 !important;
+	background-color: #2C4676;
+	padding: 0;*/
+
+	/* theirs */
+	/*list-style-image: url("chrome://browser/skin/preferences/Options.png");*/
+	/*padding: 0 5px;*/
+	/*border-bottom: 1px solid #a3a3a3;*/
+	/*background: url("chrome://global/skin/toolbar/toolbar-pinstripe-overlay.png") repeat;*/
+	margin: 0;
+}
+
+#pencil-settings .paneSelector radio {
+	/* ours */
+	/*color: white !important;
+	padding: 3px 0 1px 0;
+	min-width: 80px;*/
+
+	/* theirs */
+	/*border-right: 1px solid transparent;*/
+	/*border-left: 1px solid transparent;*/
+	/*padding: 3px 0 3px 0;*/
+
+	/*our*/
+	/*margin: 0;
+	-moz-appearance: none !important;*/
+}
+
+#pencil-settings .paneSelector radio[pane]:hover {
+	/* ours */
+	/*background: url(chrome://pencil/content/UI/Icons/pane-selector-bg-hover.png) repeat 0px #2F4979;
+	min-width: 80px;*/
+}
+.macosx .paneSelector radio[pane]:hover {
+	/* ours */
+	/*background: url(chrome://pencil/content/UI/Icons/pane-selector-macosx-bg.png) repeat 0px #DDD !important;*/
+}
+
+#pencil-settings radio[pane][selected="true"],
+#pencil-settings radio[pane][selected="true"]:hover {
+	/* ours */
+	/*background: url(chrome://pencil/content/UI/Icons/pane-selector-bg-selected.png) repeat 0px;
+	color: black !important;
+	min-width: 80px;*/
+
+	/* theirs */
+	/*background-color: #DDDDDD;*/
+	/*background-image: none;*/
+	/*border-right: 1px solid #b9b9b9;*/
+	/*border-left: 1px solid #b9b9b9;*/
+	/*color: ButtonText !important;*/
+}
+
+#date-of-birth spinbuttons { display: none;}
+
+#date-of-birth dropmarker {
+	height: 22px;
+}

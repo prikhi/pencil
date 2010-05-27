@@ -2,7 +2,7 @@
 <bindings xmlns="http://www.mozilla.org/xbl"
           xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-          xmlns:html="http://www.w3.org/1999/xhtml" 
+          xmlns:html="http://www.w3.org/1999/xhtml"
 	      xmlns:svg="http://www.w3.org/2000/svg"
 	      xmlns:xlink="http://www.w3.org/1999/xlink"
 	      xmlns:p="http://www.evolus.vn/Namespace/Pencil"
@@ -15,18 +15,24 @@
                 this.popup = document.getAnonymousElementByAttribute(this, "aid", "popup");
                 this.picker = document.getAnonymousElementByAttribute(this, "aid", "picker");
                 this.selectButton = document.getAnonymousElementByAttribute(this, "aid", "selectButton");
-                
+
+                this.type = this.getAttribute("type");
+                this.picker.setAllowOpacity(this.getAttribute("allow-opacity"));
+
                 var thiz = this;
                 //generate id
                 var popupId = "popup" + (new Date().getTime()) + Math.ceil(Math.random() * 10000);
                 this.popup.setAttribute("id", popupId);
                 this.button.setAttribute("popup", popupId);
-                
+
                 //event
                 this.picker.addEventListener("modify", function (event) {
                     event.stopPropagation();
+                    if (thiz.type == "preview") {
+                        thiz.button.style.backgroundColor = thiz.picker.getValue().toRGBString();
+                    }
                     Dom.emitEvent("change", thiz, {});
-                }, false)
+                }, false);
             ]]>
             </constructor>
             <property name="color">
@@ -35,6 +41,9 @@
                 </getter>
                 <setter>
                     this.picker.setValue(val);
+                    if (this.type == "preview") {
+                        this.button.style.backgroundColor = val.toRGBString();
+                    }
                     return val;
                 </setter>
             </property>

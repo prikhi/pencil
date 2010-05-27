@@ -118,6 +118,7 @@ OpenClipartSearch2.prototype.searchImpl = function(query, options, callback) {
 
     var thiz = this;
     debug("OpenClipart: searching '" + query + "'");
+    //debug("url: " + url);
     WebUtil.get(url, function(response) {
         var r = thiz.parseSearchResult(response);
         if (callback) {

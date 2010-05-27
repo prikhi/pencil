@@ -22,6 +22,14 @@ pcolorbutton > toolbarbutton > box {
     height: 16px;
     background: red;
 }
+pcolorbutton[type="preview"] > toolbarbutton {
+  -moz-appearance: none;
+  padding: 8px;
+}
+pcolorbutton[type="preview"] {
+	background: url(../PropertyType/Editor/ColorEditor-Preview-Bg.png) no-repeat 50% 50%;
+    border: outset 1px;
+}
 xpcolorbutton pcoloreditor label[aid='opacityText'],
 xpcolorbutton pcoloreditor scale[aid='opacity'] {
     display: none;

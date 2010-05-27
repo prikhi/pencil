@@ -5,6 +5,10 @@ var height = null;
 var lastUsedItem = null;
 var backgroundPage = null;
 var dimBackground = null;
+var backgroundColor = null;
+var transparentBackground = null;
+var backgroundColorPane = null;
+var dimBackgroundPane = null;
 var SIZE_RE = /^([0-9]+)x([0-9]+)$/;
 
 var returnValueHolder = null;
@@ -26,15 +30,21 @@ function handleOnloadImpl() {
     lastUsedItem = document.getElementById("lastUsedItem");
     bestFitItem = document.getElementById("bestFitItem");
     backgroundPage = document.getElementById("backgroundPage");
+    backgroundColor = document.getElementById("backgroundColorButton");
     dimBackground = document.getElementById("dimBackground");
-    
-    
+
+    backgroundColorPane = document.getElementById("backgroundColorPane");
+    dimBackgroundPane = document.getElementById("dimBackgroundPane");
+
     currentData = window.arguments[0];
     possibleBackgroundPages = window.arguments[1];
     returnValueHolder = window.arguments[2];
-    
+
+    backgroundColor.color = Color.fromString("#ffffff");
+    transparentBackground = true;
+
     //TODO: Load sizes
-    
+
     //preselect size
     var lastSize = Config.get("lastSize");
     if (lastSize) {
@@ -42,17 +52,17 @@ function handleOnloadImpl() {
         lastUsedItem.label = "Last used (" + lastSize + ")";
         lastUsedItem.value = lastSize;
     }
-    
+
     var bestFitSize = window.opener.Pencil.getBestFitSize();
     bestFitItem.style.display = "";
     bestFitItem.label = "Best fit (" + bestFitSize + ")";
     bestFitItem.value = bestFitSize;
-    
+
     if (!currentData) {
-        debug("new, lastSize: " + lastSize);
+        //debug("new, lastSize: " + lastSize);
         size.selectedItem = lastSize ? lastUsedItem : bestFitItem;
     } else {
-        debug("old, size: " + [currentData.width, currentData.height].join("x"));
+        //debug("old, size: " + [currentData.width, currentData.height].join("x"));
         //search for a predefined size that matches current size
         var result = {};
         var sizeText = [currentData.width, currentData.height].join("x");
@@ -68,9 +78,13 @@ function handleOnloadImpl() {
             width.value = currentData.width;
             height.value = currentData.height;
         }
-        
+
+        if (currentData.backgroundColor) {
+            backgroundColor.color = Color.fromString(currentData.backgroundColor);
+        }
+        transparentBackground = currentData.transparentBackground;
     }
-        
+
     //event handlers
     size.addEventListener("command", function () {
         invalidateInputs();
@@ -82,17 +96,17 @@ function handleOnloadImpl() {
     backgroundPage.addEventListener("command", function () {
         invalidateInputs();
     }, false);
-    
+
     //setup list of background pages
     var hasValidBackground = false;
     for (var i in possibleBackgroundPages) {
         var page = possibleBackgroundPages[i];
         var menuItem = document.createElement("menuitem");
         backgroundPage.firstChild.appendChild(menuItem);
-        
+
         menuItem.setAttribute("label", page.properties.name);
         menuItem.setAttribute("value", page.properties.id);
-        
+
         if (!hasValidBackground && currentData && currentData.background == page.properties.id) {
             hasValidBackground = true;
         }
@@ -102,24 +116,30 @@ function handleOnloadImpl() {
         if (currentData.dimBackground) {
             dimBackground.checked = true;
         }
+    } else {
+        if (transparentBackground) {
+            backgroundPage.value = "transparent";
+        }
     }
     if (possibleBackgroundPages.length == 0) {
-        backgroundPage.disabled = true;
-        dimBackground.disabled = true;
+        //backgroundPage.disabled = true;
+        //dimBackground.disabled = true;
     }
-    
+
     //preselect title
     if (currentData) {
         pageTitle.value = currentData.title;
-        
+
         document.getElementById("nameText").value = "Edit page properties";
         document.title = "Page Properties";
     }
-    
+
     invalidateInputs();
-    
+
     pageTitle.focus();
     pageTitle.select();
+
+    window.sizeToContent();
 }
 function handleDialogAccept() {
     try {
@@ -146,10 +166,19 @@ function invalidateInputs() {
     Dom.workOn("./xul:*", width.parentNode, function (node) {
         node.disabled = customSizeDisabled;
     });
+
+    transparentBackground = backgroundPage.value == "transparent";
     dimBackground.disabled = backgroundPage.disabled || !backgroundPage.value;
-    if (!backgroundPage.value) {
+    if (!backgroundPage.value || transparentBackground) {
+        backgroundColorPane.style.display = "";
+        if (transparentBackground) {
+            backgroundColorPane.style.display = "none";
+        }
+        dimBackgroundPane.style.display = "none";
         backgroundPage.removeAttributeNS(PencilNamespaces.p, "with-background");
     } else {
+        backgroundColorPane.style.display = "none";
+        dimBackgroundPane.style.display = "";
         backgroundPage.setAttributeNS(PencilNamespaces.p, "p:with-background", "true");
     }
 }
@@ -159,7 +188,7 @@ function validateInput() {
 }
 function getData() {
     validateInput();
-    
+
     var data = {};
     if (size.value) {
         if (size.value.match(SIZE_RE)) {
@@ -172,8 +201,10 @@ function getData() {
     }
     data.title = pageTitle.value;
     data.background = backgroundPage.value;
+    data.backgroundColor = backgroundColor.color.toString();
+    data.transparentBackground = transparentBackground;
     data.dimBackground = (data.background && dimBackground.checked);
-    
+
     return data;
 }
 

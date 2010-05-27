@@ -35,6 +35,8 @@ StencilGenerator.onload = function (event) {
         if (dragSession.sourceNode)
             return;
 
+        document.getElementById("infoLabel").value = "Loading...";
+
         var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
         trans.addDataFlavor("text/x-moz-url");
         trans.addDataFlavor("application/x-moz-file");
@@ -95,6 +97,8 @@ StencilGenerator.onload = function (event) {
             document.getElementById("infoLabel").value = totalImage + " images found.";
         } else if (totalImage == 1) {
             document.getElementById("infoLabel").value =  "1 image found.";
+        } else {
+            document.getElementById("infoLabel").value =  "No image found.";
         }
     }, true);
 
@@ -147,6 +151,8 @@ StencilGenerator.onload = function (event) {
 
     StencilGenerator.collectionName.focus();
     StencilGenerator.rasterizer = window.arguments[0].rasterizer;
+
+    window.sizeToContent();
 };
 StencilGenerator.onStencilNameChanged = function (event) {
     try {
@@ -178,9 +184,9 @@ StencilGenerator.fillStencilData = function (data) {
     document.getElementById("stencilName").value = data.label;
 };
 StencilGenerator.initStencils = function () {
-    try {
-        document.getElementById("stencilInformation").style.display = "none";
-        StencilGenerator.preloadStencils(function (stencils, listener) {
+    document.getElementById("stencilInformation").style.display = "none";
+    StencilGenerator.preloadStencils(function (stencils, listener) {
+        try {
             if (stencils && stencils.length > 0) {
                 debug("preloadStencils completed: " + stencils.length);
 
@@ -262,13 +268,14 @@ StencilGenerator.initStencils = function () {
                 document.getElementById("stencilSelectedCountLabel").value = stencils.length + " stencils selected.";
             }
 
-            if (listener) listener.onTaskDone();
-            StencilGenerator.stencilName.focus();
-            document.getElementById("stencilInformation").style.display = "";
-        });
-    } catch (ex) {
-        Console.dumpError(ex);
-    }
+        } catch (ex) {
+            Console.dumpError(ex);
+        }
+
+        if (listener) listener.onTaskDone();
+        StencilGenerator.stencilName.focus();
+        document.getElementById("stencilInformation").style.display = "";
+    });
 };
 StencilGenerator.preloadStencils = function (callback) {
     var result = [];
@@ -284,7 +291,7 @@ StencilGenerator.preloadStencils = function (callback) {
         var starter = function (listener) {
             StencilGenerator.loadStencil(result, stencils, 0, callback, listener);
         }
-        Util.beginProgressJob("Getting data...", starter);
+        Util.beginProgressJob("Getting data", starter);
     } else {
         callback(null, null);
     }
@@ -589,7 +596,7 @@ StencilGenerator.createCollection = function () {
                 Console.dumpError(e3, "stdout");
             }
         }
-        Util.beginProgressJob("Creating collection...", starter);
+        Util.beginProgressJob("Creating collection", starter);
     }
 };
 StencilGenerator.toInputStream = function(s, b) {

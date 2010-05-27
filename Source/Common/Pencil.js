@@ -292,6 +292,7 @@ Pencil.setupCommands = function () {
     Pencil._enableCommand("copyCommand", canvas && canvas.doCopy && target);
     Pencil._enableCommand("cutCommand", canvas && canvas.doCopy && target);
     Pencil._enableCommand("pasteCommand", canvas && canvas.doPaste);
+    Pencil._enableCommand("deleteSelectedCommand", target != null);
 
     Pencil._enableCommand("groupCommand", target && target.constructor == TargetSet);
     Pencil._enableCommand("unGroupCommand", target && target.constructor == Group);
@@ -316,9 +317,12 @@ Pencil._enableCommand = function (name, condition) {
 };
 
 Pencil.getGridSize = function () {
-    var size = Config.get("edit.gridSize", 5);
+    var size = Config.get("edit.gridSize");
+    if (size == null) {
+        size = 5;
+        Config.set("edit.gridSize", size);
+    }
     return {w: size, h: size};
-    //return {w: 30, h: 30};
 };
 
 Pencil.getCurrentTarget = function () {

@@ -37,6 +37,7 @@ function handleOnload() {
             }
         });
     } catch(e) {
+        Util.error("Error", e.message,  "Close");
         error(e);
     }
 }

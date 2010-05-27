@@ -6,6 +6,8 @@ var WebUtil = {
 
             req.onreadystatechange = function(aEvt) {
                 if (req.readyState == 4) {
+                    //debug("url: " + url);
+                    //debug(req.status);
                     if (req.status == 200) {
                         onComplete(req.responseText);
                     } else {

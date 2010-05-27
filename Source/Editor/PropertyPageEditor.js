@@ -35,17 +35,31 @@ PropertyPageEditor.prototype.invalidateData = function (targetObject) {
     var strippedGroups = [];
     for (var i in definedGroups) {
         var group = definedGroups[i];
-        var strippedGroup = new PropertyGroup();
+        //var strippedGroup = new PropertyGroup();
+        var properties = [];
         for (var j in group.properties) {
             var property = group.properties[j];
             var editor = TypeEditorRegistry.getTypeEditor(property.type);
             if (editor) {
-                strippedGroup.properties.push(property);
+                //strippedGroup.properties.push(property);
+                properties.push(property);
             }
         }
-        if (strippedGroup.properties.length > 0) {
-            strippedGroup.name = group.name;
-            strippedGroups.push(strippedGroup);
+
+        //if (strippedGroup.properties.length > 0) {
+        if (properties.length > 0) {
+            //strippedGroup.name = group.name;
+            //strippedGroups.push(strippedGroup);
+            for (var k = 0; k < properties.length; k+=3) {
+                var strippedGroup = new PropertyGroup();
+                strippedGroup.name = group.name;
+                for (var l = k; l < k + 3; l++) {
+                    if (l < properties.length) {
+                        strippedGroup.properties.push(properties[l]);
+                    }
+                }
+                strippedGroups.push(strippedGroup);
+            }
         }
     }
 
