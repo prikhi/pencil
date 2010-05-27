@@ -553,6 +553,36 @@ Local.getInstalledFonts = function () {
     var localFontCount = { value: 0 }
     localFonts = enumerator.EnumerateAllFonts(localFontCount);
 
+    // google webfonts
+    localFonts.push("Cantarell");
+    localFonts.push("Cardo");
+    localFonts.push("Crimson Text");
+    localFonts.push("Droid Sans");
+    localFonts.push("Droid Sans Mono");
+    localFonts.push("Droid Serif");
+    localFonts.push("Inconsolata");
+    localFonts.push("Josefin Sans Std Light");
+    localFonts.push("Lobster");
+    localFonts.push("Molengo");
+    localFonts.push("Nobile");
+    localFonts.push("OFL Sorts Mill Goudy TT");
+    localFonts.push("Old Standard TT");
+    localFonts.push("Reenie Beanie");
+    localFonts.push("Tangerine");
+    localFonts.push("Vollkorn");
+    localFonts.push("Yanone Kaffeesatz");
+    localFonts.push("IM Fell English");
+
+    for (var i = 0; i < localFonts.length - 1; i++) {
+        for (var j = i + 1; j < localFonts.length; j++) {
+            if (localFonts[j] < localFonts[i]) {
+                var k = localFonts[j];
+                localFonts[j] = localFonts[i];
+                localFonts[i] = k;
+            }
+        }
+    }
+
     Local.cachedLocalFonts = localFonts;
 
     return localFonts;
@@ -639,6 +669,9 @@ Util.getInstanceToken = function () {
 };
 
 Util.gridNormalize = function (value, size) {
+    if (Config.get("edit.snap.grid", false) == false) {
+        return value;
+    }
     var r = value % size;
     if (r == 0) return value;
 
@@ -711,7 +744,7 @@ Util.info = function(title, description, buttonLabel) {
                     acceptLabel: buttonLabel ? buttonLabel : null };
 
     var returnValueHolder = {};
-    var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
+    var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
 }
 Util.error = function(title, description, buttonLabel) {
     var message = {type: "error",
@@ -720,7 +753,7 @@ Util.error = function(title, description, buttonLabel) {
                     cancelLabel: buttonLabel ? buttonLabel : null };
 
     var returnValueHolder = {};
-    var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
+    var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
 }
 Util.confirm = function(title, description, acceptLabel, cancelLabel) {
     var message = {type: "confirm",
@@ -730,7 +763,7 @@ Util.confirm = function(title, description, acceptLabel, cancelLabel) {
                     cancelLabel: cancelLabel ? cancelLabel : null };
 
     var returnValueHolder = {};
-    var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
+    var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
     return returnValueHolder.button == "accept";
 }
 Util.confirmWithWarning = function(title, description, acceptLabel, cancelLabel) {
@@ -741,7 +774,7 @@ Util.confirmWithWarning = function(title, description, acceptLabel, cancelLabel)
                     cancelLabel: cancelLabel ? cancelLabel : null };
 
     var returnValueHolder = {};
-    var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
+    var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
     return returnValueHolder.button == "accept";
 }
 Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancelLabel) {
@@ -753,7 +786,7 @@ Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancel
                     cancelLabel: cancelLabel ? cancelLabel : null };
 
     var returnValueHolder = {};
-    var dialog = window.openDialog("MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
+    var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
 
     var result = {};
     result.accept = (returnValueHolder.button == "accept");
@@ -763,7 +796,7 @@ Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancel
     return result;
 }
 Util.beginProgressJob = function(jobName, jobStarter) {
-    var dialog = window.openDialog("ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "alwaysRaised,centerscreen", jobName, jobStarter);
+    var dialog = window.openDialog("chrome://pencil/content/UI/ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "alwaysRaised,centerscreen", jobName, jobStarter);
 };
 Util.setNodeMetadata = function (node, name, value) {
     node.setAttributeNS(PencilNamespaces.p, "p:" + name, value);

@@ -8,6 +8,7 @@ CollectionManager.shapeDefinition.shapeDefMap = {};
 CollectionManager.shapeDefinition.shortcutMap = {};
 
 CollectionManager.addShapeDefCollection = function (collection) {
+    if (!collection) return;
     CollectionManager.shapeDefinition.collections.push(collection);
     collection.visible = CollectionManager.isCollectionVisible(collection);
     collection.collapsed = CollectionManager.isCollectionCollapsed(collection);
@@ -98,7 +99,7 @@ CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
 
 CollectionManager.loadStencils = function() {
     CollectionManager.shapeDefinition.collections = [];
-    CollectionManager.shapeDefinition.shapeDefMap = {};
+    CollectionManager.shapeDefinition.shapeDefMap = { };
 
     //load all system stencils
     var parser = new ShapeDefCollectionParser();

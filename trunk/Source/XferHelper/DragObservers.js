@@ -432,13 +432,24 @@ function handleSVGData(svg, canvas, loc) {
             var w = width;
             var h = height;
 
-            if ((w > 200 || h > 200) && Config.get("clipartbrowser.scale")) {
+            var maxWidth = Config.get("clipartbrowser.scale.width");
+            var maxHeight = Config.get("clipartbrowser.scale.height");
+            if (!maxWidth) {
+                maxWidth = 200;
+                Config.set("clipartbrowser.scale.width", 200);
+            }
+            if (!maxHeight) {
+                maxHeight = 200;
+                Config.set("clipartbrowser.scale.height", 200);
+            }
+
+            if (Config.get("clipartbrowser.scale") == true && (w > maxWidth || h > maxHeight)) {
                 if (w > h) {
-                    h = h / (w / 200);
-                    w = 200;
+                    h = h / (w / maxWidth);
+                    w = maxWidth;
                 } else {
-                    w = w / (h / 200);
-                    h = 200;
+                    w = w / (h / maxHeight);
+                    h = maxHeight;
                 }
             }
 
@@ -515,13 +526,25 @@ PNGDragObserver.prototype = {
             var handler = function (imageData) {
                 var w = imageData.w;
                 var h = imageData.h;
-                if ((w > 200 || h > 200) && Config.get("clipartbrowser.scale")) {
+
+                var maxWidth = Config.get("clipartbrowser.scale.width");
+                var maxHeight = Config.get("clipartbrowser.scale.height");
+                if (!maxWidth) {
+                    maxWidth = 200;
+                    Config.set("clipartbrowser.scale.width", 200);
+                }
+                if (!maxHeight) {
+                    maxHeight = 200;
+                    Config.set("clipartbrowser.scale.height", 200);
+                }
+
+                if (Config.get("clipartbrowser.scale") == true && (w > maxWidth || h > maxHeight)) {
                     if (w > h) {
-                        h = h / (w / 200);
-                        w = 200;
+                        h = h / (w / maxWidth);
+                        w = maxWidth;
                     } else {
-                        w = w / (h / 200);
-                        h = 200;
+                        w = w / (h / maxHeight);
+                        h = maxHeight;
                     }
                 }
                 var dim = new Dimension(w, h);
@@ -532,11 +555,11 @@ PNGDragObserver.prototype = {
                 }
             };
 
-            //if (!embedImages) {
-            //    ImageData.fromUrl(url, handler);
-            //} else {
+            if (!embedImages) {
+                ImageData.fromUrl(url, handler);
+            } else {
                 ImageData.fromUrlEmbedded(url, handler);
-            //}
+            }
             canvas.invalidateEditors();
         } catch (e) {
             Console.dumpError(e);

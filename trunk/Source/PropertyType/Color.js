@@ -70,31 +70,31 @@ Color.REG_EX_NO_ALPHA = /^#([0-9A-F]{2,2})([0-9A-F]{2,2})([0-9A-F]{2,2})$/i;
 Color.REG_EX_RGB = /^rgb\(([0-9]+)\,[ ]*([0-9]+)\,[ ]*([0-9]+)\)$/i;
 Color.fromString = function (literal) {
     var color = new Color();
+    if (!literal) literal = "#ffffffff";
+
     if (literal.match(Color.REG_EX)) {
         color.r = parseInt(RegExp.$1, 16);
         color.g = parseInt(RegExp.$2, 16);
         color.b = parseInt(RegExp.$3, 16);
         color.a = parseInt(RegExp.$4, 16) / 255;
-
     } else if (literal.match(Color.REG_EX_NO_ALPHA)) {
         color.r = parseInt(RegExp.$1, 16);
         color.g = parseInt(RegExp.$2, 16);
         color.b = parseInt(RegExp.$3, 16);
         color.a = 1;
-
     } else if (literal.match(Color.REG_EX_RGB)) {
-        debug("found rgb()");
+        //debug("found rgb()");
         color.r = parseInt(RegExp.$1, 10);
         color.g = parseInt(RegExp.$2, 10);
         color.b = parseInt(RegExp.$3, 10);
         color.a = 1;
-        debug("found rgb(): " + color);
-
+        //debug("found rgb(): " + color);
     } if (literal == "transparent") {
         color.r = 0;
         color.g = 0;
         color.b = 0;
         color.a = 0;
+        //debug("transparent");
     }
 
     return color;
@@ -122,7 +122,7 @@ Color.prototype.toRGBAString = function () {
 Color.prototype.shaded = function (percent) {
     var hsv = RGB2HSV(this);
     hsv.value = Math.max(Math.min(hsv.value * (1 - percent), 100), 0);
-    
+
 
     var rgb = HSV2RGB(hsv);
 

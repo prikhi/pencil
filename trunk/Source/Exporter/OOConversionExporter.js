@@ -19,20 +19,20 @@ OOConversionExporter.converters["uno"] = {
             "application/pdf": "pdf",
             "application/msword": "doc",
         };
-        
+
         return map[mime];
     },
     convert: function (src, dest, mime, callback) {
         debug("converting using UNOCONV");
         var processService = Components.classes["@mozilla.org/process/util;1"]
                                 .getService(Components.interfaces.nsIProcess);
-                    
-        var path = Config.get("export.oo.converter.uno.path", "/bin/sh");            
+
+        var path = Config.get("export.oo.converter.uno.path", "/bin/sh");
         var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-        
+
         file.initWithPath(path);
         processService.init(file);
-        
+
         var params = [
             "-c",
             [
@@ -45,9 +45,9 @@ OOConversionExporter.converters["uno"] = {
                 "'" + dest.path + "'",
             ].join(" ")
         ];
-        
+
         processService.run(true, params, params.length);
-        
+
         callback();
     }
 };
@@ -55,7 +55,7 @@ OOConversionExporter.converters["uno"] = {
 OOConversionExporter.converters["jod"] = {
     convert: function (src, dest, mime, callback) {
         debug("converting using JOD");
-        var url = Config.get("export.oo.converter.jod.url", "http://ks300916.kimsufi.com:8080/jodconverter/service");            
+        var url = Config.get("export.oo.converter.jod.url", "http://ks300916.kimsufi.com:8080/jodconverter/service");
 
         var listener = {
             onMessage: function (message) {
@@ -66,7 +66,7 @@ OOConversionExporter.converters["jod"] = {
                 callback();
             }
         };
-        
+
         var options = {
             mime: "application/vnd.oasis.opendocument.text",
             headers: {
@@ -74,7 +74,7 @@ OOConversionExporter.converters["jod"] = {
                 "Accept": mime
             }
         };
-        
+
         Net.uploadAndDownload(url, src, dest, listener, options);
     }
 };
@@ -83,10 +83,10 @@ OOConversionExporter.prototype = new ODTExporter();
 OOConversionExporter.prototype.super$export = OOConversionExporter.prototype.export;
 OOConversionExporter.prototype.export = function (doc, options, destFile, xmlFile, callback) {
     var tmpODTFile = Local.newTempFile("penciloo", "odt");
-    
+
     var thiz = this;
     this.super$export(doc, options, tmpODTFile, xmlFile, function () {
-    
+
         var converter = OOConversionExporter.getConverter();
         converter.convert(tmpODTFile, destFile, thiz.mime, function () {
             tmpODTFile.remove(true);

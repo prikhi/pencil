@@ -142,7 +142,11 @@ Page.prototype.isBackgroundValid = function () {
 };
 
 Page.prototype.ensureBackground = function (callback) { // callback: function() {} called when done
-    this._view.canvas.snappingHelper.updateSnappingDataFromBackground(this.getBackgroundPage());
+    if (Config.get("object.snapping.background") == null) {
+        Config.set("object.snapping.background", true);
+    }
+
+    this._view.canvas.snappingHelper.updateSnappingDataFromBackground(this.getBackgroundPage(), Config.get("object.snapping.background") == false);
     this._view.canvas.setDimBackground(this.properties.dimBackground);
     var page = this.getBackgroundPage();
     if (this.isBackgroundValid()) {

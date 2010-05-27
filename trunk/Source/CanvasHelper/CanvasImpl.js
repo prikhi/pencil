@@ -15,15 +15,17 @@ CanvasImpl.setupGrid = function () {
     }
     if (Config.get("grid.enabled")) {
         var grid = Pencil.getGridSize();
-        var z = this.zoom ? this.zoom : 1;
-        for (var i = grid.w * z; i < this.width * z; i += grid.w * z) {
-            var line = document.createElementNS(PencilNamespaces.svg, "svg:line");
-            line.setAttribute("x1", i);
-            line.setAttribute("y1", grid.h * z);
-            line.setAttribute("x2", i);
-            line.setAttribute("y2", this.height * z);
-            line.setAttribute("style", "stroke-dasharray: 1, " + grid.w * z + ";");
-            this.gridContainer.appendChild(line);
+        if (grid.w > 0 && grid.h > 0) {
+            var z = this.zoom ? this.zoom : 1;
+            for (var i = 1; i < this.width * z; i += grid.w * z) {
+                var line = document.createElementNS(PencilNamespaces.svg, "svg:line");
+                line.setAttribute("x1", i);
+                line.setAttribute("y1", 0);
+                line.setAttribute("x2", i);
+                line.setAttribute("y2", this.height * z);
+                line.setAttribute("style", "stroke-dasharray: 1," + (grid.h - 1) * z + ";");
+                this.gridContainer.appendChild(line);
+            }
         }
     }
 };

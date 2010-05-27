@@ -39,7 +39,9 @@ var ColorDropper = function () {
 
     var clickHandler = function (event) {
         if (!active || !dropper || !colorCallback) {
-            stop();
+            if (active) {
+                stop();
+            }
             return;
         }
 

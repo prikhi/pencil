@@ -108,7 +108,7 @@
                     Config.set("clipartbrowser.scale", true);
                 }
 
-                this.scaleImage.checked = Config.get("clipartbrowser.scale");
+                this.scaleImage.checked = Config.get("clipartbrowser.scale") == true;
 
                 this._needToBuildPopup = true;
                 this.updateDisplay();

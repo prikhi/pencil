@@ -3,8 +3,13 @@ function SnappingHelper(canvas) {
     if (Config.get("object.snapping.enabled") == null) {
         Config.set("object.snapping.enabled", true);
     }
-    this.snappingEnabled = Config.get("object.snapping.enabled");
     this.init();
+};
+SnappingHelper.prototype.isGridSnappingEnabled = function () {
+    return Config.get("edit.snap.grid") == true;
+};
+SnappingHelper.prototype.isSnappingEnabled = function () {
+    return Config.get("object.snapping.enabled") == true || this.isGridSnappingEnabled();
 };
 SnappingHelper.prototype.init = function () {
     if (this.initialized) return;
@@ -29,6 +34,9 @@ SnappingHelper.prototype.init = function () {
     this.snapX = 0;
     this.snapY = 0;
 
+    this.unsnapX = Pencil.UNSNAP;
+    this.unsnapY = Pencil.UNSNAP;
+
     this.snappedX = false;
     this.snappedY = false;
 
@@ -40,34 +48,37 @@ SnappingHelper.prototype.clearSnappingGuide = function () {
     this.clearSnappingGuideY();
 };
 SnappingHelper.prototype.clearSnappingGuideX = function () {
-    if (!this.snappingEnabled) return;
+    if (!this.isSnappingEnabled()) return;
     if (!this._snappingGuideContainerXEmpty) {
         this._snappingGuideContainerXEmpty = true;
         Dom.empty(this.snappingGuideContainerX);
     }
 };
 SnappingHelper.prototype.clearSnappingGuideY = function () {
-    if (!this.snappingEnabled) return;
+    if (!this.isSnappingEnabled()) return;
     if (!this._snappingGuideContainerYEmpty) {
         this._snappingGuideContainerYEmpty = true;
         Dom.empty(this.snappingGuideContainerY);
     }
 };
-SnappingHelper.prototype.updateSnappingDataFromBackground = function (page) {
+SnappingHelper.prototype.updateSnappingDataFromBackground = function (page, remove) {
     this.rebuildSnappingGuide();
+    if (remove) {
+        return;
+    }
+
     if (!page || !page._view || !page._view.canvas) {
         return;
     };
     var bgSnappingData = page._view.canvas.snappingHelper.snappingGuide;
     if (bgSnappingData) {
         for (var i in bgSnappingData) {
-            //debug("copy snappingdata from bg: " + bgSnappingData[i]);
             this.snappingGuide[i] = bgSnappingData[i];
         }
     }
 };
 SnappingHelper.prototype.rebuildSnappingGuide = function () {
-    if (!this.snappingEnabled) return;
+    if (!this.isSnappingEnabled()) return;
     var thiz = this;
     this.snappingGuide = { };
     Dom.workOn("./svg:g[@p:type]", this.canvas.drawingLayer, function (node) {
@@ -81,10 +92,27 @@ SnappingHelper.prototype.rebuildSnappingGuide = function () {
         }
     });
 
+    if (this.isGridSnappingEnabled()) {
+        var grid = Pencil.getGridSize();
+        if (grid.w > 0 && grid.h > 0) {
+            var z = this.canvas.zoom ? this.canvas.zoom : 1;
+            for (var i = grid.w * z, j = grid.h * z; i < this.canvas.width * z; i += grid.w * z, j += grid.h * z) {
+                var uid = Util.newUUID();
+                this.snappingGuide[uid] = {
+                        vertical: [
+                            new SnappingData("GridSnap", i, "Left", true, uid)
+                        ],
+                        horizontal: [
+                            new SnappingData("GridSnap", j, "Top", false, uid)
+                        ]
+                    };
+            }
+        }
+    }
     this.sortData();
 };
 SnappingHelper.prototype.updateSnappingGuide = function (controller, remove) {
-    if (!this.snappingEnabled) return;
+    if (!this.isSnappingEnabled()) return;
     var dirty = false;
     if (!remove) {
         if (controller && controller.getSnappingGuide) {
@@ -115,13 +143,13 @@ SnappingHelper.prototype.sortData = function () {
     this.snappedX = false;
     this.snappedY = false;
 };
-SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap, shift) {
-    if (!this.snappingEnabled) return;
+SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap, shift, grid) {
+    if (!this.isSnappingEnabled()) return;
     try {
-        if (drawX) {
+        if (drawX && !grid) {
             this.clearSnappingGuideX();
         }
-        if (drawY) {
+        if (drawY && !grid) {
             this.clearSnappingGuideY();
         }
 
@@ -133,8 +161,13 @@ SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap, shi
             _snap = 1;
         }
 
-        var snappingData = this.findSnappingImpl(this.canvas.currentController, ghost, _snap);
-        var currentDx = _snap + 10, currentDy = _snap + 10;
+        var snappingData = this.findSnappingImpl(this.canvas.currentController, ghost, _snap, grid);
+        var currentDx = Pencil.SNAP + 10;
+        var currentDy = Pencil.SNAP + 10;
+        if (grid) {
+            currentDx = Pencil.getGridSize().w;
+            currentDy = Pencil.getGridSize().h;
+        }
         var b = !ghost ? this.canvas.currentController.getSnappingGuide() : ghost;
 
         var snapDelta = {
@@ -143,13 +176,16 @@ SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap, shi
 
         if (snappingData.verticals.length > 0) {
             for (var k = 0; k < b.vertical.length; k++) {
-                if (!snappingData.verticals[0].disabled && !b.vertical[k].disabled && Math.abs(snappingData.verticals[0].x.pos - b.vertical[k].pos) < Math.abs(currentDx) && this.allowSnapping(b.vertical[k], snappingData.verticals[0].x)) {
-                    currentDx = snappingData.verticals[0].x.pos - b.vertical[k].pos;
+                var ve = true;
+                if (!snappingData.verticals[0].disabled && !b.vertical[k].disabled
+                    && Math.abs(snappingData.verticals[0].x.pos - b.vertical[k].pos) < Math.abs(currentDx)
+                    && this.allowSnapping(b.vertical[k], snappingData.verticals[0].x)) {
+                        currentDx = snappingData.verticals[0].x.pos - b.vertical[k].pos;
                 }
             }
 
             if (Math.abs(currentDx) < _snap) {
-                if (drawX) {
+                if (drawX && !grid) {
                     for (var l = 0; l < snappingData.verticals.length; l++) {
                         var verticalGuide = document.createElementNS(PencilNamespaces.svg, "line");
 
@@ -164,20 +200,25 @@ SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap, shi
                         this._snappingGuideContainerXEmpty = false;
                     }
                 }
+                if (grid) {
+                    this.unsnapX = (Pencil.getGridSize().w / 2) + 3;
+                } else {
+                    this.unsnapX = Pencil.UNSNAP;
+                }
                 snapDelta.dx = currentDx;
             }
         }
 
         if (snappingData.horizontals.length > 0) {
-            var ik = 0;
             for (var k = 0; k < b.horizontal.length; k++) {
-                if (!snappingData.horizontals[0].disabled && !b.horizontal[k].disabled && Math.abs(snappingData.horizontals[0].y.pos - b.horizontal[k].pos) < Math.abs(currentDy) && this.allowSnapping(b.horizontal[k], snappingData.horizontals[0].y)) {
-                    currentDy = snappingData.horizontals[0].y.pos - b.horizontal[k].pos;
-                    ik = k;
+                if (!snappingData.horizontals[0].disabled && !b.horizontal[k].disabled
+                    && Math.abs(snappingData.horizontals[0].y.pos - b.horizontal[k].pos) < Math.abs(currentDy)
+                    && this.allowSnapping(b.horizontal[k], snappingData.horizontals[0].y)) {
+                        currentDy = snappingData.horizontals[0].y.pos - b.horizontal[k].pos;
                 }
             }
             if (Math.abs(currentDy) < _snap) {
-                if (drawY) {
+                if (drawY && !grid) {
                     for (var l = 0; l < snappingData.horizontals.length; l++) {
                         var horizontalGuide = document.createElementNS(PencilNamespaces.svg, "line");
 
@@ -191,6 +232,11 @@ SnappingHelper.prototype.findSnapping = function (drawX, drawY, ghost, snap, shi
 
                         this._snappingGuideContainerYEmpty = false;
                     }
+                }
+                if (grid) {
+                    this.unsnapY = (Pencil.getGridSize().h / 2) + 3;
+                } else {
+                    this.unsnapY = Pencil.UNSNAP;
                 }
                 snapDelta.dy = currentDy;
             }
@@ -227,7 +273,7 @@ SnappingHelper.prototype.allowSnapping = function (v, x) {
 
     return false;
 };
-SnappingHelper.prototype.findSnappingImpl = function(controller, ghost, snap) {
+SnappingHelper.prototype.findSnappingImpl = function(controller, ghost, snap, grid) {
 
     try {
         var c = !ghost ? controller.getSnappingGuide() : ghost;
@@ -244,7 +290,7 @@ SnappingHelper.prototype.findSnappingImpl = function(controller, ghost, snap) {
             var vertical = { };
             for (var i = 0; i < x.length; i++) {
                 if (!x[i].disabled && !c.vertical[v].disabled && x[i].id != currentControllerId && this.allowSnapping(c.vertical[v], x[i])) {
-                    if (Math.abs(x[i].pos - c.vertical[v].pos) <= _minsnap) {
+                    if ((grid && x[i].type == "GridSnap" && Math.abs(x[i].pos - c.vertical[v].pos) <= _minsnap) || (!grid && x[i].type != "GridSnap" && Math.abs(x[i].pos - c.vertical[v].pos) <= _minsnap)) {
                         _minsnap = Math.abs(x[i].pos - c.vertical[v].pos);
                         vertical.x = x[i];
                         vertical.dx = x[i].pos - c.vertical[v].pos;
@@ -273,7 +319,7 @@ SnappingHelper.prototype.findSnappingImpl = function(controller, ghost, snap) {
             var horizontal = { };
             for (var i = 0; i < y.length; i++) {
                 if (!y[i].disabled && !c.horizontal[v].disabled && y[i].id != currentControllerId && this.allowSnapping(c.horizontal[v], y[i])) {
-                    if (Math.abs(y[i].pos - c.horizontal[v].pos) <= _minsnap) {
+                    if ((grid && y[i].type == "GridSnap" && Math.abs(y[i].pos - c.horizontal[v].pos) <= _minsnap) || (!grid && y[i].type != "GridSnap" && Math.abs(y[i].pos - c.horizontal[v].pos) <= _minsnap)) {
                         _minsnap = Math.abs(y[i].pos - c.horizontal[v].pos);
                         horizontal.y = y[i];
                         horizontal.dy = y[i].pos - c.horizontal[v].pos;

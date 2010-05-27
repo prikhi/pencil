@@ -107,8 +107,8 @@
                             detail += "<li><strong>More information</strong>: <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
                         }
                         detail += "</ul>"
-                        debug(collection.displayName);
-                        debug(collection);
+                        //debug(collection.displayName);
+                        //debug(collection);
                         Util.info(collection.displayName, new RichText(detail));
                     }
                 }, false);
@@ -287,9 +287,9 @@
                 <![CDATA[
                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                     try {
-                        debug("start draging");
+                        //debug("start draging");
                         var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
-                        debug(defNode);
+                        //debug(defNode);
 
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
@@ -304,7 +304,7 @@
                                 transferData.data.addDataForFlavour("text/unicode", def.displayName);
                             }
                         });
-                        debug("end draging");
+                        //debug("end draging");
                     } catch (e) { alert(e); }
                 ]]>
                 </body>
@@ -326,7 +326,7 @@
             </handler>
             <handler event="dragdrop">
             <![CDATA[
-                debug("dragdrop");
+                //debug("dragdrop");
                 var dragService = Components.classes["@mozilla.org/widget/dragservice;1"].getService(Components.interfaces.nsIDragService);
                 var dragSession = dragService.getCurrentSession();
                 var _ios = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);

@@ -35,7 +35,7 @@ ExportWizard.setup = function () {
 
         radio.setAttribute("label", exporter.name);
         radio.setAttribute("value", exporter.id);
-        
+
         radio._exporter = exporter;
 
         if (exporter.invalid) {
@@ -60,48 +60,49 @@ ExportWizard.setup = function () {
             checked: lastSelection.pageIds ? (lastSelection.pageIds.indexOf(pages[i].properties.id) >= 0) : "true"
         });
         item._pageId = pages[i].properties.id;
-        
+
         ExportWizard.pageList.appendChild(item);
     }
-    
+
     if (lastSelection.pageMode) {
         ExportWizard.pageSelectionGroup.value = lastSelection.pageMode;
     } else {
         ExportWizard.pageSelectionGroup.value = "all";
     }
-    
+
     window.setTimeout(ExportWizard.onPageSelectionChanged, 10);
-    
+
     //Setup templates and other options
     if (ExportWizard.getSelectedExporter().supportTemplating()
         && lastSelection.templateId) {
         ExportWizard.templateMenu.value = lastSelection.templateId;
     }
-    
+
     if (lastSelection.options) {
         ExportWizard.copyBGLinkCheckbox.checked = lastSelection.options.copyBGLinks;
     }
-    
+
     ExportWizard.targetFilePathText.value = lastSelection.targetPath ? lastSelection.targetPath : "";
 
     ExportWizard._setupFormatPageDone = true;
+    window.sizeToContent();
 };
 ExportWizard.onPageSelectionChanged = function () {
     var label = document.getElementById("pageSelectionSummaryLabel");
     var selection = ExportWizard.pageSelectionGroup.value;
-    
+
     var only = (selection == "only");
     ExportWizard.pageList.disabled = !only;
     ExportWizard.pageList.selectedIndex = -1;
     label.disabled = only;
     var total = 0;
     var selected = 0;
-    
+
     Dom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
         if (item.checked) selected ++;
         total ++;
     });
-    
+
     label.value = selected + " of " + total + " page(s) selected";
 };
 ExportWizard.getSelectedExporter = function () {
@@ -148,31 +149,31 @@ ExportWizard.onExporterChanged = function () {
         }
     }
     ExportWizard.templateMenu.selectedIndex = 0;
-    
+
     var lastSelection = ExportWizard.dialogData.lastSelection ? ExportWizard.dialogData.lastSelection : {};
-    
+
     if (exporter.id == lastSelection.exporterId) {
         ExportWizard.targetFilePathText.value = lastSelection.targetPath ? lastSelection.targetPath : "";
     } else {
         ExportWizard.targetFilePathText.value = "";
     }
-    
+
     //type of output
 };
 ExportWizard.browseTargetFile = function () {
     var currentDir = null;
     var exporter = ExportWizard.getSelectedExporter();
     var isChoosingFile = exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_FILE;
-    
+
     //if value specified, use it
     if (ExportWizard.targetFilePathText.value) {
         var file = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
         file.initWithPath(ExportWizard.targetFilePathText.value);
-        
+
         if (file.exists()) currentDir = isChoosingFile ? file.parent : file;
     }
-    
+
     //if still not, use the bound file
     if (!currentDir && ExportWizard.Pencil.controller.isBoundToFile()) {
         var file = Components.classes["@mozilla.org/file/local;1"]
@@ -185,7 +186,7 @@ ExportWizard.browseTargetFile = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     if (currentDir) fp.displayDirectory = currentDir;
-    
+
     if (isChoosingFile) {
         fp.init(window, "Select output file", nsIFilePicker.modeSave);
         var exts = exporter.getOutputFileExtensions();
@@ -194,15 +195,15 @@ ExportWizard.browseTargetFile = function () {
                 fp.appendFilter(exts[i].title, exts[i].ext);
             }
         }
-        
+
     } else {
         fp.init(window, "Select destination", nsIFilePicker.modeGetFolder);
     }
-    
+
     fp.appendFilter("All Files", "*");
 
     if (fp.show() == nsIFilePicker.returnCancel) return;
-    
+
     ExportWizard.targetFilePathText.value = fp.file.path;
 };
 ExportWizard.validatePageSelection = function () {
@@ -212,12 +213,12 @@ ExportWizard.validatePageSelection = function () {
     Dom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
         if (item.checked) selected ++;
     });
-    
+
     if (selected == 0) {
         Util.error("Error", "Please select at least one page to export");
         return false;
     }
-    
+
     return true;
 
 };
@@ -227,18 +228,18 @@ ExportWizard.validateOptions = function () {
         ExportWizard.targetFilePathText.focus();
         return false;
     }
-    
+
     var file = Components.classes["@mozilla.org/file/local;1"]
                          .createInstance(Components.interfaces.nsILocalFile);
     file.initWithPath(ExportWizard.targetFilePathText.value);
-    
+
     if (!file.parent.exists()) {
         Util.error("Error", "The specified path does not exists.");
         ExportWizard.targetFilePathText.focus();
-        
+
         return false;
     }
-    
+
     return true;
 };
 ExportWizard.onFinish = function () {
@@ -246,26 +247,26 @@ ExportWizard.onFinish = function () {
         exporterId: ExportWizard.exporterRadioGroup.value,
         pageMode: ExportWizard.pageSelectionGroup.value,
         templateId: ExportWizard.templateMenu.disabled ? null : ExportWizard.templateMenu.value,
-        
+
         options: {
             copyBGLinks: ExportWizard.copyBGLinkCheckbox.checked
         },
-        
+
         targetPath: ExportWizard.targetFilePathText.value
     };
-    
+
     selection.pageIds = null;
-    
+
     if (ExportWizard.pageSelectionGroup.value == "only") {
         selection.pageIds = [];
-        
+
         Dom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
             if (item.checked) selection.pageIds.push(item._pageId);
         });
     }
-    
+
     ExportWizard.dialogData.selection = selection;
-    
+
     debug(selection.toSource());
 };
 ExportWizard.callManageTemplateDialog = function () {

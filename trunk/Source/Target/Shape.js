@@ -79,6 +79,7 @@ Shape.prototype.setInitialPropertyValues = function (overridingValueMap) {
 };
 Shape.prototype.applyBehaviorForProperty = function (name, dontValidateRelatedProperties) {
     var propertyDef = this.def.propertyMap[name];
+    if (!propertyDef) return;
     this.prepareExpressionEvaluation();
 
     //enumerate all related target
@@ -239,7 +240,9 @@ Shape.prototype.moveBy = function (dx, dy, targetSet, moving) {
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
 
-    //this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
+    //if (Config.get("docking.enabled")) {
+    //    this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
+    //}
 };
 Shape.prototype.scaleTo = function (nw, nh, group) {
     if (this.def.propertyMap["box"]) {
@@ -265,7 +268,10 @@ Shape.prototype.scaleTo = function (nw, nh, group) {
         }
 
         this.applyBehaviorForProperty("box");
-        //this.dockingManager.handleScaleTo(nw, nh, box.w, box.h, group);
+
+        //if (Config.get("docking.enabled")) {
+        //    this.dockingManager.handleScaleTo(nw, nh, box.w, box.h, group);
+        //}
     } else {
         error(this.def.displayName + " does not support scaling.");
     }
@@ -294,7 +300,9 @@ Shape.prototype.rotateBy = function (da) {
 
     Svg.ensureCTM(this.svg, ctm);
 
-    this.dockingManager.handleRotateBy(da);
+    //if (Config.get("docking.enabled")) {
+    //    this.dockingManager.handleRotateBy(da);
+    //}
 };
 Shape.prototype.getBounding = function (to) {
     var context = to ? to : this.canvas.drawingLayer;
