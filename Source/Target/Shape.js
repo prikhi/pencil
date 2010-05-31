@@ -28,7 +28,7 @@ function Shape(canvas, svg) {
         this.targetMap[name] = target;
     }
 
-    this.dockingManager = new DockingManager(this);
+    //this.dockingManager = new DockingManager(this);
 }
 Shape.prototype.getName = function () {
     return this.def.displayName;
@@ -465,7 +465,7 @@ Shape.prototype.normalizePositionToGrid = function () {
 };
 Shape.prototype.deleteTarget = function () {
     this.canvas.snappingHelper.updateSnappingGuide(this, true);
-    this.dockingManager.deleteTarget();
+    //this.dockingManager.deleteTarget();
     this.svg.parentNode.removeChild(this.svg);
 };
 Shape.prototype.bringForward = function () {
@@ -481,7 +481,7 @@ Shape.prototype.bringForward = function () {
                 } else {
                     parentNode.appendChild(this.svg);
                 }
-                this.dockingManager.invalidateChildTargets();
+                //this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
@@ -494,7 +494,7 @@ Shape.prototype.bringToFront = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.appendChild(this.svg);
-                this.dockingManager.invalidateChildTargets();
+                //this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
@@ -507,7 +507,7 @@ Shape.prototype.sendBackward = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, previous);
-                this.dockingManager.invalidateChildTargets();
+                //this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
@@ -520,7 +520,7 @@ Shape.prototype.sendToBack = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, parentNode.firstChild);
-                this.dockingManager.invalidateChildTargets();
+                //this.dockingManager.invalidateChildTargets();
             }, this);
         }
     } catch (e) { alert(e); }
@@ -690,7 +690,7 @@ Shape.prototype.lock = function () {
 };
 
 Shape.prototype.markAsMoving = function (moving) {
-    this.dockingManager.moving = moving;
+    //this.dockingManager.moving = moving;
     Svg.optimizeSpeed(this.svg, moving);
 };
 Shape.prototype.performAction = function (id) {

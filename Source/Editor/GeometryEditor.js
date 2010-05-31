@@ -126,7 +126,7 @@ GeometryEditor.prototype.attach = function (targetObject) {
 
     this.svgElement.style.visibility = "visible";
 
-    if (this.targetObject.supportScaling()) {
+    if (this.targetObject.supportScaling && this.targetObject.supportScaling()) {
         this.svgElement.removeAttributeNS(PencilNamespaces.p, "nobox");
     } else {
         this.svgElement.setAttributeNS(PencilNamespaces.p, "p:nobox", true);
@@ -275,7 +275,7 @@ GeometryEditor.prototype.handleMouseUp = function (event) {
                         if (!geo.dim) return;
                         this.targetObject.scaleTo(geo.dim.w + this.adw / this.canvas.zoom, geo.dim.h + this.adh / this.canvas.zoom);
                     }
-                    if (this.ada != 0) {
+                    if (this.ada != 0 && this.targetObject.rotateBy) {
                         this.targetObject.rotateBy(this.ada);
                     }
                 } finally {
@@ -580,7 +580,7 @@ GeometryEditor.prototype.getLockingPolicy = function () {
     if(!this.targetObject)
         return {x: true, y: true, width: true, height: true, rotation: true, ratio: true};
 
-    var allowScalling = this.targetObject.supportScaling();
+    var allowScalling = this.targetObject.supportScaling && this.targetObject.supportScaling();
     if(!this.targetObject.def)
         return {x: false, y: false, width: !allowScalling, height: !allowScalling, rotation: false, ratio: false};
 
