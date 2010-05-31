@@ -208,7 +208,7 @@ DockingManager.prototype.findParentContainers = function () {
     var targets = this.getRelateTarget("under");
     for (var i = 0; i < targets.length; i++) {
         var controller = this.target.canvas.createControllerFor(targets[i]);
-        if (controller) {
+        if (controller && this.target && this.target.getBounding && controller.getBounding) {
             var bound1 = this.target.getBounding();
             var bound2 = controller.getBounding();
             if (bound1.x > bound2.x && bound1.y > bound2.y &&

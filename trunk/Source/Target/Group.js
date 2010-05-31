@@ -55,7 +55,7 @@ function Group(canvas, svg) {
 
     this.propertyGroup = propertyGroup;
 
-    this.dockingManager = new DockingManager(this);
+    //this.dockingManager = new DockingManager(this);
 }
 Group.prototype.getName = function () {
     return "Group";
@@ -301,7 +301,7 @@ Group.prototype.clearPositionSnapshot = function () {
 
 Group.prototype.deleteTarget = function () {
     this.canvas.snappingHelper.updateSnappingGuide(this, true);
-    this.dockingManager.deleteTarget();
+    //this.dockingManager.deleteTarget();
     this.svg.parentNode.removeChild(this.svg);
 };
 Group.prototype.bringForward = function () {
@@ -316,7 +316,7 @@ Group.prototype.bringForward = function () {
             } else {
                 parentNode.appendChild(this.svg);
             }
-            this.dockingManager.invalidateChildTargets();
+            //this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
@@ -327,7 +327,7 @@ Group.prototype.bringToFront = function () {
             var parentNode = this.svg.parentNode;
             parentNode.removeChild(this.svg);
             parentNode.appendChild(this.svg);
-            this.dockingManager.invalidateChildTargets();
+            //this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
@@ -338,7 +338,7 @@ Group.prototype.sendBackward = function () {
             var parentNode = this.svg.parentNode;
             parentNode.removeChild(this.svg);
             parentNode.insertBefore(this.svg, previous);
-            this.dockingManager.invalidateChildTargets();
+            //this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
@@ -349,7 +349,7 @@ Group.prototype.sendToBack = function () {
             var parentNode = this.svg.parentNode;
             parentNode.removeChild(this.svg);
             parentNode.insertBefore(this.svg, parentNode.firstChild);
-            this.dockingManager.invalidateChildTargets();
+            //this.dockingManager.invalidateChildTargets();
         }
     } catch (e) { alert(e); }
 };
@@ -369,7 +369,7 @@ Group.prototype.lock = function () {
 };
 
 Group.prototype.markAsMoving = function (moving) {
-    this.dockingManager.moving = moving;
+    //this.dockingManager.moving = moving;
     Svg.optimizeSpeed(this.svg, moving);
 };
 
