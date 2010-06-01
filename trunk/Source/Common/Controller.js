@@ -398,7 +398,7 @@ Controller.prototype.loadDocument = function (uri) {
         });
     }*/
     this._loadDocumentImpl(file, path);
-}
+    }
 Controller.prototype._loadDocumentImpl = function (file, path) {
     var thiz = this;
     var starter = function (listener) {
@@ -419,12 +419,13 @@ Controller.prototype._loadDocumentImpl = function (file, path) {
         function loadPage() {
             p++;
             try {
-                listener.onProgressUpdated("Loading page " + thiz.doc.pages[p].properties.name + "...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
-                thiz._createPageView(thiz.doc.pages[p], function () {
-                    thiz._pageSetupCount ++;
-                    if (thiz._pageSetupCount == thiz.doc.pages.length) {
-                        thiz._ensureAllBackgrounds(function () {
-                            thiz._setSelectedPageIndex(0);
+	            debug("thiz.doc.pages.length: " + thiz.doc.pages.length);
+    	        listener.onProgressUpdated("Loading page " + thiz.doc.pages[p].properties.name + "...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
+        	    thiz._createPageView(thiz.doc.pages[p], function () {
+            	    thiz._pageSetupCount ++;
+                	if (thiz._pageSetupCount == thiz.doc.pages.length) {
+                    	thiz._ensureAllBackgrounds(function () {
+                        	thiz._setSelectedPageIndex(0);
 
                             thiz.filePath = path;
                             Pencil.setTitle(thiz.filePath);
@@ -929,45 +930,46 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
     }
 
     var extra = null;
-
+    
     if (pageExtraInfos[page.properties.id]) {
-
+    
         extra = pageExtraInfos[page.properties.id];
-
+        
     } else {
         // the current page is not processed for linking
         // this may because it is not included in exporting
         // so, do this manually here
-
+        
         var node = page._view.canvas.drawingLayer;
         extra = {};
         var processor = new LinkingGeometryPreprocessor(extra);
         processor.process(node);
-
+        
         pageExtraInfos[page.properties.id] = extra;
     }
 
     var thisPageLinks = extra.objectsWithLinking;
-
+    
     var links = [];
-
+    
     for (var j = 0; j < thisPageLinks.length; j ++) {
         links.push(thisPageLinks[j]);
     }
-
+    
     for (var j = 0; j < bgLinks.length; j ++) {
         links.push(bgLinks[j]);
     }
-
-
-    debug("Returning links for page: " + page.properties.fid);
+    
+    
+    var validLinks = [];
     for (var j = 0; j < links.length; j ++) {
         var targetPage = this.doc.getPageById(links[j].pageId);
-        debug("\t" + targetPage.properties.fid);
+        if (targetPage) validLinks.push(links[j]);
     }
 
+    debug("Returning links for page: " + page.properties.fid + ", total: " + validLinks.length);
 
-    return links;
+    return validLinks;
 };
 Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, destFile, exportSelection, callback) {
     var dom = document.implementation.createDocument(PencilNamespaces.p, "Document", null);
@@ -1041,8 +1043,13 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
         for (var j = 0; j < linkings.length; j ++) {
             var linking = linkings[j];
 
+            debug("Validating: " + page.properties.name + " to: " + linking.pageId);
+            
             var targetPage = this.doc.getPageById(linking.pageId);
-            if (!targetPage) continue;
+            if (!targetPage) {
+                debug("targetPage not found");
+                continue;
+            }
 
             var linkNode = dom.createElementNS(PencilNamespaces.p, "Link");
             linkNode.setAttribute("target", linking.pageId);
@@ -1055,6 +1062,8 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             linkNode.setAttribute("h", linking.geo.h);
 
             linkingContainerNode.appendChild(linkNode);
+            
+            debug("Created link from: " + page.properties.name + " to: " + targetPage.properties.name);
         }
     }
 
@@ -1235,21 +1244,21 @@ LinkingGeometryPreprocessor.prototype.process = function (doc) {
     objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];
-
+    
 
     for (var i = 0; i < objects.length; i ++) {
         var g = objects[i];
-
+        
         var boundingObject = g.ownerSVGElement;
-
+        
         if (boundingObject.parentNode && boundingObject.parentNode.getBoundingClientRect) {
             boundingObject = boundingObject.parentNode;
         }
-
+        
         var rect = boundingObject.getBoundingClientRect();
         var dx = rect.left;
         var dy = rect.top;
-
+        
         debug("dx, dy: " + [dx, dy]);
 
         rect = g.getBoundingClientRect();
