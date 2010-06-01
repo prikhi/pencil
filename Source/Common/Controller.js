@@ -1256,9 +1256,9 @@ LinkingGeometryPreprocessor.prototype.process = function (doc) {
         }
         
         var rect = boundingObject.getBoundingClientRect();
-        var dx = rect.left;
-        var dy = rect.top;
-        
+        var dx = 0;//rect.left;
+        var dy = 0;//rect.top;
+                
         debug("dx, dy: " + [dx, dy]);
 
         rect = g.getBoundingClientRect();
