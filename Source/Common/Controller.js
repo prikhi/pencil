@@ -1149,7 +1149,7 @@ Controller.prototype.rasterizeCurrentPage = function () {
     if (fp.show() == nsIFilePicker.returnCancel) return false;
     try {
         this._rasterizePage(page, fp.file.path, function () {
-            Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
+            //Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
         });
     } catch (e) {
         Console.dumpError(e);

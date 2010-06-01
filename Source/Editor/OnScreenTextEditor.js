@@ -76,7 +76,7 @@ OnScreenTextEditor.prototype.handleShapeDoubleClicked = function (event) {
     if (!this.currentTarget || !this.currentTarget.getTextEditingInfo) return;
 
     this.textEditingInfo = this.currentTarget.getTextEditingInfo(event);
-    if (this.textEditingInfo) {
+    if (this.textEditingInfo && !this.textEditingInfo.readonly) {
         if (this.textEditingInfo.type == PlainText) {
             //setup
             this._lastTarget = this.currentTarget;

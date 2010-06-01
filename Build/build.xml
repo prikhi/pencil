@@ -3,9 +3,16 @@
         Ant build script for Pencil project
     </description>
 
+    <tstamp>
+        <format property="DSTAMP"
+              pattern="ddMMyy"
+              locale="en,UK"/>
+    </tstamp>
+
+    <!--<property name="BUILD" value="${DSTAMP}${TSTAMP}" />-->
     <property name="BUILD" value="0" />
     <property name="NAME" value="Pencil" />
-    <property name="VERSION" value="1.1" />
+    <property name="VERSION" value="1.2" />
     <property name="AUTHOR" value="Duong Thanh An (an.duong@evolus.vn) and Contributors" />
     <property name="XPINAME" value="Pencil-${VERSION}-${BUILD}-fx.xpi" />
     <property name="FXMINVER" value="3.0b3" />

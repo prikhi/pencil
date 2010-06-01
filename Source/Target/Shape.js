@@ -540,7 +540,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                 info.value = this.getProperty(name);
                 info.target = Pencil.findObjectByName(this.svg, info.targetName);
                 info.type = prop.type;
-
+                info.readonly = prop.meta.readonly;
                 infos.push(info);
             }
         }
@@ -581,6 +581,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 target: Dom.getSingle(".//*[@p:name='" + target + "']", this.svg),
                                 bound: bound,
                                 align: align,
+                                readonly: prop.meta.readonly,
                                 font: font};
 
                         break;
@@ -639,6 +640,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 font: font,
                                 bound: bound,
                                 align: align,
+                                readonly: prop.meta.readonly,
                                 type: RichText
                             };
 

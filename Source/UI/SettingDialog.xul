@@ -165,11 +165,11 @@
                             </row>
                             <row align="center" id="unoBox" style="xdisplay:none">
                                 <label value="Path to UNO converter" id="labelUnoConverterUrl" />
-                                <textbox id="unoConverterUrl" size="60" value="/bin/sh" preference="pencil-openOfficeConverterUNOPath" />
+                                <textbox id="unoConverterUrl" width="350" value="/bin/sh" preference="pencil-openOfficeConverterUNOPath" />
                             </row>
                             <row align="center" id="jodBox" style="xdisplay:none">
                                 <label value="Path to JOD converter" id="labelJodConverterUrl" />
-                                <textbox id="jodConverterUrl" size="60" value="http://example.com" preference="pencil-openOfficeConverterJODUrl" />
+                                <textbox id="jodConverterUrl" width="350" value="http://example.com" preference="pencil-openOfficeConverterJODUrl" />
                             </row>
                         </rows>
                     </grid>
