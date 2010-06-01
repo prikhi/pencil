@@ -115,6 +115,22 @@
                 </DomContent>
             </For>
         </Behaviors>
+        <Actions>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var b = this.getBounding();
+                        var padding = 13;
+                        return [
+                            new SnappingData("FrameInnerPaddingRight", b.x + b.width - 2 - padding, "Right", true, this.id),
+                            new SnappingData("FrameInnerPaddingLeft", b.x + padding, "Left", true, this.id),
+                            new SnappingData("FrameInnerPaddingTop", b.y + 20 + padding, "Top", false, this.id),
+                            new SnappingData("FrameInnerPaddingBottom", b.y + b.height - 2 - padding, "Bottom", false, this.id)
+                        ]
+                    ]]>
+                </Impl>
+            </Action>
+        </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
                 <html:div xmlns:html="http://www.w3.org/1999/xhtml" id="div" style="-moz-box-sizing: border-box; overflow: hidden; position: relative;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -258,7 +274,6 @@
             </For>
         </Behaviors>
         <Actions>
-
             <Action id="setImage" displayName="Select Button Image...">
                 <Impl>
                     <![CDATA[
@@ -667,6 +682,22 @@ Item3</Property>
                 <Color>$disabled.value ? null : $textColor</Color>
             </For>
         </Behaviors>
+        <Actions>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var b = this.getBounding();
+                        var padding = 13;
+                        return [
+                            new SnappingData("FrameInnerPaddingRight", b.x + b.width - padding, "Right", true, this.id),
+                            new SnappingData("FrameInnerPaddingLeft", b.x + padding, "Left", true, this.id),
+                            new SnappingData("FrameInnerPaddingTop", b.y + 15 + padding , "Top", false, this.id),
+                            new SnappingData("FrameInnerPaddingBottom", b.y + b.height - padding, "Bottom", false, this.id)
+                        ]
+                    ]]>
+                </Impl>
+            </Action>
+        </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
                 <html:div xmlns:html="http://www.w3.org/1999/xhtml" id="div" style="-moz-box-sizing: border-box; overflow: hidden; position: relative; font-size: 0px;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -1055,7 +1086,7 @@ Content 3|Content 4</Property>
                 <Property name="showMockupNotice" displayName="Show Mockup Notice" type="Bool">false</Property>
 
                 <Property name="glassHeight" displayName="Glass Extend" type="Handle" p:minY="28" p:maxY="$box.h" p:lockX="true" p:disabled="$style.value.indexOf('vista') &lt; 0">0,28</Property>
-                <Property name="macHeaderHeight" displayName="Header Height" type="Handle" p:minY="21" p:maxY="$box.h" p:lockX="true" p:disabled="$style.value.indexOf('macosx') &lt; 0">0,52</Property>
+                <Property name="macHeaderHeight" displayName="Header Height" p:noScale="true" type="Handle" p:minY="21" p:maxY="$box.h" p:lockX="true" p:disabled="$style.value.indexOf('macosx') &lt; 0">0,52</Property>
                 <Property name="fillColor" displayName="Background Color" type="Color">#ffffffff</Property>
 
                 <Property name="style" displayName="Style" type="Enum" p:enumValues="['nodoka|Gnome Nodoka', 'vista|Windows Vista (no Aero)', 'royale|Windows XP (Royale)', 'macosx|Mac OSX']"><E>$$defaultFrameStyle</E></Property>
@@ -1377,6 +1408,53 @@ Content 3|Content 4</Property>
                 </Attr>
             </For>
         </Behaviors>
+        <Actions>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var b = this.getBounding();
+                        var glassHeight = this.getProperty("glassHeight");
+                        var style = this.getProperty("style");
+                        var macHeaderHeight = this.getProperty("macHeaderHeight");
+                        
+                        var top = {
+                            vista: glassHeight.y + 1 + 13,
+                            nodoka: 23 + 13,
+                            royale: 30 + 13,
+                            macosx: macHeaderHeight.y + 2 + 13
+                        }[style.value];
+                        
+                        var bottom = {
+                            vista: 19 + 13,
+                            nodoka: 13 + 3 + 13,
+                            royale: 29, // 13 + 3 + 13
+                            macosx: 13 + 13   
+                        }[style.value];
+                        
+                        var right = {
+                            vista: 6 + 13,
+                            nodoka: 3 + 13,
+                            royale: 16, // 3 + 13Button
+                            macosx: 13
+                        }[style.value];
+                        
+                        var left = {
+                            vista: 6 + 13 ,
+                            nodoka: 3 + 13 ,
+                            royale: 17, // 4 + 13
+                            macosx: 13
+                        }[style.value];
+
+                        return [
+                            new SnappingData("FrameInnerPaddingRight", b.x + b.width - right, "Right", true, this.id),
+                            new SnappingData("FrameInnerPaddingLeft", b.x + left, "Left", true, this.id),
+                            new SnappingData("FrameInnerPaddingTop", b.y + top, "Top", false, this.id),
+                            new SnappingData("FrameInnerPaddingBottom", b.y + b.height - bottom, "Bottom", false, this.id)
+                        ]
+                    ]]>
+                </Impl>
+            </Action>
+        </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
                 <div xmlns="http://www.w3.org/1999/xhtml" id="div">

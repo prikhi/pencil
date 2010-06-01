@@ -139,7 +139,7 @@ function handleOnloadImpl() {
     pageTitle.focus();
     pageTitle.select();
 
-    window.sizeToContent();
+    //window.sizeToContent();
 }
 function handleDialogAccept() {
     try {
@@ -174,11 +174,11 @@ function invalidateInputs() {
         if (transparentBackground) {
             backgroundColorPane.style.display = "none";
         }
-        dimBackgroundPane.style.display = "none";
+        dimBackgroundPane.style.visibility = "hidden";
         backgroundPage.removeAttributeNS(PencilNamespaces.p, "with-background");
     } else {
         backgroundColorPane.style.display = "none";
-        dimBackgroundPane.style.display = "";
+        dimBackgroundPane.style.visibility = "visible";
         backgroundPage.setAttributeNS(PencilNamespaces.p, "p:with-background", "true");
     }
 }

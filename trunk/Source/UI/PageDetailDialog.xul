@@ -13,6 +13,8 @@
         buttonlabelcancel="Cancel"
         persist="lastsize screenX screenY width height"
         lastsize="800x600"
+        width="450"
+        height="270"
         ondialogaccept="return handleDialogAccept();"
         ondialogcancel="return handleDialogCancel();">
 
@@ -80,7 +82,7 @@
                 <hbox id="backgroundColorPane">
                     <pcolorbutton id="backgroundColorButton" tooltiptext="Select background color" type="preview" allow-opacity="false"/>
                 </hbox>
-                <hbox id="dimBackgroundPane" style="display:none;">
+                <hbox id="dimBackgroundPane" style="visibility:hidden;">
                     <checkbox id="dimBackground" label="Dim background" checked="false"/>
                 </hbox>
             </hbox>
