@@ -932,37 +932,37 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
     }
 
     var extra = null;
-
+    
     if (pageExtraInfos[page.properties.id]) {
-
+    
         extra = pageExtraInfos[page.properties.id];
-
+        
     } else {
         // the current page is not processed for linking
         // this may because it is not included in exporting
         // so, do this manually here
-
+        
         var node = page._view.canvas.drawingLayer;
         extra = {};
         var processor = new LinkingGeometryPreprocessor(extra);
         processor.process(node);
-
+        
         pageExtraInfos[page.properties.id] = extra;
     }
 
     var thisPageLinks = extra.objectsWithLinking;
-
+    
     var links = [];
-
+    
     for (var j = 0; j < thisPageLinks.length; j ++) {
         links.push(thisPageLinks[j]);
     }
-
+    
     for (var j = 0; j < bgLinks.length; j ++) {
         links.push(bgLinks[j]);
     }
-
-
+    
+    
     var validLinks = [];
     for (var j = 0; j < links.length; j ++) {
         var targetPage = this.doc.getPageById(links[j].pageId);
@@ -1046,7 +1046,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             var linking = linkings[j];
 
             debug("Validating: " + page.properties.name + " to: " + linking.pageId);
-
+            
             var targetPage = this.doc.getPageById(linking.pageId);
             if (!targetPage) {
                 debug("targetPage not found");
@@ -1064,7 +1064,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             linkNode.setAttribute("h", linking.geo.h);
 
             linkingContainerNode.appendChild(linkNode);
-
+            
             debug("Created link from: " + page.properties.name + " to: " + targetPage.properties.name);
         }
     }
@@ -1240,6 +1240,7 @@ Controller.prototype.sizeToContent = function (passedPage, askForPadding) {
         page.properties.height = newSize.height;
     }
 };
+
 function LinkingGeometryPreprocessor(pageExtraInfo) {
     this.pageExtraInfo = pageExtraInfo;
 }
@@ -1248,21 +1249,21 @@ LinkingGeometryPreprocessor.prototype.process = function (doc) {
     objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];
-
+    
 
     for (var i = 0; i < objects.length; i ++) {
         var g = objects[i];
-
+        
         var boundingObject = g.ownerSVGElement;
-
+        
         if (boundingObject.parentNode && boundingObject.parentNode.getBoundingClientRect) {
             boundingObject = boundingObject.parentNode;
         }
-
+        
         var rect = boundingObject.getBoundingClientRect();
         var dx = 0;//rect.left;
         var dy = 0;//rect.top;
-
+                
         debug("dx, dy: " + [dx, dy]);
 
         rect = g.getBoundingClientRect();
