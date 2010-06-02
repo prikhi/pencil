@@ -11,7 +11,7 @@ BaseRasterizedExporter.prototype.getRasterizedPageDestination = function (baseDi
     return baseDir.clone();
 };
 
-BaseRasterizedExporter.prototype.export = function (doc, pages, extraDataMap, options, dir, callback) {
+BaseRasterizedExporter.prototype.export = function (doc, options, destFile, xmlFile, callback) {
     callback();
 };
 BaseRasterizedExporter.prototype.getWarnings = function () {

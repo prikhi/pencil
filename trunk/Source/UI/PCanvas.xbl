@@ -945,6 +945,22 @@
                 <body>
                 <![CDATA[
                 try {
+                    var boxObject = this.svg.parentNode.boxObject;
+                    var px = event.clientX / this.zoom;
+                    var py = event.clientY / this.zoom;
+
+                    px = px - boxObject.x;
+                    py = py - boxObject.y;
+
+                    //debug(boxObject.x);
+                    //debug(boxObject.width);
+                    //debug(px - boxObject.x);
+                    //debug(px + boxObject.width);
+                    // shadow 5
+                    if (px >= 0 && px <= boxObject.width - 5 && py >= 0 && py <= boxObject.height - 5) {
+                        Util.setPointerPosition(px, py);
+                    }
+
                     if (this._button != 0) return;
 
                     if (!fake) {
