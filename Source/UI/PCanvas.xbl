@@ -2313,6 +2313,13 @@
                     <menuitem label="Delete" p:for="Shape,TargetSet,Group" oncommand="this._canvas.deleteSelected();"/>
                     <menuitem label="Add to My Collections..." p:for="Shape,Group" oncommand="this._canvas.addSelectedToMyCollection();"/>
                     <menuseparator/>
+                    <menu label="Resize Canvas" aid="resizeMenu">
+                        <menupopup>
+                            <menuitem label="Fit Content" oncommand="Pencil.controller.sizeToContent(null, false);"/>
+                            <menuitem label="Fit Content with Padding..." oncommand="Pencil.controller.sizeToContent(null, true);"/>
+                        </menupopup>
+                    </menu>
+                    <menuseparator/>
                     <menuitem aid="propertyMenuItem" label="Properties..." p:for="Shape,Group,TargetSet"/>
                 </popup>
             </popupset>
