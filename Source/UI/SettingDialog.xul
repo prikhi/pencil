@@ -220,7 +220,7 @@
 
                 <tree id="configTree" flex="1" seltype="single"
                         onselect="updateCommands('select');"
-                        enableColumnDrag="true" context="configContext">
+                        enableColumnDrag="true" context="configContext" minheight="250">
                         <treecols>
                         <treecol id="prefCol" label="Preference Name" flex="7"
                             class="sortDirectionIndicator"

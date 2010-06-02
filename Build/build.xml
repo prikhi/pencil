@@ -103,11 +103,11 @@
         <antcall target="replacer">
             <param name="filename" value="${OUTPUTS}/Win32/setup.nsi" />
         </antcall>
-        <exec dir="${OUTPUTS}/Win32" executable="makensis.exe" os="Windows XP">
-            <arg value="pencil.nsi"/>
+        <exec dir="${OUTPUTS}/Win32" executable="cmd.exe">
+            <arg line="/c makensis.exe pencil.nsi"/>
         </exec>
-        <exec dir="${OUTPUTS}/Win32" executable="makensis.exe" os="Windows XP">
-            <arg value="setup.nsi"/>
+        <exec dir="${OUTPUTS}/Win32" executable="cmd.exe">
+            <arg line="/c makensis.exe setup.nsi"/>
         </exec>
         <delete dir="${OUTPUTS}/Win32" />
     </target>
