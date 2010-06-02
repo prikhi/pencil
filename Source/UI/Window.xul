@@ -463,6 +463,15 @@
             <image id="collectionPaneSizeGrip" src="Icons/size-grip.png" style="display:none;cursor:se-resize;" class="CollectionPane"/>
         </stack>
     </hbox>
+    <vbox id="pencil-browser-bottombox">
+        <statusbar class="chromeclass-status" id="pencil-status-bar">
+            <statusbarpanel id="pencil-statusbar-display" label="" class="statusbarpanel-iconic-text" flex="1"/>
+            <statusbarpanel class="statusbarpanel-progress" id="pencil-statusbar-progresspanel" collapsed="true">
+                <progressmeter class="progressmeter-statusbar" id="pencil-statusbar-progress" mode="normal" value="0"/>
+            </statusbarpanel>
+            <statusbarpanel id="pencil-statusbar-pointer" label="0, 0" width="80"></statusbarpanel>
+        </statusbar>
+    </vbox>
     <html:img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oBEAgTHGn1p6MAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAADUlEQVQI12P4//8/AwAI/AL+XJ/P2gAAAABJRU5ErkJggg==" width="1" height="1" style="display: none;" id="blankImage"/>
 </window>
 

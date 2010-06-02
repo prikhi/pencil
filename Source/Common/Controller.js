@@ -419,11 +419,12 @@ Controller.prototype._loadDocumentImpl = function (file, path) {
         function loadPage() {
             p++;
             try {
-	            debug("thiz.doc.pages.length: " + thiz.doc.pages.length);
+	            //debug("thiz.doc.pages.length: " + thiz.doc.pages.length);
     	        listener.onProgressUpdated("Loading page " + thiz.doc.pages[p].properties.name + "...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
         	    thiz._createPageView(thiz.doc.pages[p], function () {
             	    thiz._pageSetupCount ++;
                 	if (thiz._pageSetupCount == thiz.doc.pages.length) {
+                        listener.onProgressUpdated("Loading background...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
                     	thiz._ensureAllBackgrounds(function () {
                         	thiz._setSelectedPageIndex(0);
 
@@ -879,6 +880,7 @@ Controller.prototype.exportDocument = function () {
                     if (pageIndex >= pages.length) {
                         thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
                             listener.onTaskDone();
+                            Util.showStatusBarInfo("Document has been exported, location: " + destFile.path, true);
                             debug("Document has been exported, location: " + destFile.path);
                         });
                         return;
@@ -930,37 +932,37 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
     }
 
     var extra = null;
-    
+
     if (pageExtraInfos[page.properties.id]) {
-    
+
         extra = pageExtraInfos[page.properties.id];
-        
+
     } else {
         // the current page is not processed for linking
         // this may because it is not included in exporting
         // so, do this manually here
-        
+
         var node = page._view.canvas.drawingLayer;
         extra = {};
         var processor = new LinkingGeometryPreprocessor(extra);
         processor.process(node);
-        
+
         pageExtraInfos[page.properties.id] = extra;
     }
 
     var thisPageLinks = extra.objectsWithLinking;
-    
+
     var links = [];
-    
+
     for (var j = 0; j < thisPageLinks.length; j ++) {
         links.push(thisPageLinks[j]);
     }
-    
+
     for (var j = 0; j < bgLinks.length; j ++) {
         links.push(bgLinks[j]);
     }
-    
-    
+
+
     var validLinks = [];
     for (var j = 0; j < links.length; j ++) {
         var targetPage = this.doc.getPageById(links[j].pageId);
@@ -1044,7 +1046,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             var linking = linkings[j];
 
             debug("Validating: " + page.properties.name + " to: " + linking.pageId);
-            
+
             var targetPage = this.doc.getPageById(linking.pageId);
             if (!targetPage) {
                 debug("targetPage not found");
@@ -1062,7 +1064,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             linkNode.setAttribute("h", linking.geo.h);
 
             linkingContainerNode.appendChild(linkNode);
-            
+
             debug("Created link from: " + page.properties.name + " to: " + targetPage.properties.name);
         }
     }
@@ -1149,6 +1151,7 @@ Controller.prototype.rasterizeCurrentPage = function () {
     if (fp.show() == nsIFilePicker.returnCancel) return false;
     try {
         this._rasterizePage(page, fp.file.path, function () {
+            Util.showStatusBarInfo("Page '" + page.properties.name + "' has been exported", true);
             //Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
         });
     } catch (e) {
@@ -1185,7 +1188,8 @@ Controller.prototype.rasterizeSelection = function () {
 
     var geo = target.getGeometry();
     if (!geo) {
-        alert("The selected objects cannot be exported\nPlease try selecting a single object or a grouped object set.");
+        Util.showStatusBarWarning("The selected objects cannot be exported. Please try selecting a single object or a grouped object set.", true);
+        //alert("The selected objects cannot be exported\nPlease try selecting a single object or a grouped object set.");
         return;
     }
 
@@ -1244,21 +1248,21 @@ LinkingGeometryPreprocessor.prototype.process = function (doc) {
     objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];
-    
+
 
     for (var i = 0; i < objects.length; i ++) {
         var g = objects[i];
-        
+
         var boundingObject = g.ownerSVGElement;
-        
+
         if (boundingObject.parentNode && boundingObject.parentNode.getBoundingClientRect) {
             boundingObject = boundingObject.parentNode;
         }
-        
+
         var rect = boundingObject.getBoundingClientRect();
         var dx = 0;//rect.left;
         var dy = 0;//rect.top;
-                
+
         debug("dx, dy: " + [dx, dy]);
 
         rect = g.getBoundingClientRect();

@@ -13,8 +13,8 @@
         buttonlabelcancel="Cancel"
         persist="lastsize screenX screenY width height"
         lastsize="800x600"
-        width="450"
-        height="270"
+        minwidth="450"
+        minheight="270"
         ondialogaccept="return handleDialogAccept();"
         ondialogcancel="return handleDialogCancel();">
 

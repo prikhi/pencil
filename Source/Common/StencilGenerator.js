@@ -134,7 +134,7 @@ StencilGenerator.onload = function (event) {
                                             document.getElementById("collectionAuthor").value && document.getElementById("collectionAuthor").value != "" &&
                                             StencilGenerator.imageList.getRowCount() > 0;
         if (StencilGenerator.wizard.canAdvance) {
-            clearInterval(checkNextWizard);
+            clearInterval(StencilGenerator.checkNextWizard);
             delete StencilGenerator.checkNextWizard;
         }
     };

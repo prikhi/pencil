@@ -736,8 +736,50 @@ Util.getClipboardImage = function (clipData, length, handler) {
         handler(imageData.w, imageData.h, imageData.data);
     });
 };
+Util.statusbarDisplay = null;
+Util.STATUSBAR_MESSAGE_AUTOHIDE = 4000;
+Util.showStatusBarInfo = function(message, autoHide) {
+    if (!Util.statusbarDisplay) return;
+    Util.statusbarDisplay.setAttribute("src", "chrome://pencil/content/UI/Icons/dialog-information.png");
+    Util.statusbarDisplay.label = message;
 
+    if (autoHide) {
+        setTimeout(function () {
+            Util.hideStatusbarMessage();
+        }, Util.STATUSBAR_MESSAGE_AUTOHIDE);
+    }
+};
+Util.showStatusBarWarning = function(message, autoHide) {
+    if (!Util.statusbarDisplay) return;
+    Util.statusbarDisplay.setAttribute("src", "chrome://pencil/content/UI/Icons/dialog-warning.png");
+    Util.statusbarDisplay.label = message;
+
+    if (autoHide) {
+        setTimeout(function () {
+            Util.hideStatusbarMessage();
+        }, Util.STATUSBAR_MESSAGE_AUTOHIDE);
+    }
+};
+Util.showStatusBarError = function(message, autoHide) {
+    if (!Util.statusbarDisplay) return;
+    Util.statusbarDisplay.setAttribute("src", "chrome://pencil/content/UI/Icons/dialog-error.png");
+    Util.statusbarDisplay.label = message;
+
+    if (autoHide) {
+        setTimeout(function () {
+            Util.hideStatusbarMessage();
+        }, Util.STATUSBAR_MESSAGE_AUTOHIDE);
+    }
+};
+Util.hideStatusbarMessage = function () {
+    Util.statusbarDisplay.removeAttribute("src");
+    Util.statusbarDisplay.label = "";
+};
+Util.setPointerPosition = function (x, y) {
+    document.getElementById("pencil-statusbar-pointer").label = x + ", " + y;
+};
 Util.info = function(title, description, buttonLabel) {
+    Util.showStatusBarInfo(description, true);
     var message = {type: "info",
                     title: title,
                     description: description ? description : null,
@@ -745,8 +787,9 @@ Util.info = function(title, description, buttonLabel) {
 
     var returnValueHolder = {};
     var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
-}
+};
 Util.error = function(title, description, buttonLabel) {
+    Util.showStatusBarError(description, true);
     var message = {type: "error",
                     title: title,
                     description: description ? description : null,
@@ -796,7 +839,24 @@ Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancel
     return result;
 }
 Util.beginProgressJob = function(jobName, jobStarter) {
-    var dialog = window.openDialog("chrome://pencil/content/UI/ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "alwaysRaised,centerscreen", jobName, jobStarter);
+    var dialog = window.openDialog("chrome://pencil/content/UI/ProgressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "alwaysRaised,centerscreen", jobName, jobStarter, function (message, p) {
+        if (!Util.statusbarDisplay) return;
+        if (message) {
+            Util.showStatusBarInfo(message);
+        } else {
+            Util.hideStatusbarMessage();
+        }
+        var p1 = document.getElementById("pencil-statusbar-progresspanel");
+        var p2 = document.getElementById("pencil-statusbar-progress");
+        if (p1 && p2) {
+            if (p) {
+                p1.collapsed = false;
+                p2.value = p;
+            } else {
+                p1.collapsed = true;
+            }
+        }
+    });
 };
 Util.setNodeMetadata = function (node, name, value) {
     node.setAttributeNS(PencilNamespaces.p, "p:" + name, value);
@@ -1150,4 +1210,5 @@ Util.getFileExtension = function (path) {
 window.addEventListener("DOMContentLoaded", function () {
     document.documentElement.setAttribute("platform", navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux");
     Util.platform = navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux";
+    Util.statusbarDisplay = document.getElementById("pencil-statusbar-display");
 }, false);

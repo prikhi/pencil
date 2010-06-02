@@ -2,6 +2,7 @@
 window.onerror = function (message, url, code) {
     //Console.dumpError(message);
     error("SYSTEM ERROR!\n\t* " + message + "\n\t* at: " + url + ":" + code);
+    Util.showStatusBarError("SYSTEM ERROR! * " + message + " at: " + url + ":" + code, true);
     return false;
 };
 
@@ -79,6 +80,9 @@ Pencil.boot = function (event) {
         Pencil.booted = true;
         Pencil.window = document.documentElement;
         var win = Dom.getSingle("/xul:window", document);
+
+        //
+        Pencil.window.setAttribute("chromehidden", "");
 
         //fix icons on other platform
         if (navigator.platform.indexOf("Linux") < 0) {

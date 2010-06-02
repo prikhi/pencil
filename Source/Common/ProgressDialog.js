@@ -3,6 +3,7 @@ var detailText = null;
 var percent = null;
 var jobStarter = null;
 var jobName = null;
+var callback = null;
 
 var returnValueHolder;
 function handleOnload() {
@@ -12,13 +13,16 @@ function handleOnload() {
 
     jobName = window.arguments[0];
     jobStarter = window.arguments[1];
+    callback = window.arguments[2];
 
     //setup
     document.title = "Progress...";
 
     Dom.empty(titleText);
     titleText.appendChild(document.createTextNode(jobName + "..."));
-
+    if (callback) {
+        callback(jobName + "...");
+    }
     Dom.empty(detailText);
 
     var dialog = document.documentElement;
@@ -31,12 +35,18 @@ function handleOnload() {
                 detailText.appendChild(document.createTextNode(currentTask));
                 var p = Math.round(done * 100 / total);
                 percent.setAttribute("value", p);
+                if (callback) {
+                    callback(currentTask, p);
+                }
             },
             onTaskDone: function () {
+                if (callback) {
+                    callback("");
+                }
                 window.close();
             }
         });
-    } catch(e) {
+    } catch (e) {
         Util.error("Error", e.message,  "Close");
         error(e);
     }
