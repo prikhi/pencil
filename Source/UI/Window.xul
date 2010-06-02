@@ -338,7 +338,7 @@
             <menu label="Settings" id="settings-menu" accesskey="t">
                 <menupopup>
                     <menuitem label="Options..." oncommand="window.openDialog('SettingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
-                    <menuitem label="Advanced Configurations" oncommand="window.open('chrome://global/content/config.xul', 'aboutConfig', 'chrome')"/>
+                    <!--<menuitem label="Advanced Configurations" oncommand="window.open('chrome://global/content/config.xul', 'aboutConfig', 'chrome')"/>-->
                 </menupopup>
             </menu>
             <menu label="Help" id="help-menu" accesskey="H">
