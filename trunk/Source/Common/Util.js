@@ -1006,7 +1006,7 @@ Util.preloadFonts = function (doc) {
 };
 Util.openDonate = function () {
     try {
-        var link = "http://evolus.vn/Pencil/HowToDonate.html";
+        var link = "http://pencil.evolus.vn/Donation.aspx";
 
         var mediator = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
         var ioservice = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);

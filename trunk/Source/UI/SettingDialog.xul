@@ -98,7 +98,7 @@
                                     label="Snap objects to objects in background." preference="pencil-objectSnappingBackground"/>
                             </row>
 
-                            <row align="center">
+                            <row align="center" style="display:none;">
                                 <checkbox id="enableDocking"
                                     label="Dock objects to larger objects below it." preference="pencil-dockingEnabled"/>
                             </row>
