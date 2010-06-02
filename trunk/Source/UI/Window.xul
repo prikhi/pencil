@@ -297,7 +297,7 @@
             </menu>
             <menu id="view-menu" label="View" accesskey="V">
                 <menupopup id="view-popup">
-                    <menuitem label="Collection Pane" type="checkbox" checked="false" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
+                    <menuitem label="Collection Pane" type="checkbox" checked="false" key="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
                 </menupopup>
             </menu>
             <menu label="Shape" id="shape-menu" accesskey="S">
@@ -407,13 +407,6 @@
         </popup>
     </popupset>
     <hbox flex="1" id="mainBox">
-        <hbox>
-            <toolbox>
-                <toolbar orient="vertical">
-                    <toolbarbutton image="Icons/Editor/text_font.png?size=menu" class="ed-toolbar-button" id="autoHideCollectionPane" tooltiptext="Collections (A)" command="toggleCollectionPaneCommand"/>
-                </toolbar>
-            </toolbox>
-        </hbox>
         <spacer />
         <stack flex="1" id="mainBoxStack">
             <hbox>
@@ -445,7 +438,7 @@
                 </tabbox>
             </hbox>
 
-            <tabbox id="sideBoxFloat" minwidth="150" width="300" miheight="120" height="455" top="-5" persist="width,height" style="display:none;opacity:0;" class="CollectionPane">
+            <tabbox id="sideBoxFloat" minwidth="150" width="300" minheight="200" height="455" top="-5" persist="width,height" style="display:none;opacity:0;" class="CollectionPane">
                 <tabs id="sideBoxTabs" class="CollectionPane">
                     <tab label="Collections" class="CollectionPane"/>
                     <tab label="My Stuffs" class="CollectionPane"/>
