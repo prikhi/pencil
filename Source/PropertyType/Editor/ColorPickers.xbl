@@ -246,8 +246,8 @@
             <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">
                 <vbox>
                     <hbox>
-                        <stack style="width: 180px; height: 150px; overflow: hidden;text-align:center;">
-                            <image top="5" left="25" style="margin-right: 5px; margin-bottom: 5px;" src="Icons/color-wheel-70.png" width="140" height="140" aid="wheelImage"/>
+                        <stack style="width: 150px; height: 150px; overflow: hidden;text-align:center;">
+                            <image top="5" left="5" style="margin-right: 5px; margin-bottom: 5px;" src="Icons/color-wheel-70.png" width="140" height="140" aid="wheelImage"/>
                             <box aid="pin" left="50" top="50" width="10" height="10" tooltiptextx="Drag around the wheel to select a color"/>
                         </stack>
                         <vbox class="pwheelcolorpicker-scale-box">

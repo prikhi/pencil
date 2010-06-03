@@ -10,16 +10,16 @@
     url="http://">
     <Properties>
         <PropertyGroup name="Commons">
-            <Property name="defaultTextFont" type="Font" displayName="Default Font">'Liberation Sans'|normal|normal|12px</Property>
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">"Liberation Sans",Arial,sans-serif|normal|normal|13px</Property>
             <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#000000ff</Property>
             <Property name="defaultLinkColor" type="Color" displayName="Default Link Color">#0000ffff</Property>
         </PropertyGroup>
         <PropertyGroup name="Heading">
-            <Property name="defaultH1Font" type="Font" displayName="Heading 1 Font">'Liberation Sans'|bold|normal|24px</Property>
-            <Property name="defaultH2Font" type="Font" displayName="Heading 2 Font">'Liberation Sans'|bold|normal|20px</Property>
-            <Property name="defaultH3Font" type="Font" displayName="Heading 3 Font">'Liberation Sans'|bold|normal|17px</Property>
-            <Property name="defaultH4Font" type="Font" displayName="Heading 4 Font">'Liberation Sans'|bold|normal|14px</Property>
-            <Property name="defaultH5Font" type="Font" displayName="Heading 5 Font">'Liberation Sans'|bold|normal|12px</Property>
+            <Property name="defaultH1Font" type="Font" displayName="Heading 1 Font">"Liberation Sans",Arial,sans-serif|bold|normal|24px</Property>
+            <Property name="defaultH2Font" type="Font" displayName="Heading 2 Font">"Liberation Sans",Arial,sans-serif|bold|normal|20px</Property>
+            <Property name="defaultH3Font" type="Font" displayName="Heading 3 Font">"Liberation Sans",Arial,sans-serif|bold|normal|17px</Property>
+            <Property name="defaultH4Font" type="Font" displayName="Heading 4 Font">"Liberation Sans",Arial,sans-serif|bold|normal|14px</Property>
+            <Property name="defaultH5Font" type="Font" displayName="Heading 5 Font">"Liberation Sans",Arial,sans-serif|bold|normal|12px</Property>
         </PropertyGroup>
         <PropertyGroup name="Table: header">
             <Property name="defaultHeaderTextColor" type="Color" displayName="Default Header Text Color">#000000ff</Property>

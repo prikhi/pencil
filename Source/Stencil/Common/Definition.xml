@@ -4,7 +4,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
 >
     <Properties>
         <PropertyGroup name="Text">
-            <Property name="defaultTextFont" type="Font" displayName="Default Font">'Liberation Sans'|normal|normal|13px</Property>
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">"Liberation Sans",Arial,sans-serif|normal|normal|13px</Property>
             <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#000000ff</Property>
         </PropertyGroup>
         <PropertyGroup name="Border">

@@ -362,7 +362,7 @@
                  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
             <vbox flex="1">
                 <vbox aid="filterPanel" align="left">
-                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + F)" maxlength="255" size="1024">
+                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + F)" maxlength="255" size="1024" style="margin:4px;">
                         <hbox>
                             <deck>
                                 <image />
