@@ -2,7 +2,7 @@
                 xmlns:p="http://www.evolus.vn/Namespace/Pencil"
                 xmlns:svg="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
-                
+
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:cc="http://web.resource.org/cc/"
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -17,7 +17,7 @@
                 >
     <Properties>
         <PropertyGroup name="Text">
-            <Property name="defaultTextFont" type="Font" displayName="Default Font">'Liberation Sans'|normal|normal|13px</Property>
+            <Property name="defaultTextFont" type="Font" displayName="Default Font">"Liberation Sans",Arial,sans-serif|normal|normal|13px</Property>
             <Property name="defaultTextColor" type="Color" displayName="Default Text Color">#ffffffff</Property>
         </PropertyGroup>
         <PropertyGroup name="Border">
@@ -36,21 +36,21 @@
                 </PropertyGroup>
                 <PropertyGroup name="Handles">
                     <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="Math.min($box.w, $box.h) / 2">8,0</Property>
-                    
-                    <Property name="leftStart" displayName="Start Point" type="Handle" 
+
+                    <Property name="leftStart" displayName="Start Point" type="Handle"
                         p:lockX="true" p:minY="$radius.x + 2" p:maxY="$leftEnd.y - 5"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'left'">0,12</Property>
                     <Property name="leftEnd" displayName="End Point" type="Handle"
                         p:lockX="true" p:minY="$leftStart.y + 5" p:maxY="$box.h - $radius.x - 2"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'left'">0,33</Property>
-                    
+
                     <Property name="rightStart" displayName="Start Point" type="Handle"
                         p:lockX="true" p:expressionX="$box.w" p:minY="$radius.x + 2" p:maxY="$rightEnd.y - 5"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'right'">0,12</Property>
-                    <Property name="rightEnd" displayName="End Point" type="Handle" 
+                    <Property name="rightEnd" displayName="End Point" type="Handle"
                         p:lockX="true" p:expressionX="$box.w" p:minY="$rightStart.y + 5" p:maxY="$box.h - $radius.x - 2"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'right'">0,33</Property>
-                    
+
                     <Property name="topStart" displayName="Start Point" type="Handle"
                         p:lockY="true" p:minX="$radius.x + 2" p:maxX="$topEnd.x - 5"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'top'">12,0</Property>
@@ -64,7 +64,7 @@
                     <Property name="bottomEnd" displayName="End Point" type="Handle"
                         p:lockY="true" p:expressionY="$box.h" p:minX="$bottomStart.x + 5" p:maxX="$box.w - $radius.x - 2"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'bottom'">33,0</Property>
-                    
+
                     <Property name="pin" displayName="Balloon Pin" type="Handle"  >-12,23</Property>
                 </PropertyGroup>
                 <PropertyGroup name="Background">
@@ -82,16 +82,16 @@
             </Properties>
             <Behaviors>
                 <For ref="rect">
-                      <D>   
+                      <D>
                             var type = F.getRelativeLocation($pin, $box);
-                            
+
                             var x = {"left": [M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
                                             L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
                                             L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
                                             L(0, $leftEnd.y), L($pin.x, $pin.y), L(0, $leftStart.y), L(0, $radius.x),
                                             C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)],
-                                         
-                                     "top": [M($radius.x, 0),L($topStart.x,0), L($pin.x, $pin.y), L($topEnd.x,0), 
+
+                                     "top": [M($radius.x, 0),L($topStart.x,0), L($pin.x, $pin.y), L($topEnd.x,0),
                                             L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
                                             L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
                                             L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
@@ -223,7 +223,7 @@
                 <use xlink:href="#container"/>
                 <foreignObject x="0" y="0" width="200" height="150" id="text">
                         <div xmlns="http://www.w3.org/1999/xhtml">1</div>
-                </foreignObject>                  
+                </foreignObject>
             </p:Content>
         </Shape>
         <Shape id="HollowBox" displayName="Hollow Box" icon="Icons/hollowbox.png">
@@ -280,7 +280,7 @@
                                         xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <marker id="marker"
-                      viewBox="0 0 10 10" refX="0.01" refY="3" 
+                      viewBox="0 0 10 10" refX="0.01" refY="3"
                       markerUnits="strokeWidth"
                       markerWidth="4" markerHeight="3"
                       orient="auto">

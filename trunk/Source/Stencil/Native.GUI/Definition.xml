@@ -4,11 +4,11 @@
             <Property name="parseAccessKey" displayName="Use _ as Accesskey Indicator" type="Bool">true</Property>
         </PropertyGroup>
         <PropertyGroup name="Control Text">
-            <Property name="defaultTextFont" displayName="Default Text Font" type="Font">Liberation Sans|normal|normal|12px|none</Property>
+            <Property name="defaultTextFont" displayName="Default Text Font" type="Font">"Liberation Sans",Arial,sans-serif|normal|normal|13px|none</Property>
         </PropertyGroup>
         <PropertyGroup name="Window Frame">
             <Property name="defaultFrameStyle" displayName="Default Window Style" type="Enum" p:enumValues="['nodoka|Gnome Nodoka', 'vista|Windows Vista (no Aero)', 'royale|Windows XP (Royale)', 'macosx|Mac OSX']">nodoka</Property>
-            <Property name="defaultWindowTitleFont" displayName="Default Title Font" type="Font">Liberation Sans|normal|normal|12px|none</Property>
+            <Property name="defaultWindowTitleFont" displayName="Default Title Font" type="Font">"Liberation Sans",Arial,sans-serif|normal|normal|16px|none</Property>
             <Property name="defaultWindowTitleColor" displayName="Default Title Text Color" type="Color">#ffffffff</Property>
         </PropertyGroup>
     </Properties>
@@ -17,12 +17,12 @@
             collection.MIN_COL_WIDTH = 5;
             collection.getMaxColumns = function (rawText) {
                 var a = F.parseTextArray(rawText);
-                
+
                 var c = 0;
                 for (var i in a) {
                     c = Math.max(c, a[i].length);
                 }
-                
+
                 return c;
             };
             collection.getMaxXForColumnHandle = function (i, properties) {
@@ -30,14 +30,14 @@
                 if (i < cols - 2) {
                     return properties["h" + (i + 1)].x - this.MIN_COL_WIDTH;
                 }
-                
+
                 return properties["box"].w - this.MIN_COL_WIDTH;
             };
             collection.getMinXForColumnHandle = function (i, properties) {
                 if (i > 0) {
                     return properties["h" + (i - 1)].x + this.MIN_COL_WIDTH;
                 }
-                
+
                 return this.MIN_COL_WIDTH;
             };
             collection.isColumnHandleDisabled = function (i, properties) {
@@ -943,7 +943,7 @@ Content 3|Content 4</Property>
                                                 class: "tree-splitter"
                                             });
                                 }
-                                
+
                                 var label = header;
                                 var type = "";
                                 if (header.match(/^\[\](.*)/)) {
@@ -953,8 +953,8 @@ Content 3|Content 4</Property>
                                     label = RegExp.$1;
                                     type = "progressmeter";
                                 }
-                                
-                                
+
+
                                 //depends $h0 $h1 $h2 $h3 $h4 $h5 $h6 $h7 $h8 $h9 $h10 $h11
 
                                 var h = {
@@ -965,11 +965,11 @@ Content 3|Content 4</Property>
                                             label: label,
                                             type: type
                                         };
-                                        
+
                                 if (i < headers.length - 1) {
                                     h.width = properties["h" + i].x - lastWidth;
                                 }
-                                
+
                                 cols._children.push(h);
                                 lastWidth = properties["h" + i].x;
                             }
@@ -1416,28 +1416,28 @@ Content 3|Content 4</Property>
                         var glassHeight = this.getProperty("glassHeight");
                         var style = this.getProperty("style");
                         var macHeaderHeight = this.getProperty("macHeaderHeight");
-                        
+
                         var top = {
                             vista: glassHeight.y + 1 + 13,
                             nodoka: 23 + 13,
                             royale: 30 + 13,
                             macosx: macHeaderHeight.y + 2 + 13
                         }[style.value];
-                        
+
                         var bottom = {
                             vista: 19 + 13,
                             nodoka: 13 + 3 + 13,
                             royale: 29, // 13 + 3 + 13
-                            macosx: 13 + 13   
+                            macosx: 13 + 13
                         }[style.value];
-                        
+
                         var right = {
                             vista: 6 + 13,
                             nodoka: 3 + 13,
                             royale: 16, // 3 + 13Button
                             macosx: 13
                         }[style.value];
-                        
+
                         var left = {
                             vista: 6 + 13 ,
                             nodoka: 3 + 13 ,
