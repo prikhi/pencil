@@ -942,6 +942,8 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
         // this may because it is not included in exporting
         // so, do this manually here
         
+        page._view.canvas.zoomTo(1);
+        
         var node = page._view.canvas.drawingLayer;
         extra = {};
         var processor = new LinkingGeometryPreprocessor(extra);
@@ -969,7 +971,7 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
         if (targetPage) validLinks.push(links[j]);
     }
 
-    debug("Returning links for page: " + page.properties.fid + ", total: " + validLinks.length);
+    //debug("Returning links for page: " + page.properties.fid + ", total: " + validLinks.length);
 
     return validLinks;
 };
@@ -1045,7 +1047,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
         for (var j = 0; j < linkings.length; j ++) {
             var linking = linkings[j];
 
-            debug("Validating: " + page.properties.name + " to: " + linking.pageId);
+            //debug("Validating: " + page.properties.name + " to: " + linking.pageId);
             
             var targetPage = this.doc.getPageById(linking.pageId);
             if (!targetPage) {
@@ -1065,7 +1067,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
 
             linkingContainerNode.appendChild(linkNode);
             
-            debug("Created link from: " + page.properties.name + " to: " + targetPage.properties.name);
+            //debug("Created link from: " + page.properties.name + " to: " + targetPage.properties.name);
         }
     }
 
@@ -1254,15 +1256,16 @@ LinkingGeometryPreprocessor.prototype.process = function (doc) {
     for (var i = 0; i < objects.length; i ++) {
         var g = objects[i];
         
-        var boundingObject = g.ownerSVGElement;
+        var dx = 0; //rect.left;
+        var dy = 0; //rect.top;
         
-        if (boundingObject.parentNode && boundingObject.parentNode.getBoundingClientRect) {
-            boundingObject = boundingObject.parentNode;
+        var owner = g.ownerSVGElement;
+        
+        if (owner.parentNode && owner.parentNode.getBoundingClientRect) {
+            var rect = owner.parentNode.getBoundingClientRect();
+            dx = rect.left;
+            dy = rect.top;
         }
-        
-        var rect = boundingObject.getBoundingClientRect();
-        var dx = 0;//rect.left;
-        var dy = 0;//rect.top;
                 
         debug("dx, dy: " + [dx, dy]);
 
