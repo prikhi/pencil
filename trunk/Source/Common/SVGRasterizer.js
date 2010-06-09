@@ -156,6 +156,8 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
         "<?xml-stylesheet href=\"chrome://pencil/content/Styles/HtmlForeignObject.css\" type=\"text/css\"?>");
 
     var url = ios.newFileURI(this.lastTempFile).spec;
+    
+    debug("Rasterize SVG: " + url);
 
     if (loadCallback) {
         this.nextHandler = loadCallback;
@@ -275,9 +277,10 @@ Rasterizer.prototype.saveURI = function (url, file)
     //persist.cancelSave();
 }
 
-function PersistProgressListener()
+function PersistProgressListener(callback)
 {
   this.init();
+  this.callback = callback ? callback : null;
 }
 
 PersistProgressListener.prototype =
@@ -306,6 +309,13 @@ PersistProgressListener.prototype =
 
   onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
   {
+    if(aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)  
+    {
+        if (this.callback) {
+            var f = this.callback;
+            f();
+        }
+    }  
   },
 
   onLocationChange : function(aWebProgress, aRequest, aLocation)

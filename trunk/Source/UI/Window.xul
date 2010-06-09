@@ -80,6 +80,7 @@
 
 <script src="../Common/TypeEditorRegistry.js"/>
 <script src="../Common/CollectionSettingEditor.js"/>
+<script src="../Common/ExternalEditorSupports.js"/>
 
 <script src="../Common/SVGRasterizer.js"/>
 
