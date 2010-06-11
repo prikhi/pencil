@@ -2150,7 +2150,7 @@
                     if (ppm == null || ppm == "") {
                         ppm = "fillColor,foreColor,textColor,strokeColor,borderColor," +
                               "strokeStyle,textAlign,textFont,shadowStyle,shadowColor," +
-                              "withBlur,withShadow,textPadding"
+                              "withBlur,withShadow,textPadding,startFillColor,endFillColor"
                         Config.set("painterPropertyMap", ppm);
                     }
                     return ppm.split(",");

@@ -60,6 +60,7 @@
                         hasCollection = true;
                         thiz.currentCollection = collection;
                     }
+                    thiz.settingMenuItem.disabled = !hasCollection;
                     thiz.hideMenuItem.disabled = !hasCollection;
                     thiz.uninstallMenuItem.disabled = !hasCollection || !collection._collection.userDefined
                                                                         || !collection._collection.installDirPath;
@@ -116,15 +117,18 @@
                     CollectionManager.installNewCollection();
                 }, false);
                 this.uninstallMenuItem.addEventListener("command", function (event) {
-                    var collection = thiz.currentCollection._collection;
-                    CollectionManager.uninstallCollection(collection);
+                    if (thiz.currentCollection) {
+                        var collection = thiz.currentCollection._collection;
+                        CollectionManager.uninstallCollection(collection);
+                    }
                 }, false);
 
                 this.settingMenuItem.addEventListener("command", function (event) {
-                    var collection = thiz.currentCollection._collection;
-                    var editor = new CollectionSettingEditor(collection);
-
-                    editor.open();
+                    if (thiz.currentCollection) {
+                        var collection = thiz.currentCollection._collection;
+                        var editor = new CollectionSettingEditor(collection);
+                        editor.open();
+                    }
                 }, false);
                 this.shapeFilter.addEventListener("keyup", function (event) {
                     //debug(thiz.shapeFilter.value);

@@ -1,7 +1,7 @@
 
 function OpenClipartSearch2() {
-    this.title = "OpenClipart.org";
-    this.name = "OpenClipart.org";
+    this.title = "OpenClipart.org (cchost)";
+    this.name = "OpenClipart.org (cchost)";
     this.uri = "http://openclipart.org/";
 
     this.icon = "data:image/png;base64," +
@@ -131,6 +131,7 @@ OpenClipartSearch2.prototype.parseSearchResult  = function (response) {
     var r = {result: [], resultCount: 0};
     if (!response) return r;
     try {
+        // FIXME: should use JSON parser
         response = eval(response);
         r.resultCount = response.length;
         for (var i = 0; i < response.length; i++) {

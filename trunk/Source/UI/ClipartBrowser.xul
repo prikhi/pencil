@@ -36,7 +36,7 @@
         <hbox pack="end">
             <div class="BottomPane" xmlns="http://www.w3.org/1999/xhtml">
                 <div class="Navigation">
-                    <label for="scaleImage"><input type="checkbox" id="scaleImage" value="1" checked="checked" /> Scale image to smaller size when copy to Pencil.</label>
+                    <label for="scaleImage"><input type="checkbox" id="scaleImage" value="1" checked="checked" /> Scale image to smaller size before inserting.</label>
                     <a href="javascript:;" class="Previous Disabled" id="goPrevious">
                         <span class="Previous">« Previous results</span>
                     </a>

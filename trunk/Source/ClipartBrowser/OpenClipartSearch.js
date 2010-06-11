@@ -14,8 +14,8 @@ var IMAGE_SIZE = /<a[^>]*>[^\(]*\(([^\)]*)\)/;
 
 function OpenClipartSearch() {
 
-    this.title = "OpenClipart.org (html parser)";
-    this.name = "OpenClipart.org (html parser)";
+    this.title = "OpenClipart.org";
+    this.name = "OpenClipart.org";
     this.uri = "http://openclipart.org/";
     this.icon = "data:image/png;base64," +
                 "iVBORw0KGgoAAAANSUhEUgAAAEsAAAAyCAYAAAAUYybjAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz" +
@@ -81,8 +81,9 @@ function OpenClipartSearch() {
                 "db334MGD25988skj0ZPbGPqwCQpIKSdnE5kFKIqiYBMGI4RkhvUZj0ZEJ8oHSrANrCSqZjIL/6r2" +
                 "/xX/BwSxr+GgTUkRAAAAAElFTkSuQmCC";
 
-    this.baseUri = "http://www.openclipart.org/search/?query=";
+    this.baseUri = "http://www.openclipart.org/search/";
     this.options = {
+        page: 1
     };
 
     this.req = [];
@@ -90,12 +91,30 @@ function OpenClipartSearch() {
 }
 OpenClipartSearch.prototype = new SearchEngine();
 
+OpenClipartSearch.prototype.merge = function (o, n) {
+    for (var i in n) {
+        o[i] = n[i];
+    };
+    return o;
+};
+
 OpenClipartSearch.prototype.buildSearchUri = function (query, options) {
-    var url = this.baseUri + query;
-    return url;
+    var url = this.baseUri + "?query=" + query;
+
+    if (options.offset != null && options.limit != null) {
+        options.page = (options.offset / options.limit) + 1;
+    }
+
+    var param = "";
+    for (var i in options) {
+        param += "&" + i + "=" + options[i];
+    };
+
+    return url + param;
 };
 
 OpenClipartSearch.prototype.searchImpl = function(query, options, callback) {
+    this.options = this.merge(this.options, options);
     var url = this.buildSearchUri(query, this.options);
 
     for (var ii = 0; ii < this.req.length; ii++) {
@@ -107,9 +126,12 @@ OpenClipartSearch.prototype.searchImpl = function(query, options, callback) {
     var thiz = this;
 
     debug("OpenClipart: searching '" + query + "'");
-    WebUtil.get(url, function(res) {
-        var result = thiz.parseSearchResult(res);
-        if (callback) callback(result);
+    debug("url: " + url);
+    WebUtil.get(url, function(response) {
+        var r = thiz.parseSearchResult(response);
+        if (callback) {
+            callback(r.result, r.resultCount);
+        }
     }, this.req);
 };
 
@@ -123,77 +145,32 @@ OpenClipartSearch.prototype.formatType = function(ty) {
     return "Unknow type";
 };
 
-OpenClipartSearch.prototype.parseSearchResult = function(res) {
+OpenClipartSearch.prototype.parseSearchResult = function(response) {
+    var r = {result: [], resultCount: 0};
+    if (!response) return r;
+    response = response.replace(/[\r\n]+/g, "");
     try {
-        res = res.replace(new RegExp('[\r\n]+', 'g'), "");
-        //debug("------ " + res + " ---------");
-        var r = [], i = 1;
-        var record = RECORD.exec(res);
-        while (record != null) {
-            var rc = record[1];
-            debug("Processing record " + (i++));
-            var item = {name: "", author: "", desc: "", images: []};
-            var file_info = new RegExp(FILE_INFO, 'g').exec(rc);
-            if (file_info != null) {
-                var n = new RegExp(NAME, 'g').exec((file_info[1]));
-                var a = new RegExp(AUTHOR, 'g').exec((file_info[1]));
-                var l = new RegExp(LICENSE, 'g').exec((file_info[1]));
-                var d = new RegExp(DESC, 'g').exec((file_info[1]));
-                if (n != null) {
-                    item.name = n[1];
-                }
-                if (a != null) {
-                    item.author = a[1];
-                }
-                if (d != null) {
-                    item.desc = d[1];
-                }
-                debug("    -> name: " + item.name + ", author: " + item.author + ", dscription: " + item.desc);
-            }
-            var image_info = new RegExp(IMAGE_INFO, 'g').exec(rc);
-            if (image_info != null) {
-                var ir = new RegExp(IMAGE_SRC, 'g');
-                var it = new RegExp(IMAGE_TYPE, 'g');
+        var recordRegexp = new RegExp('<div[^>]*class="r-img">(?:(?!<h4><a).)*<h4><a[^>]*>([^<]*)<\/a>(?:(?!<p>by).)*<p>by[^<]*<a[^>]*>([^<]*)</a>(?:(?!<p><a).)*<p><a[^>]*href="([^"]*)[^>]*>', "g");
+        var records = recordRegexp.exec(response);
+        var resultCount = 0;
+        while (records != null) {
+            var item = {name: records[1], author: records[2], desc: "", images: [
+                {src: records[3], type: "image/svg+xml", typeName: "SVG", size: ""}
+            ]};
+            //debug("  -> name: " + item.name + ", author: " + item.author + ", dscription: " + item.desc);
+            //debug("    -> imgsrc: " + item.images[0].src + ", imgtype: " + item.images[0].type + ", size: " + item.images[0].size);
 
-                var hasSvg = false;
-                var imi = image_info[1];
-                var imgsrc = ir.exec(imi);
-                var imgtype = it.exec(imi);
-                var imgsize = IMAGE_SIZE.exec(imi);
+            resultCount++;
+            r.result.push(item);
 
-                var images = [];
-
-                while (imgsrc != null && imgtype != null && imgsize != null) {
-                    if (imgtype[1] == "image/svg+xml" || imgtype[1] == "image/png" || imgtype[1] == "image/jpg" || imgtype[1] == "image/gif") {
-                        var tn = this.formatType(imgtype[1]);
-                        images.push({src: imgsrc[1], type: imgtype[1], typeName: tn, size: imgsize[1]});
-                        if (imgtype[1] == "image/svg+xml") {
-                            hasSvg = true;
-                        }
-                        debug("    -> imgsrc: " + imgsrc[1] + ", imgtype: " + imgtype[1] + ", size: " + imgsize[1]);
-                    }
-                    imgsrc = ir.exec(imi);
-                    imgtype = it.exec(imi);
-                    iimgsize = IMAGE_SIZE.exec(imi);
-                }
-
-                for (var iik = 0; iik < images.length; iik++) {
-                    if (!hasSvg || (hasSvg && images[iik].type == "image/svg+xml")) {
-                        item.images.push(images[iik]);
-                    }
-                }
-            }
-
-            r.push(item);
-            record = RECORD.exec(res);
+            records = recordRegexp.exec(response);
         }
-
-        this.searchResult = r;
-        return r;
+        r.resultCount = resultCount;
     } catch (e) {
-        error(e);
+        Console.dumpError(e);
     }
+    return r;
 };
 
-//SearchManager.registerSearchEngine(OpenClipartSearch, false);
+SearchManager.registerSearchEngine(OpenClipartSearch, false);
 

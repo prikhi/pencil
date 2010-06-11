@@ -226,7 +226,11 @@
                                     spanInfo = document.createElementNS(PencilNamespaces.html, "span");
                                     spanInfo.setAttribute("class", "Info");
 
-                                    spanInfo = thiz._buildInfoNode(spanInfo, img.displayName, "SVG", img.size, width, height);
+                                    var size = img.size;
+                                    if (!size || size == "") {
+                                        size = img._svg.length;
+                                    }
+                                    spanInfo = thiz._buildInfoNode(spanInfo, img.displayName, "SVG", size, width, height);
                                     button.appendChild(spanInfo);
 
                                     loaded++;
@@ -387,7 +391,7 @@
             <popupset>
                 <popup aid="contextPopup">
                     <menuitem aid="copyMenuItem" label="Copy image" />
-                    <menuitem aid="insertMenuItem" label="Copy image to Pencil" />
+                    <menuitem aid="insertMenuItem" label="Insert image" />
                 </popup>
             </popupset>
         </xbl:content>
