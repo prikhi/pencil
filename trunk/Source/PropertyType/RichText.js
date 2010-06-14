@@ -11,3 +11,6 @@ RichText.prototype.toString = function () {
 RichText.fromLoremIpsum = function (words) {
     return new RichText(loremIpsumSentence2(words));
 };
+
+pencilSandbox.RichText = RichText;
+

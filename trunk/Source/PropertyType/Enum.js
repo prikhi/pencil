@@ -5,7 +5,7 @@ Enum.fromString = function(literal) {
     return new Enum(literal);
 };
 Enum.getValuesFromMeta = function (meta) {
-    var literals = eval(meta.enumValues);
+    var literals = pEval(meta.enumValues, {});
 
     var values = [];
     for (var i in literals) {
@@ -39,4 +39,6 @@ Enum.prototype.equals = function (other) {
 Enum.prototype.toString = function () {
     return "" + this.value;
 };
+
+pencilSandbox.Enum = Enum;
 

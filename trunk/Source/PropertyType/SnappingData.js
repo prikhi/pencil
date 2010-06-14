@@ -35,4 +35,5 @@ SnappingData.fromString = function(literal) {
 SnappingData.prototype.toString = function () {
     return [this.type, this.pos, this.applyTo, this.vertical, this.limit1, this.limit2].join("|");
 };
+pencilSandbox.SnappingData = SnappingData;
 

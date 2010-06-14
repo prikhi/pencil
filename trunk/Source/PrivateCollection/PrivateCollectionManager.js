@@ -5,7 +5,7 @@ PrivateCollectionManager.privateShapeDef.shapeDefMap = {};
 PrivateCollectionManager.privateShapeDef.collections = [];
 
 PrivateCollectionManager.loadPrivateCollections = function () {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         var privateCollectionXmlLocation = PrivateCollectionManager.getPrivateCollectionDirectory();
         debug("loading private collections: " + privateCollectionXmlLocation.path);
@@ -134,7 +134,7 @@ PrivateCollectionManager.exportCollection = function (collection) {
     try {
         debug("exporting collection " + collection.displayName);
 
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        
         var nsIFilePicker = Components.interfaces.nsIFilePicker;
         var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
         fp.init(window, "Select a File", nsIFilePicker.modeSave);

@@ -47,3 +47,6 @@ RichTextArray.prototype.getMaxColumnCount = function () {
     
     return c;
 };
+
+pencilSandbox.RichTextArray = RichTextArray;
+

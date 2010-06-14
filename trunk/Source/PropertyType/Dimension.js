@@ -20,3 +20,6 @@ Dimension.prototype.narrowed = function (delta, delta2) {
     var dim = new Dimension(this.w - delta, this.h - (typeof(delta2) == "undefined" ? delta : delta2));
     return dim;
 };
+
+pencilSandbox.Dimension = Dimension;
+

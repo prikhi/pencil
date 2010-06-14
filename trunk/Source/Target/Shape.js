@@ -154,13 +154,13 @@ Shape.prototype.prepareExpressionEvaluation = function () {
     this._evalContext = {properties: this.getProperties(), functions: Pencil.functions, collection: this.def.collection};
 };
 Shape.prototype.evalExpression = function (expression, value) {
+
     var defaultValue = value ? value : null;
     if (!expression) return defaultValue;
     if (!this._evalContext) throw "Please prepare by calling prepareExpressionEvaluation() first."
+    
     try {
-        with (this._evalContext) {
-            return eval("" + expression);
-        }
+        return pEval("" + expression, this._evalContext);
     } catch (e) {
         Console.dumpError(e);
         return defaultValue;
@@ -557,9 +557,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.Font) {
                                 var fontArg = b.items[j].args[0];
-                                with (obj) {
-                                    font = eval("" + fontArg.literal);
-                                }
+                                font = pEval("" + fontArg.literal, obj);
                                 break;
                             }
                         }
@@ -567,10 +565,8 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                         var align = null;
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.BoxFit) {
-                                with (obj) {
-                                    bound = eval("" + b.items[j].args[0].literal);
-                                    align = eval("" + b.items[j].args[1].literal);
-                                }
+                                bound = pEval("" + b.items[j].args[0].literal, obj);
+                                align = pEval("" + b.items[j].args[1].literal, obj);
                                 break;
                             }
                         }
@@ -595,6 +591,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
         } else if (prop.type == RichText) {
             var font = null;
             var info = null;
+        
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
                 for (i in b.items) {
@@ -604,9 +601,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.Font) {
                                 var fontArg = b.items[j].args[0];
-                                with (obj) {
-                                    font = eval("" + fontArg.literal);
-                                }
+                                font = pEval("" + fontArg.literal, obj);
                                 break;
                             }
                         }
@@ -614,19 +609,15 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                         var bound = null;
                         for (j in b.items) {
                             if (b.items[j].handler == Pencil.behaviors.Bound) {
-                                with (obj) {
-                                    bound = eval("" + b.items[j].args[0].literal);
-                                }
+                                bound = pEval("" + b.items[j].args[0].literal, obj);
                                 break;
                             }
                         }
                         if (bound == null) {
                             for (j in b.items) {
                                 if (b.items[j].handler == Pencil.behaviors.BoxFit) {
-                                    with (obj) {
-                                        bound = eval("" + b.items[j].args[0].literal);
-                                        align = eval("" + b.items[j].args[1].literal);
-                                    }
+                                    bound = pEval("" + b.items[j].args[0].literal, obj);
+                                    align = pEval("" + b.items[j].args[1].literal, obj);
                                     break;
                                 }
                             }
@@ -676,6 +667,8 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
             min = d;
         }
     }
+    
+    debug("selectedInfo.value: " + selectedInfo.value);
 
     return selectedInfo;
 };

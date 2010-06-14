@@ -103,7 +103,7 @@ PencilOverlay.saveWindowToFile = function (targetWindow, canvasW, canvasH, fileP
 };
 PencilOverlay.saveURI = function (url, filePath, callback)
 {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     uri = Components.classes["@mozilla.org/network/standard-url;1"].
           createInstance(Components.interfaces.nsIURI);

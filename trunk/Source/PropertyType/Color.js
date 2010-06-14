@@ -147,3 +147,5 @@ Color.prototype.getHSV = function () {
     return RGB2HSV(this); //h: 0..259, s: 0..100, v: 0..100
 };
 
+pencilSandbox.Color = Color;
+

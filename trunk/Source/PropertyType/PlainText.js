@@ -10,3 +10,6 @@ PlainText.prototype.toString = function () {
 PlainText.fromLoremIpsum = function (words) {
     return new PlainText(loremIpsumSentence2(words));
 };
+
+pencilSandbox.PlainText = PlainText;
+

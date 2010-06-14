@@ -1,4 +1,6 @@
 F = {};
+pencilSandbox.F = F;
+
 Pencil.findObjectByName = function (ref, name) {
     var shape = Dom.findTop(ref, function (node) {
                     return node.getAttributeNS && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape";

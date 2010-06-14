@@ -9,7 +9,7 @@ ShapeXferHelper.prototype.toString = function () {
     return "ShapeXferHelper: " + ShapeXferHelper.MIME_TYPE;
 };
 ShapeXferHelper.prototype.handleData = function (data, length) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     var systemString = data.QueryInterface(Components.interfaces.nsISupportsString);
     var xml = systemString.data.substring(0, length / 2);

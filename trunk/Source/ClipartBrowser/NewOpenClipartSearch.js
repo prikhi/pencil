@@ -132,7 +132,7 @@ OpenClipartSearch2.prototype.parseSearchResult  = function (response) {
     if (!response) return r;
     try {
         // FIXME: should use JSON parser
-        response = eval(response);
+        response = JSON.parse(response);
         r.resultCount = response.length;
         for (var i = 0; i < response.length; i++) {
             var item = {name: response[i].upload_name, author: response[i].user_real_name, desc: response[i].upload_description, images: []};

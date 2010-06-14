@@ -296,14 +296,29 @@ StencilGenerator.preloadStencils = function (callback) {
         callback(null, null);
     }
 };
+StencilGenerator.getBox = function (node) {
+    var rect = node.getBoundingClientRect();
+    var bbox = node.getBBox();
+    var box = {x: rect.left + rect.width / 2 - bbox.width / 2, y: rect.top + rect.height / 2 - bbox.height / 2, width: bbox.width, height: bbox.height};
+    
+    return box;
+};
 StencilGenerator.createData = function (node, defNode, metaNode) {
-    var box = node.getBBox();
-    var transform = node.getAttribute("transform");
-    if (transform && transform.indexOf("translate") != -1) {
-        return "<g xmlns=\"http://www.w3.org/2000/svg\">" + Dom.serializeNode(defNode) + Dom.serializeNode(metaNode) + Dom.serializeNode(node) + "</g>";
-    } else {
-        return "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"translate(" + (0 - box.x) + "," + (0 - box.y) + ")\">" + Dom.serializeNode(defNode) + Dom.serializeNode(metaNode) + Dom.serializeNode(node) + "</g>";
-    }
+    var box = StencilGenerator.getBox(node);
+    
+    var transform = Svg.toTransformText(node.getTransformToElement(node.ownerSVGElement));
+    
+    var translate = "translate(" + (0 - box.x) + "," + (0 - box.y) + ")";
+    var newTransform = transform ? (transform + " " + translate) : translate;
+    
+    debug("Old transform: " + transform);
+    debug("New transform: " + newTransform);
+    
+    var n = node.cloneNode(true);
+    n.removeAttribute("transform");
+    
+    return "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"" + newTransform + "\">"
+             + Dom.serializeNode(defNode) + Dom.serializeNode(metaNode) + Dom.serializeNode(n) + "</g>";
 };
 StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
     try {
@@ -313,32 +328,40 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
         var defNode = Dom.getSingle("./svg:defs", svgDocument.documentElement);
         var metaNode = Dom.getSingle("./svg:metadata", svgDocument.documentElement);
 
-        Dom.workOn("//*[@inkscape:groupmode='layer']/*", svgDocument.documentElement, function (path) {
-            var box = path.getBBox();
-            stencils.push({
-                id: "svg_" + index + "_" + id,
-                label: item._label + " " + index + "_"  + id,
-                type: "SVG",
-                box: box,
-                data: StencilGenerator.createData(path, defNode, metaNode),
-                img: item
+        var detectInkscape = document.getElementById("detectInkscape").checked;
+        if (detectInkscape) {
+            Dom.workOn("//*[@inkscape:groupmode='layer']/*", svgDocument.documentElement, function (path) {
+                var box = StencilGenerator.getBox(path);
+                debug("Box: " + [box.x, box.y, box.width, box.height]);
+                stencils.push({
+                    id: "svg_" + index + "_" + id,
+                    label: item._label + " " + index + "_"  + id,
+                    type: "SVG",
+                    box: box,
+                    data: StencilGenerator.createData(path, defNode, metaNode),
+                    img: item
+                });
+                id++;
             });
-            id++;
-        });
+        }
 
         if (id == 0 && svgDocument.documentElement) {
             var path = svgDocument.documentElement;
-            if (path.getBBox) {
-                var box = path.getBBox();
-                stencils.push({
-                    id: "svg_" + index + "_" + id,
-                    label: item._label,
-                    type: "SVG",
-                    box: box,
-                    data: "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"translate(" + (0 - box.x) + "," + (0 - box.y) + ")\">" + Dom.serializeNode(path) + "</g>",
-                    img: item
-                });
+            
+            var g = svgDocument.createElementNS(PencilNamespaces.svg, "g");
+            for (var i = 0; i < svgDocument.documentElement.childNodes.length; i ++) {
+                g.appendChild(svgDocument.documentElement.childNodes[i].cloneNode(true));
             }
+            
+            stencils.push({
+                id: "svg_" + index + "_" + id,
+                label: item._label,
+                type: "SVG",
+                box: {x: 0, y: 0, width: Svg.getWidth(svgDocument), height: Svg.getHeight(svgDocument)},
+                data: Dom.serializeNode(g),
+                img: item
+            });
+            
         }
         return stencils;
     } catch (e) {
@@ -615,7 +638,7 @@ StencilGenerator.generateId = function(s) {
     return "";
 };
 StencilGenerator.pickFolder = function() {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, "Select a Folder", nsIFilePicker.modeGetFolder);
@@ -624,7 +647,7 @@ StencilGenerator.pickFolder = function() {
     return fp.file;
 };
 StencilGenerator.pickFile = function(defaultName) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, "Select a File", nsIFilePicker.modeSave);
@@ -751,6 +774,36 @@ StencilGenerator.buildShape = function(shapeDef) {
             "        </p:Content>\n" +
             "    </Shape>");
     } else {
+        var shortcut = Dom.newDOMElement({
+            _name: "Shortcut",
+            _uri: "http://www.evolus.vn/Namespace/Pencil",
+            displayName: shapeDef.label,
+            to: "Evolus.Common:SVGImage",
+            icon: shapeDef.iconData,
+            _children: [
+                {
+                    _name: "PropertyValue",
+                    _uri: "http://www.evolus.vn/Namespace/Pencil",
+                    name: "originalDim",
+                    _text: (shapeDef.box.width + "," + shapeDef.box.height)
+                },
+                {
+                    _name: "PropertyValue",
+                    _uri: "http://www.evolus.vn/Namespace/Pencil",
+                    name: "box",
+                    _text: (shapeDef.box.width + "," + shapeDef.box.height)
+                },
+                {
+                    _name: "PropertyValue",
+                    _uri: "http://www.evolus.vn/Namespace/Pencil",
+                    name: "svgXML",
+                    _cdata: shapeDef.data
+                }
+            ]
+        }, document);
+        
+        return Dom.serializeNode(shortcut);
+        
         return (
             "<Shape id=\"" + shapeDef.id + "\" displayName=\"" + shapeDef.label + "\" icon=\"" + shapeDef.iconData + "\" xmlns=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:p=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns:cc=\"http://web.resource.org/cc/\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n" +
             "        <Properties>\r\n" +

@@ -20,3 +20,5 @@ StrokeStyle.prototype.condensed = function (ratio) {
     return new StrokeStyle(this.w * (1 + ratio), this.array);
 };
 
+pencilSandbox.StrokeStyle = StrokeStyle;
+

@@ -16,3 +16,6 @@ Point.fromString = function(literal) {
 Point.prototype.toString = function () {
     return this.x + "," + this.y;
 };
+
+pencilSandbox.Point = Point;
+

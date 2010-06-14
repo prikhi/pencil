@@ -43,3 +43,7 @@ Handle.prototype.applyConstraintFunction = function (value) {
 Handle.prototype.toString = function () {
     return this.x + "," + this.y;
 };
+
+pencilSandbox.Handle = Handle;
+
+

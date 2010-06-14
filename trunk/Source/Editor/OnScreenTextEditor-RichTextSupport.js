@@ -5,7 +5,7 @@ OnScreenTextEditor.miniToolbarPane = null;
 OnScreenTextEditor.richtextEditorSizeGrip = null;
 
 OnScreenTextEditor._runEditorCommand = function(command, arg) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         if (typeof(arg) != "undefined") {
             OnScreenTextEditor.richTextEditor.contentDocument.execCommand(command, false, arg);

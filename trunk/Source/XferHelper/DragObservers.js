@@ -287,7 +287,7 @@ RichTextDragObserver.prototype = {
     },
     onDragOver: function (evt, flavour, session){},
     onDrop: function (evt, transferData, session) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        
         var html = transferData.data;
 
         try {
@@ -324,7 +324,7 @@ FileDragObserver.prototype = {
     },
     onDragOver: function (evt, flavour, session){},
     onDrop: function (evt, transferData, session) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        
         var url = transferData.data;
         if (!url.match(/^file:\/\/.*\.([a-zA-Z0-9]+)/)) return;
         var fileType = RegExp.$1.toLowerCase();
@@ -478,7 +478,7 @@ SVGDragObserver.prototype = {
     },
     onDragOver: function (evt, flavour, session){},
     onDrop: function (evt, transferData, session) {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        
         var svg = transferData.data;
         var loc = this.canvas.getEventLocation(evt);
         handleSVGData(svg, this.canvas, loc);
@@ -501,7 +501,7 @@ PNGDragObserver.prototype = {
     },
     onDragOver: function (evt, flavour, session){},
     onDrop: function (evt, transferData, session) {
-    	netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    	
         var url = transferData.data;
 
         var loc = this.canvas.getEventLocation(evt);

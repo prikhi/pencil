@@ -87,7 +87,7 @@
                 <body>
                 <![CDATA[
                 try {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     if (!image) return;
 
                     if (image.type == "image/svg+xml") {
@@ -359,14 +359,14 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     try {
                         var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
                         debug("start draging: " + imgNode._img.src);
                         var thiz = this;
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                
                                 debug("dragging started");
                                 transferData.data = new TransferData();
                                 if (imgNode._img.type == "image/svg+xml") {

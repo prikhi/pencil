@@ -190,7 +190,7 @@
                     },
                     onDragOver: function (evt, flavour, session){},
                     onDrop: function (evt, transferData, session) {
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        
                         var defId = transferData.data;
                         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
 
@@ -1528,7 +1528,7 @@
             <method name="doCopy">
                 <body>
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     if (!this.currentController) return;
 
                     var transferableData = this.currentController.createTransferableData();
@@ -1593,7 +1593,7 @@
             <method name="doPaste">
                 <body>
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     var clip  = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
                     if (!clip) return false;
 
@@ -2053,7 +2053,7 @@
                 <parameter name="bound"/>
                 <body>
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
 
                     debug("inserting private shape: " + shapeDef.displayName + ", id: " + shapeDef.id);
                     var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
@@ -2251,7 +2251,7 @@
                     } catch (e) { Console.dumpError(e); }
 
                     /*
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
 
                     if (!this.currentDragProcessed) {
                         tick("drag over");

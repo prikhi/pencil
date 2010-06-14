@@ -29,7 +29,7 @@ CollectionManager.shapeDefinition.locateShortcut = function (shortcutId) {
     return CollectionManager.shapeDefinition.shortcutMap[shortcutId];
 };
 CollectionManager.loadUserDefinedStencils = function () {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
 
     try {
@@ -65,7 +65,7 @@ CollectionManager.getUserStencilDirectory = function () {
     return stencilDir;
 };
 CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     var parser = new ShapeDefCollectionParser();
 

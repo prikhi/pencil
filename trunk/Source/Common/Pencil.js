@@ -8,6 +8,8 @@ window.onerror = function (message, url, code) {
 
 var Pencil = {};
 
+pencilSandbox.Pencil = Pencil;
+
 Pencil.SNAP = 4;
 Pencil.UNSNAP = 7;
 Pencil.editorClasses = [];

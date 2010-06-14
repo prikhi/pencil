@@ -20,3 +20,6 @@ ShadowStyle.prototype.toCSSString = function (color) {
     return [this.dx + "px", this.dy + "px", this.size + "px", color.toRGBAString()].join(" ");
 };
 
+
+pencilSandbox.ShadowStyle = ShadowStyle;
+

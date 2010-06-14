@@ -90,7 +90,7 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
 };
 
 Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     var h = 0;
     var w = 0;
     if (this._width && this._height) {
@@ -198,7 +198,7 @@ Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, prepr
 };
 
 Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocessor, backgroundColor) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     if (preprocessor && preprocessor.process) {
         preprocessor.process(this.win.document);
@@ -258,7 +258,7 @@ Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocesso
 
 Rasterizer.prototype.saveURI = function (url, file)
 {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     uri = Components.classes["@mozilla.org/network/standard-url;1"].
           createInstance(Components.interfaces.nsIURI);

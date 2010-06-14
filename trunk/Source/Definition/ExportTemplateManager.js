@@ -37,7 +37,7 @@ ExportTemplateManager.loadTemplatesIn = function (templateDir) {
 };
 
 ExportTemplateManager.loadUserDefinedTemplates = function () {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     try {
         var templateDir = ExportTemplateManager.getUserTemplateDirectory();
@@ -59,7 +59,7 @@ ExportTemplateManager.getUserTemplateDirectory = function () {
     return templateDir;
 };
 ExportTemplateManager.loadSystemWideDefinedTemplates = function () {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     try {
         var templateDir = ExportTemplateManager.getSystemWideTemplateDirectory();
@@ -80,7 +80,7 @@ ExportTemplateManager.getSystemWideTemplateDirectory = function () {
 };
 
 ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     //loading all templates
     debug("Loading template in " + templateDir.path);
