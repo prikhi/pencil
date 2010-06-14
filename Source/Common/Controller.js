@@ -546,7 +546,7 @@ Controller.prototype._createPageView = function (page, callback) {
             page.rasterizeDataCache = null;
         }, false);
 
-        if (page.properties.transparentBackground) {
+        if (page.properties.transparentBackground == "true") {
             canvas.setBackgroundColor(Color.fromString("#ffffffff"));
         } else {
             canvas.setBackgroundColor(Color.fromString(page.properties.backgroundColor));
@@ -634,7 +634,7 @@ Controller.prototype._modifyPageProperties = function (page, data) {
     try {
         this.mainViewPanel.setAttributeNS(PencilNamespaces.p, "p:resizing", "true");
         page._view.canvas.setSize(data.width, data.height);
-        if (page.properties.transparentBackground) {
+        if (page.properties.transparentBackground == "true") {
             page._view.canvas.setBackgroundColor(Color.fromString("#ffffffff"));
         } else {
             page._view.canvas.setBackgroundColor(Color.fromString(page.properties.backgroundColor));
@@ -709,7 +709,7 @@ Controller.prototype.editPageProperties = function (page) {
                          width: page.properties.width,
                          height: page.properties.height,
                          backgroundColor: page.properties.backgroundColor ? page.properties.backgroundColor : null,
-                         transparentBackground: page.properties.transparentBackground == false ? false : true,
+                         transparentBackground: page.properties.transparentBackground == "false" ? "false" : "true",
                          background: page.properties.background ? page.properties.background : null,
                          dimBackground: page.properties.dimBackground};
     var dialog = window.openDialog("PageDetailDialog.xul",
@@ -932,39 +932,39 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
     }
 
     var extra = null;
-    
+
     if (pageExtraInfos[page.properties.id]) {
-    
+
         extra = pageExtraInfos[page.properties.id];
-        
+
     } else {
         // the current page is not processed for linking
         // this may because it is not included in exporting
         // so, do this manually here
-        
+
         page._view.canvas.zoomTo(1);
-        
+
         var node = page._view.canvas.drawingLayer;
         extra = {};
         var processor = new LinkingGeometryPreprocessor(extra);
         processor.process(node);
-        
+
         pageExtraInfos[page.properties.id] = extra;
     }
 
     var thisPageLinks = extra.objectsWithLinking;
-    
+
     var links = [];
-    
+
     for (var j = 0; j < thisPageLinks.length; j ++) {
         links.push(thisPageLinks[j]);
     }
-    
+
     for (var j = 0; j < bgLinks.length; j ++) {
         links.push(bgLinks[j]);
     }
-    
-    
+
+
     var validLinks = [];
     for (var j = 0; j < links.length; j ++) {
         var targetPage = this.doc.getPageById(links[j].pageId);
@@ -1048,7 +1048,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             var linking = linkings[j];
 
             //debug("Validating: " + page.properties.name + " to: " + linking.pageId);
-            
+
             var targetPage = this.doc.getPageById(linking.pageId);
             if (!targetPage) {
                 debug("targetPage not found");
@@ -1066,7 +1066,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             linkNode.setAttribute("h", linking.geo.h);
 
             linkingContainerNode.appendChild(linkNode);
-            
+
             //debug("Created link from: " + page.properties.name + " to: " + targetPage.properties.name);
         }
     }
@@ -1181,7 +1181,7 @@ Controller.prototype._rasterizePage = function (page, path, callback, preprocess
 
     //debug("bgr: " + page.properties.backgroundColor);
     //debug("trans: " + page.properties.transparentBackground);
-    Pencil.rasterizer.rasterizeDOM(svg, path, callback, preprocessor, page.properties.transparentBackground == false ? page.properties.backgroundColor : null);
+    Pencil.rasterizer.rasterizeDOM(svg, path, callback, preprocessor, page.properties.transparentBackground == "false" ? page.properties.backgroundColor : null);
 
 };
 Controller.prototype.rasterizeSelection = function () {
@@ -1251,22 +1251,22 @@ LinkingGeometryPreprocessor.prototype.process = function (doc) {
     objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];
-    
+
 
     for (var i = 0; i < objects.length; i ++) {
         var g = objects[i];
-        
+
         var dx = 0; //rect.left;
         var dy = 0; //rect.top;
-        
+
         var owner = g.ownerSVGElement;
-        
+
         if (owner.parentNode && owner.parentNode.getBoundingClientRect) {
             var rect = owner.parentNode.getBoundingClientRect();
             dx = rect.left;
             dy = rect.top;
         }
-                
+
         debug("dx, dy: " + [dx, dy]);
 
         rect = g.getBoundingClientRect();

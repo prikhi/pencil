@@ -157,6 +157,11 @@ OpenClipartSearch.prototype.parseSearchResult = function(response) {
             var item = {name: records[1], author: records[2], desc: "", images: [
                 {src: records[3], type: "image/svg+xml", typeName: "SVG", size: ""}
             ]};
+            var ext = item.images[0].src.match(/\.(png$)|\.(jpg$)|\.(bmp$)/i);
+            if (ext) {
+                item.images[0].type = "image/png";
+                item.images[0].typeName = RegExp.$1.toUpperCase();
+            }
             //debug("  -> name: " + item.name + ", author: " + item.author + ", dscription: " + item.desc);
             //debug("    -> imgsrc: " + item.images[0].src + ", imgtype: " + item.images[0].type + ", size: " + item.images[0].size);
 

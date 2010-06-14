@@ -10,10 +10,10 @@ CSS.prototype.toString = function () {
     var s = "";
     for (name in this.styles) {
         if (s != "") s += "; ";
-        
+
         s += (name + ": " + this.styles[name]);
     }
-    
+
     return s;
 };
 CSS.prototype.importRaw = function (raw) {
@@ -60,3 +60,4 @@ CSS.fromString = function (raw) {
     css.importRaw(raw);
     return css;
 };
+pencilSandbox.CSS = CSS;

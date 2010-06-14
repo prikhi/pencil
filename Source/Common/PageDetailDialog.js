@@ -41,7 +41,7 @@ function handleOnloadImpl() {
     returnValueHolder = window.arguments[2];
 
     backgroundColor.color = Color.fromString("#ffffff");
-    transparentBackground = true;
+    transparentBackground = "true";
 
     //TODO: Load sizes
 
@@ -117,7 +117,7 @@ function handleOnloadImpl() {
             dimBackground.checked = true;
         }
     } else {
-        if (transparentBackground) {
+        if (transparentBackground == "true") {
             backgroundPage.value = "transparent";
         }
     }
@@ -167,11 +167,11 @@ function invalidateInputs() {
         node.disabled = customSizeDisabled;
     });
 
-    transparentBackground = backgroundPage.value == "transparent";
+    transparentBackground = (backgroundPage.value == "transparent" ? "true" : "false");
     dimBackground.disabled = backgroundPage.disabled || !backgroundPage.value;
     if (!backgroundPage.value || transparentBackground) {
         backgroundColorPane.style.display = "";
-        if (transparentBackground) {
+        if (transparentBackground == "true") {
             backgroundColorPane.style.display = "none";
         }
         dimBackgroundPane.style.visibility = "hidden";

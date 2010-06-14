@@ -10,7 +10,7 @@
     </tstamp>
 
     <!--<property name="BUILD" value="${DSTAMP}${TSTAMP}" />-->
-    <property name="BUILD" value="0" />
+    <property name="BUILD" value="1" />
     <property name="NAME" value="Pencil" />
     <property name="VERSION" value="1.2" />
     <property name="AUTHOR" value="Duong Thanh An (an.duong@evolus.vn) and Contributors" />

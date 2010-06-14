@@ -547,7 +547,7 @@ Svg.getHeight = function (dom) {
 
 Local = {};
 Local.getInstalledFonts = function () {
-    
+
 
     var localFonts;
     var enumerator = Components.classes["@mozilla.org/gfx/fontenumerator;1"]
@@ -612,7 +612,7 @@ Local.openExtenstionManager = function() {
     window.openDialog(EMURL, "", EMFEATURES);
 };
 Local.newTempFile = function (prefix, ext) {
-    
+
     var file = Components.classes["@mozilla.org/file/directory_service;1"].
                         getService(Components.interfaces.nsIProperties).
                         get("TmpD", Components.interfaces.nsIFile);
@@ -623,7 +623,7 @@ Local.newTempFile = function (prefix, ext) {
     return file;
 };
 Local.createTempDir = function (prefix) {
-    
+
     var dir = Components.classes["@mozilla.org/file/directory_service;1"].
                         getService(Components.interfaces.nsIProperties).
                         get("TmpD", Components.interfaces.nsIFile);
@@ -703,7 +703,7 @@ Util.ios = Components.classes["@mozilla.org/network/io-service;1"]
                         .getService(Components.interfaces.nsIIOService);
 
 Util.getClipboardImage = function (clipData, length, handler) {
-    
+
 
     var dataStream = clipData.QueryInterface(Components.interfaces.nsIInputStream);
 
@@ -898,7 +898,7 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
 
         var content = document.createElementNS(PencilNamespaces.svg, "g");
         content.appendChild(target.svg.cloneNode(true));
-        
+
         debug("target.svg: " + target.svg.localName);
 
         var transform = "scale(" + width / bbox.width + ", " + height / bbox.height + ")";
@@ -1065,7 +1065,7 @@ function tick(value) {
 
 var Net = {};
 Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener, options) {
-    
+
     var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                                 .getService(Components.interfaces.nsIIOService);
 
@@ -1089,7 +1089,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             this.writeMessage("Request started");
         },
         onDataAvailable: function (request, context, stream, sourceOffset, length) {
-            
+
             if (this.canceled) return;
 
             try {
@@ -1127,7 +1127,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             }
         },
         onStopRequest: function (request, context, status) {
-            
+
 
             this.foStream.close();
             this.writeMessage("Done");
@@ -1208,6 +1208,7 @@ window.addEventListener("DOMContentLoaded", function () {
 }, false);
 
 var pencilSandbox = Components.utils.Sandbox("http://pencil.evolus.vn/");
+pencilSandbox.Dom = Dom;
 
 Util.importSandboxFunctions = function () {
     for (var i = 0; i < arguments.length; i ++) {

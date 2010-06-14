@@ -13,6 +13,7 @@
                 this.xferHelpers = [];
                 this.dragObservers = [];
 
+                this.spaceHeld = false;
                 this.painterPropertyMap = this.getPainterPropertyMap();
 
                 //building the content as: box >> svg
@@ -160,6 +161,25 @@
                 }, false);
                 this.firstChild.addEventListener("keypress", function (event) {
                     thiz.handleKeyPress(event);
+                }, false);
+
+                this.firstChild.addEventListener("keydown", function (event) {
+                    if (event.keyCode == event.DOM_VK_SPACE && thiz.spaceHeld == false) {
+                        thiz.spaceHeld = true;
+                        thiz._lastPX = thiz._currentPX;
+                        thiz._lastPY = thiz._currentPY;
+                        thiz._lastScrollX = thiz.parentNode.scrollLeft;
+                        thiz._lastScrollY = thiz.parentNode.scrollTop;
+                        Dom.addClass(thiz, "PanDown");
+                        debug("spacebar down.");
+                    }
+                }, false);
+                this.firstChild.addEventListener("keyup", function (event) {
+                    if (event.keyCode == event.DOM_VK_SPACE && thiz.spaceHeld == true) {
+                        thiz.spaceHeld = false;
+                        Dom.removeClass(thiz, "PanDown");
+                        debug("spacebar up.");
+                    }
                 }, false);
 
                 this.propertyMenuItem.addEventListener("command", function(event) {
@@ -945,17 +965,23 @@
                 <body>
                 <![CDATA[
                 try {
+                    this._currentPX = event.clientX / this.zoom;
+                    this._currentPY = event.clientY / this.zoom;
+
+                    if (this.spaceHeld) {
+                        var spanx = this._lastScrollX + (this._lastPX - Math.round(this._currentPX)) * this.zoom;
+                        var spany = this._lastScrollY + (this._lastPY - Math.round(this._currentPY)) * this.zoom;
+
+                        this.parentNode.scrollTop  = spany;
+                        this.parentNode.scrollLeft = spanx;
+
+                        return;
+                    }
+
                     var boxObject = this.svg.parentNode.boxObject;
-                    var px = event.clientX / this.zoom;
-                    var py = event.clientY / this.zoom;
+                    var px = this._currentPX - boxObject.x;
+                    var py = this._currentPY - boxObject.y;
 
-                    px = px - boxObject.x;
-                    py = py - boxObject.y;
-
-                    //debug(boxObject.x);
-                    //debug(boxObject.width);
-                    //debug(px - boxObject.x);
-                    //debug(px + boxObject.width);
                     // shadow 5
                     if (px >= 0 && px <= boxObject.width - 5 && py >= 0 && py <= boxObject.height - 5) {
                         Util.setPointerPosition(px, py);
@@ -1192,8 +1218,9 @@
                         event.preventDefault();
                         this.selectAll();
                         event.preventDefault();
+                    } else if (event.keyCode == event.DOM_VK_ESCAPE) {
+                        this.endFormatPainter();
                     }
-
                 ]]>
                 </body>
             </method>

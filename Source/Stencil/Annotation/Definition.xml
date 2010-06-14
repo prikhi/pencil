@@ -211,8 +211,8 @@
                        id="imageShading"
                        height="1.2558399"
                        y="-0.12792"
-                       width="1.06396"
-                       x="-0.03198">
+                       width="1.2558399"
+                       x="-0.12792">
                         <feGaussianBlur stdDeviation="1.3325" in="SourceAlpha"/>
                     </filter>
                     <g id="container">
