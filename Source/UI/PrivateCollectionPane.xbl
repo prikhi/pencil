@@ -271,13 +271,13 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     try {
                         var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
                         debug("start draging: " + defNode._def.displayName);
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                
                                 debug("dragging started: " + defNode._def.displayName);
                                 transferData.data = new TransferData();
                                 transferData.data.addDataForFlavour("pencil/privatedef", defNode._def.id);
@@ -293,7 +293,7 @@
         <handlers>
             <handler event="dragover">
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     //debug("dragover");
                     try {
                         var accepted = nsDragAndDrop.dragOver(event, this.dragObserver);
@@ -302,7 +302,7 @@
             </handler>
             <handler event="dragdrop">
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     debug("drop");
                 ]]>
             </handler>

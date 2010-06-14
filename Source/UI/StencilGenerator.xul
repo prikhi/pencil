@@ -5,7 +5,7 @@
         title="Stencil Generator"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         minwidth="650"
-        minheight="400"
+        minheight="420"
         onwizardfinish="return StencilGenerator.onFinish();">
 
 <script src="../Common/PencilNamespaces.js"/>
@@ -70,6 +70,10 @@
                             </row>
                         </rows>
                     </grid>
+                </groupbox>
+                <groupbox>
+                    <caption label="Options"/>
+                    <checkbox id="detectInkscape" label="Detect Inkscape groups"/>
                 </groupbox>
             </vbox>
         </hbox>

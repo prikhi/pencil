@@ -9,7 +9,7 @@ PNGImageXferHelper.prototype.toString = function () {
     return "PNGImageXferHelper: " + PNGImageXferHelper.MIME_TYPE;
 };
 PNGImageXferHelper.prototype.handleData = function (data, length) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         var thiz = this;
         Util.getClipboardImage(data, length, function (width, height, data) {

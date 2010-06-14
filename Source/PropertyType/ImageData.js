@@ -99,3 +99,6 @@ window.addEventListener("load", function () {
     ImageData.win = iframe.contentWindow;
     ImageData.win.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
 }, false);
+
+pencilSandbox.ImageData = ImageData;
+

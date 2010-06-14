@@ -328,6 +328,7 @@
             <menu label="Tools" id="tools-menu" accesskey="T">
                 <menupopup>
                     <menuitem label="Stencil Generator..." oncommand="window.openDialog('StencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen', Pencil);"/>
+                    
                     <menuitem label="Clipart Browser..." oncommand="if (!Pencil._clipartShowing) { window.openDialog('ClipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
                     <menuseparator/>
                     <menuitem label="DOM Inspector" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>

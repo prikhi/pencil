@@ -1,6 +1,6 @@
 var RichTextDialog = {};
 RichTextDialog.handleLoad = function (event) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         //setup font list
         var fontPopup = document.getElementById("fontPopup");
@@ -63,7 +63,7 @@ RichTextDialog.doApply = function () {
 };
 
 function runEditorCommand(command, arg) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         if (typeof(arg) != "undefined") RichTextDialog.editor.contentDocument.execCommand(command, false, arg);
         else RichTextDialog.editor.contentDocument.execCommand(command, false, null);

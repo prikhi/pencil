@@ -18,7 +18,7 @@ var nsTransferable = {
    **/ 
   set: function (aTransferDataSet)
     {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        
       var trans = this.createTransferable();
       for (var i = 0; i < aTransferDataSet.dataList.length; ++i) 
         {
@@ -65,7 +65,7 @@ var nsTransferable = {
    **/
   get: function (aFlavourSet, aRetrievalFunc, aAnyFlag)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       if (!aRetrievalFunc) 
         throw "No data retrieval handler provided!";
       
@@ -115,7 +115,7 @@ var nsTransferable = {
    **/    
   createTransferable: function ()
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       const kXferableContractID = "@mozilla.org/widget/transferable;1";
       const kXferableIID = Components.interfaces.nsITransferable;
       return Components.classes[kXferableContractID].createInstance(kXferableIID);
@@ -233,7 +233,7 @@ function FlavourData(aData, aLength, aFlavour)
 FlavourData.prototype = {
   get data ()
   {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     if (this.flavour && 
         this.flavour.dataIIDKey != "nsISupportsString" )
       return this.supports.QueryInterface(Components.interfaces[this.flavour.dataIIDKey]); 
@@ -261,7 +261,7 @@ var transferUtils = {
 
   retrieveURLFromData: function (aData, flavour)
   {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     switch (flavour) {
       case "text/unicode":
         return aData.replace(/^\s+|\s+$/g, "");
@@ -309,7 +309,7 @@ var nsDragAndDrop = {
   _mDS: null,
   get mDragService()
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       if (!this._mDS) 
         {
           const kDSContractID = "@mozilla.org/widget/dragservice;1";
@@ -332,7 +332,7 @@ var nsDragAndDrop = {
    **/  
   startDrag: function (aEvent, aDragDropObserver)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       if (!("onDragStart" in aDragDropObserver))
         return;
 
@@ -437,7 +437,7 @@ var nsDragAndDrop = {
    **/
   dragOver: function (aEvent, aDragDropObserver)
     { 
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       if (!this.checkCanDrop(aEvent, aDragDropObserver))
         return;
       if ("onDragOver" in aDragDropObserver)
@@ -459,7 +459,7 @@ var nsDragAndDrop = {
    **/
   drop: function (aEvent, aDragDropObserver)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       if (!("onDrop" in aDragDropObserver))
         return;
       if (!this.checkCanDrop(aEvent, aDragDropObserver))
@@ -489,7 +489,7 @@ var nsDragAndDrop = {
    **/
   dragExit: function (aEvent, aDragDropObserver)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       if (!this.checkCanDrop(aEvent, aDragDropObserver))
         return;
       if ("onDragExit" in aDragDropObserver)
@@ -540,7 +540,7 @@ var nsDragAndDrop = {
    **/  
   getDragData: function (aFlavourSet)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       var supportsArray = Components.classes["@mozilla.org/supports-array;1"]
                                     .createInstance(Components.interfaces.nsISupportsArray);
 
@@ -569,7 +569,7 @@ var nsDragAndDrop = {
    **/
   checkCanDrop: function (aEvent, aDragDropObserver)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       if (!this.mDragSession) 
         this.mDragSession = this.mDragService.getCurrentSession();
       if (!this.mDragSession) 
@@ -595,7 +595,7 @@ var nsDragAndDrop = {
    **/
   dragDropSecurityCheck: function (aEvent, aDragSession, aDraggedText)
     {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
       var sourceDoc = aDragSession.sourceDocument;
       if (!sourceDoc)
         return;

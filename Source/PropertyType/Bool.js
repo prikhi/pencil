@@ -13,3 +13,5 @@ Bool.prototype.negative = function () {
     return new Bool(!this.value);
 };
 
+pencilSandbox.Bool = Bool;
+

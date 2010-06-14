@@ -313,7 +313,6 @@ Dom.swapNode = function (node1, node2) {
     parentNode.insertBefore(node1, ref);
 };
 Dom.parseFile = function (file) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
 
     var fileContents = FileIO.read(file, "UTF-8");
     var dom = Dom.parser.parseFromString(fileContents, "text/xml");
@@ -340,6 +339,9 @@ Dom.newDOMElement = function (spec, doc) {
 
     if (spec._text) {
         e.appendChild(e.ownerDocument.createTextNode(spec._text));
+    }
+    if (spec._cdata) {
+        e.appendChild(e.ownerDocument.createCDATASection(spec._cdata));
     }
     if (spec._html) {
         e.innerHTML = spec._html;
@@ -545,7 +547,7 @@ Svg.getHeight = function (dom) {
 
 Local = {};
 Local.getInstalledFonts = function () {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     var localFonts;
     var enumerator = Components.classes["@mozilla.org/gfx/fontenumerator;1"]
@@ -610,7 +612,7 @@ Local.openExtenstionManager = function() {
     window.openDialog(EMURL, "", EMFEATURES);
 };
 Local.newTempFile = function (prefix, ext) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     var file = Components.classes["@mozilla.org/file/directory_service;1"].
                         getService(Components.interfaces.nsIProperties).
                         get("TmpD", Components.interfaces.nsIFile);
@@ -621,7 +623,7 @@ Local.newTempFile = function (prefix, ext) {
     return file;
 };
 Local.createTempDir = function (prefix) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     var dir = Components.classes["@mozilla.org/file/directory_service;1"].
                         getService(Components.interfaces.nsIProperties).
                         get("TmpD", Components.interfaces.nsIFile);
@@ -701,7 +703,7 @@ Util.ios = Components.classes["@mozilla.org/network/io-service;1"]
                         .getService(Components.interfaces.nsIIOService);
 
 Util.getClipboardImage = function (clipData, length, handler) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
 
     var dataStream = clipData.QueryInterface(Components.interfaces.nsIInputStream);
 
@@ -871,12 +873,13 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
         }
 
         var bound = target.svg.getBoundingClientRect();
+        var bbox = target.svg.getBBox();
         if (!bound) {
             return;
         }
 
-        var width = bound.width;
-        var height = bound.height;
+        var width = bbox.width;
+        var height = bbox.height;
 
         if (width > maxWidth || height > maxHeight) {
             if (width > height) {
@@ -888,22 +891,20 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
             }
         }
 
-        var ctm = Svg.getCTM(target.svg);
         var svg = document.createElementNS(PencilNamespaces.svg, "svg");
 
         svg.setAttribute("width", "" + (width + padding * 2) + "px");
         svg.setAttribute("height", "" + (height + padding * 2) + "px");
 
-        var content = target.svg.cloneNode(true);
-        content.removeAttribute("id");
-        content.removeAttribute("transform");
+        var content = document.createElementNS(PencilNamespaces.svg, "g");
+        content.appendChild(target.svg.cloneNode(true));
+        
+        debug("target.svg: " + target.svg.localName);
 
-        var transform = "rotate(" + (Svg.getAngle(ctm.a, ctm.b)) + ") scale(" + width / bound.width + ", " + height / bound.height + ")";
+        var transform = "scale(" + width / bbox.width + ", " + height / bbox.height + ")";
         content.setAttribute("transform", transform);
 
         svg.appendChild(content);
-
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
         var id = "__generate_icon_iframe__";
         var iframe = document.createElementNS(PencilNamespaces.html, "html:iframe");
@@ -939,10 +940,12 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
                 var g = doc.documentElement.firstChild;
                 if (!g) return;
 
+                /*
                 var bound = g.getBoundingClientRect();
                 var transform = g.getAttribute("transform");
                 transform = "translate(" + (padding - bound.left) + " , " + (padding - bound.top) + ") " + transform;
                 g.setAttribute("transform", transform);
+                */
 
                 if (!rasterizer && Pencil) {
                     rasterizer = Pencil.rasterizer;
@@ -950,9 +953,9 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
 
                 if (!rasterizer) return;
                 if (iconPath) {
-                    rasterizer.rasterizeDOM(g.parentNode, iconPath, function () {});
+                    rasterizer.rasterizeDOM(doc.documentElement, iconPath, function () {});
                 } else {
-                    rasterizer.rasterizeDOMToUrl(g.parentNode, function (data) {
+                    rasterizer.rasterizeDOMToUrl(doc.documentElement, function (data) {
                         if (callback) {
                             callback(data.url);
                         }
@@ -1034,8 +1037,7 @@ Util.openDonate = function () {
     }
 };
 function debugx(ex) {
-    var value = eval("(" + ex + ")");
-    debug(ex + ": " + value);
+    debug("debugx is no longer supported");
 }
 function debug(value) {
     dump("DEBUG: " + value + "\n");
@@ -1063,10 +1065,7 @@ function tick(value) {
 
 var Net = {};
 Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener, options) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
-
+    
     var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                                 .getService(Components.interfaces.nsIIOService);
 
@@ -1090,10 +1089,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             this.writeMessage("Request started");
         },
         onDataAvailable: function (request, context, stream, sourceOffset, length) {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
-
+            
             if (this.canceled) return;
 
             try {
@@ -1131,9 +1127,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
             }
         },
         onStopRequest: function (request, context, status) {
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-            netscape.security.PrivilegeManager.enablePrivilege("UniversalFileRead");
+            
 
             this.foStream.close();
             this.writeMessage("Done");
@@ -1212,3 +1206,20 @@ window.addEventListener("DOMContentLoaded", function () {
     Util.platform = navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux";
     Util.statusbarDisplay = document.getElementById("pencil-statusbar-display");
 }, false);
+
+var pencilSandbox = Components.utils.Sandbox("http://pencil.evolus.vn/");
+
+Util.importSandboxFunctions = function () {
+    for (var i = 0; i < arguments.length; i ++) {
+        var f = arguments[i];
+        debug("binding: " + f.name);
+        pencilSandbox[f.name] = f;
+    }
+};
+pEval = function (expression, extra) {
+    for (var name in extra) {
+        pencilSandbox[name] = extra[name];
+    }
+    
+    return Components.utils.evalInSandbox(expression, pencilSandbox);
+};

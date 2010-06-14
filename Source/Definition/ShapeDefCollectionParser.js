@@ -42,7 +42,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
 /* public ShapeDefCollection */ ShapeDefCollectionParser.prototype.parseURL = function (url) {
     try {
-        netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
         var dom = document.implementation.createDocument("", "", null);
         dom.async = false;
         dom.load(url);
@@ -70,7 +69,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     }
 };
 /* public ShapeDefCollection */ ShapeDefCollectionParser.prototype.parse = function (dom, uri) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
     var collection = new ShapeDefCollection();
     collection.url = uri ? uri : dom.documentURI;
 
@@ -93,14 +91,13 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
     Dom.workOn("./p:Script", shapeDefsNode, function (scriptNode) {
         var context = { collection: collection };
-        with (context) {
-            eval(scriptNode.textContent);
-        }
+        pEval(scriptNode.textContent, context);
     });
 
     this.parseCollectionProperties(shapeDefsNode, collection);
 
     var parser = this;
+    
     Dom.workOn("./p:Shape | ./p:Shortcut", shapeDefsNode, function (node) {
         if (node.localName == "Shape") {
             collection.addDefinition(parser.parseShapeDef(node, collection));
@@ -108,6 +105,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
             collection.addShortcut(parser.parseShortcut(node, collection));
         }
     });
+    
 
 
     return collection;
@@ -123,7 +121,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
             property.displayName = propNode.getAttribute("displayName");
             var type = propNode.getAttribute("type");
             try {
-                property.type = eval("" + type);
+                property.type = window[type];
             } catch (e) {
                 alert(e);
                 throw "Invalid property type: " + type;
@@ -161,7 +159,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     });
 };
 /* public ShapeDef */ ShapeDefCollectionParser.prototype.parseShapeDef = function (shapeDefNode, collection) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
     var shapeDef = new ShapeDef();
     shapeDef.id = collection.id + ":" + shapeDefNode.getAttribute("id");
     shapeDef.displayName = shapeDefNode.getAttribute("displayName");
@@ -186,7 +183,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
             property.displayName = propNode.getAttribute("displayName");
             var type = propNode.getAttribute("type");
             try {
-                property.type = eval("" + type);
+                property.type =window[type];
             } catch (e) {
                 alert(e);
                 throw "Invalid property type: " + type;
@@ -262,7 +259,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         var text = implNode.textContent;
         action.implFunction = null;
         try {
-            action.implFunction = eval("var x = function () {\n" + text + "\n}; x;");
+            action.implFunction = new Function(text);
         } catch (e) {
             Console.dumpError(e);
         }
@@ -285,7 +282,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     return shapeDef;
 };
 /* public Shortcut */ ShapeDefCollectionParser.prototype.parseShortcut = function (shortcutNode, collection) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
     var shortcut = new Shortcut();
 
     shortcut.displayName = shortcutNode.getAttribute("displayName");
@@ -297,8 +293,9 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     }
     shortcut.iconPath = iconPath;
 
-    var shapeId = collection.id + ":" + shortcutNode.getAttribute("to");
-    var shapeDef = collection.getShapeDefById(shapeId);
+    var to = shortcutNode.getAttribute("to");
+    var shapeId = (to.indexOf(":") > 0) ? to : collection.id + ":" + to;
+    var shapeDef = CollectionManager.shapeDefinition.locateDefinition(shapeId);
 
     if (!shapeDef) throw "Bad shortcut. Target shape def is not found: " + shapeId;
 

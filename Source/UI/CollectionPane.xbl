@@ -289,7 +289,7 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    
                     try {
                         //debug("start draging");
                         var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
@@ -297,7 +297,7 @@
 
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
-                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                
                                 transferData.data = new TransferData();
                                 var def = defNode._def;
                                 if (def.constructor == ShapeDef) {

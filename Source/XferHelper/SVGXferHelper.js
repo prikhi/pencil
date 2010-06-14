@@ -9,7 +9,7 @@ SVGXferHelper.prototype.toString = function () {
     return "SVGXferHelper: " + SVGXferHelper.MIME_TYPE;
 };
 SVGXferHelper.prototype.handleData = function (data, length) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     //alert("found: " + this.type);
 
     var systemString = data.QueryInterface(Components.interfaces.nsISupportsString);

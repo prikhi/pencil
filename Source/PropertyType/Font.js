@@ -49,3 +49,6 @@ Font.prototype.getFamilies = function () {
     return families;
 }
 
+pencilSandbox.Font = Font;
+
+

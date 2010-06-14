@@ -222,6 +222,9 @@ function A(rx, ry, f1, f2, f3, x, y) {
     Pencil.behaviors.D._setLastLocation(x, y);
     return "A " + rx + " " + ry + " " + f1 + " " + f2 + " " + f3 + " " + x + " " + y;
 }
+
+Util.importSandboxFunctions(M, L, C, S, Q, T, a, A);
+
 const DEFAULT_SKETCHY_SEG_SIZE = 20;
 
 function sk(x1, y1, x2, y2, d, noMove) {
@@ -263,6 +266,9 @@ function skTo(x, y, d) {
         "noMove");
 }
 var z = "z";
+pencilSandbox.z = z;
+
+Util.importSandboxFunctions(sk, skTo);
 
 function rotate(a) {
     return "rotate(" + a + ")";
@@ -279,6 +285,9 @@ function skewX(a) {
 function skewY(a) {
     return "skewY(" + a + ")";
 }
+
+Util.importSandboxFunctions(rotate, translate, scale, skewX, skewY);
+
 Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootElement) {
     var isText = (this.localName == "text");
 

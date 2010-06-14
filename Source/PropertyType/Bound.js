@@ -35,3 +35,6 @@ Bound.prototype.narrowed = function (x, y) {
     
     return new Bound(this.x + dx, this.y + dy, this.w - 2 * dx, this.h - 2 * dy);
 };
+
+pencilSandbox.Bound = Bound;
+

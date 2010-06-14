@@ -17,3 +17,5 @@ Alignment.prototype.toString = function () {
     return this.h + "," + this.v;
 };
 
+pencilSandbox.Alignment = Alignment;
+

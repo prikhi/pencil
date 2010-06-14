@@ -10,7 +10,7 @@ RichTextXferHelper.prototype.toString = function () {
     return "RichTextXferHelper: " + RichTextXferHelper.MIME_TYPE;
 };
 RichTextXferHelper.prototype.handleData = function (data, length) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         var systemString = data.QueryInterface(Components.interfaces.nsISupportsString);
         var html = systemString.data.substring(0, length / 2);

@@ -1,6 +1,6 @@
 var PageNoteDialog = {};
 PageNoteDialog.handleLoad = function (event) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         //setup font list
         var fontPopup = document.getElementById("fontPopup");
@@ -81,7 +81,7 @@ PageNoteDialog.markNoteModified = function () {
     }
 }
 function runEditorCommand(command, arg) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     try {
         if (typeof(arg) != "undefined") PageNoteDialog.editor.contentDocument.execCommand(command, false, arg);
         else PageNoteDialog.editor.contentDocument.execCommand(command, false, null);

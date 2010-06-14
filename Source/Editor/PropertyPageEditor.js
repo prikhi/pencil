@@ -11,7 +11,7 @@ PropertyPageEditor.prototype.onDialogShown = function () {
     this.attach(this._nextTargetObject);
 };
 PropertyPageEditor.prototype.showAndAttach = function (targetObject) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    
     if (!this.dialogShown) {
         this._nextTargetObject = targetObject;
         this.propertyWindow = window.openDialog("PropertyDialog.xul", "propertyEditor" + Util.getInstanceToken(), "chrome,dialog,alwaysRaised,dependent", this);
