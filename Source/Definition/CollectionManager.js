@@ -81,6 +81,7 @@ CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
             if (!definitionFile.exists() || definitionFile.isDirectory()) continue;
 
             var uri = ios.newFileURI(definitionFile);
+            
 
             try {
                 var collection = parser.parseFile(definitionFile, uri.spec);
