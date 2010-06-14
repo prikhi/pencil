@@ -45,6 +45,8 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         var dom = document.implementation.createDocument("", "", null);
         dom.async = false;
         dom.load(url);
+        
+        debug("PARSING DOM @ " + url);
 
         return this.parse(dom);
     } catch (e) {
@@ -58,8 +60,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
 
         fileContents = this.injectEntityDefs(fileContents, file)
-        debug("---- AFTER INJECTION ----");
-        debug(fileContents.substring(0, 200));
 
         var dom = domParser.parseFromString(fileContents, "text/xml");
 
@@ -88,15 +88,18 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     collection.description = shapeDefsNode.getAttribute("description");
     collection.author = shapeDefsNode.getAttribute("author");
     collection.infoUrl = shapeDefsNode.getAttribute("url");
-
+    
+    
     Dom.workOn("./p:Script", shapeDefsNode, function (scriptNode) {
         var context = { collection: collection };
         pEval(scriptNode.textContent, context);
     });
+    
 
     this.parseCollectionProperties(shapeDefsNode, collection);
 
     var parser = this;
+    
     
     Dom.workOn("./p:Shape | ./p:Shortcut", shapeDefsNode, function (node) {
         if (node.localName == "Shape") {
@@ -104,10 +107,9 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         } else {
             collection.addShortcut(parser.parseShortcut(node, collection));
         }
+        
     });
     
-
-
     return collection;
 };
 /* private void */ ShapeDefCollectionParser.prototype.parseCollectionProperties = function (shapeDefsNode, collection) {
@@ -295,7 +297,10 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
     var to = shortcutNode.getAttribute("to");
     var shapeId = (to.indexOf(":") > 0) ? to : collection.id + ":" + to;
-    var shapeDef = CollectionManager.shapeDefinition.locateDefinition(shapeId);
+    
+    var shapeDef = (to.indexOf(":") > 0) ? 
+                        CollectionManager.shapeDefinition.locateDefinition(shapeId) : collection.getShapeDefById(shapeId);
+    
 
     if (!shapeDef) throw "Bad shortcut. Target shape def is not found: " + shapeId;
 

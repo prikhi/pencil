@@ -1212,7 +1212,6 @@ var pencilSandbox = Components.utils.Sandbox("http://pencil.evolus.vn/");
 Util.importSandboxFunctions = function () {
     for (var i = 0; i < arguments.length; i ++) {
         var f = arguments[i];
-        debug("binding: " + f.name);
         pencilSandbox[f.name] = f;
     }
 };
@@ -1220,6 +1219,9 @@ pEval = function (expression, extra) {
     for (var name in extra) {
         pencilSandbox[name] = extra[name];
     }
-    
-    return Components.utils.evalInSandbox(expression, pencilSandbox);
+    try {
+        return Components.utils.evalInSandbox(expression, pencilSandbox);
+    } catch (e) {
+        Console.dumpError(e);
+    }
 };
