@@ -86,6 +86,7 @@ PropertyPageEditor.prototype.getPropertyValue = function (name) {
 };
 PropertyPageEditor.prototype.setPropertyValue = function (name, value) {
     this.targetObject.setProperty(name, value);
+    this.targetObject.updateHandle();
 };
 
 PropertyPageEditor.prototype.getTargetObjectName = function () {

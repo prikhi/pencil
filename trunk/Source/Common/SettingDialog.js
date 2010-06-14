@@ -37,6 +37,11 @@ handleOnLoad = function () {
         Config.set("clipartbrowser.scale.height", 200);
     }
 
+    var svgurl = Config.get("external.editor.vector.path", "/usr/bin/inkscape");
+    var bitmapurl = Config.get("external.editor.bitmap.path", "/usr/local/bin/gimp-2.7");
+    document.getElementById("svgEditorUrl").value = svgurl;
+    document.getElementById("bitmapEditorUrl").value = bitmapurl;
+
     document.getElementById("textboxClipartBrowserScaleWidth").disabled = document.getElementById("textboxClipartBrowserScaleHeight").disabled = (Config.get("clipartbrowser.scale") == false);
 
     onConfigLoad();

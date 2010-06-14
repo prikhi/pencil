@@ -61,6 +61,11 @@
         <preference id="pencil-openOfficeConverterJODUrl"
             name="pencil.config.export.oo.converter.jod.url" type="string" instantApply="true" />
 
+        <preference id="pencil-bitmapEditorUrl"
+            name="pencil.config.external.editor.bitmap.path" type="string" instantApply="true" />
+        <preference id="pencil-svgEditorUrl"
+            name="pencil.config.external.editor.vector.path" type="string" instantApply="true" />
+
     </preferences>
 
     <prefpane id="pencil-mainpane" label="General" flex="1"
@@ -206,6 +211,29 @@
         </deck>
     </prefpane>
 
+    <prefpane id="pencil-externalEditor" label="External Editor" flex="1"
+            image="chrome://pencil/content/UI/Icons/pane-external-editor.png">
+        <deck>
+            <vbox>
+                <groupbox>
+                    <caption label="External Editor" />
+                    <grid>
+                        <columns> <column /><column /></columns>
+                        <rows>
+                            <row align="center" id="svgBox">
+                                <label value="Path to external SVG editor" id="labelSvgEditorUrl" />
+                                <textbox id="svgEditorUrl" width="350" value="/usr/bin/inkscape" preference="pencil-svgEditorUrl" />
+                            </row>
+                            <row align="center" id="bitmapBox">
+                                <label value="Path to external Bitmap editor" id="labelBitmapEditorUrl" />
+                                <textbox id="bitmapEditorUrl" width="350" value="/usr/local/bin/gimp-2.7" preference="pencil-bitmapEditorUrl" />
+                            </row>
+                        </rows>
+                    </grid>
+                </groupbox>
+            </vbox>
+        </deck>
+    </prefpane>
 
     <prefpane id="pencil-advanced" label="Advanced" flex="1"
             image="chrome://pencil/content/UI/Icons/pane-selector-advanced.png">
