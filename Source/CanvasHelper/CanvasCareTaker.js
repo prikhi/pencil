@@ -10,8 +10,8 @@ CanvasCareTaker.prototype.reset = function() {
     this.mementos = [this.canvas.getMemento()];
     this.index = 0;
 }
-CanvasCareTaker.prototype.save = function() {
-    var memento = this.canvas.getMemento();
+CanvasCareTaker.prototype.save = function(action) {
+    var memento = this.canvas.getMemento(action);
 
     this.index ++;
     this.mementos[this.index] = memento;
@@ -31,17 +31,28 @@ CanvasCareTaker.prototype.canRedo = function () {
 };
 
 CanvasCareTaker.prototype.undo = function () {
-    if (!this.canUndo()) throw "empty undo buffer";
+    if (!this.canUndo()) throw Util.getMessage("empty.undo.buffer");
 
     this.index --;
     var memento = this.mementos[this.index];
     this.canvas.setMemento(memento);
 };
 CanvasCareTaker.prototype.redo = function () {
-    if (!this.canRedo()) throw "empty redo buffer";
+    if (!this.canRedo()) throw Util.getMessage("empty.redo.buffer");
 
     this.index ++;
     var memento = this.mementos[this.index];
     this.canvas.setMemento(memento);
 };
-
+CanvasCareTaker.prototype.getCurrentAction = function() {
+    if (this.canUndo()) {
+        return this.mementos[this.index].action;
+    }
+    return "";
+};
+CanvasCareTaker.prototype.getPrevAction = function() {
+    if (this.canRedo()) {
+        return this.mementos[this.index + 1].action;
+    }
+    return "";
+};

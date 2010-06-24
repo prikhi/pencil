@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings xmlns="http://www.mozilla.org/xbl"
           xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:html="http://www.w3.org/1999/xhtml"
           xmlns:svg="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-          >
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil">
     <binding id="shadowStyleEditor">
         <implementation>
             <constructor>
@@ -58,13 +62,13 @@
         </implementation>
         <content>
             <hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" align="center">
-                <label value="X offset:"/>
+                <label value="&label.x.offset.value;"/>
                 <textbox type="number" min="-30" max="30" size="2" aid="dx" xbl:inherits="disabled"/>
 
-                <label value="Y offset:"/>
+                <label value="&label.y.offset.value;"/>
                 <textbox type="number" min="-30" max="30" size="2" aid="dy" xbl:inherits="disabled"/>
 
-                <label value="Blur size:"/>
+                <label value="&label.blur.size.value;"/>
                 <textbox type="number" min="0" max="30" size="2" aid="size" xbl:inherits="disabled"/>
             </hbox>
         </content>

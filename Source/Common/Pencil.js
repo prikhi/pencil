@@ -95,11 +95,9 @@ Pencil.boot = function (event) {
             var cmdLine = window.arguments[0];
             if (cmdLine) {
                 cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
-                for (var cc = 0; cc < cmdLine.length; cc++) {
-                    if ("-debug".indexOf(cmdLine.getArgument(cc)) != -1) {
-                        document.getElementById("domInspector").style.display = "";
-                        break;
-                    }
+                var domInspector = cmdLine.handleFlagWithParam("inspector", false);
+                if ("true" == domInspector) {
+                    document.getElementById("domInspector").style.display = "";
                 }
             }
         }
@@ -122,9 +120,12 @@ Pencil.boot = function (event) {
         CollectionManager.loadStencils();
         ExportTemplateManager.loadTemplates();
 
-        Pencil.setTitle("(No document)");
+        Pencil.setTitle(Util.getMessage("no.document"));
         Pencil.activeCanvas = null;
         Pencil.setupCommands();
+
+        Pencil.undoMenuItem = document.getElementById("editUndoMenu");
+        Pencil.redoMenuItem = document.getElementById("editRedoMenu");
 
         Pencil.sideBoxFloat = document.getElementById("sideBoxFloat");
         var collectionPaneSizeGrip = document.getElementById("collectionPaneSizeGrip");
@@ -310,6 +311,18 @@ Pencil._setupUndoRedoCommand = function () {
 
     Pencil._enableCommand("undoCommand", canvas && canvas.careTaker && canvas.careTaker.canUndo());
     Pencil._enableCommand("redoCommand", canvas && canvas.careTaker && canvas.careTaker.canRedo());
+
+    if (canvas && canvas.careTaker) {
+        var currentAction = canvas.careTaker.getCurrentAction();
+        var prevAction = canvas.careTaker.getPrevAction();
+        if (canvas.careTaker.canUndo() && canvas.careTaker.canRedo()) {
+            Pencil.updateUndoRedoMenu(currentAction, prevAction);
+        } else if (canvas.careTaker.canUndo()) {
+            Pencil.updateUndoRedoMenu(currentAction, "");
+        } else {
+            Pencil.updateUndoRedoMenu("", prevAction);
+        }
+    }
 };
 Pencil._enableCommand = function (name, condition) {
     var command = document.getElementById(name);
@@ -418,6 +431,21 @@ Pencil.toggleCollectionPane = function (dockable) {
         document.getElementById("floatingCollectionPane").setAttribute("checked", Config.get("collectionPane.floating") == false);
     }
 };
+Pencil.handlePropertiesCommand = function () {
+    if (Pencil.activeCanvas.currentController) {
+        Pencil.activeCanvas._showPropertyDialog();
+    } else {
+        if (!Pencil.controller._pageToEdit)
+            Pencil.controller._pageToEdit = Pencil.controller.getCurrentPage();
+        Pencil.controller.editPageProperties(Pencil.controller._pageToEdit);
+    }
+};
+Pencil.updateUndoRedoMenu = function (currentAction, prevAction) {
+    Pencil.undoMenuItem.setAttribute("label", Util.getMessage("menu.undo.label") + currentAction);
+    Pencil.redoMenuItem.setAttribute("label", Util.getMessage("menu.redo.label") + prevAction);
+    Pencil.activeCanvas.updateContextMenu(currentAction, prevAction);
+};
+
 window.addEventListener("load", Pencil.boot, false);
 window.addEventListener("keypress", function(event) {
     if (event.keyCode == event.DOM_VK_F5) {

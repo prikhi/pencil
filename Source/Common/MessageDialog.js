@@ -39,6 +39,9 @@ function handleOnload() {
     if (message.type == "info") {
         dialog.buttons = "accept";
         icon.className = "message-icon";
+    } else if (message.type == "warn") {
+        dialog.buttons = "accept";
+        icon.className = "warning-icon";
     } else if (message.type == "error") {
         dialog.buttons = "cancel";
         icon.className = "error-icon";
@@ -53,9 +56,9 @@ function handleOnload() {
         icon.className = "question-icon";
     }
 
-    setButtonLabel("accept", message.acceptLabel ? message.acceptLabel : "OK");
-    setButtonLabel("cancel", message.cancelLabel ? message.cancelLabel : "Cancel");
-    setButtonLabel("extra1", message.extraLabel ? message.extraLabel : "Apply");
+    setButtonLabel("accept", message.acceptLabel ? message.acceptLabel : Util.getMessage("button.ok.label"));
+    setButtonLabel("cancel", message.cancelLabel ? message.cancelLabel : Util.getMessage("button.cancel.label"));
+    setButtonLabel("extra1", message.extraLabel ? message.extraLabel : Util.getMessage("button.apply.label"));
 
 }
 function setButtonLabel(dlgtype, label) {

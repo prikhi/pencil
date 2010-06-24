@@ -36,6 +36,8 @@ function handleOnloadImpl() {
     backgroundColorPane = document.getElementById("backgroundColorPane");
     dimBackgroundPane = document.getElementById("dimBackgroundPane");
 
+    dimBackgroundPane.setAttribute("style", "visibility:hidden;");
+
     currentData = window.arguments[0];
     possibleBackgroundPages = window.arguments[1];
     returnValueHolder = window.arguments[2];
@@ -49,13 +51,13 @@ function handleOnloadImpl() {
     var lastSize = Config.get("lastSize");
     if (lastSize) {
         lastUsedItem.style.display = "";
-        lastUsedItem.label = "Last used (" + lastSize + ")";
+        lastUsedItem.label =  Util.getMessage("last.used", lastSize);
         lastUsedItem.value = lastSize;
     }
 
     var bestFitSize = window.opener.Pencil.getBestFitSize();
     bestFitItem.style.display = "";
-    bestFitItem.label = "Best fit (" + bestFitSize + ")";
+    bestFitItem.label = Util.getMessage("best.fit", bestFitSize);
     bestFitItem.value = bestFitSize;
 
     if (!currentData) {
@@ -130,8 +132,8 @@ function handleOnloadImpl() {
     if (currentData) {
         pageTitle.value = currentData.title;
 
-        document.getElementById("nameText").value = "Edit page properties";
-        document.title = "Page Properties";
+        document.getElementById("nameText").value = Util.getMessage("edit.page.properties");
+        document.title = Util.getMessage("page.properties");
     }
 
     invalidateInputs();
@@ -139,7 +141,7 @@ function handleOnloadImpl() {
     pageTitle.focus();
     pageTitle.select();
 
-    //window.sizeToContent();
+    window.sizeToContent();
 }
 function handleDialogAccept() {
     try {
@@ -169,22 +171,24 @@ function invalidateInputs() {
 
     transparentBackground = (backgroundPage.value == "transparent" ? "true" : "false");
     dimBackground.disabled = backgroundPage.disabled || !backgroundPage.value;
-    if (!backgroundPage.value || transparentBackground) {
+
+    if (!backgroundPage.value || transparentBackground == "true") {
         backgroundColorPane.style.display = "";
         if (transparentBackground == "true") {
             backgroundColorPane.style.display = "none";
         }
-        dimBackgroundPane.style.visibility = "hidden";
+        dimBackgroundPane.style.display = "none";
         backgroundPage.removeAttributeNS(PencilNamespaces.p, "with-background");
     } else {
         backgroundColorPane.style.display = "none";
         dimBackgroundPane.style.visibility = "visible";
+        dimBackgroundPane.style.display = "";
         backgroundPage.setAttributeNS(PencilNamespaces.p, "p:with-background", "true");
     }
 }
 function validateInput() {
-    if (!pageTitle.value) throw "Title should not be empty";
-    if (size.value && !size.value.match(SIZE_RE)) throw "Bad size: " + size.value;
+    if (!pageTitle.value) throw Util.getMessage("title.should.not.be.empty");
+    if (size.value && !size.value.match(SIZE_RE)) throw Util.getMessage("bad.size", size.value);
 }
 function getData() {
     validateInput();
@@ -202,7 +206,7 @@ function getData() {
     data.title = pageTitle.value;
     data.background = backgroundPage.value;
     data.backgroundColor = backgroundColor.color.toString();
-    data.transparentBackground = transparentBackground;
+    data.transparentBackground = backgroundPage.value == "transparent" ? "true" : "false";
     data.dimBackground = (data.background && dimBackground.checked);
 
     return data;

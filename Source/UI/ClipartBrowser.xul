@@ -1,30 +1,35 @@
 <?xml version="1.0"?>
+<!DOCTYPE window SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="../Styles/ClipartBrowserPane.css" type="text/css"?>
-<?xml-stylesheet href="../Styles/SearchBar.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/Styles/ClipartBrowserPane.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/Styles/SearchBar.css" type="text/css"?>
 
 <window
-    title="Clipart Browsing"
+    title="&clipart.browsing.title;"
     id="pencilClipartBrowser"
     persist="screenX screenY width height"
     sizemode="normal" height="500" width="900"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     xmlns:html="http://www.w3.org/1999/xhtml">
 
-    <script src="../Common/nsDragAndDrop.js"/>
-    <script src="../Common/Util.js"/>
-    <script src="../Common/IO.js"/>
-    <script src="../Common/Base64.js"></script>
+    <script src="chrome://pencil/content/Common/nsDragAndDrop.js"/>
+    <script src="chrome://pencil/content/Common/Util.js"/>
+    <script src="chrome://pencil/content/Common/IO.js"/>
+    <script src="chrome://pencil/content/Common/Base64.js"></script>
 
-    <script src="../Common/PencilNamespaces.js"/>
-    <script src="../Common/Config.js"/>
+    <script src="chrome://pencil/content/Common/PencilNamespaces.js"/>
+    <script src="chrome://pencil/content/Common/Config.js"/>
 
-    <script src="../ClipartBrowser/SearchEngine.js"/>
-    <script src="../ClipartBrowser/SearchService.js"/>
-    <script src="../ClipartBrowser/OpenClipartSearch.js"/>
-    <script src="../ClipartBrowser/GoogleImageSearch.js"/>
-    <script src="../ClipartBrowser/NewOpenClipartSearch.js"/>
-    <script src="../ClipartBrowser/WebUtil.js"/>
+    <script src="chrome://pencil/content/ClipartBrowser/SearchEngine.js"/>
+    <script src="chrome://pencil/content/ClipartBrowser/SearchService.js"/>
+    <script src="chrome://pencil/content/ClipartBrowser/OpenClipartSearch.js"/>
+    <script src="chrome://pencil/content/ClipartBrowser/GoogleImageSearch.js"/>
+    <script src="chrome://pencil/content/ClipartBrowser/NewOpenClipartSearch.js"/>
+    <script src="chrome://pencil/content/ClipartBrowser/WebUtil.js"/>
 
     <vbox flex="1" id="clipartBrowserBox">
         <hbox>
@@ -36,20 +41,20 @@
         <hbox pack="end">
             <div class="BottomPane" xmlns="http://www.w3.org/1999/xhtml">
                 <div class="Navigation">
-                    <label for="scaleImage"><input type="checkbox" id="scaleImage" value="1" checked="checked" /> Scale image to smaller size before inserting.</label>
+                    <label for="scaleImage"><input type="checkbox" id="scaleImage" value="1" checked="checked" />&input.scale.image.value;</label>
                     <a href="javascript:;" class="Previous Disabled" id="goPrevious">
-                        <span class="Previous">« Previous results</span>
+                        <span class="Previous">&span.prev.results.value;</span>
                     </a>
                     <a href="javascript:;" class="Next Disabled" id="goNext">
-                        <span class="Next">More results »</span>
+                        <span class="Next">&span.more.results.value;</span>
                     </a>
                 </div>
                 <div class="BrowseLimit">
-                    <span>Show</span>
+                    <span>&span.show.value;</span>
                     <a href="javascript:;" class="BrowseLimitLink Active" id="limit24"><span class="Active24">24</span></a>
                     <a href="javascript:;" class="BrowseLimitLink" id="limit60"><span class="Active60">60</span></a>
                     <a href="javascript:;" class="BrowseLimitLink" id="limit120"><span class="Active120">120</span></a>
-                    <span>results per page</span>
+                    <span>&span.results.per.page.value;</span>
                 </div>
             </div>
         </hbox>

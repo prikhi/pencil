@@ -1,5 +1,3 @@
-pref("toolkit.defaultChromeURI", "chrome://pencil/content/UI/Window.xul");
-
 pref("pencil.config.grid.enabled", true);
 pref("pencil.config.edit.gridSize", 8);
 pref("pencil.config.edit.snap.grid", false);

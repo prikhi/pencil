@@ -103,7 +103,7 @@ OpenClipartSearch2.prototype.formatType = function(type) {
             return type.substring(idx + 1).toUpperCase();
         }
     }
-    return "Unknow type";
+    return Util.getMessage("unknow.type");
 };
 
 OpenClipartSearch2.prototype.searchImpl = function(query, options, callback) {

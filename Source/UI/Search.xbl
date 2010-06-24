@@ -1,4 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings id="SearchBindings"
           xmlns="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -18,12 +23,12 @@
                 <xul:image class="searchbar-dropmarker-image"/>
                 <xul:menupopup class="searchbar-popup" anonid="searchbar-popup" position="after_start">
                     <xul:menuseparator/>
-                    <xul:menuitem class="open-engine-manager" anonid="open-engine-manager" label="Manage Search Engines…" tooltiptext="" oncommand="openManager(event);"/>
+                    <xul:menuitem class="open-engine-manager" anonid="open-engine-manager" label="&menu.manage.search.engines.label;" tooltiptext="" oncommand="openManager(event);"/>
                 </xul:menupopup>
             </xul:button>
             <xul:hbox class="search-go-container" chromedir="ltr">
                 <xul:label class="Loading" id="loading-box" style="display:none;"></xul:label>
-                <xul:image id="search-button" class="search-go-button" anonid="search-go-button" chromedir="ltr" onclick="handleSearchCommand(event);" tooltiptext="Search"/>
+                <xul:image id="search-button" class="search-go-button" anonid="search-go-button" chromedir="ltr" onclick="handleSearchCommand(event);" tooltiptext="&image.search.tooltiptext;"/>
             </xul:hbox>
         </xul:textbox>
     </content>
@@ -36,7 +41,7 @@
 
         <method name="init">
             <body><![CDATA[
-                debug("initializing searchbar...");
+                //debug("initializing searchbar...");
                 this.searchResultPane = document.getElementById("clipartBrowserPane");
                 this.searchButton = document.getElementById("search-button");
 
@@ -172,7 +177,7 @@
                 this.setAttribute("src", uri);
 
                 var name = this.currentEngine.name;
-                var text = "Search for " + name;
+                var text = Util.getMessage("clipartbrowser.search.for", name);
 
                 this._textbox.emptyText = name;
                 this._textbox.label = text;
@@ -225,7 +230,7 @@
         <method name="openManager">
             <parameter name="aEvent"/>
             <body><![CDATA[
-                Util.info("Alert", "Not implement yet!", "Ok");
+                Util.info("Evolus Pencil", Util.getMessage("not.implement.yet"), Util.getMessage("button.ok.label"));
             ]]></body>
         </method>
 
@@ -274,7 +279,7 @@
                     this.lastQuery = query;
                     this.searchButton.className = "searching";
                     this.loadingEl.style.display = "";
-                    this.loadingEl.value = "Searching " + this.currentEngine.name;
+                    this.loadingEl.value = Util.getMessage("clipartbrowser.searching.value", this.currentEngine.name);
                     this.searchResultPane.clearImages();
 
                     this.currentEngine.search(query, this.searchOptions, function(res, resultCount) {
@@ -294,11 +299,11 @@
                                         });
                                     }
                                 }
-                                thiz.loadingEl.value = "Loading 1/" + images.length + "...";
+                                thiz.loadingEl.value = Util.getMessage("clipartbrowser.loading.message", 1, images.length);
                                 thiz.searchResultPane.addImages(images);
                                 //thiz.searchButton.className = "search-go-button";
                             } else {
-                                thiz.loadingEl.value = "No matching results";
+                                thiz.loadingEl.value = Util.getMessage("clipartbrowser.no.results");
                                 thiz.searchButton.className = "search-go-button";
                             }
                             if (thiz.searchOptions.offset >= thiz.searchOptions.limit) {
@@ -353,7 +358,7 @@
                 if (this.initialized) return;
                 this.initialized = true;
 
-                debug("initializing textbox...");
+                //debug("initializing textbox...");
 
                 const kXULNS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
@@ -369,8 +374,8 @@
                 var element = document.createElementNS(kXULNS, "menuseparator");
                 cxmenu.appendChild(element);
                 element = document.createElementNS(kXULNS, "menuitem");
-                var label = "Clear Search History";
-                var akey = "C";
+                var label = Util.getMessage("clipartbrowser.clear.search.history");
+                var akey = Util.getMessage("clipartbrowser.clear.search.history.accesskey");
                 element.setAttribute("label", label);
                 element.setAttribute("accesskey", akey);
                 element.setAttribute("cmd", "cmd_clearhistory");
@@ -378,8 +383,8 @@
                 cxmenu.appendChild(element);
 
                 element = document.createElementNS(kXULNS, "menuitem");
-                label = "Show Suggestions";
-                akey = "S";
+                label = Util.getMessage("clipartbrowser.show.suggestions");
+                akey = Util.getMessage("clipartbrowser.show.suggestions.accesskey");
                 element.setAttribute("anonid", "toggle-suggest-item");
                 element.setAttribute("label", label);
                 element.setAttribute("accesskey", akey);
@@ -399,7 +404,7 @@
             <body><![CDATA[
                 var popup = this.popup;
 
-                debug("popup open: " + popup);
+                //debug("popup open: " + popup);
 
                 if (!popup.mPopupOpen) {
                     popup.hidden = false;
@@ -442,9 +447,9 @@
         <method name="openSearch">
             <body>
             <![CDATA[
-                debug("open search");
+                //debug("open search");
                 if (!this.popupOpen) {
-                    debug("open...");
+                    //debug("open...");
                     document.getBindingParent(this).searchButton.open = true;
                     return false;
                 }
@@ -480,7 +485,7 @@
             },
 
             doCommand: function (aCommand) {
-                debug("doCommand: " + aCommand);
+                //debug("doCommand: " + aCommand);
                 switch (aCommand) {
                     case "cmd_clearhistory":
                         var param = this._self.getAttribute("autocompletesearchparam");

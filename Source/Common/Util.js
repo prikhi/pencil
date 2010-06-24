@@ -790,6 +790,16 @@ Util.info = function(title, description, buttonLabel) {
     var returnValueHolder = {};
     var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
 };
+Util.warn = function(title, description, buttonLabel) {
+    Util.showStatusBarInfo(description, true);
+    var message = {type: "warn",
+                    title: title,
+                    description: description ? description : null,
+                    acceptLabel: buttonLabel ? buttonLabel : null };
+
+    var returnValueHolder = {};
+    var dialog = window.openDialog("chrome://pencil/content/UI/MessageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
+};
 Util.error = function(title, description, buttonLabel) {
     Util.showStatusBarError(description, true);
     var message = {type: "error",
@@ -1035,6 +1045,33 @@ Util.openDonate = function () {
         var uri = ioservice.newURI(link, null, null);
         protoservice.loadUrl(uri);
     }
+};
+Util.getMessage = function (msg, args) {
+    try {
+        if (!Util.bundle) {
+            Util.bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                                    .getService(Components.interfaces.nsIStringBundleService)
+                                    .createBundle("chrome://pencil/locale/pencil.properties");
+        }
+
+        var s = "";
+        if (args){
+            args = Array.prototype.slice.call(arguments, 1);
+            s = Util.bundle.formatStringFromName(msg, args, args.length);
+        } else {
+            s = Util.bundle.GetStringFromName(msg);
+        }
+
+        if (s && s != "") {
+            return s;
+        }
+
+        warn("!!! Missing key: " + msg);
+    } catch (ex) {
+        info(msg);
+        Console.dumpError(ex);
+    }
+    return "!!! " + msg;
 };
 function debugx(ex) {
     debug("debugx is no longer supported");

@@ -1,63 +1,66 @@
 <?xml version="1.0"?>
+<!DOCTYPE dialog SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
-<?xml-stylesheet href="../Styles/Dialog.css" type="text/css"?>
-<?xml-stylesheet href="../Styles/ColorPickerButton.css" type="text/css"?>
-<?xml-stylesheet href="../PropertyType/Editor/CommonEditors.css" type="text/css"?>
-<dialog id="pencilPageDialog" title="New Page"
+<?xml-stylesheet href="chrome://pencil/content/Styles/ApplicationStyle.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/Styles/Dialog.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/Styles/ColorPickerButton.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/PropertyType/Editor/CommonEditors.css" type="text/css"?>
+
+<dialog id="pencilPageDialog" title="&dialog.new.page.title;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns:p="http://www.evolus.vn/Namespace/Pencil"
         buttons="accept,cancel"
-        buttonlabelaccept="Apply"
-        buttonlabelcancel="Cancel"
+        buttonlabelaccept="&button.accept.label.apply;"
+        buttonlabelcancel="&button.cancel.label.cancel;"
         persist="lastsize screenX screenY width height"
         lastsize="800x600"
-        minwidth="450"
-        minheight="270"
+        minwidth="400"
+        minheight="200"
+        flex="1"
         ondialogaccept="return handleDialogAccept();"
         ondialogcancel="return handleDialogCancel();">
 
-<script src="../Common/Config.js"/>
-<script src="../Common/PencilNamespaces.js"/>
-<script src="../Common/Util.js"/>
-<script src="../PropertyType/Color.js"/>
-<script src="../Common/ColorDroppers.js"/>
-<script src="../Common/PageDetailDialog.js"/>
+    <script src="chrome://pencil/content/Common/Config.js"/>
+    <script src="chrome://pencil/content/Common/PencilNamespaces.js"/>
+    <script src="chrome://pencil/content/Common/Util.js"/>
+    <script src="chrome://pencil/content/PropertyType/Color.js"/>
+    <script src="chrome://pencil/content/Common/ColorDroppers.js"/>
+    <script src="chrome://pencil/content/Common/PageDetailDialog.js"/>
 
-    <commandset>
-    </commandset>
-    <keyset>
-    </keyset>
     <vbox class="Header">
-        <label class="Name" value="Create new page" id="nameText"/>
-        <label class="Description" value="Please enter the page properties" id="descText"/>
+        <label class="Name" value="&label.create.new.page.value;" id="nameText"/>
+        <label class="Description" value="&label.enter.page.prop.value;" id="descText"/>
     </vbox>
     <vbox>
         <hbox>
-            <label value="Page title"/>
+            <label value="&label.page.title.value;"/>
             <textbox id="pageTitle"/>
         </hbox>
         <hbox>
-            <label value="Page size"/>
+            <label value="&label.page.size.value;"/>
             <hbox>
                 <menulist id="size">
                     <menupopup>
-                        <menuitem label="Last used (800x600)" value="xxxx" id="lastUsedItem" style="display: none;"/>
-                        <menuitem label="Fit current view ()" value="" id="bestFitItem" style="display: none;"/>
-                        <menuitem label="Custom size..." value=""/>
+                        <menuitem label="&menu.last.used.label;" value="xxxx" id="lastUsedItem" style="display: none;"/>
+                        <menuitem label="&menu.fit.current.view.label;" value="" id="bestFitItem" style="display: none;"/>
+                        <menuitem label="&menu.custom.size.label;" value=""/>
                         <menuseparator/>
-                        <menuitem p:predefined="true" label="Compact Web page (800x600)" value="800x600"/>
-                        <menuitem p:predefined="true" label="960 Web page (960x600)" value="960x600"/>
-                        <menuitem p:predefined="true" label="960 Web page - long (960x900)" value="960x900"/>
-                        <menuitem p:predefined="true" label="Normal Web page (1024x768)" value="1024x768"/>
-                        <menuitem p:predefined="true" label="Large Web page (1280x800)" value="1280x800"/>
-                        <menuitem p:predefined="true" label="A4 at 90dpi" value="774x1052"/>
-                        <menuitem p:predefined="true" label="A4 at 300dpi" value="2480x3508"/>
+                        <menuitem p:predefined="true" label="&menu.compact.web.page.label;" value="800x600"/>
+                        <menuitem p:predefined="true" label="&menu.960.web.page.label;" value="960x600"/>
+                        <menuitem p:predefined="true" label="&menu.960.web.page.long.label;" value="960x900"/>
+                        <menuitem p:predefined="true" label="&menu.normal.web.page.label;" value="1024x768"/>
+                        <menuitem p:predefined="true" label="&menu.large.web.page.label;" value="1280x800"/>
+                        <menuitem p:predefined="true" label="&menu.a4.at.90dpi.label;" value="774x1052"/>
+                        <menuitem p:predefined="true" label="&menu.a4.at.300dpi.label;" value="2480x3508"/>
                     </menupopup>
                 </menulist>
                 <box style="display: none;">
-                    <html:a href="#">Configure sizes...</html:a>
+                    <html:a href="#">&html.config.size.value;</html:a>
                 </box>
             </hbox>
         </hbox>
@@ -67,23 +70,25 @@
                 <hbox>
                     <textbox size="3" type="number" min="24" id="width"/>
                     <textbox size="3" type="number" min="24" id="height"/>
-                    <label value="(pixels)"/>
+                    <label value="&label.pixels.value;"/>
                 </hbox>
             </vbox>
         </hbox>
         <hbox>
-            <label value="Background"/>
-            <hbox>
-                <menulist id="backgroundPage"><menupopup>
-                        <menuitem label="Transparent Background" value="transparent"/>
-                        <menuitem label="Background Color" value="" selected="true"/>
-                        <menuseparator/></menupopup>
+            <label value="&label.background.value;"/>
+            <hbox flex="1">
+                <menulist id="backgroundPage" sizetopopup="none" flex="1">
+                    <menupopup>
+                        <menuitem label="&menu.transparent.bgr.label;" value="transparent"/>
+                        <menuitem label="&menu.background.color.label;" value="" selected="true"/>
+                        <menuseparator/>
+                    </menupopup>
                 </menulist>
                 <hbox id="backgroundColorPane">
-                    <pcolorbutton id="backgroundColorButton" tooltiptext="Select background color" type="preview" allow-opacity="false"/>
+                    <pcolorbutton id="backgroundColorButton" tooltiptext="&colorbutton.select.bgr.tooltiptext;" type="preview" allow-opacity="false"/>
                 </hbox>
                 <hbox id="dimBackgroundPane" style="visibility:hidden;">
-                    <checkbox id="dimBackground" label="Dim background" checked="false"/>
+                    <checkbox id="dimBackground" label="&checkbox.dim.background.label;" checked="false"/>
                 </hbox>
             </hbox>
         </hbox>

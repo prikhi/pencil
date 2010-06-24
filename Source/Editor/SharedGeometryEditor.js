@@ -94,7 +94,7 @@ SharedGeomtryEditor.prototype.handleCommandEvent = function () {
 
         Pencil.activeCanvas.snappingHelper.updateSnappingGuide(this.targetObject);
         this.invalidate();
-    }, this);
+    }, this, Util.getMessage("action.move.shape"));
 
     Pencil.activeCanvas.invalidateEditors(this);
 };

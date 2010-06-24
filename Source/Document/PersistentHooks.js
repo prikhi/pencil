@@ -3,11 +3,11 @@ var relativeHRefHook = {
     badImageDataFound: false,
     onDomSerialization: function (dom) {
         var thiz = this;
-        
+
         Dom.workOn("//@xlink:href", dom, function (href) {
             var hrefValue = href.nodeValue;
             if (!hrefValue.match(/^file:\/\/.*$/)) return;
-            
+
             var relativePath = thiz.uriToRelative(hrefValue);
             if (relativePath) {
                 href.nodeValue = relativePath;
@@ -17,7 +17,7 @@ var relativeHRefHook = {
         Dom.workOn(xpath, dom, function (property) {
             var imageData = ImageData.fromString(property.textContent);
             if (!imageData.data.match(/^file:\/\/.*$/)) return;
-            
+
             var relativePath = thiz.uriToRelative(imageData.data);
             if (relativePath) {
                 imageData.data = relativePath;
@@ -28,11 +28,11 @@ var relativeHRefHook = {
     },
     onPageLoad: function (page) {
         var thiz = this;
-        
+
         Dom.workOn("//@xlink:href", page.contentNode, function (href) {
             var hrefValue = href.nodeValue;
             if (hrefValue.match(/^[a-z]+:\/\/.*$/)) return;
-            
+
             var uri = thiz.relativeToURI(hrefValue);
             if (uri) {
                 href.nodeValue = uri;
@@ -46,7 +46,7 @@ var relativeHRefHook = {
                 return;
             }
             if (imageData.data.match(/^[a-z]+:.*$/)) return;
-            
+
             imageData.data = thiz.relativeToURI(imageData.data, true);
             Dom.empty(property);
             property.appendChild(property.ownerDocument.createCDATASection(imageData.toString()));
@@ -63,10 +63,10 @@ var relativeHRefHook = {
     },
     relativeToURI: function (relativeFileURI, logError) {
         var file = XMLDocumentPersister.currentFile.parent;
-        
+
         var hrefFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
         hrefFile.setRelativeDescriptor(file, relativeFileURI);
-        
+
         if (!hrefFile.exists()) {
             if (logError) {
                 this.missedFilePaths.push(relativeFileURI);
@@ -74,17 +74,18 @@ var relativeHRefHook = {
                 return null;
             }
         }
-        
+
         return ImageData.ios.newFileURI(hrefFile).spec;
     },
     onLoad: function (doc) {
         if (this.missedFilePaths.length > 0) {
-            alert("The following external resources are missing when loading the document: \n\t● " + this.missedFilePaths.join("\n\t● ")
-            + "\n\nPlease verify if these resources have been moved or deleted.");
+            //Util.warn(Util.getMessage("warning.title"), Util.getMessage("document.missing.external.resources", this.missedFilePaths.join("\n\t● ")), Util.getMessage("button.cancel.close"));
+            alert(Util.getMessage("document.missing.external.resources", this.missedFilePaths.join("\n\t● ")));
             this.missedFilePaths = [];
         }
         if (this.badImageDataFound) {
-            alert("Error: bad image data was found in the document. The document seems to be modified externally.");
+            //Util.error(Util.getMessage("error.title"), Util.getMessage("error.bad.image.data.was.found.in.the.document"), Util.getMessage("button.cancel.close"));
+            alert(Util.getMessage("error.bad.image.data.was.found.in.the.document"));
             this.badImageDataFound = false;
         }
     }

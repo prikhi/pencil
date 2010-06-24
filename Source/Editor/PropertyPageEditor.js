@@ -11,7 +11,7 @@ PropertyPageEditor.prototype.onDialogShown = function () {
     this.attach(this._nextTargetObject);
 };
 PropertyPageEditor.prototype.showAndAttach = function (targetObject) {
-    
+
     if (!this.dialogShown) {
         this._nextTargetObject = targetObject;
         this.propertyWindow = window.openDialog("PropertyDialog.xul", "propertyEditor" + Util.getInstanceToken(), "chrome,dialog,alwaysRaised,dependent", this);
@@ -86,7 +86,7 @@ PropertyPageEditor.prototype.getPropertyValue = function (name) {
 };
 PropertyPageEditor.prototype.setPropertyValue = function (name, value) {
     this.targetObject.setProperty(name, value);
-    this.targetObject.updateHandle();
+    if (this.targetObject.updateHandle) this.targetObject.updateHandle();
 };
 
 PropertyPageEditor.prototype.getTargetObjectName = function () {

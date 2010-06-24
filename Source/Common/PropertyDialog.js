@@ -13,9 +13,9 @@ function clean() {
 PropertyDialog.setupReally = function () {
     try {
         var editor = PropertyDialog.editor;
-        
+
         if (editor.usingQuickMode()) {
-            document.documentElement.getButton("accept").setAttribute("label", "Save");
+            document.documentElement.getButton("accept").setAttribute("label", Util.getMessage("button.save.label"));
         }
 
         var tabs = document.getElementById("tabs");
@@ -68,7 +68,7 @@ PropertyDialog.setupReally = function () {
             }
         }
         if (tabs.parentNode.selectedIndex < 0) tabs.parentNode.selectedIndex = 0;
-        document.title = editor.getTargetObjectName() + " Properties";
+        document.title =  Util.getMessage("tab.properties", editor.getTargetObjectName());
 
         window.sizeToContent();
     } catch (e) {
@@ -86,7 +86,7 @@ PropertyDialog.clean = function () {
 
     //window.sizeToContent();
 
-    document.title = "Properties";
+    document.title = Util.getMessage("page.properties");
 };
 
 PropertyDialog.doApply = function () {

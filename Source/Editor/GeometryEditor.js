@@ -114,6 +114,7 @@ GeometryEditor.dumpGeo = function (s, geo) {
     debug(s + ": " + o.toSource());
 };
 GeometryEditor.prototype.attach = function (targetObject) {
+    if (!targetObject) return;
     if (targetObject.constructor == TargetSet) {
         this.dettach();
         return;
@@ -282,7 +283,7 @@ GeometryEditor.prototype.handleMouseUp = function (event) {
                     this.resetAccomulatedChanges();
                     this.canvas.invalidateEditors();
                 }
-            }, this);
+            }, this, Util.getMessage("action.move.shape"));
         }
     } finally {
         this.currentAnchor = null;

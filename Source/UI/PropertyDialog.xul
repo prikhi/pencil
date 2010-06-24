@@ -1,37 +1,43 @@
 <?xml version="1.0"?>
+<!DOCTYPE dialog SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
-<?xml-stylesheet href="../Styles/PCanvas.css" type="text/css"?>
-<?xml-stylesheet href="../PropertyType/Editor/CommonEditors.css" type="text/css"?>
-<dialog id="pencilPropertyEditorDialog" title=""
+<?xml-stylesheet href="chrome://pencil/content/Styles/ApplicationStyle.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/Styles/PCanvas.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/PropertyType/Editor/CommonEditors.css" type="text/css"?>
+
+<dialog id="pencilPropertyEditorDialog" title="&properties.title;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         buttons="accept,cancel"
-        buttonlabelaccept="Apply"
-        buttonlabelcancel="Close"
+        buttonlabelaccept="&button.accept.label.apply;"
+        buttonlabelcancel="&button.cancel.label.close;"
         persist="screenX screenY"
         screenX="100"
         screenY="100"
         ondialogaccept="return PropertyDialog.doApply();"
         ondialogcancel="return PropertyDialog.doCancel();">
 
-<script src="../Common/Util.js"/>
-<script src="../Common/PencilNamespaces.js"/>
+    <script src="chrome://pencil/content/Common/Util.js"/>
+    <script src="chrome://pencil/content/Common/PencilNamespaces.js"/>
 
-<script src="../PropertyType/Alignment.js"/>
-<script src="../PropertyType/Font.js"/>
-<script src="../PropertyType/Color.js"/>
-<script src="../PropertyType/StrokeStyle.js"/>
-<script src="../PropertyType/PlainText.js"/>
-<script src="../PropertyType/ShadowStyle.js"/>
-<script src="../PropertyType/Enum.js"/>
+    <script src="chrome://pencil/content/PropertyType/Alignment.js"/>
+    <script src="chrome://pencil/content/PropertyType/Font.js"/>
+    <script src="chrome://pencil/content/PropertyType/Color.js"/>
+    <script src="chrome://pencil/content/PropertyType/StrokeStyle.js"/>
+    <script src="chrome://pencil/content/PropertyType/PlainText.js"/>
+    <script src="chrome://pencil/content/PropertyType/ShadowStyle.js"/>
+    <script src="chrome://pencil/content/PropertyType/Enum.js"/>
 
-<script src="../Common/ColorDroppers.js"/>
+    <script src="chrome://pencil/content/Common/ColorDroppers.js"/>
 
     <tabbox id="tabBox" flex="1" persist="selectedIndex">
       <tabs id="tabs"></tabs>
       <tabpanels id="tabPanels"></tabpanels>
     </tabbox>
 
-<script src="../Common/TypeEditorRegistry.js"/>
-<script src="../Common/PropertyDialog.js"/>
+    <script src="chrome://pencil/content/Common/TypeEditorRegistry.js"/>
+    <script src="chrome://pencil/content/Common/PropertyDialog.js"/>
 </dialog>

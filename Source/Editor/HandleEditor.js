@@ -43,6 +43,7 @@ HandleEditor.prototype.install = function (canvas) {
 
 };
 HandleEditor.prototype.attach = function (targetObject) {
+    if (!targetObject) return;
     if (targetObject.constructor != Shape) {
         this.dettach();
         return;

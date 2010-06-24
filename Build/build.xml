@@ -36,12 +36,6 @@
             <fileset dir="../Source" />
         </copy>
         <antcall target="replacer">
-            <param name="filename" value="${OUTPUTS}/Pencil/Common/Pencil.js" />
-        </antcall>
-        <antcall target="replacer">
-            <param name="filename" value="${OUTPUTS}/Pencil/UI/Window.xul" />
-        </antcall>
-        <antcall target="replacer">
             <param name="filename" value="${OUTPUTS}/Pencil/UI/AboutDialog.xul" />
         </antcall>
     </target>
@@ -96,7 +90,6 @@
         <mkdir dir="${OUTPUTS}/Win32/app/chrome/icons/default" />
         <copy tofile="${OUTPUTS}/Win32/app/chrome/icons/default/pencilMainWindow.ico" file="${OUTPUTS}/Pencil/Icons/pencil.ico" />
         <copy tofile="${OUTPUTS}/Win32/app/chrome/icons/default/pencilMainWindow.xpm" file="${OUTPUTS}/Pencil/Icons/pencil.xpm" />
-
         <antcall target="replacer">
             <param name="filename" value="${OUTPUTS}/Win32/app/application.ini" />
         </antcall>

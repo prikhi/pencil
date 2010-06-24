@@ -16,7 +16,7 @@ function Group(canvas, svg) {
     });
 
     var propertyGroup = new PropertyGroup();
-    propertyGroup.name = "Properties";
+    propertyGroup.name = Util.getMessage("shape.properties.label");
 
     var firstGroups = this.targets[0].getPropertyGroups();
 

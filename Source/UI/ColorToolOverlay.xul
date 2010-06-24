@@ -1,15 +1,20 @@
 <?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <overlay id="textToolOverlay"
          xmlns:html="http://www.w3.org/1999/xhtml"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <toolbar id="nav-toolbar">
         <toolbarseparator/>
         <hbox id="colorToolbar" class="ToolbarSection" align="center">
-            <label value="Color:"/>
-            <pcolorbutton id="textColorButton" tooltiptext="Change text color" image="Icons/MozIcons/stock/stock_text_color_foreground-menu.png"/>
-            <pcolorbutton id="hilightColorButton" tooltiptext="Change text highlight color" image="Icons/MozIcons/stock/stock_text_color_background-menu.png"/>
-            <pcolorbutton id="strokeColorButton" tooltiptext="Change stroke color" image="Icons/color-stroke.png"/>
-            <pcolorbutton id="fillColorButton" tooltiptext="Change background fill color" image="Icons/color-fill.png"/>
+            <label value="&label.color.value;"/>
+            <pcolorbutton id="textColorButton" tooltiptext="&colorbutton.change.text.tooltip;" image="chrome://pencil/content/UI/Icons/MozIcons/stock/stock_text_color_foreground-menu.png"/>
+            <pcolorbutton id="hilightColorButton" tooltiptext="&colorbutton.change.text.hili.tooltip;" image="chrome://pencil/content/UI/Icons/MozIcons/stock/stock_text_color_background-menu.png"/>
+            <pcolorbutton id="strokeColorButton" tooltiptext="&colorbutton.change.stroke.tooltip;" image="chrome://pencil/content/UI/Icons/color-stroke.png"/>
+            <pcolorbutton id="fillColorButton" tooltiptext="&colorbutton.change.bgrfill.tooltip;" image="chrome://pencil/content/UI/Icons/color-fill.png"/>
         </hbox>
     </toolbar>
 </overlay>

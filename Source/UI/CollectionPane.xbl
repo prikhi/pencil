@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings xmlns="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:html="http://www.w3.org/1999/xhtml"
           xmlns:svg="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-          >
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil">
     <binding id="collectionPane">
         <implementation>
             <constructor>
@@ -66,7 +70,7 @@
                                                                         || !collection._collection.installDirPath;
                     thiz.aboutMenuItem.disabled = !hasCollection;
                     if (hasCollection) {
-                        thiz.aboutMenuItem.setAttribute("label", "About " + collection._collection.displayName + "...");
+                        thiz.aboutMenuItem.setAttribute("label", Util.getMessage("collectionpane.about.collection", collection._collection.displayName));
                     }
 
                     //setup hidden collection
@@ -102,14 +106,12 @@
                         var collection = thiz.currentCollection._collection;
                         var detail = "<div>" + Dom.htmlEncode(collection.description) + "</div><ul>";
                         if (collection.author) {
-                            detail += "<li><strong>Author</strong>: " + Dom.htmlEncode(collection.author) + "</li>";
+                            detail += "<li><strong>" + Util.getMessage("collectionpane.author.label") + "</strong> " + Dom.htmlEncode(collection.author) + "</li>";
                         }
-                        if (collection.author) {
-                            detail += "<li><strong>More information</strong>: <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
+                        if (collection.infoUrl) {
+                            detail += "<li><strong>" + Util.getMessage("collectionpane.more.information.label") + "</strong> <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
                         }
                         detail += "</ul>"
-                        //debug(collection.displayName);
-                        //debug(collection);
                         Util.info(collection.displayName, new RichText(detail));
                     }
                 }, false);
@@ -289,7 +291,7 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                    
+
                     try {
                         //debug("start draging");
                         var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
@@ -297,7 +299,6 @@
 
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
-                                
                                 transferData.data = new TransferData();
                                 var def = defNode._def;
                                 if (def.constructor == ShapeDef) {
@@ -354,7 +355,7 @@
                             try {
                                 CollectionManager.installCollectionFromFile(file);
                             } catch (e) {
-                                Util.error("Install new collection", "Could not install collection '" + file.leafName.replace(/\.[^\.]+$/, "") + "'. The file may be corrupted.");
+                                Util.error(Util.getMessage("collectionpane.install.new.collection.error.title"), Util.getMessage("collectionpane.install.new.collection.error.message", file.leafName.replace(/\.[^\.]+$/, "")));
                             }
                         }
                     }
@@ -366,7 +367,7 @@
                  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
             <vbox flex="1">
                 <vbox aid="filterPanel" align="left">
-                    <textbox aid="shapeFilter" emptytext="Shape filter... (Ctrl + F)" maxlength="255" size="1024" style="margin:4px;">
+                    <textbox aid="shapeFilter" emptytext="&textbox.shape.filter.emptytext;" maxlength="255" size="1024" style="margin:4px;">
                         <hbox>
                             <deck>
                                 <image />
@@ -378,13 +379,13 @@
             </vbox>
             <popupset>
                 <popup aid="contextPopup">
-                    <menuitem aid="settingMenuItem" label="Collection settings..." />
-                    <menuitem aid="hideMenuItem" label="Hide this collection" />
-                    <menuitem aid="uninstallMenuItem" label="Uninstall this collection" />
-                    <menuitem aid="aboutMenuItem" label="About..." />
+                    <menuitem aid="settingMenuItem" label="&menu.collection.settings.label;" />
+                    <menuitem aid="hideMenuItem" label="&menu.hide.this.collection.label;" />
+                    <menuitem aid="uninstallMenuItem" label="&menu.uninstall.this.collection.label;" />
+                    <menuitem aid="aboutMenuItem" label="&menu.about.label;" />
                     <menuseparator/>
-                    <menuitem aid="installMenuItem" label="Install new collection..." />
-                    <menu aid="showHiddenMenu" label="Show hidden collections"><menupopup/></menu>
+                    <menuitem aid="installMenuItem" label="&menu.install.new.collection.label;" />
+                    <menu aid="showHiddenMenu" label="&menu.show.hidden.collections.label;"><menupopup/></menu>
                 </popup>
             </popupset>
         </xbl:content>

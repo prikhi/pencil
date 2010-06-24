@@ -1,5 +1,5 @@
 function ODTExporter() {
-    this.name = "OpenOffice.org document (ODT file)";
+    this.name = Util.getMessage("openoffice.org.document.odt.file");
     this.id = "ODTExporter";
     this.xsltProcessor = new XSLTProcessor();
 }
@@ -23,18 +23,18 @@ ODTExporter.prototype.getTemplates = function () {
 ODTExporter.prototype.getWarnings = function () {
     var templates = this.getTemplates();
     if (templates && templates.length > 0) return null;
-    
-    return "No template has been installed for exporting to text documents. Templates can be installed via Tools > Manage Export Templates..."
+
+    return Util.getMessage("no.template.has.been.installed.for.exporting");
 };
 
 ODTExporter.prototype.transform = function (template, fileBaseName, sourceDOM, targetDir) {
     var styleSheetFile = template.dir.clone();
     styleSheetFile.append(fileBaseName + ".xslt");
-    
+
     if (!styleSheetFile.exists()) return;
-    
+
     this.xsltProcessor.reset();
-    
+
     var xsltDOM = Dom.parseFile(styleSheetFile);
     this.xsltProcessor.importStylesheet(xsltDOM);
 
@@ -49,21 +49,21 @@ ODTExporter.prototype.transform = function (template, fileBaseName, sourceDOM, t
 ODTExporter.prototype.export = function (doc, options, destFile, xmlFile, callback) {
     var templateId = options.templateId;
     if (!templateId) return;
-    
+
     var template = ExportTemplateManager.getTemplateById(templateId);
 
     //copying support files to a temp dir
     if (!this.tmpDir) {
         this.tmpDir = Util.createTempDir("pencilodt");
     }
-    
+
     var items = template.dir.directoryEntries;
     while (items.hasMoreElements()) {
         var file = items.getNext().QueryInterface(Components.interfaces.nsIFile);
-        
+
         //ignore the xslt files
         if (file.leafName.match(/\.xslt$/)) continue;
-            
+
         var targetFile = this.tmpDir.clone();
         targetFile.append(file.leafName);
 
@@ -74,19 +74,19 @@ ODTExporter.prototype.export = function (doc, options, destFile, xmlFile, callba
 
     //transform the xml to HTML
     var sourceDOM = Dom.parseFile(xmlFile);
-    
+
     //changing rasterized path to relative
     this.fixAbsoluteRasterizedPaths(sourceDOM, this.tmpDir);
-    
+
     this.transform(template, "content", sourceDOM, this.tmpDir);
     this.transform(template, "meta", sourceDOM, this.tmpDir);
     this.transform(template, "settings", sourceDOM, this.tmpDir);
     this.transform(template, "styles", sourceDOM, this.tmpDir);
-    
+
     Util.compress(this.tmpDir, destFile);
     this.tmpDir.remove(true);
     this.tmpDir = null;
-    
+
     callback();
 };
 ODTExporter.prototype.getOutputType = function () {
@@ -95,7 +95,7 @@ ODTExporter.prototype.getOutputType = function () {
 ODTExporter.prototype.getOutputFileExtensions = function () {
     return [
         {
-            title: "OpenOffice.org Document (*.odt)",
+            title: Util.getMessage("filepicker.openoffice.org.document.odt"),
             ext: "*.odt"
         }
     ];

@@ -1,0 +1,450 @@
+
+<!-- Dialog Buttons -->
+<!ENTITY button.cancel.label.close                "Đóng">
+<!ENTITY button.cancel.label.cancel               "Thôi">
+<!ENTITY button.accept.label.apply                "Đồng ý">
+
+<!-- chrome://pencil/content/UI/AboutDialog.xul -->
+<!ENTITY dialog.about.pencil.title               "Giới thiệu Pencil">
+<!ENTITY image.click.to.donate.alt               "Hỗ trợ Pencil">
+<!ENTITY label.you.can.help.us.value             "Pencil là 1 phần mềm tự do (GPL), nếu bạn thấy Pencil hữu ích, hãy ủng hộ cho sự phát triển của Pencil :)">
+<!ENTITY image.you.can.help.us.tooltiptext       "Bạn có thể giúp chúng tôi làm cho Pencil tốt hơn bằng cách đóng góp cho Pencil">
+<!ENTITY label.copyright.value                   "Bản quyền (c) 2009-2010 Evolus Co., Ltd">
+<!ENTITY label.evolus.pencil.value               "Evolus Pencil">
+<!ENTITY label.version.value                     "phiên bản">
+<!ENTITY label.build.value                       "xây dựng">
+<!ENTITY tab.authors.label                       "Các tác giả">
+<!ENTITY tab.contributors.label                  "Đóng góp">
+<!ENTITY tab.license.label                       "Giấy phép">
+
+<!-- chrome://pencil/content/UI/CollectionPane.xbl -->
+<!ENTITY menu.about.label                        "Giới thiệu...">
+<!ENTITY menu.collection.settings.label          "Tinh chỉnh bộ sưu tập...">
+<!ENTITY menu.hide.this.collection.label         "Ẩn bộ sưu tập">
+<!ENTITY menu.install.new.collection.label       "Cài bộ sưu tập mới...">
+<!ENTITY menu.show.hidden.collections.label      "Hiện các bộ sưu tập ẩn">
+<!ENTITY menu.uninstall.this.collection.label    "Hủy cài bộ sưu tập">
+<!ENTITY textbox.shape.filter.emptytext          "Lọc hình... (Ctrl + F)">
+
+<!-- chrome://pencil/content/UI/Window.xul -->
+<!ENTITY button.evaluate.label                   "Evaluate...">
+<!ENTITY menu.about.label                        "Giới thiệu...">
+<!ENTITY menu.advanced.config.label              "Cấu hình nâng cao">
+<!ENTITY menu.align.bottom.label                 "Canh dưới">
+<!ENTITY menu.align.center.label                 "Canh giữa">
+<!ENTITY menu.align.left.label                   "Canh trái">
+<!ENTITY menu.align.middle.label                 "Canh giữa">
+<!ENTITY menu.align.right.label                  "Canh phải">
+<!ENTITY menu.align.top.label                    "Canh trên">
+<!ENTITY menu.clipart.browser.label              "Trình duyệt ảnh...">
+<!ENTITY menu.collection.pane.label              "Cửa sổ bộ sưu tập">
+<!ENTITY menu.copy.label                         "Sao chép">
+<!ENTITY menu.cut.label                          "Cắt">
+<!ENTITY menu.document.accesskey                 "T">
+<!ENTITY menu.delete.label                       "Xóa">
+<!ENTITY menu.document.label                     "Tài liệu">
+<!ENTITY menu.dom.inspector.label                "DOM Inspector">
+<!ENTITY menu.duplicate.label                    "Nhân đôi">
+<!ENTITY menu.edit.accesskey                     "S">
+<!ENTITY menu.edit.label                         "Sửa">
+<!ENTITY menu.edit.page.notes.label              "Sửa ghi chú trang...">
+<!ENTITY menu.exit.label                         "Thoát">
+<!ENTITY menu.export.document.label              "Xuất tài liệu...">
+<!ENTITY menu.export.page.as.png.label           "Xuất trang dạng PNG...">
+<!ENTITY menu.export.sel.as.png.label            "Xuất vùng chọn dạng PNG...">
+<!ENTITY menu.goto.label                         "Đi tới...">
+<!ENTITY menu.group.label                        "Nhóm">
+<!ENTITY menu.help.accesskey                     "G">
+<!ENTITY menu.help.label                         "Trợ giúp">
+<!ENTITY menu.hide.heavy.elements.label          "Ẩn các thành phần nặng">
+<!ENTITY menu.install.new.collection.label       "Cài bộ sưu tập mới...">
+<!ENTITY menu.make.same.height.label             "Cùng chiều cao">
+<!ENTITY menu.make.same.mheight.label            "Cùng chiều cao nhỏ nhất">
+<!ENTITY menu.make.same.mwidth.label             "Cùng bề rộng nhỏ nhất">
+<!ENTITY menu.make.same.width.label              "Cùng bề rộng">
+<!ENTITY menu.manage.template.label              "Quản lý mẫu xuất...">
+<!ENTITY menu.move.left.label                    "Sang trái">
+<!ENTITY menu.move.right.label                   "Sang phải">
+<!ENTITY menu.new.document.label                 "Tài liệu mới">
+<!ENTITY menu.new.page.label                     "Trang mới...">
+<!ENTITY menu.new.window.label                   "Cửa sổ mới">
+<!ENTITY menu.open.label                         "Mở...">
+<!ENTITY menu.options.label                      "Tinh chỉnh...">
+<!ENTITY menu.paste.label                        "Dán">
+<!ENTITY menu.properties.label                   "Thuộc tính...">
+<!ENTITY menu.recent.documents.label             "Các tài liệu gần đây">
+<!ENTITY menu.redo.label                         "Làm lại">
+<!ENTITY menu.re.order.pages.label               "Xếp lại trang...">
+<!ENTITY menu.shape.accesskey                    "H">
+<!ENTITY menu.same.horiz.space.label             "Căn đều chiều ngang">
+<!ENTITY menu.same.vert.space.label              "Căn đều chiều dọc">
+<!ENTITY menu.save.as.label                      "Lưu dạng...">
+<!ENTITY menu.save.label                         "Lưu">
+<!ENTITY menu.select.all.label                   "Chọn tất cả">
+<!ENTITY menu.settings.label                     "Cấu hình">
+<!ENTITY menu.shape.label                        "Hình">
+<!ENTITY menu.stencil.generator.label            "Công cụ tạo Stencil...">
+<!ENTITY menu.tools.accesskey                    "C">
+<!ENTITY menu.settings.accesskey                 "N">
+<!ENTITY menu.tools.label                        "Công cụ">
+<!ENTITY menu.undo.label                         "Hủy bước">
+<!ENTITY menu.ungroup.label                      "Rã nhóm">
+<!ENTITY menu.view.accesskey                     "X">
+<!ENTITY menu.view.label                         "Xem">
+<!ENTITY pencil.title                            "Pencil">
+<!ENTITY tab.collections.label                   "Bộ sưu tập">
+<!ENTITY tab.my.stuffs.label                     "Bộ sưu tập của tôi">
+<!ENTITY toolbar.align.bottom.label              "Canh dưới">
+<!ENTITY toolbar.align.bottom.tooltiptext        "Canh dưới">
+<!ENTITY toolbar.align.center.label              "Canh giữa">
+<!ENTITY toolbar.align.center.tooltiptext        "Canh giữa">
+<!ENTITY toolbar.align.left.label                "Canh trái">
+<!ENTITY toolbar.align.left.tooltiptext          "Canh trái">
+<!ENTITY toolbar.align.middle.label              "Canh giữa">
+<!ENTITY toolbar.align.middle.tooltiptext        "Canh giữa">
+<!ENTITY toolbar.align.right.label               "Canh phải">
+<!ENTITY toolbar.align.right.tooltiptext         "Canh phải">
+<!ENTITY toolbar.align.top.label                 "Canh trên">
+<!ENTITY toolbar.align.top.tooltiptext           "Canh trên">
+<!ENTITY toolbar.bring.forward.label             "Nâng lên trên">
+<!ENTITY toolbar.bring.forward.tooltiptext       "Nâng lên trên">
+<!ENTITY toolbar.bring.to.front.label            "Lên trên cùng">
+<!ENTITY toolbar.bring.to.front.tooltiptext      "Lên trên cùng">
+<!ENTITY toolbar.cancel.zoom.label               "Hủy thu phóng">
+<!ENTITY toolbar.cancel.zooming.tooltiptext      "Hủy thu phóng">
+<!ENTITY toolbar.copy.format.tooltiptext         "Chép thuộc tính hình">
+<!ENTITY toolbar.create.doc.tooltiptext          "Tạo tài liệu mới">
+<!ENTITY toolbar.format.painter.label            "Công cụ sao chép thuộc tính">
+<!ENTITY toolbar.make.same.horiz.tooltip         "Căn đều chiều ngang">
+<!ENTITY toolbar.make.same.vert.tooltip          "Căn đều chiều dọc">
+<!ENTITY toolbar.new.document.label              "Tài liệu mới">
+<!ENTITY toolbar.new.page.label                  "Trang mới...">
+<!ENTITY toolbar.open.doc.tooltiptext            "Mở tài liệu có sẵn">
+<!ENTITY toolbar.open.label                      "Mở">
+<!ENTITY toolbar.save.label                      "Lưu">
+<!ENTITY toolbar.save.doc.as.tooltiptext         "Lưu tài liệu dạng">
+<!ENTITY toolbar.save.doc.tooltiptext            "Lưu tài liệu này">
+<!ENTITY toolbar.send.backward.label             "Hạ xuống dưới">
+<!ENTITY toolbar.send.backward.tooltip           "Hạ xuống dưới">
+<!ENTITY toolbar.send.to.back.label              "Xuống dưới cùng">
+<!ENTITY toolbar.send.to.back.tooltiptext        "Xuống dưới cùng">
+<!ENTITY toolbar.zoom.in.label                   "Phóng to">
+<!ENTITY toolbar.zoom.in.tooltiptext             "Phóng to">
+<!ENTITY toolbar.zoom.out.label                  "Thu nhỏ">
+<!ENTITY toolbar.zoom.out.tooltiptext            "Thu nhỏ">
+
+<!-- chrome://pencil/content/UI/ClipartBrowser.xul -->
+<!ENTITY clipart.browsing.title                  "Công cụ duyệt ảnh">
+<!ENTITY input.scale.image.value                 "Co hình nhỏ lại trước khi chèn.">
+<!ENTITY span.prev.results.value                 "&#171; Các kết quả trước">
+<!ENTITY span.more.results.value                 "Thêm kết quả &#187;">
+<!ENTITY span.show.value                         "Hiển thị">
+<!ENTITY span.results.per.page.value             "kết quả mỗi trang">
+
+<!-- chrome://pencil/content/UI/ClipartBrowserPane.xbl -->
+<!ENTITY menu.copy.image.label                   "Chép hình">
+<!ENTITY menu.insert.image.label                 "Chèn hình">
+
+<!-- chrome://pencil/content/UI/ColorToolOverlay.xul -->
+<!ENTITY label.color.value                       "Màu:">
+<!ENTITY colorbutton.change.bgrfill.tooltip      "Chỉnh màu nền">
+<!ENTITY colorbutton.change.stroke.tooltip       "Chỉnh màu viền">
+<!ENTITY colorbutton.change.text.tooltip         "Chỉnh màu chữ">
+<!ENTITY colorbutton.change.text.hili.tooltip    "Chỉnh màu nền chữ">
+
+<!-- chrome://pencil/content/UI/ExportTemplateManagementDialog.xul -->
+<!ENTITY export.template.management.title        "Quản lý mẫu xuất">
+<!ENTITY label.templates.for.value               "Mẫu cho:">
+<!ENTITY menu.exporting.to.html.label            "Xuất ra tài liệu HTML">
+<!ENTITY menu.exporting.to.text.label            "Xuất ra tài liệu văn bản (ODT, DOC, PDF...)">
+<!ENTITY treecol.author.label                    "Tác giả">
+<!ENTITY treecol.information.label               "Thông tin">
+<!ENTITY treecol.template.label                  "Mẫu">
+<!ENTITY button.extra1.uninstall                 "Hủy cài">
+<!ENTITY button.extra2.install.new.template      "Cài mẫu mới...">
+<!ENTITY button.cancel.close                     "Đóng">
+
+<!-- chrome://pencil/content/UI/ExportWizard.xul -->
+<!ENTITY button.browse.label                     "Duyệt...">
+<!ENTITY checkbox.copy.links.bgr.label           "Chép liên kết từ trang nền">
+<!ENTITY checkbox.copy.links.accesskey           "C">
+<!ENTITY document.export.wizard.title            "Công cụ xuất tài liệu">
+<!ENTITY label.2.of.3.pages.selected.value       "2 của 3 trang được chọn.">
+<!ENTITY label.destination.value                 "Đích:">
+<!ENTITY label.other.options.value               "Các tùy chọn khác:">
+<!ENTITY label.output.format.value               "Kiểu xuất:">
+<!ENTITY label.pages.to.export.value             "Trang để xuất:">
+<!ENTITY label.template.value                    "Mẫu:">
+<!ENTITY label.manage.template.value             "Quản lý mẫu...">
+<!ENTITY radio.all.pages.label                   "Tất cả trang trong tài liệu">
+<!ENTITY radio.all.pages.accesskey               "T">
+<!ENTITY radio.all.pages.except.bgr.label        "Tất cả trang trừ trang nền">
+<!ENTITY radio.all.except.accesskey              "N">
+<!ENTITY radio.only.pages.label                  "Chỉ các trang sau:">
+<!ENTITY radio.only.pages.accesskey              "S">
+<!ENTITY wizard.select.output.description        "Chọn kiểu xuất">
+<!ENTITY wizard.select.export.description        "Chọn trang bạn muốn xuất">
+<!ENTITY wizard.select.options.description       "Chọn mẫu và chỉnh tùy chọn xuất">
+
+<!-- chrome://pencil/content/UI/Firefox-Overlay.xul -->
+<!ENTITY menu.pencil.sketching.label             "Pencil Sketching...">
+<!ENTITY menu.send.page.to.pencil.label          "Send Page to Pencil Document...">
+
+<!-- chrome://pencil/content/UI/PageDetailDialog.xul -->
+<!ENTITY checkbox.dim.background.label           "Làm tối nền">
+<!ENTITY dialog.new.page.title                   "Trang mới">
+<!ENTITY label.pixels.value                      "(điểm ảnh)">
+<!ENTITY label.background.value                  "Nền">
+<!ENTITY label.create.new.page.value             "Tạo trang mới">
+<!ENTITY label.page.size.value                   "Cỡ trang">
+<!ENTITY label.page.title.value                  "Tên trang">
+<!ENTITY label.enter.page.prop.value             "Vui lòng nhập thông tin thuộc tính trang">
+<!ENTITY menu.960.web.page.label                 "Trang Web cỡ 960 (960x600)">
+<!ENTITY menu.960.web.page.long.label            "Trang Web cỡ 960 - dài (960x900)">
+<!ENTITY menu.a4.at.300dpi.label                 "A4 với 300dpi">
+<!ENTITY menu.a4.at.90dpi.label                  "A4 với 90dpi">
+<!ENTITY menu.background.color.label             "Màu nền">
+<!ENTITY menu.compact.web.page.label             "Trang Web nhỏ (800x600)">
+<!ENTITY menu.custom.size.label                  "Tùy chọn...">
+<!ENTITY menu.fit.current.view.label             "Vừa vùng hiển thị ()">
+<!ENTITY menu.large.web.page.label               "Trang Web lớn (1280x800)">
+<!ENTITY menu.last.used.label                    "Lần dùng trước (800x600)">
+<!ENTITY menu.normal.web.page.label              "Trang Web bình thường (1024x768)">
+<!ENTITY menu.transparent.bgr.label              "Nền trong suốt">
+<!ENTITY colorbutton.select.bgr.tooltiptext      "Chọn màu nền">
+<!ENTITY html.config.size.value                  "Chỉnh kích thước...">
+
+<!-- chrome://pencil/content/UI/PageNoteDialog.xul -->
+<!ENTITY dialog.edit.page.note.title             "Sửa chú thích trang - Evolus Pencil">
+<!ENTITY menu.address..label                     "Địa chỉ">
+<!ENTITY menu.block.format.label                 "Định dạng khối">
+<!ENTITY menu.formatted.label                    "Đã định dạng">
+<!ENTITY menu.heading.1.label                    "Đầu mục 1">
+<!ENTITY menu.heading.2.label                    "Đầu mục 2">
+<!ENTITY menu.heading.3.label                    "Đầu mục 3">
+<!ENTITY menu.heading.4.label                    "Đầu mục 4">
+<!ENTITY menu.heading.5.label                    "Đầu mục 5">
+<!ENTITY menu.heading.6.label                    "Đầu mục 6">
+<!ENTITY menu.normal.label                       "Bình thường">
+<!ENTITY menu.paragraph.label                    "Đoạn văn">
+<!ENTITY menu.text.font.label                    "Kiểu chữ">
+<!ENTITY menu.text.size.label                    "Cỡ chữ">
+<!ENTITY toolbar.bgr.color.tooltiptext           "Màu nền">
+<!ENTITY toolbar.bold.tooltiptext                "Đậm">
+<!ENTITY toolbar.clear.format.tooltiptext        "Xóa định dạng">
+<!ENTITY toolbar.indent.tooltiptext              "Thụt vào">
+<!ENTITY toolbar.insert.link.tooltiptext         "Chèn liên kết">
+<!ENTITY toolbar.italic.tooltiptext              "Nghiêng">
+<!ENTITY toolbar.ourdered.list.tooltiptext       "Danh sách có thứ tự">
+<!ENTITY toolbar.outdent.tooltiptext             "Lùi ra">
+<!ENTITY toolbar.strike.through.tooltiptext      "Gạch ngang">
+<!ENTITY toolbar.text.color.tooltiptext          "Màu chữ">
+<!ENTITY toolbar.underline.tooltiptext           "Gạch dưới">
+<!ENTITY toolbar.unordered.list.tooltiptext      "Danh sách không có thứ tự">
+
+<!-- chrome://pencil/content/UI/PCanvas.xbl -->
+<!ENTITY menu.add.to.my.stuffs.label             "Thêm vào bộ sưu tập của tôi...">
+<!ENTITY menu.arrangement.label                  "Sắp xếp">
+<!ENTITY menu.bring.forward.label                "Đưa lên trên">
+<!ENTITY menu.bring.to.front.label               "Lên trên cùng">
+<!ENTITY menu.delete.label                       "Xóa">
+<!ENTITY menu.fit.content.label                  "Vừa nội dung">
+<!ENTITY menu.fit.content.padding.label          "Vừa nội dung với vùng đệm...">
+<!ENTITY menu.group.label                        "Nhóm">
+<!ENTITY menu.locked.label                       "Khóa">
+<!ENTITY menu.resize.canvas.label                "Kích thước vùng vẽ">
+<!ENTITY menu.send.backward.label                "Hạ xuống dưới">
+<!ENTITY menu.send.to.back.label                 "Xuống dưới cùng">
+<!ENTITY menu.ungroup.label                      "Rã nhóm">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionDialog.xul -->
+<!ENTITY caption.collection.infor.label          "Thôn tin bộ sưu tập">
+<!ENTITY dialog.edit.pri.collection.title        "Chỉnh thông tin bộ sưu tập cá nhân">
+<!ENTITY label.author.value                      "Tác giả:">
+<!ENTITY label.description.value                 "Thông tin:">
+<!ENTITY label.name.value                        "Tên:">
+<!ENTITY label.website.value                     "Trang web:">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionPane.xbl -->
+<!ENTITY menu.about.label                        "Giới thiệu...">
+<!ENTITY menu.delete.all.collections.label       "Xóa tất cả các bộ sưu tập">
+<!ENTITY menu.delete.this.collection.label       "Xóa bộ sưu tập">
+<!ENTITY menu.delete.this.shape.label            "Xóa hình">
+<!ENTITY menu.edit.this.collection.label         "Chỉnh bộ sưu tập...">
+<!ENTITY menu.edit.this.shape.label              "Chỉnh hình...">
+<!ENTITY menu.export.this.collection.label       "Xuất bộ sưu tập...">
+<!ENTITY menu.import.pri.collection.label        "Nhập bộ sưu tập...">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionWizard.xul -->
+<!ENTITY caption.collection.infor.label          "Thông tin bộ sưu tập">
+<!ENTITY caption.shape.definition.label          "Thông tin hình">
+<!ENTITY checkbox.auto.generate.icon.label       "Tụ động tạo biểu tượng">
+<!ENTITY create.pri.collection.wizard.title      "Công cụ tạo bộ sưu tập cá nhân">
+<!ENTITY label.description.value                 "Chú thích:">
+<!ENTITY label.icon.value                        "Biểu tượng:">
+<!ENTITY label.name.value                        "Tên:">
+<!ENTITY label.select.pri.collection.value       "Chọn bộ sưu tập:">
+<!ENTITY listitem.create.pri.collection.label    "Tạo bộ sưu tập mới">
+<!ENTITY wizard.collection.infor.desc            "Vui lòng nhập thông tin bộ sưu tập.">
+<!ENTITY wizard.select.pcollection.desc          "Chọn bộ sưu tập có sẵn hoặc tạo mới 1 bộ sưu tập">
+
+<!-- chrome://pencil/content/UI/PrivateShapeDialog.xul -->
+<!ENTITY checkbox.change.icon.label              "Đổi biểu tượng">
+<!ENTITY dialog.edit.shape.title                 "Chỉnh thông tin hình">
+
+<!-- chrome://pencil/content/UI/PropertyDialog.xul -->
+<!ENTITY properties.title                        "Thuộc tính">
+
+<!-- chrome://pencil/content/UI/Search.xbl -->
+<!ENTITY image.search.tooltiptext                "Tìm">
+<!ENTITY menu.manage.search.engines.label        "Quản lý bộ máy tìm kiếm">
+
+<!-- chrome://pencil/content/UI/SettingDialog.xul -->
+<!ENTITY caption.canvas.label                    "Vùng vẽ">
+<!ENTITY caption.clipartbrowser.label            "Trình duyệt hình">
+<!ENTITY caption.document.exporter.label         "Trình xuất tài liệu">
+<!ENTITY caption.edit.label                      "Chỉnh sửa">
+<!ENTITY caption.external.editor.label           "Công cụ ngoài">
+<!ENTITY checkbox.show.grid.label                "Hiện lưới">
+<!ENTITY cut.and.paste.same.place.label          "Cắt và Dán tại cùng 1 điểm">
+<!ENTITY dock.objects.to.objects.label           "Dính đối tượng vào đối tượng lớn hơn nằm dưới nó.">
+<!ENTITY embed.images.when.dnd.label             "Nhúng hình khi kéo và thả hình vào Pencil">
+<!ENTITY enable.undo.redo.label                  "Cho phép Hủy bước/Làm lại">
+<!ENTITY label.filter.value                      "Lọc:">
+<!ENTITY label.filter.accesskey                  "L">
+<!ENTITY label.grid.size.value                   "Cỡ lưới">
+<!ENTITY label.height.value                      "Cao">
+<!ENTITY label.openoffice.converter.value        "Công cụ chuyển đổi OpenOffice">
+<!ENTITY label.external.bitmap.editor.value      "Đường dẫn tới trình chỉnh sửa hình Bitmap">
+<!ENTITY label.external.svg.editor.value         "Đường dẫn tới trình chỉnh sửa SVG">
+<!ENTITY label.path.to.jod.converter.value       "Đường dẫn tới công cụ chuyển đổi JOD">
+<!ENTITY label.path.to.uno.converter.value       "Đường dẫn tới công cụ chuyển đổi UNO">
+<!ENTITY label.undo.level.value                  "Mức độ Hủy thao tác">
+<!ENTITY label.width.value                       "Rộng">
+<!ENTITY menu.modify.label                       "Thay đổi">
+<!ENTITY menu.modify.accesskey                   "A">
+<!ENTITY menu.boolean.label                      "Kiểu luận lý">
+<!ENTITY menu.boolean.accesskey                  "L">
+<!ENTITY menu.copy.label                         "Sao chép">
+<!ENTITY menu.copy.accesskey                     "C">
+<!ENTITY menu.copy.name.label                    "Sao chép Tên">
+<!ENTITY menu.copy.name.accesskey                "T">
+<!ENTITY menu.copy.value.label                   "Sao chép Giá trị">
+<!ENTITY menu.copy.value.accesskey               "G">
+<!ENTITY menu.integer.label                      "Số">
+<!ENTITY menu.integer.accesskey                  "S">
+<!ENTITY menu.jod.online.converter.label         "JOD - Công cụ chuyển đổi qua mạng">
+<!ENTITY menu.new.label                          "Mới">
+<!ENTITY menu.new.accesskey                      "M">
+<!ENTITY menu.reset.label                        "Mặc định">
+<!ENTITY menu.reset.accesskey                    "N">
+<!ENTITY menu.string.label                       "Chuỗi">
+<!ENTITY menu.string.accesskey                   "H">
+<!ENTITY menu.uno.converter.label                "UNO - Công cụ chuyển đổi bằng dòng lệnh">
+<!ENTITY pencil.settings.title                   "Cấu hình Pencil">
+<!ENTITY prefpane.advanced.label                 "Nâng cao">
+<!ENTITY prefpane.clipart.browser.label          "Trình duyệt ảnh">
+<!ENTITY prefpane.document.exporter.label        "Xuất tài liệu">
+<!ENTITY prefpane.external.editor.label          "Công cụ ngoài">
+<!ENTITY prefpane.general.label                  "Chung">
+<!ENTITY scale.images.before.inserting.label     "Co nhỏ hình trước khi chèn">
+<!ENTITY snap.objects.to.grid.label              "Dính đối tượng vào lưới.">
+<!ENTITY snap.objects.to.objects.label           "Dính đối tượng vào đối tượng.">
+<!ENTITY snap.objects.to.objects.bgr.label       "Dính đối tượng vào đối tượng trong trang nền.">
+<!ENTITY start.text.editting.label               "Hiện khung soạn ngay khi thả hình vào vùng vẽ.">
+<!ENTITY menu.toggle.label                       "Thay đổi">
+<!ENTITY menu.toggle.accesskey                   "A">
+<!ENTITY treecol.preference.name.label           "Tên thuộc tính">
+<!ENTITY treecol.status.label                    "Trạng thái">
+<!ENTITY treecol.type.label                      "Kiểu">
+<!ENTITY treecol.value.label                     "Giá trị">
+
+<!-- chrome://pencil/content/UI/StencilGenerator.xul -->
+<!ENTITY caption.collection.definition.label     "Thông tin bộ sưu tập">
+<!ENTITY caption.options.label                   "Tùy chỉnh">
+<!ENTITY caption.stencil.information.label       "Thông tin Stencil">
+<!ENTITY checkbox.detect.inkscape.label          "Nhận dạng nhóm Inkscape">
+<!ENTITY label.author.value                      "* Tác giả">
+<!ENTITY label.description.value                 "* Chú thích">
+<!ENTITY label.name.value                        "* Tên">
+<!ENTITY label.drag.images.value                 "Kéo hình vào danh sách phía trên.">
+<!ENTITY label.icon.value                        "Biểu tượng">
+<!ENTITY label.select.images.value               "Chọn hình">
+<!ENTITY label.website.value                     "Trang web">
+<!ENTITY stencil.generator.title                 "Công cụ tạo Stencil">
+<!ENTITY wizardpage.collection.infor.desc        "Nhập thông tin bộ sưu tập và ấn Tiếp Tục.">
+<!ENTITY wizardpage.stencil.infor.desc           "Thông tin Stencil">
+
+<!-- chrome://pencil/content/UI/TextToolOverlay.xul -->
+<!ENTITY menu.address.label                      "Địa chỉ">
+<!ENTITY menu.block.format.label                 "Định dạng khối">
+<!ENTITY menu.default.label                      "Mặc định">
+<!ENTITY menu.font.label                         "Chữ">
+<!ENTITY menu.formatted.label                    "Đã định dạng">
+<!ENTITY menu.heading.1.label                    "Đầu mục 1">
+<!ENTITY menu.heading.2.label                    "Đầu mục 2">
+<!ENTITY menu.heading.3.label                    "Đầu mục 3">
+<!ENTITY menu.heading.4.label                    "Đầu mục 4">
+<!ENTITY menu.heading.5.label                    "Đầu mục 5">
+<!ENTITY menu.heading.6.label                    "Đầu mục 6">
+<!ENTITY menu.normal.label                       "Bình thường">
+<!ENTITY menu.paragraph.label                    "Đoạn văn">
+<!ENTITY menu.size.label                         "Cỡ">
+<!ENTITY menu.text.font.label                    "Kiểu chữ">
+<!ENTITY pcolorbutton.bgr.color.tooltip          "Màu nền">
+<!ENTITY pcolorbutton.text.color.tooltip         "Màu chữ">
+<!ENTITY toolbar.align.center.tooltiptext        "Canh giữa">
+<!ENTITY toolbar.align.left.tooltiptext          "Canh trái">
+<!ENTITY toolbar.align.right.tooltiptext         "Canh phải">
+<!ENTITY toolbar.bold.tooltiptext                "Đậm">
+<!ENTITY toolbar.clear.format.tooltiptext        "Bỏ định dạng">
+<!ENTITY toolbar.dec.font.size.tooltiptext       "Giảm cỡ chữ">
+<!ENTITY toolbar.inc.font.size.tooltiptext       "Tăng cỡ chữ">
+<!ENTITY toolbar.indent.tooltiptext              "Thụt vào">
+<!ENTITY toolbar.insert.link.tooltiptext         "Chèn liên kết">
+<!ENTITY toolbar.italic.tooltiptext              "Nghiêng">
+<!ENTITY toolbar.ourdered.list.tooltiptext       "Danh sách có thứ tự">
+<!ENTITY toolbar.outdent.tooltiptext             "Lùi ra">
+<!ENTITY toolbar.strike.through.tooltiptext      "Gạch ngang">
+<!ENTITY toolbar.underline.tooltiptext           "Gạch dưới">
+<!ENTITY toolbar.unordered.list.tooltiptext      "Danh sách không có thứ tự">
+
+
+<!-- chrome://pencil/content/PropertyType/Editor/AlignEditor.xbl -->
+<!ENTITY align.bottom.center.tooltiptext         "Dưới - Giữa">
+<!ENTITY align.bottom.left.tooltiptext           "Dưới - Trái">
+<!ENTITY align.bottom.right.tooltiptext          "Dưới - Phải">
+<!ENTITY align.middle.center.tooltiptext         "Giữa - Giữa">
+<!ENTITY align.middle.left.tooltiptext           "Giữa - Trái">
+<!ENTITY align.middle.right.tooltiptext          "Giữa - Phải">
+<!ENTITY align.top.center.tooltiptext            "Trên - Giữa">
+<!ENTITY align.top.left.tooltiptext              "Trên - Trái">
+<!ENTITY align.top.right.tooltiptext             "Trên - Phải">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ColorEditor.xbl -->
+<!ENTITY label.html.code.value                   "Mã HTML">
+<!ENTITY label.opacity.value                     "Độ mờ đục: 100">
+<!ENTITY label.preview.value                     "Xem trước">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ColorPickers.xbl -->
+<!ENTITY label.brightness.value                  "Sáng">
+<!ENTITY label.hue.value                         "Sắc màu">
+<!ENTITY label.sat.value                         "Độ bão hòa">
+<!ENTITY toolbar.remove.color.tooltiptext        "Bỏ bão hòa, chuyển sang mức xám">
+
+<!-- chrome://pencil/content/PropertyType/Editor/FontEditor.xbl -->
+<!ENTITY button.b.label                          "B">
+<!ENTITY button.i.label                          "I">
+<!ENTITY button.u.label                          "U">
+<!ENTITY label.family.value                      "Kiểu">
+<!ENTITY label.size.value                        "Cỡ">
+<!ENTITY label.style.weight.value                "Kiểu &amp; Độ dày">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ShadowStyleEditor.xbl -->
+<!ENTITY label.blur.size.value                   "Kích cỡ mờ :">
+<!ENTITY label.x.offset.value                    "Tọa độ X:">
+<!ENTITY label.y.offset.value                    "Tọa độ Y:">
+
+<!-- chrome://pencil/content/PropertyType/Editor/StrokeEditor.xbl -->
+<!ENTITY label.style.value                       "Kiểu">
+<!ENTITY label.width.value                       "Kích thước">

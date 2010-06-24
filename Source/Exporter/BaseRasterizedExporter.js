@@ -1,5 +1,5 @@
 function BaseRasterizedExporter() {
-    this.name = "Rasterized graphics (PNG files)";
+    this.name = Util.getMessage("rasterized.graphics.png.files");
     this.id = "BaseRasterizedExporter";
 }
 BaseRasterizedExporter.prototype = new BaseExporter();
@@ -15,7 +15,7 @@ BaseRasterizedExporter.prototype.export = function (doc, options, destFile, xmlF
     callback();
 };
 BaseRasterizedExporter.prototype.getWarnings = function () {
-    return "No linkings are preserved when the document is exported to rasterized images";
+    return Util.getMessage("no.linkings.are.preserved");
 };
 BaseRasterizedExporter.prototype.fixAbsoluteRasterizedPaths = function (sourceDOM, destDir) {
     //changing rasterized path to relative

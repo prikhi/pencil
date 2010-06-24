@@ -41,7 +41,7 @@ Pencil.postBoot = function() {
 
                 var filePath = ""
                 var i = 0;
-                while (true && cmdLine.length > 0) {
+                while (true && i < cmdLine.length) {
                     try {
                         var part = cmdLine.getArgument(i);
                         if (!part) break;
