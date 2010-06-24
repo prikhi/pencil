@@ -126,7 +126,7 @@ OpenClipartSearch.prototype.searchImpl = function(query, options, callback) {
     var thiz = this;
 
     debug("OpenClipart: searching '" + query + "'");
-    debug("url: " + url);
+    //debug("url: " + url);
     WebUtil.get(url, function(response) {
         var r = thiz.parseSearchResult(response);
         if (callback) {
@@ -142,7 +142,7 @@ OpenClipartSearch.prototype.formatType = function(ty) {
             return ty.substring(idx + 1).toUpperCase();
         }
     }
-    return "Unknow type";
+    return Util.getMessage("unknow.type");
 };
 
 OpenClipartSearch.prototype.parseSearchResult = function(response) {

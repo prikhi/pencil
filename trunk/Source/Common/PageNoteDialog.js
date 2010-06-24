@@ -1,6 +1,6 @@
 var PageNoteDialog = {};
 PageNoteDialog.handleLoad = function (event) {
-    
+
     try {
         //setup font list
         var fontPopup = document.getElementById("fontPopup");
@@ -49,9 +49,9 @@ PageNoteDialog.handleLoad = function (event) {
 PageNoteDialog.doCancel = function () {
     try {
         if(PageNoteDialog.modified ) {
-            var result = Util.confirmExtra("Save changes to note before closing?",
-                                    "If you don't save changes will be permanently lost.",
-                                    "Save", "Discard Changes", "Cancel");
+            var result = Util.confirmExtra(Util.getMessage("save.changes.to.note.before.closing"),
+                                    Util.getMessage("save.changes.will.be.permanently.lost"),
+                                    Util.getMessage("button.save.label"), Util.getMessage("button.discard.changes"), Util.getMessage("button.cancel.label"));
             if (result.cancel) return false;
             if (result.accept) return PageNoteDialog.doApply();
         }
@@ -81,7 +81,7 @@ PageNoteDialog.markNoteModified = function () {
     }
 }
 function runEditorCommand(command, arg) {
-    
+
     try {
         if (typeof(arg) != "undefined") PageNoteDialog.editor.contentDocument.execCommand(command, false, arg);
         else PageNoteDialog.editor.contentDocument.execCommand(command, false, null);
@@ -107,7 +107,7 @@ function queryState(command) {
 
 
 function doInsertLink() {
-    var url = window.prompt('Please specify the URL', 'http://www.evolus.vn');
+    var url = window.prompt(Util.getMessage("please.specify.the.url"), 'http://www.evolus.vn');
     if (url) {
         runEditorCommand('createlink', url);
     } else {

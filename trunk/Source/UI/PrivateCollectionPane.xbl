@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings xmlns="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:html="http://www.w3.org/1999/xhtml"
           xmlns:svg="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-          >
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil">
     <binding id="privateCollectionPane">
         <implementation>
             <constructor>
@@ -72,7 +76,7 @@
                         thiz.deleteShapeMenuItem.disabled = !hasShapeDef;
                         thiz.editShapeMenuItem.disabled = !hasShapeDef;
                         if (collection) {
-                            thiz.aboutMenuItem.setAttribute("label", "About " + thiz.currentCollection.displayName);
+                            thiz.aboutMenuItem.setAttribute("label", Util.getMessage("collectionpane.about.collection", thiz.currentCollection.displayName));
                             thiz.aboutMenuItem.style.display = '';
                             thiz.sepAboutMenuItem.style.display = '';
                         } else {
@@ -170,10 +174,10 @@
                         var collection = thiz.currentCollection;
                         var detail = "<div>" + Dom.htmlEncode(collection.description) + "</div><ul>";
                         if (collection.author) {
-                            detail += "<li><strong>Author</strong>: " + Dom.htmlEncode(collection.author) + "</li>";
+                            detail += "<li><strong>" + Util.getMessage("collectionpane.author.label") + "</strong> " + Dom.htmlEncode(collection.author) + "</li>";
                         }
-                        if (collection.author) {
-                            detail += "<li><strong>More information</strong>: <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
+                        if (collection.infoUrl) {
+                            detail += "<li><strong>" + Util.getMessage("collectionpane.more.information.label") + "</strong> <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
                         }
                         detail += "</ul>"
                         Util.info(collection.displayName, new RichText(detail));
@@ -192,7 +196,7 @@
                     },
                     onDragOver: function (evt, flavour, session){},
                     onDrop: function (evt, transferData, session) {
-                        debug("onDrop");
+                        //debug("onDrop");
                     }
                 };
             ]]>
@@ -271,20 +275,19 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                    
+
                     try {
                         var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
-                        debug("start draging: " + defNode._def.displayName);
+                        //debug("start draging: " + defNode._def.displayName);
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
-                                
-                                debug("dragging started: " + defNode._def.displayName);
+                                //debug("dragging started: " + defNode._def.displayName);
                                 transferData.data = new TransferData();
                                 transferData.data.addDataForFlavour("pencil/privatedef", defNode._def.id);
                                 transferData.data.addDataForFlavour("text/unicode", defNode._def.displayName);
                             }
                         });
-                        debug("end draging: " + defNode._def.displayName);
+                        //debug("end draging: " + defNode._def.displayName);
                     } catch (e) { alert(e); }
                 ]]>
                 </body>
@@ -293,7 +296,7 @@
         <handlers>
             <handler event="dragover">
                 <![CDATA[
-                    
+
                     //debug("dragover");
                     try {
                         var accepted = nsDragAndDrop.dragOver(event, this.dragObserver);
@@ -302,8 +305,8 @@
             </handler>
             <handler event="dragdrop">
                 <![CDATA[
-                    
-                    debug("drop");
+
+                    //debug("drop");
                 ]]>
             </handler>
         </handlers>
@@ -316,17 +319,17 @@
             </vbox>
             <popupset>
                 <popup aid="contextPopup">
-                    <menuitem aid="editShapeMenuItem" label="Edit this shape..." />
-                    <menuitem aid="deleteShapeMenuItem" label="Delete this shape" />
+                    <menuitem aid="editShapeMenuItem" label="&menu.edit.this.shape.label;" />
+                    <menuitem aid="deleteShapeMenuItem" label="&menu.delete.this.shape.label;" />
                     <menuseparator/>
-                    <menuitem aid="importCollectionMenuItem" label="Import new private collection..." />
-                    <menuitem aid="exportCollectionMenuItem" label="Export this collection..." />
-                    <menuitem aid="editCollectionMenuItem" label="Edit this collection..." />
+                    <menuitem aid="importCollectionMenuItem" label="&menu.import.pri.collection.label;" />
+                    <menuitem aid="exportCollectionMenuItem" label="&menu.export.this.collection.label;" />
+                    <menuitem aid="editCollectionMenuItem" label="&menu.edit.this.collection.label;" />
                     <menuseparator/>
-                    <menuitem aid="deleteCollectionMenuItem" label="Delete this collection" />
-                    <menuitem aid="removeAllCollectionMenuItem" label="Delete all collections" />
+                    <menuitem aid="deleteCollectionMenuItem" label="&menu.delete.this.collection.label;" />
+                    <menuitem aid="removeAllCollectionMenuItem" label="&menu.delete.all.collections.label;" />
                     <menuseparator aid="sepAboutMenuItem"/>
-                    <menuitem aid="aboutMenuItem" label="About..." />
+                    <menuitem aid="aboutMenuItem" label="&menu.about.label;" />
                 </popup>
             </popupset>
         </xbl:content>

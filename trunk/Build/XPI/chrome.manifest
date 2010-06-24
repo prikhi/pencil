@@ -1,2 +1,6 @@
-content	pencil	chrome/content/
+content pencil chrome/content/ contentaccessible=yes
+
+locale  pencil en-US       chrome/locale/en-US/
+locale  pencil vi-VN       chrome/locale/vi-VN/
+
 overlay chrome://browser/content/browser.xul chrome://pencil/content/UI/Firefox-Overlay.xul

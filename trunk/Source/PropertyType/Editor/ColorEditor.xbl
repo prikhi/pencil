@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings xmlns="http://www.mozilla.org/xbl"
           xmlns:xbl="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:html="http://www.w3.org/1999/xhtml"
           xmlns:svg="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-          >
+          xmlns:p="http://www.evolus.vn/Namespace/Pencil">
     <binding id="colorEditor">
         <implementation>
             <constructor>
@@ -34,7 +38,7 @@
                 }, false);
 
                 this.opacity.addEventListener("change", function(event) {
-                    thiz.opacityText.value = "Opacity: " + thiz.opacity.value + "%";
+                    thiz.opacityText.value = Util.getMessage("opacity.value", thiz.opacity.value) + "%";
                     thiz._updatePreviewColor();
                     event.stopPropagation();
                 }, false);
@@ -133,7 +137,7 @@
                     this.colorCode.value = colorText;
                     var a = Math.round(color.a * 100) % 101;
                     this.opacity.setAttribute("value", a);
-                    this.opacityText.setAttribute("value", "Opacity: " + a + "%");
+                    this.opacityText.setAttribute("value", Util.getMessage("opacity.value", a) + "%");
 
                     this.isUserModified = false;
 
@@ -183,15 +187,15 @@
         <content>
             <hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">
                 <pwheelcolorpicker aid="colorPicker" flex="1" xbl:inherits="disabled,color=value"/>
-                <vbox>
-                    <label value="HTML code" xbl:inherits="disabled"/>
+                <vbox flex="1">
+                    <label value="&label.html.code.value;" xbl:inherits="disabled"/>
                     <hbox>
                         <textbox aid="colorCode" xbl:inherits="disabled" flex="1" style="min-width: 50px;" size="8" value="#000000"/>
                         <button aid="dropperButton" image="moz-icon://stock/stock_3d-color-picker?size=16" style="min-width: 0px; margin: 0px; pargin-left: 3px;"/>
                     </hbox>
-                    <label value="Opacity: 0%" xbl:inherits="disabled" aid="opacityText"/>
+                    <label value="&label.opacity.value;%" xbl:inherits="disabled" aid="opacityText"/>
                     <scale aid="opacity" min="0" max="100" xbl:inherits="disabled"/>
-                    <label value="Preview" xbl:inherits="disabled"/>
+                    <label value="&label.preview.value;" xbl:inherits="disabled"/>
                     <hbox pack="center">
                         <box aid="previewContainer">
                             <box aid="previewBox"/>

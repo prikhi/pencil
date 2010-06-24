@@ -69,7 +69,7 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
 
     this._width = page.properties.width;
     this._height = page.properties.height;
-    this._backgroundColor = page.properties.transparentBackground == false ? page.properties.backgroundColor : null;
+    this._backgroundColor = page.properties.transparentBackground == "false" ? page.properties.backgroundColor : null;
 
     if (page._view.canvas.hasBackgroundImage) {
         var bgImage = page._view.canvas.backgroundImage.cloneNode(true);
@@ -90,7 +90,7 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
 };
 
 Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
-    
+
     var h = 0;
     var w = 0;
     if (this._width && this._height) {
@@ -156,7 +156,7 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
         "<?xml-stylesheet href=\"chrome://pencil/content/Styles/HtmlForeignObject.css\" type=\"text/css\"?>");
 
     var url = ios.newFileURI(this.lastTempFile).spec;
-    
+
     debug("Rasterize SVG: " + url);
 
     if (loadCallback) {
@@ -198,7 +198,7 @@ Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, prepr
 };
 
 Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocessor, backgroundColor) {
-    
+
 
     if (preprocessor && preprocessor.process) {
         preprocessor.process(this.win.document);
@@ -258,7 +258,7 @@ Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocesso
 
 Rasterizer.prototype.saveURI = function (url, file)
 {
-    
+
 
     uri = Components.classes["@mozilla.org/network/standard-url;1"].
           createInstance(Components.interfaces.nsIURI);
@@ -309,13 +309,13 @@ PersistProgressListener.prototype =
 
   onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
   {
-    if(aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)  
+    if(aStateFlags & Components.interfaces.nsIWebProgressListener.STATE_STOP)
     {
         if (this.callback) {
             var f = this.callback;
             f();
         }
-    }  
+    }
   },
 
   onLocationChange : function(aWebProgress, aRequest, aLocation)

@@ -103,7 +103,7 @@ ExportWizard.onPageSelectionChanged = function () {
         total ++;
     });
 
-    label.value = selected + " of " + total + " page(s) selected";
+    label.value = Util.getMessage("selected.page.of.total", selected, total);
 };
 ExportWizard.getSelectedExporter = function () {
     return ExportWizard.exporterRadioGroup.selectedItem._exporter;
@@ -132,7 +132,7 @@ ExportWizard.onExporterChanged = function () {
         ExportWizard.templateMenu.disabled = true;
 
         var menuitem = document.createElementNS(PencilNamespaces.xul, "menuitem");
-        menuitem.setAttribute("label", "(Template not supported)");
+        menuitem.setAttribute("label", Util.getMessage("template.not.supported"));
         popup.appendChild(menuitem);
     } else {
         ExportWizard.templateMenu.disabled = false;
@@ -188,7 +188,7 @@ ExportWizard.browseTargetFile = function () {
     if (currentDir) fp.displayDirectory = currentDir;
 
     if (isChoosingFile) {
-        fp.init(window, "Select output file", nsIFilePicker.modeSave);
+        fp.init(window, Util.getMessage("select.output.file"), nsIFilePicker.modeSave);
         var exts = exporter.getOutputFileExtensions();
         if (exts) {
             for (i in exts) {
@@ -197,10 +197,10 @@ ExportWizard.browseTargetFile = function () {
         }
 
     } else {
-        fp.init(window, "Select destination", nsIFilePicker.modeGetFolder);
+        fp.init(window, Util.getMessage("select.destination"), nsIFilePicker.modeGetFolder);
     }
 
-    fp.appendFilter("All Files", "*");
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() == nsIFilePicker.returnCancel) return;
 
@@ -215,7 +215,7 @@ ExportWizard.validatePageSelection = function () {
     });
 
     if (selected == 0) {
-        Util.error("Error", "Please select at least one page to export");
+        Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.at.least.one.page.to.export"));
         return false;
     }
 
@@ -224,7 +224,7 @@ ExportWizard.validatePageSelection = function () {
 };
 ExportWizard.validateOptions = function () {
     if (!ExportWizard.targetFilePathText.value) {
-        Util.error("Error", "Please select the target directory");
+        Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.the.target.directory"));
         ExportWizard.targetFilePathText.focus();
         return false;
     }
@@ -234,7 +234,7 @@ ExportWizard.validateOptions = function () {
     file.initWithPath(ExportWizard.targetFilePathText.value);
 
     if (!file.parent.exists()) {
-        Util.error("Error", "The specified path does not exists.");
+        Util.error(Util.getMessage("error.title"), Util.getMessage("the.specified.path.does.not.exists"));
         ExportWizard.targetFilePathText.focus();
 
         return false;

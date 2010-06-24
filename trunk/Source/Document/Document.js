@@ -55,7 +55,7 @@ PencilDocument.prototype.getFirstPageByName = function (name) {
 
 
 function Page(doc) {
-    if (!doc) throw "Attempting to construct a page outside the scope of a valid document.";
+    if (!doc) throw Util.getMessage("attempting.to.construct.a.page.outside.the.scope.of.a.valid.document");
     this.doc = doc;
     this.properties = {};
     this.contentNode = null;
@@ -110,7 +110,7 @@ Page._validateBackgroundInternal = function (list, page) {
     var newList = [];
     for (var i in list) {
         var p = list[i];
-        if (p.equals(page)) throw "Cyclic ref found in background settings.";
+        if (p.equals(page)) throw Util.getMessage("cyclic.ref.found.in.background.settings");
         newList.push(p);
     }
     var nextBg = page.getBackgroundPage();

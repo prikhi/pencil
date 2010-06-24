@@ -21,14 +21,14 @@ ImageData.ios = Components.classes["@mozilla.org/network/io-service;1"]
 ImageData.prompt = function (callback, embbeded) {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Select Image", nsIFilePicker.modeOpen);
-    fp.appendFilter("Images", "*.png; *.jpg; *.jpeg; *.gif; *.bmp; *.svg");
-    fp.appendFilter("All Files", "*");
-    
+    fp.init(window, Util.getMessage("select.image"), nsIFilePicker.modeOpen);
+    fp.appendFilter(Util.getMessage("filepicker.images.file"), "*.png; *.jpg; *.jpeg; *.gif; *.bmp; *.svg");
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
+
     if (fp.show() != nsIFilePicker.returnOK) return null;
-    
+
     var url = ImageData.ios.newFileURI(fp.file).spec;
-    
+
     if (!embbeded) {
         ImageData.fromUrl(url, callback);
     } else {
@@ -40,7 +40,7 @@ ImageData.fromUrl = function (url, callback) {
     ImageData.win.document.body.innerHTML = "";
     var image = ImageData.win.document.createElementNS(PencilNamespaces.html, "img");
     ImageData.win.document.body.appendChild(image);
-    
+
     image.addEventListener("load", function (event) {
         debug("image loaded");
         try {
@@ -49,7 +49,7 @@ ImageData.fromUrl = function (url, callback) {
             Console.dumpError(e);
         }
     }, false);
-    
+
     image.setAttribute("src", url);
     debug("after setting image url: " + image.src);
 };
@@ -67,12 +67,12 @@ ImageData.fromUrlEmbedded = function (url, callback) {
         ctx.scale(1, 1);
         ctx.drawImage(image, 0, 0);
         ctx.restore();
-        
+
         var data = canvas.toDataURL();
-        
+
         callback(new ImageData(image.width, image.height, data));
     };
-    
+
     image.src = url;
 };
 
@@ -87,15 +87,15 @@ window.addEventListener("load", function () {
 
     var container = document.body;
     if (!container) container = document.documentElement;
-    
+
     var box = document.createElement("box");
     box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
     box.style.MozBoxPack = "start";
     box.style.MozBoxAlign = "start";
     box.appendChild(iframe);
-    
+
     container.appendChild(box);
-    
+
     ImageData.win = iframe.contentWindow;
     ImageData.win.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
 }, false);

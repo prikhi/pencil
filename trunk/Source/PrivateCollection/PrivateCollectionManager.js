@@ -5,7 +5,7 @@ PrivateCollectionManager.privateShapeDef.shapeDefMap = {};
 PrivateCollectionManager.privateShapeDef.collections = [];
 
 PrivateCollectionManager.loadPrivateCollections = function () {
-    
+
     try {
         var privateCollectionXmlLocation = PrivateCollectionManager.getPrivateCollectionDirectory();
         debug("loading private collections: " + privateCollectionXmlLocation.path);
@@ -99,8 +99,8 @@ PrivateCollectionManager.reloadCollectionPane = function () {
     Pencil.privateCollectionPane.reloadCollections();
 };
 PrivateCollectionManager.deleteShape = function (collection, shapeDef) {
-    if (!Util.confirm("Are you sure you want to delete " + shapeDef.displayName + "?",
-                      "Warning: deleting a shape makes shapes created by that shape uneditable.")) return;
+    if (!Util.confirm(Util.getMessage("delete.private.shape.confirm", shapeDef.displayName),
+                      Util.getMessage("delete.private.shape.discription"))) return;
     for (var i = 0; i < PrivateCollectionManager.privateShapeDef.collections.length; i++) {
         if (PrivateCollectionManager.privateShapeDef.collections[i].id == collection.id) {
             PrivateCollectionManager.privateShapeDef.collections[i].deleteShape(shapeDef);
@@ -111,8 +111,8 @@ PrivateCollectionManager.deleteShape = function (collection, shapeDef) {
     }
 };
 PrivateCollectionManager.deleteCollection = function (collection) {
-    if (!Util.confirm("Are you sure you want to delete " + collection.displayName + "?",
-                      "Warning: deleting a collection makes shapes created by that collection uneditable.")) return;
+    if (!Util.confirm(Util.getMessage("delete.private.collection.confirm", collection.displayName),
+                      Util.getMessage("delete.private.collection.discription"))) return;
     for (var i = 0; i < PrivateCollectionManager.privateShapeDef.collections.length; i++) {
         if (PrivateCollectionManager.privateShapeDef.collections[i].id == collection.id) {
             PrivateCollectionManager.privateShapeDef.collections.splice(i, 1);
@@ -123,8 +123,8 @@ PrivateCollectionManager.deleteCollection = function (collection) {
     }
 };
 PrivateCollectionManager.deleteAllCollection = function () {
-    if (!Util.confirm("Are you sure you want to delete all private collections?",
-                      "Warning: deleting a collection makes shapes created by that collection uneditable.")) return;
+    if (!Util.confirm(Util.getMessage("delete.all.private.collections.confirm"),
+                      Util.getMessage("delete.all.private.collections.discription"))) return;
 
     PrivateCollectionManager.privateShapeDef.collections = [];
     PrivateCollectionManager.savePrivateCollections();
@@ -134,10 +134,10 @@ PrivateCollectionManager.exportCollection = function (collection) {
     try {
         debug("exporting collection " + collection.displayName);
 
-        
+
         var nsIFilePicker = Components.interfaces.nsIFilePicker;
         var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-        fp.init(window, "Select a File", nsIFilePicker.modeSave);
+        fp.init(window, Util.getMessage("select.a.file"), nsIFilePicker.modeSave);
         fp.appendFilters(nsIFilePicker.filterAll);
         fp.defaultExtension = "zip";
         fp.defaultString = collection.displayName + ".zip";
@@ -166,7 +166,7 @@ PrivateCollectionManager.exportCollection = function (collection) {
             stream.close();
         }
         zipW.close();
-        Util.info("Info", "Collection '" + collection.displayName + "' has been exported.", "Close");
+        Util.info(Util.getMessage("info.title"), Util.getMessage("collection.has.been.exported", collection.displayName), Util.getMessage("button.cancel.close"));
     } catch (e) {
         Console.dumpError(e);
     }
@@ -174,9 +174,9 @@ PrivateCollectionManager.exportCollection = function (collection) {
 PrivateCollectionManager.importNewCollection = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Open Document", nsIFilePicker.modeOpen);
-    fp.appendFilter("Pencil Collection Archives (*.epc; *.zip)", "*.epc; *.zip");
-    fp.appendFilter("All Files", "*");
+    fp.init(window, Util.getMessage("filepicker.open.document"), nsIFilePicker.modeOpen);
+    fp.appendFilter(Util.getMessage("filepicker.pencil.collection.archives"), "*.epc; *.zip");
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() != nsIFilePicker.returnOK) return;
 
@@ -243,7 +243,7 @@ PrivateCollectionManager.installCollectionFromFile = function (file) {
         definitionFile.initWithPath(targetPath);
         definitionFile.append("Definition.xml");
 
-        if (!definitionFile.exists()) throw "Collection specification is not found in the archive. The file may be corrupted."
+        if (!definitionFile.exists()) throw Util.getMessage("collection.specification.is.not.found.in.the.archive");
 
         var fileContents = FileIO.read(definitionFile, ShapeDefCollectionParser.CHARSET);
         var domParser = new DOMParser();
@@ -258,23 +258,24 @@ PrivateCollectionManager.installCollectionFromFile = function (file) {
             });
         };
 
-        if (collection != null) {
+        if (collection && collection.id) {
             //check for duplicate of name
             for (i in PrivateCollectionManager.privateShapeDef.collections) {
                 var existingCollection = PrivateCollectionManager.privateShapeDef.collections[i];
                 if (existingCollection.id == collection.id) {
-                    throw "Collection named '" + collection.id + "' already installed.";
+                    throw Util.getMessage("collection.named.already.installed", collection.id);
                 }
             }
-            if (Util.confirmWithWarning("Are you sure you want to import the unsigned private collection: " + collection.displayName,
-                                         new RichText("<p>Since a collection may contain execution code that could harm your machine. " +
-                                                      "It is highly recommended that you should <em>only install collections from authors whom you trust</em>.</p>"), "Install")) {
+            if (Util.confirmWithWarning(Util.getMessage("install.the.unsigned.collection.confirm", collection.displayName),
+                                         new RichText(Util.getMessage("install.the.unsigned.collection.discription")), Util.getMessage("button.install.label"))) {
                 CollectionManager.setCollectionCollapsed(collection, false);
                 PrivateCollectionManager.addShapeCollection(collection);
             }
+        } else {
+            throw Util.getMessage("collection.specification.is.not.found.in.the.archive");
         }
     } catch (e) {
-        Util.error("Error installing collection", "" + e);
+        Util.error(Util.getMessage("error.installing.collection"), "" + e);
     } finally {
         extractedDir.remove(true);
         return;

@@ -2,7 +2,11 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+    <RDF:Description RDF:about="urn:mozilla:extension:file:chrome"
+                   em:package="content"
+                   em:skin="skin"
+                   em:locale="locale" />
+    <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="pencil@evolus.vn"
                    em:name="%name%"
                    em:version="%version%.%build%"
@@ -10,9 +14,10 @@
                    em:creator="%author%"
                    em:homepageURL="http://www.evolus.vn/Pencil/"
                    em:iconURL="chrome://pencil/content/Icons/48.png">
-    <em:targetApplication RDF:resource="rdf:firefox"/>
-  </RDF:Description>
-  <RDF:Description RDF:about="rdf:firefox"
+       <em:targetApplication RDF:resource="rdf:firefox"/>
+    </RDF:Description>
+
+    <RDF:Description RDF:about="rdf:firefox"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="%fxminver%"
                    em:maxVersion="%fxmaxver%" />

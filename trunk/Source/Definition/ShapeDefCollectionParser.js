@@ -45,7 +45,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         var dom = document.implementation.createDocument("", "", null);
         dom.async = false;
         dom.load(url);
-        
+
         debug("PARSING DOM @ " + url);
 
         return this.parse(dom);
@@ -88,28 +88,28 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     collection.description = shapeDefsNode.getAttribute("description");
     collection.author = shapeDefsNode.getAttribute("author");
     collection.infoUrl = shapeDefsNode.getAttribute("url");
-    
-    
+
+
     Dom.workOn("./p:Script", shapeDefsNode, function (scriptNode) {
         var context = { collection: collection };
         pEval(scriptNode.textContent, context);
     });
-    
+
 
     this.parseCollectionProperties(shapeDefsNode, collection);
 
     var parser = this;
-    
-    
+
+
     Dom.workOn("./p:Shape | ./p:Shortcut", shapeDefsNode, function (node) {
         if (node.localName == "Shape") {
             collection.addDefinition(parser.parseShapeDef(node, collection));
         } else {
             collection.addShortcut(parser.parseShortcut(node, collection));
         }
-        
+
     });
-    
+
     return collection;
 };
 /* private void */ ShapeDefCollectionParser.prototype.parseCollectionProperties = function (shapeDefsNode, collection) {
@@ -126,7 +126,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
                 property.type = window[type];
             } catch (e) {
                 alert(e);
-                throw "Invalid property type: " + type;
+                throw Util.getMessage("invalid.property.type", type);
             }
             var literal = Dom.getText(propNode);
 
@@ -188,7 +188,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
                 property.type =window[type];
             } catch (e) {
                 alert(e);
-                throw "Invalid property type: " + type;
+                throw Util.getMessage("invalid.property.type", type);
             }
             var valueElement = Dom.getSingle("./p:*", propNode);
             if (valueElement) {
@@ -297,12 +297,12 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
     var to = shortcutNode.getAttribute("to");
     var shapeId = (to.indexOf(":") > 0) ? to : collection.id + ":" + to;
-    
-    var shapeDef = (to.indexOf(":") > 0) ? 
-                        CollectionManager.shapeDefinition.locateDefinition(shapeId) : collection.getShapeDefById(shapeId);
-    
 
-    if (!shapeDef) throw "Bad shortcut. Target shape def is not found: " + shapeId;
+    var shapeDef = (to.indexOf(":") > 0) ?
+                        CollectionManager.shapeDefinition.locateDefinition(shapeId) : collection.getShapeDefById(shapeId);
+
+
+    if (!shapeDef) throw Util.getMessage("bad.shortcut.target.not.found", shapeId);
 
     shortcut.shape = shapeDef;
     shortcut.id = "system:ref:" + shortcut.displayName.replace(/[^a-z0-9]+/gi, "_").toLowerCase() + shortcut.shape.id;

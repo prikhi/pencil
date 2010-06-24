@@ -8,7 +8,7 @@ function SharedFillColorEditor(propertyName, buttonId) {
 SharedFillColorEditor.prototype.setup = function () {
     //grab control references
     this.fillColorButton = document.getElementById(this.buttonId);
-    
+
     var thiz = this;
     this.fillColorButton.addEventListener("change", function(event) {
         if (!thiz.target || !thiz.color) return;
@@ -21,7 +21,7 @@ SharedFillColorEditor.prototype._applyValue = function () {
     var thiz = this;
     Pencil.activeCanvas.run(function() {
         this.setProperty(thiz.propertyName, thiz.color);
-    }, this.target)
+    }, this.target, Util.getMessage("action.apply.properties.value"))
 };
 SharedFillColorEditor.prototype.attach = function (target) {
     this.target = null;
@@ -31,15 +31,15 @@ SharedFillColorEditor.prototype.attach = function (target) {
         return;
     }
     this.fillColorButton.removeAttribute("disabled");
-    
+
     //set the value
     this.fillColorButton.color = this.color;
-    
+
     this.target = target;
 };
 SharedFillColorEditor.prototype.detach = function () {
     this.fillColorButton.setAttribute("disabled", "true");
-    
+
     this.target = null;
     this.font = null;
 };

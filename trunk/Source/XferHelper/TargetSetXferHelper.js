@@ -9,7 +9,7 @@ TargetSetXferHelper.prototype.toString = function () {
     return "ShapeXferHelper: " + TargetSetXferHelper.MIME_TYPE;
 };
 TargetSetXferHelper.prototype.handleData = function (data, length) {
-    
+
 
     var systemString = data.QueryInterface(Components.interfaces.nsISupportsString);
     var xml = systemString.data.substring(0, length / 2);
@@ -21,7 +21,7 @@ TargetSetXferHelper.prototype.handleData = function (data, length) {
     var shapes = Dom.getList("/svg:*/svg:g[@p:type]", dom);
 
     if (!shapes) {
-        throw "Bad data in the clipboard";
+        throw Util.getMessage("bad.data.in.the.clipboard");
     }
 
     var importedShapes = [];
@@ -47,7 +47,7 @@ TargetSetXferHelper.prototype.handleData = function (data, length) {
         for (var t in this.canvas.currentController.targets) {
             this.canvas.snappingHelper.updateSnappingGuide(this.canvas.currentController.targets[t]);
         }
-    }, this);
+    }, this, Util.getMessage("action.create.shape", this.canvas.currentController.getName()));
 
     this.canvas.invalidateEditors();
 

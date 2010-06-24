@@ -4,8 +4,8 @@ ExportTemplateManager.templateMap = {};
 
 ExportTemplateManager.SUPPORTED_TYPES = ["HTML", "ODT"];
 ExportTemplateManager.SUPPORTED_TYPES_NAMES = {
-    "HTML": "Templates for exporting to HTML Documents",
-    "ODT": "Templates for exporting to Text Documents (ODT, DOC and PDF)"
+    "HTML": Util.getMessage("templates.for.exporting.to.html.documents"),
+    "ODT": Util.getMessage("templates.for.exporting.to.text.documents")
 };
 
 ExportTemplateManager.addTemplate = function (template, type) {
@@ -37,7 +37,7 @@ ExportTemplateManager.loadTemplatesIn = function (templateDir) {
 };
 
 ExportTemplateManager.loadUserDefinedTemplates = function () {
-    
+
 
     try {
         var templateDir = ExportTemplateManager.getUserTemplateDirectory();
@@ -59,7 +59,7 @@ ExportTemplateManager.getUserTemplateDirectory = function () {
     return templateDir;
 };
 ExportTemplateManager.loadSystemWideDefinedTemplates = function () {
-    
+
 
     try {
         var templateDir = ExportTemplateManager.getSystemWideTemplateDirectory();
@@ -80,7 +80,7 @@ ExportTemplateManager.getSystemWideTemplateDirectory = function () {
 };
 
 ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type) {
-    
+
 
     //loading all templates
     debug("Loading template in " + templateDir.path);
@@ -92,7 +92,7 @@ ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type)
             var dir = entries.getNext();
 
             dir = dir.QueryInterface(Components.interfaces.nsIFile);
-            
+
             if (!dir.isDirectory()) continue;
             var template = ExportTemplate.parse(dir);
 
@@ -122,16 +122,16 @@ ExportTemplateManager.loadTemplates = function() {
         var type = ExportTemplateManager.SUPPORTED_TYPES[i];
         ExportTemplateManager.templates[type] = [];
     }
-    
+
     ExportTemplateManager.loadSystemWideDefinedTemplates();
     ExportTemplateManager.loadUserDefinedTemplates();
 };
 ExportTemplateManager.installNewTemplate = function (type) {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Open Document", nsIFilePicker.modeOpen);
-    fp.appendFilter("Pencil " + type + " Export Templates (*.epxt; *.zip)", "*.epxt; *.zip");
-    fp.appendFilter("All Files", "*");
+    fp.init(window, Util.getMessage("filepicker.open.document"), nsIFilePicker.modeOpen);
+    fp.appendFilter(Util.getMessage("pencil.export.template.type", type), "*.epxt; *.zip");
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() != nsIFilePicker.returnOK) return;
 
@@ -199,13 +199,13 @@ ExportTemplateManager.installTemplateFromFile = function (file, type) {
 
     try {
         var template = ExportTemplate.parse(extractedDir);
-        if (!template) throw "Template cannot be parsed";
-        if (ExportTemplateManager.templateMap[template.id]) throw "Template '" + template.name + "' has been already installed.";
+        if (!template) throw Util.getMessage("template.cannot.be.parsed");
+        if (ExportTemplateManager.templateMap[template.id]) throw Util.getMessage("template.has.been.installed", template.name);
 
-        Util.info("Template '" + template.name + "' has been installed successfully");
+        Util.info(Util.getMessage("template.has.been.installed.successfully", template.name));
         ExportTemplateManager.loadTemplates();
     } catch (e) {
-        Util.error("Error installing template", "" + e);
+        Util.error(Util.getMessage("error.installing.template"), "" + e);
         extractedDir.remove(true);
     }
 };
@@ -214,9 +214,9 @@ ExportTemplateManager.uninstallTemplate = function (template) {
         debug("About to remove: " + template.dir.path);
         template.dir.remove(true);
     } catch (e) {
-        Util.error("Failed to uninstall the template", "" + e);
+        Util.error(Util.getMessage("failed.to.uninstall.the.template"), "" + e);
         Console.dumpError(e);
     }
-    
+
     ExportTemplateManager.loadTemplates();
 }

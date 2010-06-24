@@ -1,7 +1,7 @@
 function Null(canvas, svg) {
     this.svg = svg;
     this.canvas = canvas;
-    
+
     var thiz = this;
 }
 Null.prototype.getName = function () {
@@ -27,11 +27,11 @@ Null.prototype.getGeometry = function () {
     geo.ctm = this.svg.ownerSVGElement.createSVGMatrix();
     geo.ctm.e = bound.x / this.canvas.zoom;
     geo.ctm.f = bound.y / this.canvas.zoom;
-    
+
     geo.dim = {};
     geo.dim.w = bound.width / this.canvas.zoom;
     geo.dim.h = bound.height / this.canvas.zoom;
-    
+
     return geo;
 };
 Null.prototype.getBoundingRect = function () {
@@ -40,10 +40,10 @@ Null.prototype.getBoundingRect = function () {
         rect = this.svg.getBBox();
     } catch (e) {}
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
-    
+
     var rect = Svg.getBoundRectInCTM(rect, ctm.inverse());
     rect = {x: rect.left, y: rect.top, width: rect.right - rect.left, height: rect.bottom - rect.top};
-    
+
     return this.canvas.getZoomedRect(rect);
 };
 Null.prototype.setGeometry = function (geo) {
@@ -53,7 +53,7 @@ Null.prototype.moveBy = function (x, y, zoomAware) {
     var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
     var v = Svg.vectorInCTM({x: x / (zoomAware ? this.canvas.zoom : 1), y: y / (zoomAware ? this.canvas.zoom : 1)}, ctm, true);
     ctm = ctm.translate(v.x, v.y);
-    
+
     Svg.ensureCTM(this.svg, ctm);
 };
 
@@ -65,7 +65,7 @@ Null.prototype.setPositionSnapshot = function () {
     var translate = this.svg.ownerSVGElement.createSVGMatrix();
     translate.e = 0;
     translate.f = 0;
-    
+
     translate = this.svg.transform.baseVal.createSVGTransformFromMatrix(translate);
     this.svg.transform.baseVal.appendItem(translate);
 
@@ -75,16 +75,16 @@ Null.prototype.moveFromSnapshot = function (dx, dy, dontNormalize) {
     var v = Svg.vectorInCTM({x: dx, y: dy},
                             this._pSnapshot.ctm,
                             true);
-                       
+
     if (!dontNormalize) {
         var grid = Pencil.getGridSize();
         newX = Util.gridNormalize(v.x + this._pSnapshot.x, grid.w);
         newY = Util.gridNormalize(v.y + this._pSnapshot.y, grid.h);
-        
+
         v.x = newX - this._pSnapshot.x;
         v.y = newY - this._pSnapshot.y;
     }
-    
+
     this._pSnapshot.translate.matrix.e = v.x;
     this._pSnapshot.translate.matrix.f = v.y;
 };
@@ -116,7 +116,7 @@ Null.prototype.bringForward = function () {
                 } else {
                     parentNode.appendChild(this.svg);
                 }
-            }, this);
+            }, this, Util.getMessage("action.bring.forward"));
         }
     } catch (e) { alert(e); }
 };
@@ -128,7 +128,7 @@ Null.prototype.bringToFront = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.appendChild(this.svg);
-            }, this);
+            }, this, Util.getMessage("action.bring.to.front"));
         }
     } catch (e) { alert(e); }
 };
@@ -140,7 +140,7 @@ Null.prototype.sendBackward = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, previous);
-            }, this);
+            }, this, Util.getMessage("action.send.backward"));
         }
     } catch (e) { alert(e); }
 };
@@ -152,7 +152,7 @@ Null.prototype.sendToBack = function () {
                 var parentNode = this.svg.parentNode;
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, parentNode.firstChild);
-            }, this);
+            }, this, Util.getMessage("action.send.to.back"));
         }
     } catch (e) { alert(e); }
 };

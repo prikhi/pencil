@@ -42,7 +42,7 @@ OnMenuEditor.prototype.attach = function (targetObject) {
     //actions
     if (targetObject.def && targetObject.performAction) {
         var menu = doc.createElementNS(PencilNamespaces.xul, "menu");
-        menu.setAttribute("label", "Actions");
+        menu.setAttribute("label", Util.getMessage("menu.actions.label"));
 
         var popup = doc.createElementNS(PencilNamespaces.xul, "menupopup");
         menu.appendChild(popup);
@@ -78,7 +78,7 @@ OnMenuEditor.prototype.attach = function (targetObject) {
     if (Pencil.controller.hasDoc() && Pencil.controller.doc.pages.length > 1
              && targetObject.setMetadata && targetObject.getMetadata) {
         var menu = doc.createElementNS(PencilNamespaces.xul, "menu");
-        menu.setAttribute("label", "Link to");
+        menu.setAttribute("label", Util.getMessage("menu.link.to.label"));
 
         var popup = doc.createElementNS(PencilNamespaces.xul, "menupopup");
         menu.appendChild(popup);
@@ -108,7 +108,7 @@ OnMenuEditor.prototype.attach = function (targetObject) {
         popup.appendChild(doc.createElementNS(PencilNamespaces.xul, "menuseparator"));
 
         var item = doc.createElementNS(PencilNamespaces.xul, "menuitem");
-        item.setAttribute("label", "Nothing");
+        item.setAttribute("label", Util.getMessage("menu.nothing.label"));
         item.setAttribute("type", "radio");
         item._pageId = "";
 

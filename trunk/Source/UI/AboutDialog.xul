@@ -1,27 +1,33 @@
 <?xml version="1.0"?>
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="../Styles/ApplicationStyle.css" type="text/css"?>
-<?xml-stylesheet href="../Styles/Dialog.css" type="text/css"?>
-<dialog id="pencilAboutDialog" title="About Pencil"
+<!DOCTYPE dialog SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/Styles/ApplicationStyle.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/content/Styles/Dialog.css" type="text/css"?>
+
+<dialog id="pencilAboutDialog" title="&dialog.about.pencil.title;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns:p="http://www.evolus.vn/Namespace/Pencil"
         buttons="cancel"
-        buttonlabelcancel="Close"
-        minwidth="400">
+        buttonlabelcancel="&button.cancel.label.close;"
+        style="min-width:40em;">
 
-<script src="../Common/Util.js"/>
-<script src="../Common/IO.js"/>
-<script src="../Common/AboutDialog.js"/>
+    <script src="chrome://pencil/content/Common/Util.js"/>
+    <script src="chrome://pencil/content/Common/IO.js"/>
+    <script src="chrome://pencil/content/Common/AboutDialog.js"/>
 
     <vbox>
         <hbox flex="1">
             <vbox><image src="chrome://pencil/content/Icons/48.png"/></vbox>
             <vbox flex="1">
-                <hbox class="Title"><label>Evolus Pencil</label></hbox>
+                <hbox class="Title"><label value="&label.evolus.pencil.value;"></label></hbox>
                 <hbox>
-                    <vbox flex="1"><label>Copyright (c) 2009 Evolus Co., Ltd</label></vbox>
-                    <vbox><label>version %version% build %build%</label></vbox>
+                    <vbox flex="1"><label value="&label.copyright.value;"></label></vbox>
+                    <vbox><label value="&label.version.value; %version%.%build%"></label></vbox>
                 </hbox>
             </vbox>
         </hbox>
@@ -29,9 +35,9 @@
             <vbox flex="1">
                 <tabbox id="aboutBox">
                     <tabs id="aboutBoxTabs">
-                        <tab label="Authors"/>
-                        <tab label="Contributors"/>
-                        <tab label="License"/>
+                        <tab label="&tab.authors.label;"/>
+                        <tab label="&tab.contributors.label;"/>
+                        <tab label="&tab.license.label;"/>
                     </tabs>
                     <tabpanels flex="1" id="aboutBoxTabPanels">
                         <tabpanel>
@@ -41,10 +47,10 @@
                                 </hbox>
                                 <hbox style="padding-top: 5px;">
                                     <vbox flex="1" >
-                                        <label width="250">Pencil is Free Software (GPL), but if you find it useful, you can support its development :)</label>
+                                        <label width="250">&label.you.can.help.us.value;</label>
                                     </vbox>
                                     <vbox>
-                                        <image style="cursor:pointer;" src="Icons/paypal.png" alt="Click to donate" tooltiptext="You can help us make Pencil even better. Consider making a small donation!" onclick="Util.openDonate();" />
+                                        <image style="cursor:pointer;" src="chrome://pencil/content/UI/Icons/paypal.png" alt="&image.click.to.donate.alt;" tooltiptext="&image.you.can.help.us.tooltiptext;" onclick="Util.openDonate();" />
                                     </vbox>
                                 </hbox>
                             </vbox>

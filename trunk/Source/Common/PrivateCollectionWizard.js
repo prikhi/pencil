@@ -24,7 +24,7 @@ PrivateCollectionWizard.setup = function () {
     var item = Dom.newDOMElement({
         _name: "listitem",
         _uri: PencilNamespaces.xul,
-        label: "Create new private collection..."
+        label: Util.getMessage("create.new.private.collection")
     });
     item._collection = -1;
     PrivateCollectionWizard.collectionList.appendChild(item);
@@ -47,7 +47,7 @@ PrivateCollectionWizard.browseIconFile = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
-    fp.init(window, "Select icon file", nsIFilePicker.modeOpen);
+    fp.init(window, Util.getMessage("select.icon.file"), nsIFilePicker.modeOpen);
     fp.appendFilters(Components.interfaces.nsIFilePicker.filterImages | Components.interfaces.nsIFilePicker.filterAll);
 
     if (fp.show() == nsIFilePicker.returnCancel) return;
@@ -57,7 +57,7 @@ PrivateCollectionWizard.browseIconFile = function () {
 PrivateCollectionWizard.checkCollection = function () {
     PrivateCollectionWizard.collection = PrivateCollectionWizard.collectionList.selectedItem;
     if (PrivateCollectionWizard.collection == null) {
-        Util.error("Error", "Please select at least one collection", "Close");
+        Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.at.least.one.collection"), Util.getMessage("button.close.label"));
         return false;
     } else if (PrivateCollectionWizard.collection._collection == -1) {
         PrivateCollectionWizard.collectionPane.style.display = '';
@@ -69,26 +69,26 @@ PrivateCollectionWizard.checkCollection = function () {
 PrivateCollectionWizard.validatePage = function () {
     if (PrivateCollectionWizard.collection != null && PrivateCollectionWizard.collection._collection == -1) {
         if (PrivateCollectionWizard.collectionName.value == null || PrivateCollectionWizard.collectionName.value.length == 0) {
-            Util.error("Error", "Please enter collection name.", "Close");
+            Util.error(Util.getMessage("error.title"), Util.getMessage("please.enter.collection.name"), Util.getMessage("button.close.label"));
             PrivateCollectionWizard.collectionName.focus();
             return false;
         }
     }
     if (PrivateCollectionWizard.shapeName.value == null || PrivateCollectionWizard.shapeName.value.length == 0) {
-        Util.error("Error", "Please enter shape name.", "Close");
+        Util.error(Util.getMessage("error.title"), Util.getMessage("please.enter.shape.name"), Util.getMessage("button.close.label"));
         PrivateCollectionWizard.shapeName.focus();
         return false;
     }
     if (!PrivateCollectionWizard.autoGenerateIcon.checked) {
         if (PrivateCollectionWizard.shapeIcon.value == null || PrivateCollectionWizard.shapeIcon.value.length == 0) {
-            Util.error("Error", "Please select shape icon.", "Close");
+            Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.shape.icon"), Util.getMessage("button.close.label"));
             PrivateCollectionWizard.shapeIcon.focus();
             return false;
         } else {
             var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
             file.initWithPath(PrivateCollectionWizard.shapeIcon.value);
             if (!file.exists()) {
-                Util.error("Error", "Shape icon is not valid or file not found.", "Close");
+                Util.error(Util.getMessage("error.title"), Util.getMessage("shape.icon.is.not.valid.or.file.not.found"), Util.getMessage("button.close.label"));
                 PrivateCollectionWizard.shapeIcon.focus();
                 return false;
             }

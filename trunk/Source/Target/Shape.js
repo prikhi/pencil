@@ -11,7 +11,7 @@ function Shape(canvas, svg) {
     var defId = this.canvas.getType(svg);
     this.def = CollectionManager.shapeDefinition.locateDefinition(defId);
     if (!this.def) {
-        throw "Shape definition not found: " + defId;
+        throw Util.getMessage("shape.definition.not.found", defId);
     }
 
     //locating metadata node
@@ -23,7 +23,7 @@ function Shape(canvas, svg) {
         var name = this.def.behaviors[i].target;
         var target = Dom.getSingle(".//*[@p:name='" + name + "']", this.svg);
         if (!target) {
-            debug("This object seems to be old to the current stencil definition you have. Ignoring...");
+            Util.showStatusInfo(Util.getMessage("object.seems.to.be.old"));
         }
         this.targetMap[name] = target;
     }
@@ -157,8 +157,8 @@ Shape.prototype.evalExpression = function (expression, value) {
 
     var defaultValue = value ? value : null;
     if (!expression) return defaultValue;
-    if (!this._evalContext) throw "Please prepare by calling prepareExpressionEvaluation() first."
-    
+    if (!this._evalContext) throw Util.getMessage("please.prepare.by.calling.prepareexpressionevaluation.first");
+
     try {
         return pEval("" + expression, this._evalContext);
     } catch (e) {
@@ -172,7 +172,7 @@ Shape.prototype.setProperty = function (name, value, nested) {
         this.canvas.run( function () {
             this.storeProperty(name, value);
             this.applyBehaviorForProperty(name);
-        }, this);
+        }, this, Util.getMessage("action.set.shape.properties"));
         this._appliedTargets = [];
     } else {
         this.storeProperty(name, value);
@@ -482,7 +482,7 @@ Shape.prototype.bringForward = function () {
                     parentNode.appendChild(this.svg);
                 }
                 //this.dockingManager.invalidateChildTargets();
-            }, this);
+            }, this, Util.getMessage("action.bring.forward"));
         }
     } catch (e) { alert(e); }
 };
@@ -495,7 +495,7 @@ Shape.prototype.bringToFront = function () {
                 parentNode.removeChild(this.svg);
                 parentNode.appendChild(this.svg);
                 //this.dockingManager.invalidateChildTargets();
-            }, this);
+            }, this, Util.getMessage("action.bring.to.front"));
         }
     } catch (e) { alert(e); }
 };
@@ -508,7 +508,7 @@ Shape.prototype.sendBackward = function () {
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, previous);
                 //this.dockingManager.invalidateChildTargets();
-            }, this);
+            }, this, Util.getMessage("action.send.backward"));
         }
     } catch (e) { alert(e); }
 };
@@ -521,7 +521,7 @@ Shape.prototype.sendToBack = function () {
                 parentNode.removeChild(this.svg);
                 parentNode.insertBefore(this.svg, parentNode.firstChild);
                 //this.dockingManager.invalidateChildTargets();
-            }, this);
+            }, this, Util.getMessage("action.send.to.back"));
         }
     } catch (e) { alert(e); }
 };
@@ -591,7 +591,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
         } else if (prop.type == RichText) {
             var font = null;
             var info = null;
-        
+
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
                 for (i in b.items) {
@@ -667,7 +667,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
             min = d;
         }
     }
-    
+
     debug("selectedInfo.value: " + selectedInfo.value);
 
     return selectedInfo;

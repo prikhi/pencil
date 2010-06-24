@@ -1,29 +1,33 @@
 <?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings xmlns="http://www.mozilla.org/xbl"
-          xmlns:xbl="http://www.mozilla.org/xbl"
-          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-          xmlns:html="http://www.w3.org/1999/xhtml" 
-	      xmlns:svg="http://www.w3.org/2000/svg"
-	      xmlns:xlink="http://www.w3.org/1999/xlink"
-	      xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-	      >
+        xmlns:xbl="http://www.mozilla.org/xbl"
+        xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil">
     <binding id="alignEditor">
         <implementation>
             <constructor>
             <![CDATA[
                 var groupId = "align" + (new Date().getTime()) + Math.round(1000 * Math.random());
                 this.buttons = [];
-                
+
                 for (var i = 0; i < 9; i ++) {
                     var button = document.getAnonymousElementByAttribute(this, "aid", "b" + i);
                     this.buttons[i] = button;
-                    
+
                     button.setAttribute("group", groupId);
                     button._h = parseInt(button.getAttribute("horz"), 10);
                     button._v = parseInt(button.getAttribute("vert"), 10);
 
                 }
-                
+
                 if (this.hasAttribute("value")) this.setValue(Alignment.fromString(this.getAttribute("value")));
 
             ]]>
@@ -35,7 +39,7 @@
                     this.meta = meta;
                 ]]>
                 </body>
-            </method>        
+            </method>
             <method name="setValue">
                 <parameter name="alignment"/>
                 <body>
@@ -44,14 +48,14 @@
                         var button = this.buttons[i];
                         if (alignment.h == button._h && alignment.v == button._v) {
                             button.checked = true;
-                            
+
                             return;
                         }
                     }
                     this.buttons[0].checked = true;
                 ]]>
                 </body>
-            </method>        
+            </method>
             <method name="getValue">
                 <body>
                 <![CDATA[
@@ -62,33 +66,33 @@
                             break;
                         }
                     }
-                    
+
                     if (checkedButton) {
                         return new Alignment(checkedButton._h, checkedButton._v);
                     } else return null;
                 ]]>
                 </body>
-            </method>        
+            </method>
             <method name="isModified">
                 <body>
                 <![CDATA[
                     return true; //this.isUserModified;
                 ]]>
                 </body>
-            </method>        
+            </method>
         </implementation>
         <content>
             <hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">
                 <hbox flex="1">
-                    <button type="radio" tooltip="Top - Left" image="Icons/align-left-top.png" aid="b0" vert="0" horz="0" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Top - Center" image="Icons/align-center-top.png" aid="b1" vert="0" horz="1" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Top - Right" image="Icons/align-right-top.png" aid="b2" vert="0" horz="2" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Middle - Left" image="Icons/align-left-center.png" aid="b3" vert="1" horz="0" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Middle - Center" image="Icons/align-center-center.png" aid="b4" vert="1" horz="1" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Middle - Right" image="Icons/align-right-center.png" aid="b5" vert="1" horz="2" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Bottom - Left" image="Icons/align-left-bottom.png" aid="b6" vert="2" horz="0" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Bottom - Center" image="Icons/align-center-bottom.png" aid="b7" vert="2" horz="1" xbl:inherits="disabled"/>
-                    <button type="radio" tooltip="Bottom - Right" image="Icons/align-right-bottom.png" aid="b8" vert="2" horz="2" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.top.left.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-left-top.png" aid="b0" vert="0" horz="0" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.top.center.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-center-top.png" aid="b1" vert="0" horz="1" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.top.right.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-right-top.png" aid="b2" vert="0" horz="2" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.middle.left.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-left-center.png" aid="b3" vert="1" horz="0" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.middle.center.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-center-center.png" aid="b4" vert="1" horz="1" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.middle.right.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-right-center.png" aid="b5" vert="1" horz="2" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.bottom.left.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-left-bottom.png" aid="b6" vert="2" horz="0" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.bottom.center.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-center-bottom.png" aid="b7" vert="2" horz="1" xbl:inherits="disabled"/>
+                    <button type="radio" tooltiptext="&align.bottom.right.tooltiptext;" image="chrome://pencil/content/UI/Icons/align-right-bottom.png" aid="b8" vert="2" horz="2" xbl:inherits="disabled"/>
                 </hbox>
             </hbox>
         </content>

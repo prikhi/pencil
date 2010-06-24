@@ -20,7 +20,7 @@ PrivateCollectionDialog.setup = function () {
 };
 PrivateCollectionDialog.validatePage = function () {
     if (PrivateCollectionDialog.collectionName.value == null || PrivateCollectionDialog.collectionName.value.length == 0) {
-        Util.error("Error", "Please enter collection name.", "Close");
+        Util.error(Util.getMessage("error.title"), Util.getMessage("please.enter.collection.name"), Util.getMessage("button.close.label"));
         PrivateCollectionDialog.collectionName.focus();
         return false;
     }

@@ -1,11 +1,15 @@
 <?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings xmlns="http://www.mozilla.org/xbl"
         xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns:svg="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-        >
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil">
     <binding id="canvas">
         <implementation>
             <constructor>
@@ -40,6 +44,9 @@
                 this.arrangementMenu = document.getAnonymousElementByAttribute(this, "aid", "arrangementMenu");
                 this.linkMenu = document.getAnonymousElementByAttribute(this, "aid", "linkMenu");
                 this.arrangementMenu._canvas = this;
+
+                this.undoContextMenu = document.getAnonymousElementByAttribute(this, "aid", "contextUndoMenu");
+                this.redoContextMenu = document.getAnonymousElementByAttribute(this, "aid", "contextRedoMenu");
 
                 this.popupSeparator = document.getAnonymousElementByAttribute(this, "aid", "contextPopupSeparator");
                 var id = "popup" + Math.round(1000 * Math.random());
@@ -171,19 +178,17 @@
                         thiz._lastScrollX = thiz.parentNode.scrollLeft;
                         thiz._lastScrollY = thiz.parentNode.scrollTop;
                         Dom.addClass(thiz, "PanDown");
-                        debug("spacebar down.");
                     }
                 }, false);
                 this.firstChild.addEventListener("keyup", function (event) {
                     if (event.keyCode == event.DOM_VK_SPACE && thiz.spaceHeld == true) {
                         thiz.spaceHeld = false;
                         Dom.removeClass(thiz, "PanDown");
-                        debug("spacebar up.");
                     }
                 }, false);
 
                 this.propertyMenuItem.addEventListener("command", function(event) {
-                    thiz.handlePropertyMenuItemCommand(event);
+                    //thiz.handlePropertyMenuItemCommand(event);
                 }, false);
 
                 box2.addEventListener("contextmenu", function (event) {
@@ -210,7 +215,7 @@
                     },
                     onDragOver: function (evt, flavour, session){},
                     onDrop: function (evt, transferData, session) {
-                        
+
                         var defId = transferData.data;
                         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
 
@@ -461,7 +466,7 @@
 
                     this.run(function() {
                         target.setGeometry(geo);
-                    }, this);
+                    }, this, Util.getMessage("action.canvas.zoom"));
 
                     Dom.emitEvent("p:ShapeGeometryModified", this, {setter: setter ? setter : null});
                 ]]>
@@ -488,7 +493,7 @@
                 <parameter name="overridingValueMap"/>
                 <body>
                 <![CDATA[
-                    this.run(this.insertShapeImpl_, this, [shapeDef, bound ? bound : null, overridingValueMap ? overridingValueMap : null]);
+                    this.run(this.insertShapeImpl_, this, Util.getMessage("action.create.shape", shapeDef.displayName), [shapeDef, bound ? bound : null, overridingValueMap ? overridingValueMap : null]);
                 ]]>
                 </body>
             </method>
@@ -798,7 +803,8 @@
                     }
                     if (this.controllerHeld && this.hasMoved) {
                         //just to save state
-                        this.run(function() {}, this);
+                        if (!this.kkkk) this.kkkk = 1;
+                        this.run(function() {}, this, Util.getMessage("action.shape.finish.moving", this.currentController.getName()));
                     }
                     this.removeAttributeNS(PencilNamespaces.p, "holding");
                     this.controllerHeld = false;
@@ -825,7 +831,7 @@
                     }
                     if (this.controllerHeld && this.hasMoved) {
                         //just to save state
-                        this.run(function() {}, this);
+                        this.run(function() {}, this, Util.getMessage("action.move.shape"));
                     }
 
                     this.removeAttributeNS(PencilNamespaces.p, "holding");
@@ -917,7 +923,6 @@
                                     var p1 = Pencil._painterSourceProperties[name];
                                     var p2 = currentTargetProperties[name];
                                     if (p1 && p2) {
-                                        debug("copy: " + name);
                                         this.currentController.setProperty(name, Pencil._painterSourceProperties[name]);
                                     }
                                 }
@@ -1173,7 +1178,7 @@
                         this.run(function () {
                             //this.currentController.moveBy(dx, dy);
                             this.currentController.moveBy(dx, dy, false, true);
-                        }, this);
+                        }, this, Util.getMessage("action.move.shape"));
 
                         if (this.currentController.constructor == TargetSet) {
                             for (var t in this.currentController.targets) {
@@ -1191,7 +1196,7 @@
                         if (this.currentController) {
                             this.run(function () {
                                 this.currentController.deleteTarget();
-                            }, this);
+                            }, this, Util.getMessage("action.delete.shape", this.currentController.getName()));
                             this.currentController = null;
                             this._detachEditors();
                             this.clearSelection();
@@ -1222,6 +1227,16 @@
                         this.endFormatPainter();
                     }
                 ]]>
+                </body>
+            </method>
+            <method name="updateContextMenu">
+                <parameter name="currentAction"/>
+                <parameter name="prevAction"/>
+                <body>
+                <![CDATA[
+                    this.undoContextMenu.setAttribute("label", Util.getMessage("menu.undo.label") + currentAction);
+                    this.redoContextMenu.setAttribute("label", Util.getMessage("menu.redo.label") + prevAction);
+                   ]]>
                 </body>
             </method>
             <method name="handleContextMenuShow">
@@ -1302,7 +1317,7 @@
                                 if (shouldHideNextSeparator) {
                                     child.style.display = "none";
                                 } else {
-                                    shouldHideNextSeparator = false;
+                                    shouldHideNextSeparator = true;
                                 }
                             } else {
                                 if (child.style.display != "none") {
@@ -1344,7 +1359,7 @@
                         var thiz = this;
                         var container = this.currentController.getAttachContainer();
                         this.attachToMenu = document.createElementNS(PencilNamespaces.xul, "menu");
-                        this.attachToMenu.setAttribute("label", Util.getString("canvas.merge"));
+                        this.attachToMenu.setAttribute("label", Util.getMessage("canvas.merge.label"));
                         var attachSlots = this.currentController.getAttachSlots();
                         if (attachSlots.length == 1) {
                             this.attachToMenu = document.createElementNS(PencilNamespaces.xul, "menuitem");
@@ -1360,7 +1375,7 @@
                                 displayName += " (" + tool.targetName + ")";
                             }
                             if (attachSlots.length == 1) {
-                                this.attachToMenu.setAttribute("label", Util.getString("canvas.merge") + " (" + displayName + ")");
+                                this.attachToMenu.setAttribute("label", Util.getMessage("canvas.merge.label.1", displayName));
                                 this.attachToMenu._container = container;
                                 this.attachToMenu._attachSlot = attachSlots[0];
                             } else {
@@ -1408,7 +1423,7 @@
                         var thiz = this;
                         var container = this.currentController;
                         this.detachFromMenu = document.createElementNS(PencilNamespaces.xul, "menu");
-                        this.detachFromMenu.setAttribute("label", Util.getString("canvas.split"));
+                        this.detachFromMenu.setAttribute("label", Util.getMessage("canvas.split.label"));
                         var attachedSlots = this.currentController.getAttachedSlots();
                         if (attachedSlots.length == 1) {
                             this.detachFromMenu = document.createElementNS(PencilNamespaces.xul, "menuitem");
@@ -1424,7 +1439,7 @@
                                 displayName += " (" + tool.targetName + ")";
                             }
                             if (attachedSlots.length == 1) {
-                                this.detachFromMenu.setAttribute("label", Util.getString("canvas.split") + " " + displayName);
+                                this.detachFromMenu.setAttribute("label", Util.getMessage("canvas.split.label.1", displayName));
                                 this.detachFromMenu._container = container;
                                 this.detachFromMenu._detachSlot = attachedSlots[0];
                             } else {
@@ -1555,7 +1570,7 @@
             <method name="doCopy">
                 <body>
                 <![CDATA[
-                    
+
                     if (!this.currentController) return;
 
                     var transferableData = this.currentController.createTransferableData();
@@ -1620,7 +1635,7 @@
             <method name="doPaste">
                 <body>
                 <![CDATA[
-                    
+
                     var clip  = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
                     if (!clip) return false;
 
@@ -1654,7 +1669,7 @@
             <method name="doGroup">
                 <body>
                 <![CDATA[
-                    this.run(this.doGroupImpl_, this);
+                    this.run(this.doGroupImpl_, this, Util.getMessage("action.group.shapes"));
                 ]]>
                 </body>
             </method>
@@ -1712,7 +1727,7 @@
             <method name="doUnGroup">
                 <body>
                 <![CDATA[
-                    this.run(this.doUnGroupImpl_, this);
+                    this.run(this.doUnGroupImpl_, this, Util.getMessage("action.ungroup.shapes"));
                 ]]>
                 </body>
             </method>
@@ -1748,7 +1763,7 @@
             <method name="toggleLocking">
                 <body>
                 <![CDATA[
-                    this.run(this.toggleLockingImpl_, this);
+                    this.run(this.toggleLockingImpl_, this, Util.getMessage("action.lock.shape"));
                 ]]>
                 </body>
             </method>
@@ -1769,7 +1784,7 @@
             <method name="deleteSelected">
                 <body>
                 <![CDATA[
-                    this.run(this.deleteSelectedImpl_, this);
+                    this.run(this.deleteSelectedImpl_, this, Util.getMessage("action.delete.shape"));
                 ]]>
                 </body>
             </method>
@@ -1792,16 +1807,18 @@
                 </body>
             </method>
             <method name="_saveMemento">
+                <parameter name="actionName"/>
                 <body>
                 <![CDATA[
-                    this.careTaker.save();
+                    this.careTaker.save(actionName);
                 ]]>
                 </body>
             </method>
             <method name="getMemento">
+                <parameter name="actionName"/>
                 <body>
                 <![CDATA[
-                    return new CanvasMemento(this.drawingLayer.cloneNode(true), {});
+                    return new CanvasMemento(this.drawingLayer.cloneNode(true), {}, actionName);
                 ]]>
                 </body>
             </method>
@@ -1829,6 +1846,7 @@
             <method name="run">
                 <parameter name="job"/>
                 <parameter name="targetObject"/>
+                <parameter name="actionName"/>
                 <parameter name="args"/>
                 <body>
                 <![CDATA[
@@ -1839,7 +1857,7 @@
                     } catch (e) {
                         Console.dumpError(e);
                     } finally {
-                        this._saveMemento();
+                        this._saveMemento(actionName);
                         this._sayContentModified();
                     }
                 ]]>
@@ -1850,7 +1868,7 @@
                 <body>
                 <![CDATA[
                     if (color) {
-                        this.focusableBox.style.backgroundColor = color.toRGBAString();
+                        this.focusableBox.style.backgroundColor = color.toRGBString();
                     }
                 ]]>
                 </body>
@@ -1946,11 +1964,11 @@
                                 };
                             }
                         } catch (e) {
-                            alert(e);
+                            Util.error(Util.getMessage("error.title"), e, Util.getMessage("button.cancel.close"));
                         }
                     });
                     if (maxBox == null) {
-                        alert("The current document is empty, sizing is failed!");
+                        Util.info(Util.getMessage("error.title"), Util.getMessage("the.current.document.is.empty.sizing.is.failed"), Util.getMessage("button.cancel.close"));
                         return;
                     }
 
@@ -1985,7 +2003,7 @@
                     if (!this.currentController) return;
                     try {
                         var target = Pencil.getCurrentTarget();
-                        debug("adding selected shapes to my collection... ");
+                        //debug("adding selected shapes to my collection... ");
 
                         //generating text/xml+svg
                         var svg = target.svg.cloneNode(true);
@@ -1999,33 +2017,33 @@
                         var valueHolder = data.valueHolder;
                         if (!valueHolder.shapeName) return;
 
-                        debug("creating shape");
+                        //debug("creating shape");
 
                         var shapeDef = new PrivateShapeDef();
                         shapeDef.displayName = valueHolder.shapeName;
                         shapeDef.content = svg;
                         shapeDef.id = shapeDef.displayName.replace(/\s+/g, "_").toLowerCase() + "_" + (new Date()).getTime();
 
-                        debug("shape name: " + shapeDef.displayName + ", id: " + shapeDef.id);
+                        //debug("shape name: " + shapeDef.displayName + ", id: " + shapeDef.id);
 
                         var collection = valueHolder.collection;
                         var isNewCollection = (collection == null || collection == -1);
 
                         if (isNewCollection) {
-                            debug("creating new collection...");
+                            //debug("creating new collection...");
                             collection = new PrivateCollection();
                             collection.displayName = valueHolder.collectionName;
                             collection.description = valueHolder.collectionDescription;
                             collection.id = collection.displayName.replace(/\s+/g, "_").toLowerCase() + "_" + (new Date()).getTime();
-                            debug("collection name: " + collection.displayName + ", id: " + collection.id);
+                            //debug("collection name: " + collection.displayName + ", id: " + collection.id);
 
                             collection.shapeDefs.push(shapeDef);
                         }
 
-                        debug("generating icon... ");
+                        //debug("generating icon... ");
                         if (valueHolder.autoGenerateIcon) {
                             Util.generateIcon(target, 64, 64, 2, null, function (data) {
-                                debug("done. ");
+                                //debug("done. ");
                                 shapeDef.iconData = data;
                                 if (isNewCollection) {
                                     PrivateCollectionManager.addShapeCollection(collection);
@@ -2071,7 +2089,7 @@
                 <parameter name="bound"/>
                 <body>
                 <![CDATA[
-                    this.run(this.insertPrivateShapeImpl_, this, [shapeDef, bound ? bound : null]);
+                    this.run(this.insertPrivateShapeImpl_, this, Util.getMessage("action.create.shape", shapeDef.displayName), [shapeDef, bound ? bound : null]);
                 ]]>
                 </body>
             </method>
@@ -2080,9 +2098,7 @@
                 <parameter name="bound"/>
                 <body>
                 <![CDATA[
-                    
-
-                    debug("inserting private shape: " + shapeDef.displayName + ", id: " + shapeDef.id);
+                    //debug("inserting private shape: " + shapeDef.displayName + ", id: " + shapeDef.id);
                     var g = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
                     g.appendChild(shapeDef.content);
 
@@ -2109,23 +2125,22 @@
 
                     Dom.renewId(shape);
 
-                    this.run(function() {
-                        shape.style.visibility = "hidden";
-                        this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
+                    shape.style.visibility = "hidden";
+                    this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
 
-                        this.drawingLayer.appendChild(shape);
-                        this.selectShape(shape);
-                        if (bound) {
-                            var bbox = this.currentController.getBounding();
-                            this.currentController.moveBy((bound.x - bbox.x - Math.round(bbox.width/2)) / this.zoom, (bound.y - bbox.y - Math.round(bbox.height/2)) / this.zoom, true);
-                        }
-                        shape.style.visibility = "visible";
-                        this.removeAttributeNS(PencilNamespaces.p, "holding");
+                    this.drawingLayer.appendChild(shape);
+                    this.selectShape(shape);
+                    if (bound) {
+                        var bbox = this.currentController.getBounding();
+                        this.currentController.moveBy((bound.x - bbox.x - Math.round(bbox.width/2)) / this.zoom, (bound.y - bbox.y - Math.round(bbox.height/2)) / this.zoom, true);
+                    }
+                    shape.style.visibility = "visible";
+                    this.removeAttributeNS(PencilNamespaces.p, "holding");
 
-                        this.ensureControllerInView();
-                        this.snappingHelper.updateSnappingGuide(this.currentController);
-                        DockingManager.enableDocking(this.currentController);
-                    }, this);
+                    this.ensureControllerInView();
+                    this.snappingHelper.updateSnappingGuide(this.currentController);
+                    DockingManager.enableDocking(this.currentController);
+
                     this.invalidateEditors();
                 ]]>
                 </body>
@@ -2278,7 +2293,7 @@
                     } catch (e) { Console.dumpError(e); }
 
                     /*
-                    
+
 
                     if (!this.currentDragProcessed) {
                         tick("drag over");
@@ -2324,35 +2339,50 @@
                 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
             <popupset>
                 <popup aid="contextPopup">
-                    <menu label="Arrangement" aid="arrangementMenu" p:for="Shape,TargetSet">
+
+                    <menuitem label="&menu.undo.label;" key="undoKey" command="undoCommand" aid="contextUndoMenu"/>
+                    <menuitem label="&menu.redo.label;" key="redoKey" command="redoCommand" aid="contextRedoMenu"/>
+                    <menuseparator/>
+
+                    <menu label="&menu.arrangement.label;" aid="arrangementMenu" p:for="Shape,TargetSet">
                         <menupopup>
-                            <menuitem label="Bring to Front" oncommand="this.parentNode.parentNode._controller.bringToFront()"/>
-                            <menuitem label="Bring Forward" oncommand="this.parentNode.parentNode._controller.bringForward()"/>
-                            <menuitem label="Send Backward" oncommand="this.parentNode.parentNode._controller.sendBackward()"/>
-                            <menuitem label="Send to Back" oncommand="this.parentNode.parentNode._controller.sendToBack()"/>
+                            <menuitem label="&menu.bring.to.front.label;" oncommand="this.parentNode.parentNode._controller.bringToFront()"/>
+                            <menuitem label="&menu.bring.forward.label;" oncommand="this.parentNode.parentNode._controller.bringForward()"/>
+                            <menuitem label="&menu.send.backward.label;" oncommand="this.parentNode.parentNode._controller.sendBackward()"/>
+                            <menuitem label="&menu.send.to.back.label;" oncommand="this.parentNode.parentNode._controller.sendToBack()"/>
                         </menupopup>
                     </menu>
+
                     <menuseparator aid="contextPopupSeparator"/>
-                    <menuitem aid="lockingMenuItem" label="Locked" type="checkbox" oncommand="this._canvas.toggleLocking();"/>
+
+                    <menuitem aid="lockingMenuItem" label="&menu.locked.label;" type="checkbox" oncommand="this._canvas.toggleLocking();"/>
+
                     <menuseparator/>
-                    <menuitem label="Group" command="groupCommand" p:for="TargetSet" key="groupKey"/>
-                    <menuitem label="Ungroup" command="unGroupCommand" p:for="Group" key="unGroupKey"/>
-                    <menuitem label="Delete" p:for="Shape,TargetSet,Group" oncommand="this._canvas.deleteSelected();"/>
-                    <menuitem label="Add to My Collections..." p:for="Shape,Group" oncommand="this._canvas.addSelectedToMyCollection();"/>
+
+                    <menuitem label="&menu.group.label;" command="groupCommand" p:for="TargetSet" key="groupKey"/>
+                    <menuitem label="&menu.ungroup.label;" command="unGroupCommand" p:for="Group" key="unGroupKey"/>
+                    <menuitem label="&menu.delete.label;" p:for="Shape,TargetSet,Group" oncommand="this._canvas.deleteSelected();"/>
+                    <menuitem label="&menu.add.to.my.stuffs.label;" p:for="Shape,Group" oncommand="this._canvas.addSelectedToMyCollection();"/>
+
                     <menuseparator/>
-                    <menu label="Resize Canvas" aid="resizeMenu">
+                    <menuitem label="&menu.cut.label;" key="cutKey" command="cutCommand"/>
+                    <menuitem label="&menu.copy.label;" key="copyKey" command="copyCommand"/>
+                    <menuitem label="&menu.paste.label;" key="pasteKey" command="pasteCommand"/>
+                    <menuitem label="&menu.select.all.label;" key="selectAllKey" oncommand="Pencil.activeCanvas.selectAll();"/>
+
+                    <menuseparator/>
+                    <menu label="&menu.resize.canvas.label;" aid="resizeMenu">
                         <menupopup>
-                            <menuitem label="Fit Content" oncommand="Pencil.controller.sizeToContent(null, false);"/>
-                            <menuitem label="Fit Content with Padding..." oncommand="Pencil.controller.sizeToContent(null, true);"/>
+                            <menuitem label="&menu.fit.content.label;" oncommand="Pencil.controller.sizeToContent(null, false);"/>
+                            <menuitem label="&menu.fit.content.padding.label;" oncommand="Pencil.controller.sizeToContent(null, true);"/>
                         </menupopup>
                     </menu>
+
                     <menuseparator/>
-                    <menuitem aid="propertyMenuItem" label="Properties..." p:for="Shape,Group,TargetSet"/>
+
+                    <menuitem aid="propertyMenuItem" label="&menu.properties.label;" command="editPagePropertiesCommand"/>
                 </popup>
             </popupset>
         </xbl:content>
     </binding>
 </bindings>
-
-
-

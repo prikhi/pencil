@@ -1,5 +1,4 @@
 window.onerror = function (message, url, code) {
-    //Console.dumpError(message);
     error("SYSTEM ERROR!\n\t* " + message + "\n\t* at: " + url + ":" + code);
     return false;
 };
@@ -14,6 +13,8 @@ handleOnLoad = function () {
     document.getElementById("undoEnabled").checked = Config.get("view.undoLevel") > 0;
     document.getElementById("labelGridSize").disabled = Config.get("grid.enabled") == false;
     document.getElementById("textboxGridSize").disabled = Config.get("grid.enabled") == false;
+
+    document.getElementById("enableSnappingBackground").disabled = Config.get("object.snapping.enabled") == false;
 
     // e
     document.getElementById("enableDocking").disabled = true;
@@ -373,6 +374,7 @@ function onConfigLoad() {
 function ShowPrefs() {
     var prefCount = { value: 0 };
     var prefArray = gPrefBranch.getChildList("pencil.config.", prefCount);
+    //var prefArray = gPrefBranch.getChildList("", prefCount);
 
     for (var i = 0; i < prefCount.value; ++i) {
         var prefName = prefArray[i];
@@ -567,8 +569,8 @@ function ResetSelected() {
 function NewPref(type) {
     var result = { value: "" };
     var dummy = { value: 0 };
-    if (gPromptService.prompt(window, "New " + [gTypeStrs[type]] + " value",
-                            "Enter the preference name",
+    if (gPromptService.prompt(window, Util.getMessage("new.pref.value", [gTypeStrs[type]]),
+                            Util.getMessage("enter.the.preference.name"),
                             result,
                             null,
                             dummy) && result.value) {
@@ -597,7 +599,7 @@ function gotoPref(pref) {
 function ModifyPref(entry) {
     if (entry.lockCol == PREF_IS_LOCKED)
         return false;
-    var title =  "Enter " + [gTypeStrs[entry.typeCol]] + " value";
+    var title = Util.getMessage("enter.pref.value", [gTypeStrs[entry.typeCol]]);
     if (entry.typeCol == nsIPrefBranch.PREF_BOOL) {
         var check = { value: entry.valueCol == "false" };
         if (!entry.valueCol && !gPromptService.select(window, title, entry.prefCol, 2, [false, true], check))

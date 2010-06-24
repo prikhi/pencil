@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
+<!DOCTYPE bindings SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
 <bindings xmlns="http://www.mozilla.org/xbl"
         xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:html="http://www.w3.org/1999/xhtml"
@@ -87,7 +92,7 @@
                 <body>
                 <![CDATA[
                 try {
-                    
+
                     if (!image) return;
 
                     if (image.type == "image/svg+xml") {
@@ -235,7 +240,7 @@
 
                                     loaded++;
                                     debug("loaded: " + loaded);
-                                    thiz.loadingEl.value = "Loading " + loaded + "/" + images.length + "...";
+                                    thiz.loadingEl.value = Util.getMessage("clipartbrowser.loading.message", loaded, images.length);
                                     if (loaded >= images.length) {
                                         thiz.loadingEl.style.display = "none";
                                         thiz.searchButton.className = "search-go-button";
@@ -280,7 +285,7 @@
 
                                     loaded++;
                                     debug("loaded: " + loaded);
-                                    thiz.loadingEl.value = "Loading " + loaded + "/" + images.length + "...";
+                                    thiz.loadingEl.value = Util.getMessage("clipartbrowser.loading.message", loaded, images.length);
                                     if (loaded >= images.length) {
                                         thiz.loadingEl.style.display = "none";
                                         thiz.searchButton.className = "search-go-button";
@@ -359,15 +364,11 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
-                    
                     try {
                         var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
-                        debug("start draging: " + imgNode._img.src);
                         var thiz = this;
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {
-                                
-                                debug("dragging started");
                                 transferData.data = new TransferData();
                                 if (imgNode._img.type == "image/svg+xml") {
                                     var svg = thiz._injectSvgInfo(imgNode._img._svg);
@@ -377,7 +378,6 @@
                                 }
                             }
                         });
-                        debug("end draging");
                     } catch (e) { alert(e); }
                 ]]>
                 </body>
@@ -390,8 +390,8 @@
             <vbox aid="contentBox" flex="1"></vbox>
             <popupset>
                 <popup aid="contextPopup">
-                    <menuitem aid="copyMenuItem" label="Copy image" />
-                    <menuitem aid="insertMenuItem" label="Insert image" />
+                    <menuitem aid="copyMenuItem" label="&menu.copy.image.label;" />
+                    <menuitem aid="insertMenuItem" label="&menu.insert.image.label;" />
                 </popup>
             </popupset>
         </xbl:content>

@@ -16,7 +16,7 @@ function handleOnload() {
     callback = window.arguments[2];
 
     //setup
-    document.title = "Progress...";
+    document.title = Util.getMessage("progress.dialog.title");
 
     Dom.empty(titleText);
     titleText.appendChild(document.createTextNode(jobName + "..."));
@@ -47,9 +47,11 @@ function handleOnload() {
             }
         });
     } catch (e) {
-        Util.error("Error", e.message,  "Close");
+        Util.error(Util.getMessage("error.title"), e.message,  Util.getMessage("button.close.label"));
         error(e);
     }
-}
-window.addEventListener("load", handleOnload, false);
+};
+function handleOnCancel() {
+    return false;
+};
 

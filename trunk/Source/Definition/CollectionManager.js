@@ -29,7 +29,7 @@ CollectionManager.shapeDefinition.locateShortcut = function (shortcutId) {
     return CollectionManager.shapeDefinition.shortcutMap[shortcutId];
 };
 CollectionManager.loadUserDefinedStencils = function () {
-    
+
 
 
     try {
@@ -65,7 +65,7 @@ CollectionManager.getUserStencilDirectory = function () {
     return stencilDir;
 };
 CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
-    
+
 
     var parser = new ShapeDefCollectionParser();
 
@@ -81,7 +81,7 @@ CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
             if (!definitionFile.exists() || definitionFile.isDirectory()) continue;
 
             var uri = ios.newFileURI(definitionFile);
-            
+
 
             try {
                 var collection = parser.parseFile(definitionFile, uri.spec);
@@ -89,7 +89,8 @@ CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
                 collection.installDirPath = definitionFile.parent.path;
                 CollectionManager.addShapeDefCollection(collection);
             } catch (ex) {
-                alert("Warning:\nThe stencil at: " + definitionFile.path + " cannot be parsed.\nError: " + ex.message);
+                Util.error(Util.getMessage("error.title"), Util.getMessage("stencil.cannot.be.parsed", definitionFile.path, ex.message), Util.getMessage("button.cancel.close"))
+                //alert("Warning:\nThe stencil at: " + definitionFile.path + " cannot be parsed.\nError: " + ex.message);
                 continue;
             }
         }
@@ -121,9 +122,9 @@ CollectionManager.loadStencils = function() {
 CollectionManager.installNewCollection = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Open Document", nsIFilePicker.modeOpen);
-    fp.appendFilter("Pencil Collection Archives (*.epc; *.zip)", "*.epc; *.zip");
-    fp.appendFilter("All Files", "*");
+    fp.init(window, Util.getMessage("filepicker.open.document"), nsIFilePicker.modeOpen);
+    fp.appendFilter(Util.getMessage("filepicker.pencil.collection.archives"), "*.epc; *.zip");
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() != nsIFilePicker.returnOK) return;
 
@@ -192,35 +193,38 @@ CollectionManager.installCollectionFromFile = function (file) {
         definitionFile.initWithPath(targetPath);
         definitionFile.append("Definition.xml");
 
-        if (!definitionFile.exists()) throw "Collection specification is not found in the archive. The file may be corrupted."
+        if (!definitionFile.exists()) throw Util.getMessage("collection.specification.is.not.found.in.the.archive");
 
         var uri = ios.newFileURI(definitionFile);
 
         var parser = new ShapeDefCollectionParser();
         var collection = parser.parseFile(definitionFile, uri.spec);
 
-        //check for duplicate of name
-        for (i in CollectionManager.shapeDefinition.collections) {
-            var existingCollection = CollectionManager.shapeDefinition.collections[i];
-            if (existingCollection.id == collection.id) {
-                throw "Collection named '" + collection.id + "' already installed.";
+        if (collection && collection.id) {
+            //check for duplicate of name
+            for (i in CollectionManager.shapeDefinition.collections) {
+                var existingCollection = CollectionManager.shapeDefinition.collections[i];
+                if (existingCollection.id == collection.id) {
+                    throw Util.getMessage("collection.named.already.installed", collection.id);
+                }
             }
-        }
-        collection.userDefined = true;
-        if (!Util.confirmWithWarning("Are you sure you want to install the unsigned collection: " + collection.displayName,
-                                     new RichText("<p>Since a collection may contain execution code that could harm your machine. " +
-                                                  "It is highly recommended that you should <em>only install collections from authors whom you trust</em>.</p>"), "Install")) {
-            extractedDir.remove(true);
-            return;
-        }
+            collection.userDefined = true;
+            if (!Util.confirmWithWarning(Util.getMessage("install.the.unsigned.collection.confirm", collection.displayName),
+                                         new RichText(Util.getMessage("install.the.unsigned.collection.discription")), Util.getMessage("button.install.label"))) {
+                extractedDir.remove(true);
+                return;
+            }
 
-        CollectionManager.setCollectionVisible(collection, true);
-        CollectionManager.setCollectionCollapsed(collection, false);
+            CollectionManager.setCollectionVisible(collection, true);
+            CollectionManager.setCollectionCollapsed(collection, false);
 
-        CollectionManager.addShapeDefCollection(collection);
-        CollectionManager.loadStencils();
+            CollectionManager.addShapeDefCollection(collection);
+            CollectionManager.loadStencils();
+        } else {
+            throw Util.getMessage("collection.specification.is.not.found.in.the.archive");
+        }
     } catch (e) {
-        Util.error("Error installing collection", "" + e);
+        Util.error(Util.getMessage("error.installing.collection"), "" + e);
 
         //removing the extracted dir
         extractedDir.remove(true);
@@ -255,8 +259,8 @@ CollectionManager.isCollectionCollapsed = function (collection) {
 };
 CollectionManager.uninstallCollection = function (collection) {
     if (!collection.installDirPath || !collection.userDefined) return;
-    if (!Util.confirm("Are you sure you want to uninstall " + collection.displayName + "?",
-                      "Warning: uninstalling a collection makes shapes created by that collection uneditable.")) return;
+    if (!Util.confirm(Util.getMessage("uninstall.the.collection.confirm", collection.displayName),
+                      Util.getMessage("uninstall.the.collection.discription", collection.displayName))) return;
     var dir = Components.classes["@mozilla.org/file/local;1"]
                    .createInstance(Components.interfaces.nsILocalFile);
     dir.initWithPath(collection.installDirPath);

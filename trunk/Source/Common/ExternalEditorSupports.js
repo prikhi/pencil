@@ -12,7 +12,7 @@ ExternalEditorSupports.getEditorPath = function (extension) {
         || extension == "gif"
         || extension == "png") return Config.get("external.editor.bitmap.path", "/usr/local/bin/gimp-2.7");
 
-    throw "Unsupported type: " + extension;
+    throw Util.getMessage("unsupported.type", extension);
 };
 
 ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {

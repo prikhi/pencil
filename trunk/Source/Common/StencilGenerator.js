@@ -4,7 +4,7 @@ var StencilGenerator = {
 StencilGenerator.selectIconFile = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Select icon file", nsIFilePicker.modeOpen);
+    fp.init(window, Util.getMessage("select.icon.file"), nsIFilePicker.modeOpen);
     fp.appendFilters(Components.interfaces.nsIFilePicker.filterImages | Components.interfaces.nsIFilePicker.filterAll);
     if (fp.show() == nsIFilePicker.returnCancel) return "";
     return fp.file.path;
@@ -35,7 +35,7 @@ StencilGenerator.onload = function (event) {
         if (dragSession.sourceNode)
             return;
 
-        document.getElementById("infoLabel").value = "Loading...";
+        document.getElementById("infoLabel").value = Util.getMessage("stencilgenerator.loading");
 
         var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
         trans.addDataFlavor("text/x-moz-url");
@@ -94,11 +94,11 @@ StencilGenerator.onload = function (event) {
 
         var totalImage = StencilGenerator.imageList.getRowCount();
         if (totalImage > 1) {
-            document.getElementById("infoLabel").value = totalImage + " images found.";
+            document.getElementById("infoLabel").value =  Util.getMessage("images.found", totalImage);
         } else if (totalImage == 1) {
-            document.getElementById("infoLabel").value =  "1 image found.";
+            document.getElementById("infoLabel").value =  Util.getMessage("one.image.found");
         } else {
-            document.getElementById("infoLabel").value =  "No image found.";
+            document.getElementById("infoLabel").value =  Util.getMessage("no.image.found");
         }
     }, true);
 
@@ -121,7 +121,7 @@ StencilGenerator.onload = function (event) {
                         count++;
                     }
                 }
-                document.getElementById("stencilSelectedCountLabel").value = count + " stencils selected.";
+                document.getElementById("stencilSelectedCountLabel").value = Util.getMessage("stencils.selected", count);
             }
         }
     }, false);
@@ -291,7 +291,7 @@ StencilGenerator.preloadStencils = function (callback) {
         var starter = function (listener) {
             StencilGenerator.loadStencil(result, stencils, 0, callback, listener);
         }
-        Util.beginProgressJob("Getting data", starter);
+        Util.beginProgressJob(Util.getMessage("sg.getting.data"), starter);
     } else {
         callback(null, null);
     }
@@ -300,23 +300,23 @@ StencilGenerator.getBox = function (node) {
     var rect = node.getBoundingClientRect();
     var bbox = node.getBBox();
     var box = {x: rect.left + rect.width / 2 - bbox.width / 2, y: rect.top + rect.height / 2 - bbox.height / 2, width: bbox.width, height: bbox.height};
-    
+
     return box;
 };
 StencilGenerator.createData = function (node, defNode, metaNode) {
     var box = StencilGenerator.getBox(node);
-    
+
     var transform = Svg.toTransformText(node.getTransformToElement(node.ownerSVGElement));
-    
+
     var translate = "translate(" + (0 - box.x) + "," + (0 - box.y) + ")";
     var newTransform = transform ? (transform + " " + translate) : translate;
-    
+
     debug("Old transform: " + transform);
     debug("New transform: " + newTransform);
-    
+
     var n = node.cloneNode(true);
     n.removeAttribute("transform");
-    
+
     return "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"" + newTransform + "\">"
              + Dom.serializeNode(defNode) + Dom.serializeNode(metaNode) + Dom.serializeNode(n) + "</g>";
 };
@@ -347,12 +347,12 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
 
         if (id == 0 && svgDocument.documentElement) {
             var path = svgDocument.documentElement;
-            
+
             var g = svgDocument.createElementNS(PencilNamespaces.svg, "g");
             for (var i = 0; i < svgDocument.documentElement.childNodes.length; i ++) {
                 g.appendChild(svgDocument.documentElement.childNodes[i].cloneNode(true));
             }
-            
+
             stencils.push({
                 id: "svg_" + index + "_" + id,
                 label: item._label,
@@ -361,7 +361,7 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
                 data: Dom.serializeNode(g),
                 img: item
             });
-            
+
         }
         return stencils;
     } catch (e) {
@@ -371,7 +371,7 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
 StencilGenerator.loadStencil = function (result, stencils, index, callback, listener) {
     try {
         if (index < stencils.length) {
-            listener.onProgressUpdated("Getting data... ", index, stencils.length);
+            listener.onProgressUpdated(Util.getMessage("sg.getting.data.1"), index, stencils.length);
             if (".png|.jpg|.gif|.bmp".indexOf(stencils[index]._ext) != -1) {
                 var img = new Image();
 
@@ -545,7 +545,7 @@ StencilGenerator.createCollection = function () {
                         debug("iconGenerated: " + iconGenerated);
                         Util.generateIcon({svg: StencilGenerator.gList[iconGenerated].g}, 64, 64, 2, null, function (iconData) {
                             StencilGenerator.stencils[StencilGenerator.gList[iconGenerated++].index].iconData = iconData;
-                            listener.onProgressUpdated("Creating icon... ", iconGenerated, totalStep);
+                            listener.onProgressUpdated(Util.getMessage("sg.creating.icon.1"), iconGenerated, totalStep);
                             setTimeout(generateIcon, 10);
                         }, StencilGenerator.rasterizer);
                     } catch(e) {
@@ -589,7 +589,7 @@ StencilGenerator.createCollection = function () {
                                 Console.dumpError(e5, "stdout");
                             }
 
-                            Util.info("Stencil generator", "Collection '" + StencilGenerator.collectionName.value + "' has been created.");
+                            Util.info(Util.getMessage("stencil.generator.title"), Util.getMessage("collection.has.been.created", StencilGenerator.collectionName.value));
 
                             listener.onTaskDone();
 
@@ -603,7 +603,7 @@ StencilGenerator.createCollection = function () {
                         if (StencilGenerator.stencils[index].box.width > 0 && StencilGenerator.stencils[index].box.height > 0) {
                             var shape = StencilGenerator.buildShape(StencilGenerator.stencils[index]);
                             s += shape;
-                            listener.onProgressUpdated("Creating stencils... ", index + iconGenerated, totalStep);
+                            listener.onProgressUpdated(Util.getMessage("sg.creating.stencils.1"), index + iconGenerated, totalStep);
                         }
 
                         window.setTimeout(run, 10);
@@ -612,14 +612,14 @@ StencilGenerator.createCollection = function () {
                     }
                 };
 
-                listener.onProgressUpdated("Creating collection... ", 0, totalStep);
+                listener.onProgressUpdated(Util.getMessage("sg.creating.collection.1"), 0, totalStep);
 
                 generateIcon();
             } catch (e3) {
                 Console.dumpError(e3, "stdout");
             }
         }
-        Util.beginProgressJob("Creating collection", starter);
+        Util.beginProgressJob(Util.getMessage("sg.creating.collection"), starter);
     }
 };
 StencilGenerator.toInputStream = function(s, b) {
@@ -638,19 +638,19 @@ StencilGenerator.generateId = function(s) {
     return "";
 };
 StencilGenerator.pickFolder = function() {
-    
+
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Select a Folder", nsIFilePicker.modeGetFolder);
+    fp.init(window, Util.getMessage("select.a.folder"), nsIFilePicker.modeGetFolder);
     fp.appendFilters(nsIFilePicker.filterAll);
     if (fp.show() == nsIFilePicker.returnCancel) return false;
     return fp.file;
 };
 StencilGenerator.pickFile = function(defaultName) {
-    
+
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Select a File", nsIFilePicker.modeSave);
+    fp.init(window, Util.getMessage("select.a.file"), nsIFilePicker.modeSave);
     fp.appendFilters(nsIFilePicker.filterAll);
     fp.defaultExtension = "zip";
     if (defaultName) {
@@ -801,9 +801,9 @@ StencilGenerator.buildShape = function(shapeDef) {
                 }
             ]
         }, document);
-        
+
         return Dom.serializeNode(shortcut);
-        
+
         return (
             "<Shape id=\"" + shapeDef.id + "\" displayName=\"" + shapeDef.label + "\" icon=\"" + shapeDef.iconData + "\" xmlns=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:p=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns:cc=\"http://web.resource.org/cc/\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n" +
             "        <Properties>\r\n" +

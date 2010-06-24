@@ -48,7 +48,7 @@ SharedFontEditor.prototype._applyValue = function () {
     var thiz = this;
     Pencil.activeCanvas.run(function() {
         this.setProperty(SharedFontEditor.PROPERTY_NAME, thiz.font);
-    }, this.target)
+    }, this.target, Util.getMessage("action.apply.properties.value"))
 };
 SharedFontEditor.prototype.attach = function (target) {
     this.target = target;

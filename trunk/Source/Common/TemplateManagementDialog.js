@@ -4,7 +4,7 @@ TemplateManagementDialog.init = function () {
     TemplateManagementDialog.manager = window.opener.ExportTemplateManager;
     Dom.populate(TemplateManagementDialog, ["templateTypeSelector", "templateListContent"]);
     TemplateManagementDialog.uninstallButton = document.documentElement.getButton("extra1");
-    
+
     TemplateManagementDialog.loadTemplatesForSelectedType();
     TemplateManagementDialog.handleTemplateSelectionChange();
 };
@@ -44,7 +44,7 @@ TemplateManagementDialog.loadTemplatesForSelectedType = function () {
         };
         rows.push(row);
     }
-    
+
     Dom.empty(TemplateManagementDialog.templateListContent);
     TemplateManagementDialog.templateListContent.appendChild(Dom.newDOMFragment(rows));
 };
@@ -55,23 +55,23 @@ TemplateManagementDialog.getSelectedTemplates = function () {
 
     var start = {};
     var end = {};
-    
+
     var templates = [];
-    
+
     for (var i = 0; i < count; i ++){
         selection.getRangeAt(i, start, end);
         for (var v = start.value; v <= end.value; v ++){
             var item = tree.contentView.getItemAtIndex(v);
             var id = item.getAttribute("template-id");
-            templates.push(TemplateManagementDialog.manager.getTemplateById(id));            
+            templates.push(TemplateManagementDialog.manager.getTemplateById(id));
         }
     }
-    
+
     return templates;
 };
 TemplateManagementDialog.handleTemplateSelectionChange = function () {
     var templates = TemplateManagementDialog.getSelectedTemplates();
-    
+
     TemplateManagementDialog.uninstallButton.disabled = !templates || templates.length == 0;
 };
 TemplateManagementDialog.installNewTemplate = function () {
@@ -79,7 +79,9 @@ TemplateManagementDialog.installNewTemplate = function () {
     TemplateManagementDialog.loadTemplatesForSelectedType();
 };
 TemplateManagementDialog.uninstallSelectedTemplates = function () {
-    if (!Util.confirm("Are you sure you want to uninstall selected templates", "Uninstalling operations cannot be undone, you need to have the source if you want to install the template again", "Uninstall", "Cancel")) return;
+    if (!Util.confirm(Util.getMessage("are.you.sure.you.want.to.uninstall.selected.templates"),
+                        Util.getMessage("uninstalling.operations.cannot.be.undone"),
+                        Util.getMessage("button.uninstall.label"), Util.getMessage("button.cancel.label"))) return;
     var templates = TemplateManagementDialog.getSelectedTemplates();
     for (var i = 0; i < templates.length; i ++) {
         TemplateManagementDialog.manager.uninstallTemplate(templates[i]);

@@ -20,7 +20,7 @@ PrivateShapeDialog.browseIconFile = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
-    fp.init(window, "Select icon file", nsIFilePicker.modeOpen);
+    fp.init(window, Util.getMessage("select.icon.file"), nsIFilePicker.modeOpen);
     fp.appendFilters(Components.interfaces.nsIFilePicker.filterImages | Components.interfaces.nsIFilePicker.filterAll);
 
     if (fp.show() == nsIFilePicker.returnCancel) return;
@@ -29,20 +29,20 @@ PrivateShapeDialog.browseIconFile = function () {
 };
 PrivateShapeDialog.validatePage = function () {
     if (PrivateShapeDialog.shapeName.value == null || PrivateShapeDialog.shapeName.value.length == 0) {
-        Util.error("Error", "Please enter shape name.", "Close");
+        Util.error(Util.getMessage("error.title"), Util.getMessage("please.enter.shape.name"), Util.getMessage("button.close.label"));
         PrivateShapeDialog.shapeName.focus();
         return false;
     }
     if (PrivateShapeDialog.changeIcon.checked) {
         if (PrivateShapeDialog.shapeIcon.value == null || PrivateShapeDialog.shapeIcon.value.length == 0) {
-            Util.error("Error", "Please select shape icon.", "Close");
+            Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.shape.icon"), Util.getMessage("button.close.label"));
             PrivateShapeDialog.shapeIcon.focus();
             return false;
         } else {
             var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
             file.initWithPath(PrivateShapeDialog.shapeIcon.value);
             if (!file.exists()) {
-                Util.error("Error", "Shape icon is not valid or file not found.", "Close");
+                Util.error(Util.getMessage("error.title"), Util.getMessage("shape.icon.is.not.valid.or.file.not.found"), Util.getMessage("button.close.label"));
                 PrivateShapeDialog.shapeIcon.focus();
                 return false;
             }

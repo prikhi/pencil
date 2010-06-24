@@ -1,5 +1,5 @@
 function WebPageExporter() {
-    this.name = "Single web page";
+    this.name = Util.getMessage("single.web.page");
     this.id = "WebPageExporter";
 }
 WebPageExporter.RASTERIZED_SUBDIR = "pages";
@@ -22,27 +22,27 @@ WebPageExporter.prototype.getTemplates = function () {
 WebPageExporter.prototype.getWarnings = function () {
     var templates = this.getTemplates();
     if (templates && templates.length > 0) return null;
-    
-    return "No template has been installed for exporting to web pages. Templates can be installed via Tools > Manage Export Templates..."
+
+    return Util.getMessage("no.template.has.been.installed.for.exporting");
 };
 
 
 WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile, callback) {
     debug("destDir: " + destDir.path);
-    
+
     var templateId = options.templateId;
     if (!templateId) return;
-    
+
     var template = ExportTemplateManager.getTemplateById(templateId);
 
     //copying support files
     var items = template.dir.directoryEntries;
     while (items.hasMoreElements()) {
         var file = items.getNext().QueryInterface(Components.interfaces.nsIFile);
-        
+
         if (file.leafName == "Template.xml"
             || file.leafName == template.styleSheet) continue;
-            
+
         var destFile = destDir.clone();
         destFile.append(file.leafName);
 
@@ -53,10 +53,10 @@ WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile, cal
 
     //transform the xml to HTML
     var sourceDOM = Dom.parseFile(xmlFile);
-    
+
     //changing rasterized path to relative
     this.fixAbsoluteRasterizedPaths(sourceDOM, destDir);
-    
+
     var xsltDOM = Dom.parseFile(template.styleSheetFile);
 
     var xsltProcessor = new XSLTProcessor();
@@ -68,7 +68,7 @@ WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile, cal
     htmlFile.append(WebPageExporter.HTML_FILE);
 
     Dom.serializeNodeToFile(result, htmlFile);
-    
+
     callback();
 };
 Pencil.registerDocumentExporter(new WebPageExporter(), "default=true");

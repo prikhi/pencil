@@ -12,6 +12,9 @@ function Controller(win) {
     this.pageMoveLeftMenuItem = this.window.ownerDocument.getElementById("pageMoveLeftMenuItem");
     this.pageMoveRightMenuItem = this.window.ownerDocument.getElementById("pageMoveRightMenuItem");
     this.pageDuplicateMenuItem = this.window.ownerDocument.getElementById("pageDuplicateMenuItem");
+
+    this.tabPopupMenu = this.window.ownerDocument.getElementById("pageTabContextMenu");
+
     this.gotoTabMenu = this.window.ownerDocument.getElementById("gotoTabMenu");
     var tabScrollBox = this.window.ownerDocument.getElementById("tabScrollBox");
     this.tabScrollBox = tabScrollBox;
@@ -58,7 +61,7 @@ function Controller(win) {
     }, false);
     this.deletePageMenuItem.addEventListener("command", function (event) {
         if (thiz._pageToEdit) {
-            if (confirm("Are you sure you want to delete this page?")) {
+            if (confirm(Util.getMessage("are.you.sure.delete.page"))) {
                 try {
                     thiz._deletePage(thiz._pageToEdit);
                 } catch (e) {
@@ -141,7 +144,7 @@ Controller.prototype.markDocumentSaved = function () {
     this._setupTitle();
 }
 Controller.prototype._setupTitle = function () {
-    var path = this.filePath ? this.filePath : "Untitled Document";
+    var path = this.filePath ? this.filePath : Util.getMessage("untitled.document");
     var title = this.modified ? (path + "*") : path;
 
     Pencil.setTitle(title);
@@ -150,12 +153,12 @@ Controller.prototype.hasDoc = function () {
     return this.doc ? true : false;
 };
 Controller.prototype.getCurrentPage = function () {
-    if (!this.doc) throw "No active document";
+    if (!this.doc) throw Util.getMessage("no.active.document");
 
     return this.doc.pages[this.mainView.selectedIndex];
 };
 Controller.prototype.isBoundToFile = function () {
-    if (!this.doc) throw "No document is attached to this controller";
+    if (!this.doc) throw Util.getMessage("no.document.is.attached.to.this.controller");
 
     return this.filePath != null;
 };
@@ -184,7 +187,7 @@ Controller.prototype.newDocument = function () {
         size = this.parseSizeText(lastSize);
     }
 
-    this._addPage("Untitled Page", this._generateId(), size.width, size.height);
+    this._addPage(Util.getMessage("untitled.page"), this._generateId(), size.width, size.height);
     this._setSelectedPageIndex(0);
     this.filePath = null;
     this.modified = false;
@@ -232,7 +235,7 @@ Controller.prototype.newPage = function () {
     var background = returnValueHolder.data.background ? returnValueHolder.data.background : null;
     var dimBackground = returnValueHolder.data.dimBackground ? true : false;
     var backgroundColor = returnValueHolder.data.backgroundColor ? returnValueHolder.data.backgroundColor : "#ffffff";
-    var transparentBackground = returnValueHolder.data.transparentBackground == false ? false : true;
+    var transparentBackground = returnValueHolder.data.transparentBackground == "false" ? "false" : "true";
 
     var id = this._generateId();
 
@@ -252,9 +255,9 @@ Controller.prototype.saveDocument = function (saveAsArg) {
         if (!this.isBoundToFile() || saveAs) {
             var nsIFilePicker = Components.interfaces.nsIFilePicker;
             var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-            fp.init(window, "Save Document As", nsIFilePicker.modeSave);
-            fp.appendFilter("Pencil Documents (*.ep; *.epz)", "*.ep; *.epz");
-            fp.appendFilter("All Files", "*");
+            fp.init(window, Util.getMessage("filepicker.save.document.as"), nsIFilePicker.modeSave);
+            fp.appendFilter(Util.getMessage("filepicker.pencil.documents"), "*.ep; *.epz");
+            fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
             if (fp.show() == nsIFilePicker.returnCancel) return false;
 
@@ -295,7 +298,7 @@ Controller.prototype.saveDocument = function (saveAsArg) {
 
         this.markDocumentSaved();
     } catch (e) {
-        Util.info("Error saving file", "" + e);
+        Util.info(Util.getMessage("error.saving.file"), "" + e);
         this.filePath = currentPath;
         return false;
     }
@@ -310,9 +313,9 @@ Controller.prototype.loadDocument = function (uri) {
     if (!uri) {
         var nsIFilePicker = Components.interfaces.nsIFilePicker;
         var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-        fp.init(window, "Open Document", nsIFilePicker.modeOpen);
-        fp.appendFilter("Pencil Documents (*.ep; *.epz)", "*.ep; *.epz");
-        fp.appendFilter("All Files", "*");
+        fp.init(window, Util.getMessage("filepicker.open.document"), nsIFilePicker.modeOpen);
+        fp.appendFilter(Util.getMessage("filepicker.pencil.documents"), "*.ep; *.epz");
+        fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
         if (fp.show() != nsIFilePicker.returnOK) return;
 
@@ -338,7 +341,8 @@ Controller.prototype.loadDocument = function (uri) {
             }
         }
         if (!file.exists()) {
-            alert("The file '" + file.path + "' does not exist");
+            Util.error(Util.getMessage("error.title"), Util.getMessage("file.not.exist", file.path), Util.getMessage("button.cancel.close"));
+            //alert("The file '" + file.path + "' does not exist");
             return;
         }
     }
@@ -410,7 +414,7 @@ Controller.prototype._loadDocumentImpl = function (file, path) {
         } catch (e) {
             Console.dumpError(e);
             document.documentElement.removeAttribute("wait-cursor");
-            Util.error("Could not load document", e.message, "Close");
+            Util.error(Util.getMessage("could.not.load.document"), e.message, Util.getMessage("button.cancel.close"));
             return;
         }
         thiz._pageSetupCount = 0;
@@ -420,11 +424,11 @@ Controller.prototype._loadDocumentImpl = function (file, path) {
             p++;
             try {
 	            //debug("thiz.doc.pages.length: " + thiz.doc.pages.length);
-    	        listener.onProgressUpdated("Loading page " + thiz.doc.pages[p].properties.name + "...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
+    	        listener.onProgressUpdated(Util.getMessage("loading.page", thiz.doc.pages[p].properties.name), thiz._pageSetupCount + 1, thiz.doc.pages.length);
         	    thiz._createPageView(thiz.doc.pages[p], function () {
             	    thiz._pageSetupCount ++;
                 	if (thiz._pageSetupCount == thiz.doc.pages.length) {
-                        listener.onProgressUpdated("Loading background...", thiz._pageSetupCount + 1, thiz.doc.pages.length);
+                        listener.onProgressUpdated(Util.getMessage("loading.background"), thiz._pageSetupCount + 1, thiz.doc.pages.length);
                     	thiz._ensureAllBackgrounds(function () {
                         	thiz._setSelectedPageIndex(0);
 
@@ -444,12 +448,12 @@ Controller.prototype._loadDocumentImpl = function (file, path) {
             } catch (ex) {
                 document.documentElement.removeAttribute("wait-cursor");
                 listener.onTaskDone();
-                Util.error("Error", e.message, "Close");
+                Util.error(Util.getMessage("error.title"), e.message, Util.getMessage("button.cancel.close"));
             }
         }
         loadPage();
     }
-    Util.beginProgressJob("Loading document...", starter);
+    Util.beginProgressJob(Util.getMessage("loading.document"), starter);
 };
 //---------------------- privates -----
 Controller.prototype._ensureAllBackgrounds = function (callback) {
@@ -467,7 +471,7 @@ Controller.prototype._ensureBackground = function (index, callback) {
     });
 }
 Controller.prototype._updatePageFromView = function () {
-    if (!this.doc) throw "No active document";
+    if (!this.doc) throw Util.getMessage("no.active.document");
 
     for (p in this.doc.pages) {
         var page = this.doc.pages[p];
@@ -486,6 +490,7 @@ Controller.prototype._addPage = function (name, id, width, height, background, d
     page.properties.width = width;
     page.properties.height = height;
     page.properties.dimBackground = false;
+    page.properties.transparentBackground = transparentBackground;
 
     if (backgroundColor) {
         page.properties.backgroundColor = backgroundColor;
@@ -546,7 +551,7 @@ Controller.prototype._createPageView = function (page, callback) {
             page.rasterizeDataCache = null;
         }, false);
 
-        if (page.properties.transparentBackground == "true") {
+        if (page.properties.transparentBackground == "true" || page.properties.background) {
             canvas.setBackgroundColor(Color.fromString("#ffffffff"));
         } else {
             canvas.setBackgroundColor(Color.fromString(page.properties.backgroundColor));
@@ -572,6 +577,11 @@ Controller.prototype._handleContextMenuShow = function (event) {
     var tab = Dom.findTop(event.originalTarget, function (node) {
         return node.localName == "tab";
     });
+
+    Dom.workOn("./xul:menuseparator", this.tabPopupMenu, function (sep) {
+        sep.style.display = "";
+    });
+
     if (tab) {
         this.pagePropertiesMenuItem.style.display = "";
         this.pageNoteMenuItem.style.display = "";
@@ -610,6 +620,32 @@ Controller.prototype._handleContextMenuShow = function (event) {
             popup.appendChild(item);
         }
     }
+
+    var childs = this.tabPopupMenu.childNodes;
+    var shouldHideNextSeparator = true;
+
+    for (var i = 0; i < childs.length; i ++) {
+        var child = childs[i];
+        if (child.localName == "menuseparator") {
+            if (shouldHideNextSeparator) {
+                child.style.display = "none";
+            } else {
+                shouldHideNextSeparator = true;
+            }
+        } else {
+            if (child.style.display != "none") {
+                shouldHideNextSeparator = false;
+            }
+        }
+    }
+
+    for (var i = childs.length - 1; i >= 0; i --) {
+        var child = childs[i];
+        if (child.localName != "menuseparator" && child.style.display != "none") {
+            break;
+        }
+        child.style.display = "none";
+    }
 };
 Controller.prototype._modifyPageProperties = function (page, data) {
     if (!page._view) return;
@@ -634,7 +670,7 @@ Controller.prototype._modifyPageProperties = function (page, data) {
     try {
         this.mainViewPanel.setAttributeNS(PencilNamespaces.p, "p:resizing", "true");
         page._view.canvas.setSize(data.width, data.height);
-        if (page.properties.transparentBackground == "true") {
+        if (page.properties.transparentBackground == "true" || page.properties.background) {
             page._view.canvas.setBackgroundColor(Color.fromString("#ffffffff"));
         } else {
             page._view.canvas.setBackgroundColor(Color.fromString(page.properties.backgroundColor));
@@ -643,7 +679,7 @@ Controller.prototype._modifyPageProperties = function (page, data) {
         this.mainViewPanel.removeAttributeNS(PencilNamespaces.p, "resizing");
 
     } catch (e) {
-        Console.dumpError(e, "sasd");
+        Console.dumpError(e, "Error");
     }
     page.rasterizeDataCache = null;
     this.markDocumentModified();
@@ -686,9 +722,9 @@ Controller.prototype._deletePage = function (page) {
 
 };
 Controller.prototype._confirmAndSaveDocument = function () {
-    var result = Util.confirmExtra("Save changes to document before closing?",
-                                    "If you don't save changes will be permanently lost.",
-                                    "Save", "Discard Changes", "Cancel");
+    var result = Util.confirmExtra(Util.getMessage("save.changes.to.document.before.closing"),
+                                    Util.getMessage("changes.will.be.permanently.lost"),
+                                    Util.getMessage("button.save.label"), Util.getMessage("button.discard.changes"), Util.getMessage("button.cancel.label"));
     if (result.extra) return true;
     if (result.cancel) return false;
 
@@ -696,6 +732,7 @@ Controller.prototype._confirmAndSaveDocument = function () {
 
 };
 Controller.prototype.editPageProperties = function (page) {
+    if (!page) return;
     var returnValueHolder = {};
     var possibleBackgroundPages = [];
     for (var i in this.doc.pages) {
@@ -735,8 +772,8 @@ Controller.prototype.editPageNote = function (page) {
     if (returnValueHolder.ok) {
         if (!page._view) return;
         page.properties.note = RichText.fromString(returnValueHolder.html);
-        debug("html " + returnValueHolder.html);
-        debug("RichText " + page.properties.note);
+        //debug("html " + returnValueHolder.html);
+        //debug("RichText " + page.properties.note);
         this.markDocumentModified();
     }
 };
@@ -754,8 +791,8 @@ Controller.prototype.rasterizeDocument = function () {
         var nsIFilePicker = Components.interfaces.nsIFilePicker;
         var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
         if (currentDir) fp.displayDirectory = currentDir;
-        fp.init(window, "Export all pages into", nsIFilePicker.modeGetFolder);
-        fp.appendFilter("All Files", "*");
+        fp.init(window, Util.getMessage("filepicker.export.all.pages.into"), nsIFilePicker.modeGetFolder);
+        fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
         if (fp.show() == nsIFilePicker.returnCancel) return false;
 
@@ -782,9 +819,9 @@ Controller.prototype.rasterizeDocument = function () {
                     var withPrefix = Config.get("document.SaveWithPrefixNumber");
                     var task = "";
                     if (withPrefix) {
-                        task = "Exporting page " + (pageIndex + 1) + "_" + page.properties.name + "...";
+                        task = Util.getMessage("exporting.page.with.prefix", pageIndex + 1, page.properties.name);
                     } else {
-                        task = "Exporting page " + page.properties.name + "...";
+                        task = Util.getMessage("exporting.page.no.prefix", page.properties.name);
                     }
 
                     listener.onProgressUpdated(task, pageIndex + 1, thiz.doc.pages.length);
@@ -813,7 +850,7 @@ Controller.prototype.rasterizeDocument = function () {
         }
 
         //take a shower, doit together!!!
-        Util.beginProgressJob("Export document", starter);
+        Util.beginProgressJob(Util.getMessage("export.document"), starter);
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
@@ -880,7 +917,7 @@ Controller.prototype.exportDocument = function () {
                     if (pageIndex >= pages.length) {
                         thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
                             listener.onTaskDone();
-                            Util.showStatusBarInfo("Document has been exported, location: " + destFile.path, true);
+                            Util.showStatusBarInfo(Util.getMessage("document.has.been.exported", destFile.path), true);
                             debug("Document has been exported, location: " + destFile.path);
                         });
                         return;
@@ -888,7 +925,7 @@ Controller.prototype.exportDocument = function () {
                     var page = pages[pageIndex];
 
                     //signal progress
-                    var task = "Exporting page " + page.properties.name + "...";
+                    var task = Util.getMessage("exporting.page.no.prefix", page.properties.name);
                     listener.onProgressUpdated(task, pageIndex + 1, pages.length);
 
                     var friendlyId = page.properties.fid;
@@ -916,7 +953,7 @@ Controller.prototype.exportDocument = function () {
         }
 
         //take a shower, doit together!!!
-        Util.beginProgressJob("Export document to HTML", starter);
+        Util.beginProgressJob(Util.getMessage("export.document.to.html"), starter);
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
@@ -1082,7 +1119,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             callback();
         });
     } catch (e) {
-        Util.error("Error exporting document", "" + e);
+        Util.error(Util.getMessage("error.exporting.document"), "" + e);
         Console.dumpError(e);
     }
 };
@@ -1146,14 +1183,14 @@ Controller.prototype.rasterizeCurrentPage = function () {
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.defaultString = fileName;
     if (currentDir) fp.displayDirectory = currentDir;
-    fp.init(window, "Export Page As", nsIFilePicker.modeSave);
-    fp.appendFilter("PNG Image (*.png)", "*.png");
-    fp.appendFilter("All Files", "*");
+    fp.init(window, Util.getMessage("filepicker.export.page.as"), nsIFilePicker.modeSave);
+    fp.appendFilter(Util.getMessage("filepicker.png.image"), "*.png");
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() == nsIFilePicker.returnCancel) return false;
     try {
         this._rasterizePage(page, fp.file.path, function () {
-            Util.showStatusBarInfo("Page '" + page.properties.name + "' has been exported", true);
+            Util.showStatusBarInfo(Util.getMessage("page.has.been.exported", page.properties.name), true);
             //Util.info("Page '" + page.properties.name + "' has been exported", "Location: " + fp.file.path);
         });
     } catch (e) {
@@ -1190,16 +1227,16 @@ Controller.prototype.rasterizeSelection = function () {
 
     var geo = target.getGeometry();
     if (!geo) {
-        Util.showStatusBarWarning("The selected objects cannot be exported. Please try selecting a single object or a grouped object set.", true);
+        Util.showStatusBarWarning(Util.getMessage("the.selected.objects.cannot.be.exported"), true);
         //alert("The selected objects cannot be exported\nPlease try selecting a single object or a grouped object set.");
         return;
     }
 
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Export Selection As", nsIFilePicker.modeSave);
-    fp.appendFilter("PNG Image (*.png)", "*.png");
-    fp.appendFilter("All Files", "*");
+    fp.init(window, Util.getMessage("filepicker.export.selection.as"), nsIFilePicker.modeSave);
+    fp.appendFilter(Util.getMessage("filepicker.png.image"), "*.png");
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() == nsIFilePicker.returnCancel) return;
 
@@ -1230,7 +1267,7 @@ Controller.prototype.sizeToContent = function (passedPage, askForPadding) {
 
     var padding = 0;
     if (askForPadding) {
-        var paddingString = window.prompt("Please enter the padding:", "0");
+        var paddingString = window.prompt(Util.getMessage("please.enter.the.padding"), "0");
         if (!paddingString) return null;
         var padding = parseInt(paddingString, 10);
         if (!padding) padding = 0;
