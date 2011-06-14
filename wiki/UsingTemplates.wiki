@@ -1,0 +1,16 @@
+#labels tutorial
+#How to use templates to export pencil file.
+
+= Introduction =
+
+Templates are used to export your pencil file to a single HTML page, png files, doc, odt of pdf documents.
+
+= Step by step =
+
+* open the pencil file you want to export
+* select Document > Export document ...
+* select the output format
+* select pages that you want to export (all / all except backgrounds / only selected pages)
+* finally, select the template you want to use from the drop-down list (you will retrieve your imported template in this list)
+and the destination folder
+* click on "Finish" button et voila !
