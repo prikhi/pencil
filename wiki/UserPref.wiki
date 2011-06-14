@@ -1,4 +1,4 @@
-#List of available setting in Pencil.
+#summary List of available setting in Pencil.
 
 = List of available setting in Pencil =
 
