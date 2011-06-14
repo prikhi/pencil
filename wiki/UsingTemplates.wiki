@@ -1,5 +1,5 @@
 #labels tutorial,HowTo,templates
-#How to use templates to export pencil file.
+#Summary How to use templates to export pencil file.
 
 = Introduction =
 
