@@ -1,5 +1,5 @@
 #summary How to use templates to export pencil file.
-#labels tutorial,HowTo,templates
+#labels Featured,Phase-Deploy
 
 = Introduction =
 
