@@ -1,4 +1,3 @@
-#labels Featured
 = Version 1.1 =
 r58
   * *New Feature*: Export Selection to png
