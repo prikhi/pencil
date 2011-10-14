@@ -1,0 +1,432 @@
+
+window[p|probing],
+window[p|probing] *,
+dialog[p|probing],
+dialog[p|probing] * {
+    cursor: url(chrome://pencil-os/skin/images/moblin/stock_3d-color-picker?size=16) default !important;
+}
+
+#pencil-new-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-new.png);
+}
+
+#pencil-open-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-open.png);
+}
+
+#pencil-save-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-save.png);
+}
+
+#pencil-save-as-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-save-as.png);
+}
+
+#pencil-undo-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-undo.png);
+}
+
+#pencil-redo-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-redo.png);
+}
+
+#pencil-cut-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-cut.png);
+}
+
+#pencil-copy-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-copy.png);
+}
+
+#pencil-paste-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-paste.png);
+}
+
+#pencil-delete-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-delete.png);
+}
+
+#pencil-export-page-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_export.png);
+}
+
+#pencil-export-document-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_export.png);
+}
+
+#pencil-zoom-in-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/zoom-in.png);
+}
+
+#pencil-zoom-out-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/zoom-out.png);
+}
+
+#pencil-zoom-org-button {
+	list-style-image: url(chrome://pencil/skin/images/moblin/zoom-original.png);
+}
+
+#pencil-same-horz-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/make-same-horizontal-space.png);
+}
+
+#pencil-same-vert-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/make-same-vertical-space.png);
+}
+
+#pencil-align-left-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/align-left.png);
+}
+
+#pencil-align-right-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/align-right.png);
+}
+
+#pencil-align-middle-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/align-middle.png);
+}
+
+#pencil-align-top-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/align-top.png);
+}
+
+#pencil-align-bottom-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/align-bottom.png);
+}
+
+#pencil-align-center-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/align-center.png);
+}
+
+#pencil-bring-to-top-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_to-top.png);
+}
+
+#pencil-bring-forward-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_bring-forward.png);
+}
+
+#pencil-send-backward-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_bring-backward.png);
+}
+
+#pencil-send-to-back-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_to-bottom.png);
+}
+
+#textColorButton {
+	/*list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_text_color_foreground.png);*/
+}
+
+#mtextColorButton {
+	/*list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_text_color_foreground.png);*/
+}
+
+#hilightColorButton {
+	/*list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_text_color_hilight.png);*/
+}
+
+#mhilightColorButton {
+	/*list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_text_color_hilight.png);*/
+}
+
+#strokeColorButton {
+	/*list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_stroke_color.png);*/
+}
+
+#fillColorButton {
+	/*list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_bucketfill.png);*/
+}
+
+/* texttool */
+#edBoldButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-bold.png);
+}
+
+#medBoldButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-bold.png);
+}
+
+#edItalicButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-italic.png);
+}
+
+#medItalicButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-italic.png);
+}
+
+#edUnderlineButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-underline.png);
+}
+
+#medUnderlineButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-underline.png);
+}
+
+#edStrikeButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-strikethrough.png);
+}
+
+#medStrikeButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-text-strikethrough.png);
+}
+
+#edBulletedListButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_list_bullet.png);
+}
+
+#medBulletedListButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_list_bullet.png);
+}
+
+#edNumberedListButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_list_enum.png);
+}
+
+#medNumberedListButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_list_enum.png);
+}
+
+#edIndentButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-indent-more.png);
+}
+
+#medIndentButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-indent-more.png);
+}
+
+#edOutdentButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-indent-less.png);
+}
+
+#medOutdentButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-indent-less.png);
+}
+
+#clearButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-clear.png);
+}
+
+#mclearButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-clear.png);
+}
+
+#malignLeftCommand {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-justify-left.png);
+}
+
+#malignCenterCommand {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-justify-center.png);
+}
+
+#malignRightCommand {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/format-justify-right.png);
+}
+
+#medIncreaseFontButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_increase-font.png);
+}
+
+#medDecreaseFontButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_decrease-font.png);
+}
+
+#insertLinkButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/insert-link.png);
+}
+
+#newPageButton {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/list-add.png);
+}
+
+#toolbarFormatPainterCommand {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/brush.png);
+}
+
+.new-window-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/window-new.png);
+}
+
+.new-document-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-new.png);
+}
+
+.open-document-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-open.png);
+}
+
+.save-document-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-save.png);
+}
+
+.save-as-document-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/document-save-as.png);
+}
+
+.export-document-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_export.png);
+}
+
+.exit-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/application-exit.png);
+}
+
+.undo-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-undo.png);
+}
+
+.redo-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-redo.png);
+}
+
+.cut-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-cut.png);
+}
+
+.copy-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-copy.png);
+}
+
+.paste-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-paste.png);
+}
+
+.delete-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-delete.png);
+}
+
+.select-all-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit-select-all.png);
+}
+
+.view-collection-pane-menu {
+
+}
+
+.group-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_group.png);
+}
+
+.ungroup-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_ungroup.png);
+}
+
+.same-width-menu {
+
+}
+
+.same-height-menu {
+
+}
+
+.same-min-width-menu {
+
+}
+
+.same-min-height-menu {
+
+}
+
+.align-left-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_graphics-align-left.png);
+}
+
+.align-center-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_graphics-align-center.png);
+}
+
+.align-right-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_graphics-align-right.png);
+}
+
+.align-top-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_graphics-align-top.png);
+}
+
+.align-middle-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_graphics-align-centered.png);
+}
+
+.align-bottom-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_graphics-align-bottom.png);
+}
+
+.stencil-generator-menu {
+
+}
+
+.clipart-browser-menu {
+
+}
+
+.options-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/preferences-system.png);
+}
+
+.about-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/help-about.png);
+}
+
+.add-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/list-add.png);
+}
+
+.previous-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/go-previous.png);
+}
+
+.next-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/go-next.png);
+}
+
+.remove-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/list-remove.png);
+}
+
+.properties-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/properties.png);
+}
+
+.edit-notes-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/edit.png);
+}
+
+.color-picker {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_3d-color-picker.png);
+}
+
+.align-left-top {
+	list-style-image: url(chrome://pencil/skin/images/align-left-top.png);
+}
+
+.align-left-center {
+	list-style-image: url(chrome://pencil/skin/images/align-left-center.png);
+}
+
+.align-left-bottom {
+	list-style-image: url(chrome://pencil/skin/images/align-left-bottom.png);
+}
+
+.align-center-top {
+	list-style-image: url(chrome://pencil/skin/images/align-center-top.png);
+}
+
+.align-center-center {
+	list-style-image: url(chrome://pencil/skin/images/align-center-center.png);
+}
+
+.align-center-bottom {
+	list-style-image: url(chrome://pencil/skin/images/align-center-bottom.png);
+}
+
+.align-right-top {
+	list-style-image: url(chrome://pencil/skin/images/align-right-top.png);
+}
+
+.align-right-center {
+	list-style-image: url(chrome://pencil/skin/images/align-right-center.png);
+}
+
+.align-right-bottom {
+	list-style-image: url(chrome://pencil/skin/images/align-right-bottom.png);
+}

@@ -1,8 +1,0 @@
-The build process of Pencil is for Linux only (at least for the time being). This means that you can build Pencil only if you are using a Linux machine. However the build outputs are for both XPI, Linux and Win32.
-
-The Win32 installer is built using NSIS. The only requirement for building the Win32 installer is makensis.
-
-For Fedora system, to install makensis:
-
-#yum install mingw32-nsis
-

@@ -1,8 +1,0 @@
-<Template xmlns="http://www.evolus.vn/Namespace/Pencil">
-    <Property name="id">Evolus:HTML:Default</Property>
-    <Property name="name">Default HTML Template</Property>
-    <Property name="author">Evolus</Property>
-    <Property name="description">Blah blah</Property>
-    
-    <Property name="styleSheet">StyleSheet.xslt</Property>
-</Template>

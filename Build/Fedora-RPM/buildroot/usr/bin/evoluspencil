@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-
-/usr/bin/xulrunner --app "/usr/lib/evolus-pencil-%version%/application.ini"
-

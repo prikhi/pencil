@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
+<overlay id="textToolOverlay"
+         xmlns:html="http://www.w3.org/1999/xhtml"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <hbox id="toolbarExtra">
+        <toolbar>
+            <hbox align="center">
+                <pcolorbutton id="textColorButton" class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&colorbutton.change.text.tooltip;" image="chrome://pencil-os/skin/images/moblin/shape-text-color.png"/>
+                <!--<pcolorbutton id="hilightColorButton" class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&colorbutton.change.text.hili.tooltip;" disabled="true" image="chrome://pencil-os/skin/images/MozIcons/stock/toolbar/stock_text_color_foreground.png"/>-->
+                <pcolorbutton id="fillColorButton" class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&colorbutton.change.bgrfill.tooltip;" image="chrome://pencil-os/skin/images/moblin/shape-fill-color.png"/>
+                <pcolorbutton id="strokeColorButton" class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&colorbutton.change.stroke.tooltip;" image="chrome://pencil-os/skin/images/moblin/shape-border-color.png"/>
+                <toolbarseparator />
+            </hbox>
+        </toolbar>
+    </hbox>
+</overlay>
+

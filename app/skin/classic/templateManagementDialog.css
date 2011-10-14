@@ -1,0 +1,21 @@
+treechildren::-moz-tree-image {
+    display: none;
+}
+
+treechildren::-moz-tree-cell-text(name) {
+    font-weight: bold;
+    padding-left: 0px;
+}
+.dialog-button-box > button[dlgtype='extra2'] {
+    list-style-image: url(moz-icon://stock/add?size=menu);
+}
+.dialog-button-box > button[dlgtype='extra1'] {
+    list-style-image: url(moz-icon://stock/remove?size=menu);
+}
+.[platform='Other'] .dialog-button-box > button[dlgtype='extra1'] {
+    list-style-image: url(chrome://pencil-os/skin/images/MozIcons/stock/menu/list-remove.png);
+}
+.[platform='Other'] .dialog-button-box > button[dlgtype='extra2'] {
+    list-style-image: url(chrome://pencil-os/skin/images/MozIcons/stock/menu/list-add.png);
+}
+
