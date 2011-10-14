@@ -1,0 +1,34 @@
+wizardpage > label {
+    font-weight: bold;
+}
+wizardpage > * + label {
+    margin-top: 1em;
+}
+wizardpage > label.Primary {
+    margin-bottom: 1em;
+}
+radiogroup > radio + radio {
+    margin-top: .8ex;
+}
+#exporterWarningPane {
+    margin-top: 2em;
+    font-size: .9em;
+
+    padding-left: 30px;
+    background: url(chrome://pencil/skin/images/warning16.png) 0px 0px no-repeat;
+}
+#pageList,
+#pageSelectionSummaryLabel {
+    margin-left: 25px;
+}
+#pageList {
+    margin-top: .8ex;
+}
+#pageSelectionSummaryLabel {
+    font-size: .9em;
+}
+
+#templateDescription {
+    font-size: .9em;
+    opacity: .7;
+}

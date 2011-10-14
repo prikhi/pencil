@@ -1,0 +1,50 @@
+@namespace url(http://www.w3.org/1999/xhtml);
+@namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+@namespace svg url(http://www.w3.org/2000/svg);
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+
+body#RichTextEditor,
+svg|svg svg|foreignObject {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+body#RichTextEditor {
+    margin: 0px;
+    padding: 1px;
+}
+body#RichTextEditor *|*:link,
+svg|svg svg|foreignObject *|*:link {
+    color: rgb(0, 0, 238);
+    text-decoration: underline;
+}
+
+body#RichTextEditor p,
+body#RichTextEditor h1,
+body#RichTextEditor h2,
+body#RichTextEditor h3,
+body#RichTextEditor h4,
+body#RichTextEditor h5,
+body#RichTextEditor h6,
+body#RichTextEditor ul,
+body#RichTextEditor ol,
+svg|svg svg|foreignObject p,
+svg|svg svg|foreignObject h1,
+svg|svg svg|foreignObject h2,
+svg|svg svg|foreignObject h3,
+svg|svg svg|foreignObject h4,
+svg|svg svg|foreignObject h5,
+svg|svg svg|foreignObject h6,
+svg|svg svg|foreignObject ul,
+svg|svg svg|foreignObject ol {
+    margin-top: 0px;
+    margin-bottom: .6em;
+}
+body#RichTextEditor li,
+svg|svg svg|foreignObject li {
+    margin-top: 0px;
+    margin-bottom: .3em;
+}
+body#RichTextEditor table,
+svg|svg svg|foreignObject table {
+    font-size: 1em;
+}

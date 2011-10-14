@@ -1,0 +1,107 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+dialog {
+    padding: 0px;
+}
+dialog .dialog-button-box {
+    padding: .7em;
+}
+dialog vbox.Header {
+    background-color: #fff;
+    padding: .7em;
+}
+dialog vbox.Header .Name {
+    font-weight: bold;
+}
+dialog vbox.Header + vbox {
+    padding: 1.2em;
+}
+dialog vbox.Header + vbox hbox {
+    -moz-box-align: center;
+}
+dialog vbox.Header + vbox > hbox > label,
+dialog vbox.Header + vbox > hbox > spacer {
+    width: 13ex;
+    font-weight: bold;
+    margin-right: .5em;
+}
+dialog vbox.Header + vbox > hbox > * + *,
+dialog vbox.Header + vbox > hbox > * + * > *:first-child,
+dialog vbox.Header + vbox textbox:first-child {
+    margin-left: 0px;
+}
+dialog vbox.Header + vbox hbox a {
+    font-weight: bold;
+    font-size: .9em;
+}
+dialog vbox.Header + vbox > hbox > label + * {
+    -moz-box-flex: 1;
+}
+dialog vbox.Header + vbox hbox hbox {
+}
+textbox[type="number"][disabled] {
+    opacity: .5;
+}
+
+dialog hbox.Body {
+    padding: 1.5em;
+    -moz-box-align: start;
+}
+dialog hbox.Body vbox {
+    margin-left: 1em;
+}
+dialog hbox.Body vbox description#titleText {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+dialog hbox.Body vbox description {
+    margin-left: 0px;
+    padding-left: 0px;
+}
+dialog hbox.Body vbox html|a {
+    -moz-outline: none;
+    outline: none;
+}
+
+#pencilMessageDialog hbox.Body > vbox {
+    max-width: 30em;
+}
+#backgroundPage[p|with-background] {
+    color: highlight;
+}
+
+.message-icon {
+  list-style-image: url("chrome://global/skin/icons/information-48.png");
+  width: 48px;
+  height: 48px;
+  -moz-margin-end: 20px;
+}
+
+#pencilAboutDialog > vbox > hbox {
+	margin: 10px;
+}
+#pencilAboutDialog > vbox > hbox:first-child {
+	background-color: highlight;
+	color: highlighttext;
+}
+#pencilAboutDialog hbox.Title {
+	margin-top: 2px;
+}
+#pencilAboutDialog hbox.Title label {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+#pencilAboutDialog textbox[readonly="true"] {
+	padding: 0;
+	margin: 0;
+}
+#pencilAboutDialog textbox[readonly="true"],
+#pencilAboutDialog textbox[readonly="true"] hbox,
+#pencilAboutDialog textbox[readonly="true"] textarea {
+	background-color: -moz-field;
+	color: -moz-fieldtext;
+}
+#pencilAboutDialog textbox[readonly="true"] hbox {
+	padding: 3px;
+}

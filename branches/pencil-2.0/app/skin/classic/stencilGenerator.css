@@ -1,0 +1,68 @@
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+
+.Stencil {
+	/*text-align: center;*/
+	height: 170px;
+	width: 550px;
+
+	padding: 0;
+	margin: 0;
+}
+.Stencil .StencilList {
+	padding: 0px;
+	margin: 0;
+
+	height: 170px;
+	width: 550px;
+
+	overflow: auto;
+
+	text-align: center;
+}
+.Stencil .StencilList > div {
+    border: none;
+
+    background: transparent;
+    text-align: center;
+
+    display: inline-block;
+    width: 100px;
+
+	cursor: pointer;
+}
+.Stencil .StencilList > div.Selected img,
+.Stencil .StencilList > div.Image img {
+	max-width: 50px;
+	max-height: 50px;
+}
+.Stencil .StencilList > div.Selected svg,
+.Stencil .StencilList > div.Selected img {
+	-moz-border-radius: 2px;
+    -moz-box-shadow: 0 0 3px #999;
+}
+.Stencil .StencilList > div.Image svg,
+.Stencil .StencilList > div.Image img {
+    opacity: 0.9;
+
+	border: none;
+}
+.Stencil .StencilList > div.Image svg:hover,
+.Stencil .StencilList > div.Image img:hover {
+    opacity: 1;
+}
+.Stencil .StencilList > div.Text {
+    /*overflow: hidden;
+	vertical-align: middle;*/
+}
+.Stencil .StencilList > div.Text label {
+	cursor: pointer;
+}
+.Stencil .StencilList > div input[type='checkbox'] {
+	vertical-align: middle;
+}
+vbox > hbox.StencilInformation {
+	/*padding-top: 10px;*/
+}
+vbox listbox {
+	font: -moz-list;
+}

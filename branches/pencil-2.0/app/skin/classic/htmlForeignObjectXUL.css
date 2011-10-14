@@ -1,0 +1,72 @@
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+@namespace html url(http://www.w3.org/1999/xhtml);
+@namespace svg url(http://www.w3.org/2000/svg);
+@namespace p url(http://www.evolus.vn/Namespace/Pencil);
+
+pcanvas datepicker > hbox {
+    -moz-box-flex: 1;
+}
+
+datepicker > hbox,
+datepicker[type='grid'] > vbox,
+datepicker[type='grid'] > vbox > grid,
+datepicker[type='grid'] > vbox > grid > rows,
+datepicker[type='grid'] > vbox > grid > rows > row {
+    -moz-box-flex: 1;
+}
+datepicker[type='grid'] > vbox > grid > rows > row {
+    -moz-box-pack: center;
+    -moz-box-align: center;
+}
+datepicker,
+datepicker[type='grid'] > vbox {
+    margin: 0px;
+}
+datepicker[type='grid'] row label {
+    -moz-box-flex: 0 !important;
+}
+datepicker[disabled='true'] {
+    opacity: .5;
+}
+
+svg|svg scale > slider {
+    margin: 0px !important;
+}
+
+treechildren::-moz-tree-checkbox
+{
+    list-style-image: none;
+}
+treechildren::-moz-tree-checkbox(checked)
+{
+    list-style-image: url("chrome://global/skin/checkbox/cbox-check.gif");
+}
+treechildren::-moz-tree-checkbox(disabled)
+{
+    list-style-image: url("chrome://global/skin/checkbox/cbox-check-dis.gif");
+}
+
+treechildren::-moz-tree-progressmeter {
+    padding: 1px; /* songbird compat */
+    background-image: none !important; /* songbird compat */
+    margin-left: 0;
+    color: #008F00 !important;
+}
+
+treechildren::-moz-tree-progressmeter(paused) {
+  color: #FFCC00 !important;
+}
+treechildren::-moz-tree-progressmeter(paused, pausedAutoretrying) {
+    color: #849FFF !important;
+}
+treechildren::-moz-tree-progressmeter(canceled) {
+  color: #B12801 !important;
+}
+
+treechildren::-moz-tree-progressmeter(queued) {
+  color: #BFDEFF !important;
+}
+
+treechildren::-moz-tree-progressmeter(inprogress) {
+  color: #AAE061 !important;
+}

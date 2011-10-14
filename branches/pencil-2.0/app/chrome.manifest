@@ -1,0 +1,13 @@
+content pencil      content/pencil/
+content pencil      content/pencil/ contentaccessible=yes
+
+skin    pencil      skin skin/classic/
+skin    pencil-os   skin skin/classic/win/
+
+locale  pencil en-US       locale/en-US/
+locale  pencil vi          locale/vi/
+
+overlay chrome://browser/content/browser.xul        chrome://pencil/content/firefoxOverlay.xul
+
+# Support for Mac
+override chrome://pencil-os/skin/icons.css chrome://pencil/skin/mac/icons.css os=Darwin
