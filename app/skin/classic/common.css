@@ -211,8 +211,8 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 #toolbar-menubar toolbarseparator + toolbarseparator:first-child {
     display: none;
 }
-#toolbar-menubar #geometryToolbar > hbox {
-    background: rgba(255, 255, 255, .6);
+#toolbar-menubar .PanelContent > hbox {
+    background: rgba(255, 255, 255, .8);
     padding: 2px;
     border-radius: 5px;
     margin: 0px 3px;

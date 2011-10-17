@@ -51,7 +51,6 @@ pcollectionpane vbox[aid="filterPanel"] textbox image {
 }
 pcollectionpane vbox[aid="contentBox"] {
     overflow: auto;
-    background-color: #ccc;
     border: solid 1px;
     border-color: threedshadow;
 }
@@ -60,7 +59,6 @@ pcollectionpane .Collection {
 }
 pcollectionpane .Collection + .Collection {
     margin-top: 2em;
-    border-top: solid 1px highlighttext;
 }
 pcollectionpane *[pcollapsed='true'].Collection + .Collection,
 pcollectionpane *[_hidden='true'].Collection + .Collection {
@@ -68,10 +66,14 @@ pcollectionpane *[_hidden='true'].Collection + .Collection {
 }
 pcollectionpane .Collection > hbox:first-child {
     -moz-box-align: start;
-    background-color: threedface;
+    background-image: -moz-linear-gradient(bottom, rgb(187,187,187) 0%, rgb(221,221,221) 100%);
     color: -moz-button;
     padding: .3em;
     cursor: default;
+}
+pcollectionpane .Collection > hbox:first-child h4 {
+    color: #666;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, .4);
 }
 pcollectionpane .Collection > hbox:first-child > button {
     -moz-appearance: none;
