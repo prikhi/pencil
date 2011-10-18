@@ -157,7 +157,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     collection.author = shapeDefsNode.getAttribute("author");
     collection.infoUrl = shapeDefsNode.getAttribute("url");
 
-
     Dom.workOn("./p:Script", shapeDefsNode, function (scriptNode) {
         var context = { collection: collection };
         pEval(scriptNode.textContent, context);
@@ -228,7 +227,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         collection.propertyGroups.push(group);
     });
 
-    // styles
+    /*/ styles
     Dom.workOn("./p:Styles/p:Group", shapeDefsNode, function (styleGroupNode) {
         var group = new StyleGroup;
         group.name = styleGroupNode.getAttribute("name");
@@ -268,7 +267,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
         collection.styleGroups[group.name] = group;
     });
-    //debug(collection.styleGroups);
+    //debug(collection.styleGroups);/*/
 };
 /* public ShapeDef */ ShapeDefCollectionParser.prototype.parseShapeDef = function (shapeDefNode, collection) {
     var shapeDef = new ShapeDef();
@@ -334,7 +333,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         shapeDef.propertyGroups.push(group);
     });
 
-    // styles
+    /*/ styles
     for (var kk in collection.styleGroups) {
         shapeDef.styleGroups[kk] = collection.styleGroups[kk];
     }
@@ -391,6 +390,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
         shapeDef.styleGroups[group.name] = group;
     });
+    8*/
 
     //parse behaviors
     Dom.workOn("./p:Behaviors/p:For", shapeDefNode, function (forNode) {

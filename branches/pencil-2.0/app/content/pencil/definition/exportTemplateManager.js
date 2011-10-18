@@ -52,7 +52,12 @@ ExportTemplateManager.getUserTemplateDirectory = function () {
                      .getService(Components.interfaces.nsIProperties);
 
     var templateDir = null;
-    templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
+    if (Util.isXulrunner()) {
+        templateDir = properties.get("resource:app", Components.interfaces.nsIFile);
+    } else {
+        templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
+    }
+
     templateDir.append("Pencil");
     templateDir.append("Templates");
 
@@ -73,7 +78,12 @@ ExportTemplateManager.getSystemWideTemplateDirectory = function () {
                      .getService(Components.interfaces.nsIProperties);
 
     var templateDir = null;
-    templateDir = properties.get("resource:app", Components.interfaces.nsIFile);
+    if (Util.isXulrunner()) {
+        templateDir = properties.get("resource:app", Components.interfaces.nsIFile);
+    } else {
+        templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
+    }
+
     templateDir.append("Templates");
 
     return templateDir;

@@ -138,38 +138,6 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                 <Property name="textColor" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
                 <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
             </PropertyGroup>
-
-            <PropertyGroup name="Text">
-                <Property name="textContent1" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
-                <Property name="textFont1" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
-                <Property name="textColor1" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
-                <Property name="textAlign1" displayName="Text Alignment" type="Alignment">1,1</Property>
-            </PropertyGroup>
-            <PropertyGroup name="Text">
-                <Property name="textContent2" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
-                <Property name="textFont2" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
-                <Property name="textColor2" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
-                <Property name="textAlign2" displayName="Text Alignment" type="Alignment">1,1</Property>
-            </PropertyGroup>
-            <PropertyGroup name="Text dsdf df sdf ">
-                <Property name="textContent3" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
-                <Property name="textFont3" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
-                <Property name="textColor3" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
-                <Property name="textAlign3" displayName="Text Alignment" type="Alignment">1,1</Property>
-            </PropertyGroup>
-            <PropertyGroup name="Text dsdf df sdf">
-                <Property name="textContent4" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
-                <Property name="textFont4" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
-                <Property name="textColor4" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
-                <Property name="textAlign4" displayName="Text Alignment" type="Alignment">1,1</Property>
-            </PropertyGroup>
-            <PropertyGroup name="Text dsdf df sdf">
-                <Property name="textContent5" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
-                <Property name="textFont5" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
-                <Property name="textColor5" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
-                <Property name="textAlign5" displayName="Text Alignment" type="Alignment">1,1</Property>
-            </PropertyGroup>
-
         </Properties>
         <Behaviors>
             <For ref="rrRect">

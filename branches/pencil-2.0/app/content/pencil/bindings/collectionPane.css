@@ -47,7 +47,7 @@ pcollectionpane vbox[aid="filterPanel"] textbox {
 	margin: 2px;
 }
 pcollectionpane vbox[aid="filterPanel"] textbox image {
-	list-style-image: url("../UI/Icons/collection-filter.png");
+	list-style-image: url("chrome://pencil/skin/images/collection-filter.png");
 }
 pcollectionpane vbox[aid="contentBox"] {
     overflow: auto;

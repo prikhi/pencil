@@ -26,7 +26,7 @@
                 <hbox class="Title"><label value="&label.evolus.pencil.value;"></label></hbox>
                 <hbox>
                     <vbox flex="1"><label value="&label.copyright.value;"></label></vbox>
-                    <vbox><label value="&label.version.value; 1.3"></label></vbox>
+                    <vbox><label value="&label.version.value; @VERSION@.@BUILD@"></label></vbox>
                 </hbox>
             </vbox>
         </hbox>

@@ -23,6 +23,7 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:html="http://www.w3.org/1999/xhtml">
 
+    <script src="chrome://pencil/content/common/pencilNamespaces.js"/>
     <script src="chrome://pencil/content/common/nsDragAndDrop.js"/>
     <script src="chrome://pencil/content/common/util.js"/>
     <script src="chrome://pencil/content/common/io.js"/>
@@ -30,7 +31,6 @@
     <script src="chrome://pencil/content/common/base64.js"/>
     <script src="chrome://pencil/content/common/dockingManager.js"/>
 
-    <script src="chrome://pencil/content/common/pencilNamespaces.js"/>
     <script src="chrome://pencil/content/common/config.js"/>
 
     <script src="chrome://pencil/content/canvasHelper/canvasCareTaker.js"/>

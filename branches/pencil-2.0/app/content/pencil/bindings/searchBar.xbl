@@ -54,7 +54,7 @@
                 this.loadingEl = document.getElementById("loading-box");
 
                 this.searchOptions = {
-                    offset:  0,
+                    page: 1,
                     limit: 24
                 };
 
@@ -65,7 +65,7 @@
                     thiz.limit60.className = "BrowseLimitLink";
                     thiz.limit120.className = "BrowseLimitLink";
 
-                    thiz.searchOptions.offset = 0;
+                    thiz.searchOptions.page = 1;
                     thiz.searchOptions.limit = 24;
                     thiz.doSearch();
                 }, false);
@@ -74,7 +74,7 @@
                     thiz.limit24.className = "BrowseLimitLink";
                     thiz.limit120.className = "BrowseLimitLink";
 
-                    thiz.searchOptions.offset = 0;
+                    thiz.searchOptions.page = 1;
                     thiz.searchOptions.limit = 60;
                     thiz.doSearch();
                 }, false);
@@ -83,22 +83,22 @@
                     thiz.limit60.className = "BrowseLimitLink";
                     thiz.limit24.className = "BrowseLimitLink";
 
-                    thiz.searchOptions.offset = 0;
+                    thiz.searchOptions.page = 1;
                     thiz.searchOptions.limit = 120;
                     thiz.doSearch();
                 }, false);
 
                 this.goNext.addEventListener("click", function (e) {
                     if (thiz.goNext.className.indexOf("Disabled") != -1) return;
-                    thiz.searchOptions.offset += thiz.searchOptions.limit;
+                    thiz.searchOptions.page += 1;
                     thiz.doSearch();
                 }, false);
 
                 this.goPrevious.addEventListener("click", function (e) {
                     if (thiz.goPrevious.className.indexOf("Disabled") != -1) return;
-                    thiz.searchOptions.offset -= thiz.searchOptions.limit;
-                    if (thiz.searchOptions.offset <= 0) {
-                        thiz.searchOptions.offset = 0;
+                    thiz.searchOptions.page -= 1;
+                    if (thiz.searchOptions.page <= 1) {
+                        thiz.searchOptions.page = 1;
                     }
                     thiz.doSearch();
                 }, false);
@@ -257,7 +257,7 @@
                 var textValue = textBox.value;
                 if (textValue) {
                     textBox._formHistSvc.addEntry(textBox.getAttribute("autocompletesearchparam"), textValue);
-                    this.searchOptions.offset = 0;
+                    this.searchOptions.page = 1;
                     this.doSearch(textValue);
                 }
             ]]></body>
@@ -293,7 +293,8 @@
                                             displayName: res[i].name,
                                             type: res[i].images[j].type,
                                             typeName: res[i].images[j].typeName,
-                                            size: res[i].images[j].size
+                                            size: res[i].images[j].size,
+                                            thumbnail: res[i].images[j].thumbnail
                                         });
                                     }
                                 }
@@ -304,7 +305,7 @@
                                 thiz.loadingEl.value = Util.getMessage("clipartbrowser.no.results");
                                 thiz.searchButton.className = "search-go-button";
                             }
-                            if (thiz.searchOptions.offset >= thiz.searchOptions.limit) {
+                            if (thiz.searchOptions.page >= 2) {
                                 thiz.goPrevious.className = "Previous";
                             } else if (resultCount >= thiz.searchOptions.limit) {
                                 thiz.goNext.className = "Next";
@@ -425,8 +426,8 @@
                     // see bug #404438 for more details
                     popup.popupBoxObject.setConsumeRollupEvent(
                       this.consumeRollupEvent ?
-                        Ci.nsIPopupBoxObject.ROLLUP_CONSUME :
-                        Ci.nsIPopupBoxObject.ROLLUP_NO_CONSUME);
+                        Components.interfaces.nsIPopupBoxObject.ROLLUP_CONSUME :
+                        Components.interfaces.nsIPopupBoxObject.ROLLUP_NO_CONSUME);
                     popup.openPopup(null, "", innerRect.left, outerRect.bottom, false, false);
                 }
             ]]></body>
