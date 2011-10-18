@@ -2383,6 +2383,7 @@
                     <menuseparator/>
 
                     <menuitem class="menuitem-iconic properties-menu" aid="propertyMenuItem" label="&menu.properties.label;" command="editPagePropertiesCommand"/>
+
                 </menupopup>
             </popupset>
         </xbl:content>

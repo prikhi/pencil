@@ -32,13 +32,11 @@ function Rasterizer(format) {
                 //debug("MozAfterPaint: " + [event, event.originalTarget, win.document]);
 
                 if (!event.originalTarget._isRasterizeFrame) return;
-                win.setTimeout(function () {
-                    if (!thiz.nextHandler) return;
+                if (!thiz.nextHandler) return;
 
-                    var f = thiz.nextHandler;
-                    thiz.nextHandler = null;
-                    f();
-                }, 500);
+                var f = thiz.nextHandler;
+                thiz.nextHandler = null;
+                f();
 
             }, false);
 

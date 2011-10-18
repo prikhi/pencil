@@ -909,7 +909,11 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
         svg.setAttribute("height", "" + (height + padding * 2) + "px");
 
         var content = document.createElementNS(PencilNamespaces.svg, "g");
-        content.appendChild(target.svg.cloneNode(true));
+        var newSvg = target.svg.cloneNode(true);
+        newSvg.removeAttribute("transform");
+        newSvg.removeAttribute("id");
+
+        content.appendChild(newSvg);
 
         debug("target.svg: " + target.svg.localName);
 
@@ -1075,6 +1079,10 @@ Util.getMessage = function (msg, args) {
     }
     return "!!! " + msg;
 };
+Util.isXulrunner = function() {
+    return navigator.userAgent.indexOf("Firefox") == -1;
+}
+
 function debugx(ex) {
     debug("debugx is no longer supported");
 }
@@ -1279,6 +1287,7 @@ Util.getFileExtension = function (path) {
     }
     return null;
 };
+
 window.addEventListener("DOMContentLoaded", function () {
     document.documentElement.setAttribute("platform", navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux");
     Util.platform = navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux";
@@ -1289,6 +1298,7 @@ var propertyTypeArray = ["Alignment", "Bool", "Bound", "Color", "CSS", "Dimensio
 var pencilSandbox = Components.utils.Sandbox("http://pencil.evolus.vn/");
 pencilSandbox.Dom = Dom;
 pencilSandbox.Console = Console;
+pencilSandbox.PencilNamespaces = PencilNamespaces;
 
 Util.importSandboxFunctions = function () {
     for (var i = 0; i < arguments.length; i ++) {
@@ -1300,7 +1310,8 @@ Util.importSandboxFunctions = function () {
         }
     }
 };
-var pEval = function (expression, extra) {
+
+function pEval(expression, extra) {
     for (var name in extra) {
         if (typeof(extra[name]) == "function") {
             pencilSandbox.importFunction(extra[name]);

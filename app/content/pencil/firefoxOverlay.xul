@@ -9,7 +9,7 @@
     <script src="chrome://pencil/content/firefoxOverlay.js" />
 
     <menupopup id="menu_ToolsPopup">
-        <menuitem id="pencil-launcher" label="asdsd  &menu.pencil.sketching.label;" image="chrome://pencil/skin/pencil-16.png" class="menuitem-iconic"
+        <menuitem id="pencil-launcher" label="&menu.pencil.sketching.label;" image="chrome://pencil/skin/pencil-16.png" class="menuitem-iconic"
             oncommand="window.openDialog('chrome://pencil/content/mainWindow.xul', '_blank', 'chrome, centerscreen, resizable=yes, dialog=no, all, modal=no, dependent=no');"/>
         <menu label="&menu.send.page.to.pencil.label;">
             <menupopup id="pencil_sendToMenuPopup">

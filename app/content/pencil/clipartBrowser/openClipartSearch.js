@@ -177,5 +177,5 @@ OpenClipartSearch.prototype.parseSearchResult = function(response) {
     return r;
 };
 
-SearchManager.registerSearchEngine(OpenClipartSearch, false);
+//SearchManager.registerSearchEngine(OpenClipartSearch, false);
 

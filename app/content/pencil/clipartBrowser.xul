@@ -23,6 +23,7 @@
 
     <script src="chrome://pencil/content/common/pencilNamespaces.js"/>
     <script src="chrome://pencil/content/common/config.js"/>
+    <script src="chrome://pencil/content/common/sax.js"/>
 
     <script src="chrome://pencil/content/clipartBrowser/searchEngine.js"/>
     <script src="chrome://pencil/content/clipartBrowser/searchService.js"/>

@@ -36,25 +36,18 @@ CollectionManager.loadUserDefinedStencils = function () {
     } catch (e) {
         Console.dumpError(e);
     }
-
-    try {
-        var properties = Components.classes["@mozilla.org/file/directory_service;1"]
-                         .getService(Components.interfaces.nsIProperties);
-
-        stencilDir = properties.get("resource:app", Components.interfaces.nsIFile);
-        stencilDir.append("Stencils");
-        debug("Loading optional stencils in: " + stencilDir.path);
-        CollectionManager._loadUserDefinedStencilsIn(stencilDir);
-    } catch (e) {
-        Console.dumpError(e);
-    }
 };
 CollectionManager.getUserStencilDirectory = function () {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
                      .getService(Components.interfaces.nsIProperties);
 
     var stencilDir = null;
-    stencilDir = properties.get("ProfD", Components.interfaces.nsIFile);
+    if (Util.isXulrunner()) {
+        stencilDir = properties.get("resource:app", Components.interfaces.nsIFile);
+    } else {
+        stencilDir = properties.get("ProfD", Components.interfaces.nsIFile);
+    }
+
     stencilDir.append("Pencil");
     stencilDir.append("Stencils");
 

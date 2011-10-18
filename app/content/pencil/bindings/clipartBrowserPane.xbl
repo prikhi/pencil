@@ -180,8 +180,6 @@
 
                                     var width = Svg.getWidth(dom);
                                     var height = Svg.getHeight(dom);
-                                    debug("width: " + width);
-                                    debug("height: " + height);
 
                                     var scale = parseFloat(thiz.IMAGE_WIDTH / width);
                                     if (height > width) {
@@ -225,8 +223,15 @@
 
                                     svge.appendChild(g);
 
+                                    var _image = document.createElementNS(PencilNamespaces.html, "img");
+                                    _image.setAttribute("src", img.thumbnail);
+                                    //_image.setAttribute("width", 90);
+                                    //_image.setAttribute("height", 90);
+                                    debug(img.thumbnail);
+
                                     var divv = document.getElementById("_image_" + img._id);
-                                    divv.innerHTML = Dom.serializeNode(svge);
+                                    //divv.innerHTML = Dom.serializeNode(svge);
+                                    divv.appendChild(_image);
 
                                     spanInfo = document.createElementNS(PencilNamespaces.html, "span");
                                     spanInfo.setAttribute("class", "Info");
