@@ -97,9 +97,9 @@ CollectionManager.loadStencils = function() {
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Common/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Annotation/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/BasicWebElements/Definition.xml"));
-    CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Gtk.GUI/Definition.xml"));
-    CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/WindowsXP-GUI/Definition.xml"));
-    CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Native.GUI/Definition.xml"));
+    //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Gtk.GUI/Definition.xml"));
+    //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/WindowsXP-GUI/Definition.xml"));
+    //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Native.GUI/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/SketchyGUI/Definition.xml"));
 
     CollectionManager.loadUserDefinedStencils();

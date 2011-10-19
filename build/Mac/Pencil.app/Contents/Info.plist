@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>xulrunner</string>
+	<key>CFBundleGetInfoString</key>
+	<string>@NAME@</string>
+	<key>CFBundleIconFile</key>
+	<string>main-window.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>vn.evolus.pencil</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>@NAME@</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@VERSION@.@BUILD@</string>
+	<key>CFBundleSignature</key>
+	<string>WRUN</string>
+	<key>CFBundleVersion</key>
+	<string>@VERSION@.@BUILD@</string>
+	<key>NSAppleScriptEnabled</key>
+	<true/>
+</dict>
+</plist>
