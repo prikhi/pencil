@@ -27,4 +27,6 @@ pref("pencil.config.gridcolorpicker.recentlyUsedColors", "#FFFFFFFF,#FFFFFFFF,#F
 
 pref("intl.locale.matchOS", true);
 
+/*@XULRUNNER_XUL@/
 pref("toolkit.defaultChromeURI", "chrome://pencil/content/mainWindow.xul");
+//*/

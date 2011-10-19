@@ -10,9 +10,9 @@
           <targetApplication>
             <r:Description>
               <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
-              <minVersion>1.5</minVersion>
-              <maxVersion>4.0</maxVersion>
-              <updateLink>http://pencil.evolus.vn/Downloads/@XPI_NAME@</updateLink>
+              <minVersion>@MIN_VERSION@</minVersion>
+              <maxVersion>@MAX_VERSION@</maxVersion>
+              <updateLink>@UPDATE_URL@/Downloads/@XPI_NAME@</updateLink>
             </r:Description>
           </targetApplication>
         </r:Description>

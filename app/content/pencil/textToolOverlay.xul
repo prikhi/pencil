@@ -80,7 +80,7 @@
         </vbox>
         <vbox id="miniToolbar" top="0" left="0" width="0" height="0" style="visibility: hidden;">
             <toolbox>
-                <toolbar>
+                <toolbar mode="icons">
                     <toolbarbutton type="checkbox" class="ed-toolbar-button" id="medBoldButton" tooltiptext="&toolbar.bold.tooltiptext;"/>
                     <toolbarbutton type="checkbox" class="ed-toolbar-button" id="medItalicButton" tooltiptext="&toolbar.italic.tooltiptext;"/>
                     <toolbarbutton type="checkbox" class="ed-toolbar-button" id="medUnderlineButton" tooltiptext="&toolbar.underline.tooltiptext;"/>
@@ -112,10 +112,10 @@
                             <menuitem label="7" value="7"/>
                         </menupopup>
                     </menulist>
-                    <toolbarbutton class="ed-toolbar-button" id="medIncreaseFontButton" tooltiptext="&toolbar.inc.font.size.tooltiptext;"/>
-                    <toolbarbutton class="ed-toolbar-button" id="medDecreaseFontButton" tooltiptext="&toolbar.dec.font.size.tooltiptext;"/>
-                    <pcolorbutton id="mtextColorButton" tooltiptext="&pcolorbutton.text.color.tooltip;" class="ed-toolbar-button" image="chrome://pencil-os/skin/images/MozIcons/stock/menu/stock_text_color_foreground.png"/>
-                    <pcolorbutton id="mhilightColorButton" tooltiptext="&pcolorbutton.bgr.color.tooltip;" class="ed-toolbar-button" image="chrome://pencil-os/skin/images/MozIcons/stock/menu/stock_text_color_hilight.png"/>
+                    <toolbarbutton class="ed-toolbar-button" id="medIncreaseFontButton" tooltiptext="&toolbar.inc.font.size.tooltiptext;" image="chrome://pencil-os/skin/images/moblin/increase-font.png"/>
+                    <toolbarbutton class="ed-toolbar-button" id="medDecreaseFontButton" tooltiptext="&toolbar.dec.font.size.tooltiptext;" image="chrome://pencil-os/skin/images/moblin/decrease-font.png"/>
+                    <pcolorbutton id="mtextColorButton" tooltiptext="&pcolorbutton.text.color.tooltip;" class="ed-toolbar-button" image="chrome://pencil-os/skin/images/moblin/shape-border-color.png"/>
+                    <pcolorbutton id="mhilightColorButton" tooltiptext="&pcolorbutton.bgr.color.tooltip;" class="ed-toolbar-button" image="chrome://pencil-os/skin/images/moblin/shape-fill-color.png"/>
                 </toolbar>
             </toolbox>
         </vbox>
