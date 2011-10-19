@@ -34,6 +34,7 @@
                         return (node == box2 || node == thiz.popup || node == thiz.svg);
                     });
                     if (!inDrawing) {
+                        debug("clear");
                         thiz.clearSelection();
                         thiz.selectNone();
                     }

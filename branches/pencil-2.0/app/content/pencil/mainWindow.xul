@@ -176,7 +176,7 @@
         <command id="moveLeftCommand" oncommand="Pencil.controller.pageMoveLeft()"/>
         <command id="moveRightCommand" oncommand="Pencil.controller.pageMoveRight()"/>
 
-        <command id="newWindowCommand" oncommand="window.open('chrome://pencil/content/mainWindow.xul', '_blank', 'chrome,resizable=yes')"/>
+        <command id="newWindowCommand" oncommand="window.openDialog('chrome://pencil/content/mainWindow.xul', '_blank', 'chrome, centerscreen, resizable=yes, dialog=no, all, modal=no, dependent=no');"/>
 
         <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
         <command id="manageExportTemplateCommand" oncommand="window.openDialog('chrome://pencil/content/templateManagementDialog.xul', '', 'modal,centerscreen,chrome')"/>
@@ -267,8 +267,8 @@
         <!-- Menu -->
         <toolbar type="menubar" id="toolbar-menubar" class="chromeclass-menubar" mode="icons" toolbarname="&toolbar.menubar.name;" context="toolbar-context-menu">
             <toolbaritem id="menubar-items" align="center">
-                <menubar id="main-menubar" style="border:0;padding:0;margin:0;-moz-appearance:none">
-                    <menu id="pencil-menu" label="Pencil ▾" class="menuitem-iconic menu-iconic">
+                <menubar id="main-menubar" style="border:0;padding:2px;margin:0;-moz-appearance:none;height:28px;">
+                    <menu id="pencil-menu" label="Pencil ▾" class="menuitem-iconic menu-iconic" style="padding:3px;margin:0;">
                         <menupopup id="pencil-menu-popup">
                             <menu id="file-menu" label="&menu.document.label;" accesskey="&menu.document.accesskey;">
                                 <menupopup id="file-popup">
@@ -288,7 +288,7 @@
                                     <menuitem label="&menu.export.page.as.png.label;" command="rasterizeCommand" key="exportPageKey"/>
                                     <menuitem class="menuitem-iconic export-document-menu" label="&menu.export.document.label;" command="exportCommand" key="exportDocumentKey"/>
                                     <menuseparator/>
-                                    <menuitem class="menuitem-iconic exit-menu" label="&menu.exit.label;" oncommand="if (!Pencil.controller.modified || Pencil.controller._confirmAndSaveDocument()) window.close();"/>
+                                    <menuitem id="menu_FileQuitItem" class="menuitem-iconic exit-menu" label="&menu.exit.label;" oncommand="if (!Pencil.controller.modified || Pencil.controller._confirmAndSaveDocument()) window.close();"/>
                                 </menupopup>
                             </menu>
                             <menu id="edit-menu" label="&menu.edit.label;" accesskey="&menu.edit.accesskey;">
@@ -342,12 +342,12 @@
                                     <menuitem label="&menu.install.new.collection.label;" command="installNewCollectionCommand"/>
                                     <menuitem label="&menu.manage.template.label;" command="manageExportTemplateCommand"/>
                                     <menuseparator/>
-                                    <menuitem class="menuitem-iconic options-menu" label="&menu.options.label;" oncommand="window.openDialog('chrome://pencil/content/settingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
+                                    <menuitem id="menu_preferences" class="menuitem-iconic options-menu" label="&menu.options.label;" oncommand="window.openDialog('chrome://pencil/content/settingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
                                 </menupopup>
                             </menu>
                             <menu id="help-menu" label="&menu.help.label;" accesskey="&menu.help.accesskey;">
                                 <menupopup>
-                                    <menuitem class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/aboutDialog.xul', 'pencilAboutDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
+                                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/aboutDialog.xul', 'pencilAboutDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
                                 </menupopup>
                             </menu>
                         </menupopup>

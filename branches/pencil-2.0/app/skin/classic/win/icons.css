@@ -224,11 +224,11 @@ dialog[p|probing] * {
 }
 
 #medIncreaseFontButton {
-	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_increase-font.png);
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/increase-font.png);
 }
 
 #medDecreaseFontButton {
-	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_decrease-font.png);
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/decrease-font.png);
 }
 
 #insertLinkButton {

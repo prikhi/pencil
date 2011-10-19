@@ -34,6 +34,15 @@ Pencil.postBoot = function() {
 
         Pencil.buildRecentFileMenu();
 
+        if (navigator.userAgent.indexOf("Intel Mac") != -1) {
+            var pencilMenu = document.getElementById("pencil-menu");
+            pencilMenu.setAttribute("label", "File ▾");
+            //var quitSep = document.getElementById("quitMenuSeparator");
+            //quitSep.parentNode.removeChild(quitSep);
+            //var helpMenu = document.getElementById("help-menu");
+            //helpMenu.parentNode.removeChild(helpMenu);
+        }
+
         var loaded = false;
         if (window.arguments) {
             var cmdLine = window.arguments[0];

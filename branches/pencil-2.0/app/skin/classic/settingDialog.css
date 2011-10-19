@@ -38,7 +38,7 @@
 	/* ours */
 	color: white !important;
 	padding: 3px 0 1px 0;
-	min-width: 80px;
+	min-width: 120px;
 
 	/* theirs */
 	/*border-right: 1px solid transparent;*/
@@ -53,7 +53,7 @@
 #pencil-settings .paneSelector radio[pane]:hover {
 	/* ours */
 	background: url(chrome://pencil/skin/images/pane-selector-bg-hover.png) repeat 0px #2F4979;
-	min-width: 80px;
+	min-width: 120px;
 }
 .macosx .paneSelector radio[pane]:hover {
 	/* ours */
@@ -65,14 +65,12 @@
 	/* ours */
 	background: url(chrome://pencil/skin/images/pane-selector-bg-selected.png) repeat 0px;
 	color: black !important;
-	min-width: 80px;
+	min-width: 120px;
+}
 
-	/* theirs */
-	/*background-color: #DDDDDD;*/
-	/*background-image: none;*/
-	/*border-right: 1px solid #b9b9b9;*/
-	/*border-left: 1px solid #b9b9b9;*/
-	/*color: ButtonText !important;*/
+.macosx radio[pane][selected="true"],
+.macosx radio[pane][selected="true"]:hover {
+	background: url(chrome://pencil/skin/images/pane-selector-macosx-bg-sel.png) repeat 0px;
 }
 
 #date-of-birth spinbuttons { display: none;}
