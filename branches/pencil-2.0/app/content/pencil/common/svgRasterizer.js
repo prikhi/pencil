@@ -32,11 +32,21 @@ function Rasterizer(format) {
                 //debug("MozAfterPaint: " + [event, event.originalTarget, win.document]);
 
                 if (!event.originalTarget._isRasterizeFrame) return;
+                win.setTimeout(function () {
+                    if (!thiz.nextHandler) return;
+
+                    debug("calling next handler");
+                    var f = thiz.nextHandler;
+                    thiz.nextHandler = null;
+                    f();
+                }, 100);
+
+                /*if (!event.originalTarget._isRasterizeFrame) return;
                 if (!thiz.nextHandler) return;
 
                 var f = thiz.nextHandler;
                 thiz.nextHandler = null;
-                f();
+                f();*/
 
             }, false);
 
@@ -73,6 +83,7 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
 
     this._width = page.properties.width;
     this._height = page.properties.height;
+
     this._backgroundColor = page.properties.transparentBackground == "false" ? page.properties.backgroundColor : null;
 
     if (page._view.canvas.hasBackgroundImage) {
@@ -120,7 +131,12 @@ Rasterizer.prototype._prepareWindowForRasterization = function() {
     ctx.clearRect(0, 0, w, h);
     ctx.save();
     ctx.scale(1, 1);
-    ctx.drawWindow(this.win, 0, 0, w, h, "rgba(255,255,255,0)");
+    if (this._backgroundColor) {
+        var bgr = Color.fromString(this._backgroundColor);
+        ctx.drawWindow(this.win, 0, 0, w, h, bgr.toRGBAString());
+    } else {
+        ctx.drawWindow(this.win, 0, 0, w, h, "rgba(255,255,255,0)");
+    }
     ctx.restore();
 
     return {

@@ -132,6 +132,10 @@
 <!ENTITY toolbar.zoom.in.tooltiptext             "Phóng to">
 <!ENTITY toolbar.zoom.out.label                  "Thu nhỏ">
 <!ENTITY toolbar.zoom.out.tooltiptext            "Thu nhỏ">
+<!ENTITY toolbar.alignment.label                 "Canh chỉnh">
+<!ENTITY toolbar.alignment.tooltip               "Canh chỉnh">
+<!ENTITY toolbar.location.size.label             "Vị trí và kích thước">
+<!ENTITY toolbar.location.size.tooltip           "Thay đổi vị trí và kích thước">
 
 <!-- chrome://pencil/content/UI/ClipartBrowser.xul -->
 <!ENTITY clipart.browsing.title                  "Công cụ duyệt ảnh">

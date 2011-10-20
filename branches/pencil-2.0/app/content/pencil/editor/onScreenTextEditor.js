@@ -46,7 +46,8 @@ OnScreenTextEditor.prototype.install = function (canvas) {
         }
         thiz.handleShapeDoubleClicked(ev);
     }, false);
-    this.canvas.addEventListener("p:TextEditingRequested", function (ev) {
+
+    this.canvas.svg.ownerDocument.addEventListener("p:TextEditingRequested", function (ev) {
         if (thiz.passivated) {
             thiz.canvas.removeEventListener("p:TextEditingRequested", arguments.callee, false);
             return;
@@ -71,8 +72,11 @@ OnScreenTextEditor.prototype.dettach = function () {
 
 OnScreenTextEditor.prototype.handleShapeDoubleClicked = function (event) {
     this.currentTarget = event.controller;
-    if (!this.currentTarget || !this.currentTarget.getTextEditingInfo) return;
+    if (Util.isXul6OrLater()) {
+        this.currentTarget = event.detail.controller;
+    }
 
+    if (!this.currentTarget || !this.currentTarget.getTextEditingInfo) return;
     this.textEditingInfo = this.currentTarget.getTextEditingInfo(event);
     if (this.textEditingInfo && !this.textEditingInfo.readonly) {
         if (this.textEditingInfo.type == PlainText) {
@@ -143,16 +147,16 @@ OnScreenTextEditor.prototype._setupEditor = function () {
     }, 10);
 };
 OnScreenTextEditor.prototype.handleTextBlur = function (event) {
-    this.commitChange();
+    this.commitChange(event);
 };
 OnScreenTextEditor.prototype.handleKeyPress = function (event) {
     if (event.keyCode == event.DOM_VK_RETURN && !event.shiftKey && !event.accelKey && !event.ctrlKey) {
-        this.commitChange();
+        this.commitChange(event);
     } else if (event.keyCode == event.DOM_VK_ESCAPE) {
         this.cancelChange();
     }
 };
-OnScreenTextEditor.prototype.commitChange = function () {
+OnScreenTextEditor.prototype.commitChange = function (event) {
     if (!this._lastTarget || !this.textEditingInfo) return;
     this.textEditingInfo.target.style.visibility = this._cachedVisibility;
     try {

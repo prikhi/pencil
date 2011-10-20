@@ -50,8 +50,8 @@ dialog[p|probing] * {
 	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_export.png);
 }
 
-#pencil-export-document-button {
-	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_export.png);
+#pencil-export-button {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/export-document.png);
 }
 
 #pencil-zoom-in-button {
