@@ -335,6 +335,7 @@ OnScreenTextEditor._hide = function () {
         }
         OnScreenTextEditor.backedupTarget = null;
     }
+    Pencil.activeCanvas.focus();
 };
 OnScreenTextEditor.getRichtextValue = function () {
     var html = Dom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);
@@ -359,6 +360,7 @@ OnScreenTextEditor.prototype.applyChanges = function () {
             html = RegExp.$1;
         }
         this.currentTarget.setProperty(this.textEditingInfo.prop.name, RichText.fromString(html));
+        Pencil.activeCanvas.focus();
     }
 };
 

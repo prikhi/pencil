@@ -34,7 +34,6 @@
                         return (node == box2 || node == thiz.popup || node == thiz.svg);
                     });
                     if (!inDrawing) {
-                        debug("clear");
                         thiz.clearSelection();
                         thiz.selectNone();
                     }
@@ -167,11 +166,11 @@
                     }
                     thiz.handleMouseMove(event);
                 }, false);
-                this.firstChild.addEventListener("keypress", function (event) {
+                this.svg.ownerDocument.addEventListener("keypress", function (event) {
                     thiz.handleKeyPress(event);
                 }, false);
 
-                this.firstChild.addEventListener("keydown", function (event) {
+                this.svg.ownerDocument.addEventListener("keydown", function (event) {
                     if (event.keyCode == event.DOM_VK_SPACE && thiz.spaceHeld == false) {
                         thiz.spaceHeld = true;
                         thiz._lastPX = thiz._currentPX;
@@ -181,7 +180,7 @@
                         Dom.addClass(thiz, "PanDown");
                     }
                 }, false);
-                this.firstChild.addEventListener("keyup", function (event) {
+                this.svg.ownerDocument.addEventListener("keyup", function (event) {
                     if (event.keyCode == event.DOM_VK_SPACE && thiz.spaceHeld == true) {
                         thiz.spaceHeld = false;
                         Dom.removeClass(thiz, "PanDown");
@@ -1566,6 +1565,7 @@
             <method name="focus">
                 <body>
                 <![CDATA[
+                    document.commandDispatcher.rewindFocus();
                     this.focusableBox.focus();
                 ]]>
                 </body>
@@ -1911,6 +1911,7 @@
                         this.removeAttributeNS(PencilNamespaces.p, "with-background");
                         return;
                     }
+
                     this.backgroundImage.setAttributeNS(PencilNamespaces.xlink, "xlink:href", image.url);
                     this.backgroundImage.setAttribute("width", image.width);
                     this.backgroundImage.setAttribute("height", image.height);

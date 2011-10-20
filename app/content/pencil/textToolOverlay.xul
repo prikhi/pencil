@@ -54,7 +54,7 @@
                     </menupopup>
                 </menulist>
                 <toolbarseparator />
-                <button label="Location &amp; size" type="panel">
+                <button label="&toolbar.location.size.label;" type="panel" tooltiptext="&toolbar.location.size.tooltip;">
                     <panel id="toolbar-locsize-panel" orient="horizontal">
                         <hbox align="center" id="geometryToolbar" class="PanelContent">
                             <hbox>

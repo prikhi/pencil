@@ -122,6 +122,10 @@ Dom.findTop = function (node, evaluator) {
 Dom.emitEvent = function (name, target, data) {
     var event = target.ownerDocument.createEvent("Events");
     event.initEvent(name, true, false);
+    if (Util.isXul6OrLater()) {
+        event = target.ownerDocument.createEvent("CustomEvent");
+        event.initCustomEvent(name, true, false, data);
+    }
     if (data) {
         for (name in data) event[name] = data[name];
     }
@@ -1081,7 +1085,23 @@ Util.getMessage = function (msg, args) {
 };
 Util.isXulrunner = function() {
     return navigator.userAgent.indexOf("Firefox") == -1;
-}
+};
+Util.getXulrunnerVersion = function() {
+    var agent = navigator.userAgent;
+    var version = agent.match(/rv:([^\s\)]*)/i);
+    if (version && version.length > 1) {
+        return version[1];
+    }
+    return "0";
+};
+Util.isXul6OrLater = function() {
+    var version = Util.getXulrunnerVersion();
+    var q = version.split("\.");
+    if (q.length > 0) {
+        return parseInt(q[0]) >= 6;
+    }
+    return false;
+};
 
 function debugx(ex) {
     debug("debugx is no longer supported");

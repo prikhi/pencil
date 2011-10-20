@@ -134,6 +134,11 @@
 <!ENTITY toolbar.zoom.in.tooltiptext             "Zoom in">
 <!ENTITY toolbar.zoom.out.label                  "Zoom out">
 <!ENTITY toolbar.zoom.out.tooltiptext            "Zoom out">
+<!ENTITY toolbar.alignment.label                 "Alignment">
+<!ENTITY toolbar.alignment.tooltip               "Change alignment">
+<!ENTITY toolbar.location.size.label             "Location &amp; size">
+<!ENTITY toolbar.location.size.tooltip           "Change location &amp; size">
+
 
 <!ENTITY toolbar.undo.tooltiptext                "Undo">
 <!ENTITY toolbar.redo.tooltiptext                "Redo">

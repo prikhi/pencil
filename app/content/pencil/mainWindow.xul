@@ -196,7 +196,7 @@
         <key id="exportPageKey" command="rasterizeCommand" modifiers="accel" key="E"/>
         <key id="exportDocumentKey" command="exportCommand" modifiers="accel shift" key="E"/>
 
-        <key id="zoomInKey" command="zoomInCommand" modifiers="accel" key="+"/>
+        <key id="zoomInKey" command="zoomInCommand" modifiers="accel" key="="/>
         <key id="zoomInKey2" command="zoomInCommand" modifiers="accel shift" key="+"/>
         <key id="zoom1Key" command="zoom1Command" modifiers="accel" key="1"/>
         <key id="zoomOutKey" command="zoomOutCommand" modifiers="accel" key="-"/>
@@ -354,30 +354,32 @@
                     </menu>
                 </menubar>
             </toolbaritem>
-            <toolbarbutton id="pencil-save-button" class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&toolbar.save.doc.tooltiptext;" command="saveDocumentCommand"/>
+            <toolbarbutton id="pencil-save-button" class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&toolbar.save.doc.tooltiptext; (Ctrl + S)" command="saveDocumentCommand"/>
             <spacer />
             <toolbarbutton id="pencil-zoom-out-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.zoom.out.tooltiptext;" command="zoomOutCommand" style="display: none;"/>
-            <toolbarbutton id="pencil-zoom-org-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.cancel.zooming.tooltiptext;" command="zoom1Command"/>
+            <toolbarbutton id="pencil-zoom-org-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.cancel.zooming.tooltiptext;" tooltiptext="&toolbar.cancel.zooming.tooltiptext; (Ctrl + 1)" command="zoom1Command"/>
             <toolbarbutton id="pencil-zoom-in-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.zoom.in.tooltiptext;" command="zoomInCommand" style="display: none;"/>
+            <spacer />
+            <toolbarbutton id="pencil-export-button" class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&menu.export.document.label; (Ctrl + Shift + E)" command="exportCommand"/>
             <toolbarseparator />
             <hbox id="toolbarExtra">
             </hbox>
-            <button label="Alignment" type="panel">
+            <button label="&toolbar.alignment.label;" type="panel" tooltiptext="&toolbar.alignment.tooltip;">
                 <panel id="toolbar-align-panel" orient="horizontal">
                     <hbox class="PanelContent">
                         <hbox>
-                            <toolbarbutton id="pencil-same-horz-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.left.label;" tooltiptext="&toolbar.make.same.horiz.tooltip;" command="makeSameHorizontalSpaceCommand"/>
-                            <toolbarbutton id="pencil-same-vert-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.left.label;" tooltiptext="&toolbar.make.same.vert.tooltip;" command="makeSameVerticalSpaceCommand"/>
+                            <toolbarbutton id="pencil-same-horz-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.left.label;" tooltiptext="&toolbar.make.same.horiz.tooltip; (O)" command="makeSameHorizontalSpaceCommand"/>
+                            <toolbarbutton id="pencil-same-vert-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.left.label;" tooltiptext="&toolbar.make.same.vert.tooltip; (V)" command="makeSameVerticalSpaceCommand"/>
                         </hbox>
                         <hbox>
-                            <toolbarbutton id="pencil-align-left-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.left.label;" tooltiptext="&toolbar.align.left.tooltiptext;" command="alignLeftCommand"/>
-                            <toolbarbutton id="pencil-align-center-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.center.label;" tooltiptext="&toolbar.align.center.tooltiptext;" command="alignCenterCommand"/>
-                            <toolbarbutton id="pencil-align-right-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.right.label;" tooltiptext="&toolbar.align.right.tooltiptext;" command="alignRightCommand"/>
+                            <toolbarbutton id="pencil-align-left-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.left.label;" tooltiptext="&toolbar.align.left.tooltiptext; (L)" command="alignLeftCommand"/>
+                            <toolbarbutton id="pencil-align-center-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.center.label;" tooltiptext="&toolbar.align.center.tooltiptext; (C)" command="alignCenterCommand"/>
+                            <toolbarbutton id="pencil-align-right-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.right.label;" tooltiptext="&toolbar.align.right.tooltiptext; (R)" command="alignRightCommand"/>
                         </hbox>
                         <hbox>
-                            <toolbarbutton id="pencil-align-top-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.top.label;" tooltiptext="&toolbar.align.top.tooltiptext;" command="alignTopCommand"/>
-                            <toolbarbutton id="pencil-align-middle-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.middle.label;" tooltiptext="&toolbar.align.middle.tooltiptext;" command="alignMiddleCommand"/>
-                            <toolbarbutton id="pencil-align-bottom-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.bottom.label;" tooltiptext="&toolbar.align.bottom.tooltiptext;" command="alignBottomCommand"/>
+                            <toolbarbutton id="pencil-align-top-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.top.label;" tooltiptext="&toolbar.align.top.tooltiptext; (T)" command="alignTopCommand"/>
+                            <toolbarbutton id="pencil-align-middle-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.middle.label;" tooltiptext="&toolbar.align.middle.tooltiptext; (M)" command="alignMiddleCommand"/>
+                            <toolbarbutton id="pencil-align-bottom-button" class="toolbarbutton-1 chromeclass-toolbar-additional" label="&toolbar.align.bottom.label;" tooltiptext="&toolbar.align.bottom.tooltiptext; (B)" command="alignBottomCommand"/>
                         </hbox>
                         <!--
                         <toolbarseparator />
