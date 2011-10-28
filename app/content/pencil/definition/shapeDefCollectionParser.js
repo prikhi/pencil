@@ -394,28 +394,33 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
     //parse behaviors
     Dom.workOn("./p:Behaviors/p:For", shapeDefNode, function (forNode) {
-        var behavior = new Behavior();
-        behavior.target = forNode.getAttribute("ref");
+        var targets = forNode.getAttribute("ref");
+        if (targets) {
+            targets = targets.split(",");
+            for (var t = 0; t < targets.length; t++) {
+                var behavior = new Behavior();
+                behavior.target = targets[t];
 
-        shapeDef.behaviorMap[behavior.target] = behavior;
+                shapeDef.behaviorMap[behavior.target] = behavior;
 
+                Dom.workOn("./p:*", forNode, function (behaviorItemNode) {
+                    var item = new BehaviorItem();
+                    item.handler = Pencil.behaviors[behaviorItemNode.localName];
+                    var count = Dom.workOn("./p:Arg", behaviorItemNode, function (argNode) {
+                        item.args.push(new BehaviorItemArg(Dom.getText(argNode), shapeDef, behavior.target, argNode.getAttribute("literal")));
+                    });
 
-        Dom.workOn("./p:*", forNode, function (behaviorItemNode) {
-            var item = new BehaviorItem();
-            item.handler = Pencil.behaviors[behaviorItemNode.localName];
-            var count = Dom.workOn("./p:Arg", behaviorItemNode, function (argNode) {
-                item.args.push(new BehaviorItemArg(Dom.getText(argNode), shapeDef, behavior.target, argNode.getAttribute("literal")));
-            });
+                    if (count == 0) {
+                        var text = Dom.getText(behaviorItemNode);
+                        item.args.push(new BehaviorItemArg(text, shapeDef, behavior.target, null));
+                    }
 
-            if (count == 0) {
-                var text = Dom.getText(behaviorItemNode);
-                item.args.push(new BehaviorItemArg(text, shapeDef, behavior.target, null));
+                    behavior.items.push(item);
+                });
+
+                shapeDef.behaviors.push(behavior);
             }
-
-            behavior.items.push(item);
-        });
-
-        shapeDef.behaviors.push(behavior);
+        }
     });
 
     //parsing actions

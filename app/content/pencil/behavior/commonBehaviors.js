@@ -147,7 +147,6 @@ Pencil.behaviors.BoxFit = function (bound, align) {
             var x = Math.round(((bound.w - bbox.width) * align.h) / 2 + bound.x);
 
             var baseLineDiff = bbox.height / 2;
-
             if (this.hasAttribute("y")) {
                 var realY = parseInt(this.getAttribute("y"), 10);
                 baseLineDiff = realY - bbox.y;
@@ -159,6 +158,7 @@ Pencil.behaviors.BoxFit = function (bound, align) {
             Svg.setWidth(this, bound.w);
             Svg.setHeight(this, 500);
             var h = this.firstChild.scrollHeight;
+
             Svg.setHeight(this, h);
 
             Svg.setX(this, bound.x);
@@ -202,13 +202,25 @@ function C(x1, y1, x2, y2, x, y) {
     Pencil.behaviors.D._setLastLocation(x2, y2);
     return "C " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + x + " " + y;
 }
+function c(x1, y1, x2, y2, x, y) {
+    Pencil.behaviors.D._setLastLocation(x2, y2);
+    return "c " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + x + " " + y;
+}
 function S(x2, y2, x, y) {
     Pencil.behaviors.D._setLastLocation(x2, y2);
     return "S " + x2 + " " + y2 + " " + x + " " + y;
 }
+function s(x2, y2, x, y) {
+    Pencil.behaviors.D._setLastLocation(x2, y2);
+    return "s " + x2 + " " + y2 + " " + x + " " + y;
+}
 function Q(x1, y1, x, y) {
     Pencil.behaviors.D._setLastLocation(x, y);
     return "Q " + x1 + " " + y1 + " " + x + " " + y;
+}
+function q(x1, y1, x, y) {
+    Pencil.behaviors.D._setLastLocation(x, y);
+    return "q " + x1 + " " + y1 + " " + x + " " + y;
 }
 function T(x, y) {
     Pencil.behaviors.D._setLastLocation(x, y);
@@ -223,7 +235,7 @@ function A(rx, ry, f1, f2, f3, x, y) {
     return "A " + rx + " " + ry + " " + f1 + " " + f2 + " " + f3 + " " + x + " " + y;
 }
 
-Util.importSandboxFunctions(M, L, C, S, Q, T, a, A);
+Util.importSandboxFunctions(M, L, C, c, S, s, Q, q, T, a, A);
 
 const DEFAULT_SKETCHY_SEG_SIZE = 20;
 
@@ -293,7 +305,8 @@ Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootEleme
 
     if (isText) {
         Dom.empty(this);
-        this.appendChild(this.ownerDocument.createTextNode(text.value ? (stripAccel ? text.value.replace(/&/, "") : text.value) : " "));
+        var value = text.value ? text.value : text.html;
+        this.appendChild(this.ownerDocument.createTextNode(value ? (stripAccel ? value.replace(/&/, "") : value) : " "));
     } else {
         if (this.localName == "textarea" && this.namespaceURI == PencilNamespaces.html) {
             var content = (text.constructor == RichText) ? text.html : text.value;

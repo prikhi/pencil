@@ -76,6 +76,7 @@ ShapeDefDragObserver.prototype = {
         this.hasDrag = false;
     },
     onDragStart: function (evt, transferData, action) {
+        debug("drag start");
         this.dragStart = true;
     },
     onDragExit: function (event, session) {
@@ -131,7 +132,7 @@ PrivateShapeDefDragObserver.prototype = {
             return;
         }
 
-        if (delta < 500) return;
+        if (delta < 200) return;
 
         var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
         var defId = null;
@@ -173,7 +174,7 @@ PrivateShapeDefDragObserver.prototype = {
 
         window.setTimeout(function () {
             thiz.exit();
-        }, 300);
+        }, 10);
     },
     onDragOver: function (event, flavour, session) {
         if (!this.commited && this.hasDrag) {

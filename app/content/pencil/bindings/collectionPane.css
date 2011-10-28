@@ -127,6 +127,7 @@ pcollectionpane .Collection .Content > div {
     background: transparent;
     text-align: center;
     display: inline-block;
+
     width: 7.5em;
 
     padding: .3em;
@@ -142,7 +143,7 @@ pcollectionpane .Collection .Content > div img {
     opacity: .7;
 
 	max-width: 7em;
-    max-height: 7em;
+	max-height: 7em;
 }
 pcollectionpane .Collection .Content > div:hover img {
     opacity: 1;

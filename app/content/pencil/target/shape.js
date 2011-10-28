@@ -551,7 +551,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
                 for (i in b.items) {
-                    if (b.items[i].handler == Pencil.behaviors.TextContent && b.items[i].args[0].literal == "properties." + name) {
+                    if (b.items[i].handler == Pencil.behaviors.TextContent && b.items[i].args[0].literal.indexOf("properties." + name) != -1) {
                         var obj = {properties: this.getProperties(), functions: Pencil.functions};
                         var font = null;
                         for (j in b.items) {
@@ -595,7 +595,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
             for (target in this.def.behaviorMap) {
                 var b = this.def.behaviorMap[target];
                 for (i in b.items) {
-                    if (b.items[i].handler == Pencil.behaviors.TextContent && b.items[i].args[0].literal == "properties." + name) {
+                    if (b.items[i].handler == Pencil.behaviors.TextContent && b.items[i].args[0].literal.indexOf("properties." + name) != -1) {
                         var obj = {properties: this.getProperties(), functions: Pencil.functions};
                         var font = null;
                         for (j in b.items) {
@@ -632,6 +632,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 bound: bound,
                                 align: align,
                                 readonly: prop.meta.readonly,
+                                inlineEditor: prop.meta.inlineEditor,
                                 type: RichText
                             };
 
