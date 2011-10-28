@@ -374,6 +374,8 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = "";
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = this.textEditingInfo.value;
 
+    var inlineEditor = !this.textEditingInfo.inlineEditor || (this.textEditingInfo.inlineEditor && !(this.textEditingInfo.inlineEditor.toLowerCase() == "false"));
+
     if (this.textEditingInfo.font) {
         var font = this.textEditingInfo.font;
         var body = OnScreenTextEditor.richTextEditor.contentDocument.body;
@@ -470,7 +472,11 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor._enableGlobalClipboardKeys(false);
     OnScreenTextEditor._enableTextToolbar(false);
     OnScreenTextEditor.richTextEditorPane.style.visibility = "visible";
-    OnScreenTextEditor.miniToolbarPane.style.visibility = "visible";
+
+    if (inlineEditor) {
+        OnScreenTextEditor.miniToolbarPane.style.visibility = "visible";
+    }
+
     OnScreenTextEditor.richtextEditorSizeGrip.style.display = "";
 
     OnScreenTextEditor.richTextEditor.contentWindow.focus();

@@ -786,6 +786,15 @@ Util.setPointerPosition = function (x, y) {
     }
     Util.statusbarPointer.label = x + ", " + y;
 };
+Util.dialog = function(title, description, buttonLabel) {
+    var message = {type: "info",
+                    title: title,
+                    description: description ? description : null,
+                    acceptLabel: buttonLabel ? buttonLabel : null };
+
+    var returnValueHolder = {};
+    var dialog = window.openDialog("chrome://pencil/content/messageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
+};
 Util.info = function(title, description, buttonLabel) {
     Util.showStatusBarInfo(description, true);
     var message = {type: "info",
@@ -1312,6 +1321,7 @@ window.addEventListener("DOMContentLoaded", function () {
     document.documentElement.setAttribute("platform", navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux");
     Util.platform = navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux";
     Util.statusbarDisplay = document.getElementById("pencil-statusbar-display");
+    //Util.initTextMetricFrame();
 }, false);
 
 var propertyTypeArray = ["Alignment", "Bool", "Bound", "Color", "CSS", "Dimension", "Enum", "Font", "Handle", "ImageData", "PlainText", "Point", "RichText", "RichTextArray", "ShadowStyle", "SnappingData", "StrokeStyle"];

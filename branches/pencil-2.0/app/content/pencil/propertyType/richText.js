@@ -1,11 +1,15 @@
 function RichText(html) {
     this.html = html;
+    this.value = html;
 }
 RichText.fromString = function (html) {
     return new RichText(html);
 };
 RichText.prototype.toString = function () {
     return this.html;
+};
+RichText.prototype.toUpper = function() {
+    return new RichText(this.html.toUpperCase());
 };
 
 RichText.fromLoremIpsum = function (words) {

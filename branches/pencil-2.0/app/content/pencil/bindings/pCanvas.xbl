@@ -167,7 +167,7 @@
                     thiz.handleMouseMove(event);
                 }, false);
                 this.svg.ownerDocument.addEventListener("keypress", function (event) {
-                    thiz.handleKeyPress(event);
+                    if (thiz.handleKeyPress) thiz.handleKeyPress(event);
                 }, false);
 
                 this.svg.ownerDocument.addEventListener("keydown", function (event) {

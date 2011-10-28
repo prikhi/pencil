@@ -104,7 +104,7 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
     });
 };
 
-Rasterizer.prototype._prepareWindowForRasterization = function() {
+Rasterizer.prototype._prepareWindowForRasterization = function(backgroundColor) {
     var h = 0;
     var w = 0;
     if (this._width && this._height) {
@@ -131,12 +131,18 @@ Rasterizer.prototype._prepareWindowForRasterization = function() {
     ctx.clearRect(0, 0, w, h);
     ctx.save();
     ctx.scale(1, 1);
+
+    var bgr = Color.fromString("#ffffff00");
     if (this._backgroundColor) {
-        var bgr = Color.fromString(this._backgroundColor);
-        ctx.drawWindow(this.win, 0, 0, w, h, bgr.toRGBAString());
+        bgr = Color.fromString(this._backgroundColor);
+        ctx.drawWindow(this.win, 0, 0, w, h, bgr.toRGBString());
+    } else if (backgroundColor) {
+        bgr = Color.fromString(backgroundColor);
+        ctx.drawWindow(this.win, 0, 0, w, h, bgr.toRGBString());
     } else {
-        ctx.drawWindow(this.win, 0, 0, w, h, "rgba(255,255,255,0)");
+        ctx.drawWindow(this.win, 0, 0, w, h, bgr.toRGBAString());
     }
+
     ctx.restore();
 
     return {
@@ -224,7 +230,7 @@ Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocesso
         debug("Preprocessing document with "  + preprocessor);
         preprocessor.process(this.win.document);
     }
-    canvas = this._prepareWindowForRasterization();
+    canvas = this._prepareWindowForRasterization(backgroundColor);
     data = canvas.canvas.toDataURL(); // Defaults to image/png
     this.saveURI(data, filePath);
     callback();

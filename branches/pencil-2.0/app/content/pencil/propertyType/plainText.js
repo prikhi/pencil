@@ -7,9 +7,13 @@ PlainText.fromString = function (literal) {
 PlainText.prototype.toString = function () {
     return this.value;
 };
+PlainText.prototype.toUpper = function() {
+    return new PlainText(this.value.toUpperCase());
+};
 PlainText.fromLoremIpsum = function (words) {
     return new PlainText(loremIpsumSentence2(words));
 };
+
 
 pencilSandbox.PlainText = {
     newPlainText: function (s) {

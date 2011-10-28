@@ -233,11 +233,6 @@
                 <Width>$box.w</Width>
                 <Height>$box.h</Height>
             </For>
-            <For ref="xulBox">
-                <Width>$box.w</Width>
-                <Height>$box.h</Height>
-                <Disabled>$disabled.value</Disabled>
-            </For>
             <For ref="xulControl">
                 <Value>
                     <Arg>$label.value</Arg>
@@ -253,11 +248,8 @@
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
                 <html:div xmlns:html="http://www.w3.org/1999/xhtml" id="div" style="-moz-box-sizing: border-box; overflow: hidden; position: relative; font-size: 0px;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-                    <hbox id="xulBox" align="center">
                         <label id="xulControl"
                                 style="margin: 0px !important; min-width: 0px !important; -moz-box-sizing: border-box; box-sizing: border-box; vertical-align: middle;" flex="1" />
-                    </hbox>
-                    <html:div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"/>
                 </html:div>
             </foreignObject>
         </p:Content>

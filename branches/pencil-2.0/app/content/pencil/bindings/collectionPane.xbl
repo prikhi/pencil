@@ -112,7 +112,7 @@
                             detail += "<li><strong>" + Util.getMessage("collectionpane.more.information.label") + "</strong> <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
                         }
                         detail += "</ul>"
-                        Util.info(collection.displayName, new RichText(detail));
+                        Util.dialog(collection.displayName, new RichText(detail));
                     }
                 }, false);
                 this.installMenuItem.addEventListener("command", function (event) {
