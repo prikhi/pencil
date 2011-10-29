@@ -16,12 +16,12 @@ pcollectionpane hbox.Heading {
 }
 pcollectionpane label.Title,
 pcollectionpane hbox.Heading button {
-    -moz-appearance: none;
-    padding: .2em 0px !important;
-    height: 2em;
-    max-height: 2em;
-    min-height: 2em;
-    background: transparent !important;
+}
+
+pcollectionpane hbox.Heading label {
+    margin-left: 0px;
+    opacity: .5;
+    font-size: .85em;
 }
 
 pcollectionpane label.Title {
@@ -66,7 +66,7 @@ pcollectionpane *[_hidden='true'].Collection + .Collection {
 }
 pcollectionpane .Collection > hbox:first-child {
     -moz-box-align: start;
-    background-image: -moz-linear-gradient(bottom, rgb(187,187,187) 0%, rgb(221,221,221) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(200,200,200) 0%, rgb(221,221,221) 100%);
     color: -moz-button;
     padding: .3em;
     cursor: default;
@@ -104,14 +104,24 @@ pcollectionpane .Collection > hbox:first-child div > p {
 }
 pcollectionpane .Collection > hbox:first-child div {
 }
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child {
+    opacity: .7;
+}
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child > button {
     background-position: -9px 0px;
 }
-pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div {
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div,
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child label {
     opacity: .2;
+}
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child label {
+    display: none;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child:hover div {
     opacity: 1;
+}
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child:hover label {
+    opacity: .5;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div > p,
 pcollectionpane *[pcollapsed='true'].Collection .Content {
@@ -121,6 +131,7 @@ pcollectionpane .Collection .Content {
     padding: .3em;
     min-width: 8em;
     margin: 0px auto;
+    background: #EEEEEE;
 }
 pcollectionpane .Collection .Content > div {
     border: none;
@@ -128,22 +139,28 @@ pcollectionpane .Collection .Content > div {
     text-align: center;
     display: inline-block;
 
-    width: 7.5em;
+    width: 55px;
 
-    padding: .3em;
-
+    margin: .6em;
+    
     vertical-align: top;
 	font-size: .85em;
 }
-pcollectionpane .Collection .Content > div:hover {
-    background-color: highlight;
-    color: highlighttext;
+pcollectionpane .Collection .Content > div .Container {
+    background: rgba(0, 0, 0, 0.06);
+    width: 55px;
+    height: 55px;
+    overflow: hidden;
+    -moz-border-radius: 8px;
+    display: table-cell;
+    vertical-align: middle;
+}
+pcollectionpane .Collection .Content > div:hover .Container {
+    background: rgba(67, 136, 204, .3);
 }
 pcollectionpane .Collection .Content > div img {
-    opacity: .7;
-
-	max-width: 7em;
-	max-height: 7em;
+	max-width: 50px;
+    max-height: 50px;
 }
 pcollectionpane .Collection .Content > div:hover img {
     opacity: 1;
@@ -153,6 +170,8 @@ pcollectionpane .Collection .Content > div label {
 	overflow: hidden;
 	font: -moz-list;
 	font-size: 1em;
+	color: #999;
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, .6);
 }
 
 

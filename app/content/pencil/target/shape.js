@@ -230,6 +230,16 @@ Shape.prototype.getGeometry = function () {
     return geo;
 };
 
+Shape.prototype.getBoundingSize = function () {
+    var rect = this.svg.getBoundingClientRect();
+    debug("getBounding, rect: " + rect);
+    var parentRect = this.svg.ownerSVGElement.getBoundingClientRect();
+    var wPadding = 2 * parentRect.left;
+    var hPadding = 2 * parentRect.top;
+    return {width: rect.width - wPadding,
+            height: rect.height - hPadding};
+};
+
 //new imple for geometry editing
 
 Shape.prototype.moveBy = function (dx, dy, targetSet, moving) {

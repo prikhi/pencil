@@ -568,7 +568,7 @@ function ResetSelected() {
 
 function NewPref(type) {
     var result = { value: "" };
-    var dummy = { value: 0 };
+    var dummy = { value: false };
     if (gPromptService.prompt(window, Util.getMessage("new.pref.value", [gTypeStrs[type]]),
                             Util.getMessage("enter.the.preference.name"),
                             result,
@@ -606,15 +606,10 @@ function ModifyPref(entry) {
             return false;
         gPrefBranch.setBoolPref(entry.prefCol, check.value);
     } else if (entry.typeCol == nsIPrefBranch.PREF_INT) {
-        var params = { windowTitle: title,
-                   label: entry.prefCol,
-                   value: entry.valueCol,
-                   cancelled: true };
-        window.openDialog("chrome://global/content/configIntValue.xul", "_blank",
-                      "chrome,titlebar,centerscreen,modal", params);
-        if (params.cancelled)
-            return false;
-        gPrefBranch.setIntPref(entry.prefCol, params.value);
+        var result = { value: entry.valueCol };
+        var dummy = { value: false };
+        if (!gPromptService.prompt(window, title, entry.prefCol, result, null, dummy)) return;
+        gPrefBranch.setIntPref(entry.prefCol, result.value);
     } else {
         var result = { value: entry.valueCol };
         var dummy = { value: 0 };

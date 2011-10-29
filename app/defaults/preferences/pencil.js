@@ -20,6 +20,8 @@ pref("pencil.config.export.oo.converter", "uno");
 pref("pencil.config.export.oo.converter.uno.path", "http://example.com");
 pref("pencil.config.export.oo.converter.jod.url", "/bin/sh");
 
+pref("pencil.config.export.selection.padding", 0);
+
 pref("pencil.config.external.editor.bitmap.path", "/usr/local/bin/gimp-2.7");
 pref("pencil.config.external.editor.vector.path", "/usr/bin/inkscape");
 
