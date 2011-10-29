@@ -157,6 +157,8 @@
                     this.contentBox.appendChild(collectionBox);
 
                     var hbox = document.createElementNS(PencilNamespaces.xul, "hbox");
+                    hbox.setAttribute("align", "center");
+                    hbox.setAttribute("class", "Heading");
                     collectionBox.appendChild(hbox);
                     hbox._isHeader = true;
 
@@ -164,13 +166,13 @@
                     hbox.appendChild(button);
                     button.setAttribute("type", "checkbox");
 
-                    var div = document.createElementNS(PencilNamespaces.html, "div");
-                    hbox.appendChild(div);
-                    div.setAttribute("flex", "1");
-
                     var vboxx = document.createElementNS(PencilNamespaces.xul, "vbox");
                     vboxx.setAttribute("flex", "1");
                     hbox.appendChild(vboxx);
+
+                    var div = document.createElementNS(PencilNamespaces.html, "div");
+                    vboxx.appendChild(div);
+                    div.setAttribute("flex", "1");
 
                     var closeButton = document.createElementNS(PencilNamespaces.xul, "image");
                     hbox.appendChild(closeButton);
@@ -183,13 +185,14 @@
                     var h4 = document.createElementNS(PencilNamespaces.html, "h4");
                     div.appendChild(h4);
                     h4.appendChild(document.createTextNode(collection.displayName));
-                    /*
+                    
                     if (collection.description) {
-                        var p = document.createElementNS(PencilNamespaces.html, "p");
-                        div.appendChild(p);
-                        p.appendChild(document.createTextNode(collection.description));
+                        var label = document.createElementNS(PencilNamespaces.xul, "label");
+                        vboxx.appendChild(label);
+                        label.setAttribute("value", collection.description);
+                        label.setAttribute("crop", "end");
+                        label.setAttribute("title", collection.description);
                     }
-                    */
 
                     div = document.createElementNS(PencilNamespaces.html, "div");
                     collectionBox.appendChild(div);
@@ -218,7 +221,10 @@
                             div.setAttribute("noimage", true);
                         };
                         image.setAttribute("src", def.iconPath);
-                        button.appendChild(image);
+                        var imageContainer = document.createElementNS(PencilNamespaces.html, "div");
+                        imageContainer.setAttribute("class", "Container");
+                        imageContainer.appendChild(image);
+                        button.appendChild(imageContainer);
 
                         var label = document.createElementNS(PencilNamespaces.html, "label");
                         label.appendChild(document.createTextNode(def.displayName));

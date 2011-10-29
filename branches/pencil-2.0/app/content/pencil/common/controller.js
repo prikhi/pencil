@@ -1202,6 +1202,19 @@ Controller.prototype.rasterizeSelection = function () {
         //alert("The selected objects cannot be exported\nPlease try selecting a single object or a grouped object set.");
         return;
     }
+    
+    var padding = 2 * Config.get("export.selection.padding", 0);
+    
+    //stroke fix?
+    var strokeStyle = target.getProperty("strokeStyle");
+    if (strokeStyle) {
+        padding += strokeStyle.w;
+    }
+    
+    var w = geo.dim.w + padding;
+    var h = geo.dim.h + padding;
+    
+    debug("w: " + w);
 
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
@@ -1212,17 +1225,17 @@ Controller.prototype.rasterizeSelection = function () {
     if (fp.show() == nsIFilePicker.returnCancel) return;
 
     var svg = document.createElementNS(PencilNamespaces.svg, "svg");
-    svg.setAttribute("width", "" + geo.dim.w  + "px");
-    svg.setAttribute("height", "" + geo.dim.h  + "px");
-
+    svg.setAttribute("width", "" + w  + "px");
+    svg.setAttribute("height", "" + h  + "px");
+    
     var content = target.svg.cloneNode(true);
     content.removeAttribute("transform");
     content.removeAttribute("id");
 
     try  {
-        if (content.getAttributeNS(PencilNamespaces.p, "type") == "Group") {
-            content.setAttribute("transform", "translate(" + (0 - geo.ctm.e) + ", " + (0 - geo.ctm.f) + ")");
-        }
+        var dx = Math.round((w - geo.dim.w) / 2);
+        var dy = Math.round((h - geo.dim.h) / 2);
+        content.setAttribute("transform", "translate(" + dx + ", " + dy + ")");
     } catch (e) {
         Console.dumpError(e);
     }

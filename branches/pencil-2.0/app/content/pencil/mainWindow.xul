@@ -193,6 +193,7 @@
         <key id="loadDocumentKey" command="loadDocumentCommand" modifiers="accel" key="O"/>
         <key id="saveDocumentKey" command="saveDocumentCommand" modifiers="accel" key="S"/>
         <key id="saveDocumentAsKey" command="saveDocumentCommand" modifiers="accel shift" key="S"/>
+        <key id="exportSelectionKey" command="rasterizeSelectionCommand" modifiers="accel alt" key="E"/>
         <key id="exportPageKey" command="rasterizeCommand" modifiers="accel" key="E"/>
         <key id="exportDocumentKey" command="exportCommand" modifiers="accel shift" key="E"/>
 
@@ -284,7 +285,7 @@
                                         </menupopup>
                                     </menu>
                                     <menuseparator/>
-                                    <menuitem label="&menu.export.sel.as.png.label;" command="rasterizeSelectionCommand"/>
+                                    <menuitem label="&menu.export.sel.as.png.label;" command="rasterizeSelectionCommand" key="exportSelectionKey"/>
                                     <menuitem label="&menu.export.page.as.png.label;" command="rasterizeCommand" key="exportPageKey"/>
                                     <menuitem class="menuitem-iconic export-document-menu" label="&menu.export.document.label;" command="exportCommand" key="exportDocumentKey"/>
                                     <menuseparator/>
