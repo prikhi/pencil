@@ -498,7 +498,12 @@
             <text id="text" xml:space="preserve"></text>
         </p:Content>
     </Shape>
-    <Shape id="htmlText" displayName="HTML Texts" icon="Icons/html.png">
+    <Shortcut displayName="HTML Texts" icon="Icons/html.png" to="Evolus.Common:RichTextBoxV2">
+        <PropertyValue name="textContent"><![CDATA[HTML Texts]]></PropertyValue>
+        <PropertyValue name="textFont"><E>$$defaultTextFont</E></PropertyValue>
+        <PropertyValue name="textColor"><E>$$defaultTextColor</E></PropertyValue>
+    </Shortcut>
+    <Shape id="htmlText" system="true" displayName="HTML Texts" icon="Icons/html.png">
         <Properties>
             <PropertyGroup>
                 <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="10" p:disabled="!$fixedWidth.value">200,0</Property>
@@ -697,7 +702,7 @@
         <PropertyValue name="textFont"><E>$$defaultH5Font</E></PropertyValue>
     </Shortcut>
 
-    <Shape id="htmlHR" displayName="HR" icon="Icons/hr.png">
+    <Shape id="htmlHR" system="true" displayName="HR" icon="Icons/hr.png">
         <Properties>
             <PropertyGroup>
                 <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="10" p:disabled="!$fixedWidth.value">200,0</Property>
@@ -844,11 +849,15 @@
             <For ref="textDiv">
                 <Attr>
                     <Arg>"style"</Arg>
-                    <Arg>"display: inline-block; " + $customStyle.value</Arg>
+                    <Arg>"overflowx: hidden; display: inline-block; " + $customStyle.value</Arg>
                 </Attr>
                 <CustomStyle>
                     <Arg>"width"</Arg>
                     <Arg>$box.w + "px"</Arg>
+                </CustomStyle>
+                <CustomStyle>
+                    <Arg>"height"</Arg>
+                    <Arg>$box.h + "px"</Arg>
                 </CustomStyle>
                 <Color>$textColor</Color>
                 <Font>$textFont</Font>
@@ -862,6 +871,7 @@
                             var style = new CSS();
 
                             style.set("border", "solid " + $strokeStyle.w + "px " + $strokeColor.toRGBAString());
+                            style.set("border-width", $strokeStyle.w + "px 0px 0px " + $strokeStyle.w + "px");
                             style.set("padding", "0px");
 
                             if (isHeader) {
@@ -987,8 +997,6 @@
 
                             tableStyle.set("width",  ($box.w - $strokeStyle.w) + "px");
                             tableStyle.set("height",  ($box.h - $strokeStyle.w) + "px");
-                            tableStyle.set("margin-left",  Math.ceil($strokeStyle.w / 2) + "px");
-                            tableStyle.set("margin-top",  Math.ceil($strokeStyle.w / 2) + "px");
 
                             var table = {
                                 _name: "table",
@@ -1017,8 +1025,8 @@
                                     _children: [tr]
                                 });
 
-                                for (var i = 0; i < headers.length; i ++) {
-                                    var header = headers[i];
+                                for (var i = 0; i < cols; i ++) {
+                                    var header = i < headers.length ? headers[i] : "";
                                     tr._children.push(gen(true, header, i, cols));
                                 }
                             }
@@ -1039,8 +1047,8 @@
 
                                     tbody._children.push(tr);
 
-                                    for (var i = 0; i < cells.length; i ++) {
-                                        var cell = cells[i];
+                                    for (var i = 0; i < cols; i ++) {
+                                        var cell = i < cells.length ? cells[i] : "";
                                         tr._children.push(gen(false, cell, i, cols));
                                     }
                                 }

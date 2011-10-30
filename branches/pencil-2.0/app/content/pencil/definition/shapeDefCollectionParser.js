@@ -156,6 +156,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
     collection.description = shapeDefsNode.getAttribute("description");
     collection.author = shapeDefsNode.getAttribute("author");
     collection.infoUrl = shapeDefsNode.getAttribute("url");
+    collection.system = shapeDefsNode.getAttribute("system") == "true";
 
     Dom.workOn("./p:Script", shapeDefsNode, function (scriptNode) {
         var context = { collection: collection };
@@ -507,6 +508,8 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
         shortcut.propertyMap[name] = spec;
     });
+    
+    shortcut.propertyMap._collection = collection;
 
     return shortcut;
 };

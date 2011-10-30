@@ -176,7 +176,6 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
     var tspans = [];
     var lastHeight = 0;
     var lastLineHeight = 0;
-    var lastBBoxY = 0;
     for (var j = 0; j < lines.length; j ++) {
         var line = lines[j];
         if (line.length == 0) {
@@ -194,7 +193,6 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
             Dom.empty(textElement);
             textElement.appendChild(textElement.ownerDocument.createTextNode(s));
             var box = textElement.getBBox();
-            lastBBoxY = box.y;
             
             i ++;
             
@@ -202,6 +200,8 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
                 lastBBoxWidth = box.width;
                 continue;
             }
+            
+            //now add the tspan
             
             var index = s.lastIndexOf(" ");
             var line = "";
@@ -219,7 +219,7 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
                 _uri: "http://www.w3.org/2000/svg",
                 _text: line,
                 x: (align ? align.h : 0) * (width - lastBBoxWidth) / 2,
-                y: lastHeight - lastBBoxY
+                y: lastHeight
             });
             
             lastHeight += box.height;
@@ -236,7 +236,7 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
                 _uri: "http://www.w3.org/2000/svg",
                 _text: s,
                 x: (align ? align.h : 0) * (width - box.width) / 2,
-                y: lastHeight - lastBBoxY
+                y: lastHeight
             });
             lastHeight += box.height;
         }

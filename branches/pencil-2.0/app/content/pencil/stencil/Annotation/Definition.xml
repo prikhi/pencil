@@ -14,6 +14,7 @@
                 description="Shapes for annotations"
                 author="Duong Thanh An (an.duong@evolus.vn)"
                 url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/Annotation.html"
+                system="true"
                 >
     <Properties>
         <PropertyGroup name="Text">

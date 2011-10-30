@@ -220,7 +220,7 @@ ShapeShortcutDragObserver.prototype = {
             return;
         }
 
-        if (delta < 500) return;
+        if (delta < 200) return;
 
         var transferData = nsTransferable.get(this.getSupportedFlavours(), nsDragAndDrop.getDragData, true);
         var defId = null;
