@@ -16,7 +16,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
         </PropertyGroup>
     </Properties>
 
-    <Shape id="PlainText" displayName="Plain Text" icon="Icons/plain-text.png">
+    <Shape id="PlainText" displayName="Plain Text" icon="Icons/plain-text.png" system="true">
         <Properties>
             <PropertyGroup>
                 <Property name="disabled" displayName="Disabled" type="Bool">false</Property>
@@ -59,7 +59,59 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
             <text id="text" y="9.0077095" x="17.999992" style="font-size:12px;font-style:normal;font-weight:normal;text-align:left;text-anchor:start; dominant-baseline: central;fill:#000000;font-family:'Segoe UI'" xml:space="preserve">checkbutton2</text>
         </p:Content>
     </Shape>
-    <Shape id="RichTextBox" displayName="Rich Text" icon="Icons/rich-text.png">
+    <Shape id="PlainTextV2" displayName="Plain Text" icon="Icons/plain-text.png">
+        <Properties>
+            <PropertyGroup>
+                <Property name="disabled" displayName="Disabled" type="Bool">false</Property>
+                <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="10" p:disabled="!$fixedWidth.value">100,0</Property>
+                <Property name="fixedWidth" displayName="Fixed Width" type="Bool">false</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="label" displayName="Label" type="PlainText"
+                p:editInfo="var size = 80; ({targetName: 'text', bound: new Bound(0, 0 - $textFont.getPixelHeight() / 2, 180 , 80), font: $textFont, align: $textAlign, multi: $fixedWidth.value})">Plain text</Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="textFont" displayName="Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="textAlign" displayName="Text Alignment" type="Alignment">0,0</Property>
+            </PropertyGroup>
+        </Properties>
+
+        <Behaviors>
+            <For ref="text">
+                <Fill>$textColor</Fill>
+                <Font>$textFont</Font>
+                <DomContent>F.buildTextWrapDomContent(F._target, $label.value, $fixedWidth.value ? $width.x : 2000, $textAlign)</DomContent>
+            </For>
+            <For ref="bgRect">
+                <Visibility>$fixedWidth</Visibility>
+                <Bound>
+                    //depends $textFont, $label, $fixedWidth
+                    new Bound(0, 0, $fixedWidth.value ? $width.x : 0, $fixedWidth.value ? F.textSize("text").h : 0)
+                </Bound>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="generateLoremShort" displayName="Generate Short Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("label", PlainText.fromLoremIpsum(4));
+                        ]]>
+                </Impl>
+            </Action>
+            <Action id="generateLoremLong" displayName="Generate Long Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("label", PlainText.fromLoremIpsum(15));
+                            this.setProperty("fixedWidth", new Bool(true));
+                        ]]>
+                </Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" style="fill: none; stroke: none;" id="bgRect"/>
+            <text id="text" y="9.0077095" x="17.999992" text-anchor="start" style="dominant-baseline: hanging;" xml:space="preserve">checkbutton2</text>
+        </p:Content>
+    </Shape>    
+    <Shape id="RichTextBox" system="true" displayName="Rich Text" icon="Icons/rich-text.png">
         <Properties>
             <PropertyGroup>
                 <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="0">200,0</Property>
@@ -112,6 +164,87 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
             </foreignObject>
         </p:Content>
     </Shape>
+    
+    <Shape id="RichTextBoxV2" displayName="Rich Text" icon="Icons/rich-text.png">
+        <Properties>
+            <PropertyGroup>
+                <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="10" p:disabled="!$fixedWidth.value">200,0</Property>
+                <Property name="fixedWidth" displayName="Fixed Width" type="Bool">false</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[Rich <strong>text</strong>]]></Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultTextColor</E></Property>
+                <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
+            </PropertyGroup>
+        </Properties>
+
+        <Behaviors>
+            <For ref="textDiv">
+                <Attr>
+                    <Arg>"style"</Arg>
+                    <Arg>"display: inline-block; " + $customStyle.value</Arg>
+                </Attr>
+                <CustomStyle>
+                    <Arg>"white-space"</Arg>
+                    <Arg>$fixedWidth.value ? null : "nowrap"</Arg>
+                </CustomStyle>
+                <CustomStyle>
+                    <Arg>"width"</Arg>
+                    <Arg>$fixedWidth.value ? ($width.x + "px") : null</Arg>
+                </CustomStyle>
+                <CustomStyle>
+                    <Arg>"text-decoration"</Arg>
+                    <Arg>$textFont.decor</Arg>
+                </CustomStyle>
+            </For>
+            <For ref="htmlObject">
+                <TextContent>
+                    <Arg>$textContent</Arg>
+                    <Arg>false</Arg>
+                    <Arg>true</Arg>
+                </TextContent>
+                <Color>$textColor</Color>
+                <Font>$textFont</Font>
+                <Box>var size = F.elementSize("textDiv"); new Dimension($fixedWidth.value ? $width.x : size.w, size.h); /* depends $textFont $textContent $customStyle */</Box>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="generateLoremShortRichTextBox" displayName="Generate Short Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("textContent", RichText.fromLoremIpsum(10));
+                            this.setProperty("fixedWidth", new Bool(true));
+                        ]]>
+                </Impl>
+            </Action>
+            <Action id="generateLoremLongRichTextBox" displayName="Generate Long Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("textContent", RichText.fromLoremIpsum(45));
+                            this.setProperty("fixedWidth", new Bool(true));
+                        ]]>
+                </Impl>
+            </Action>
+            <Action id="generateLoremExtraLongRichTextBox" displayName="Generate Longer Random Texts">
+                <Impl>
+                        <![CDATA[
+                            this.setProperty("textContent", RichText.fromLoremIpsum(150));
+                            this.setProperty("fixedWidth", new Bool(true));
+                        ]]>
+                </Impl>
+            </Action>
+        </Actions>
+
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+
+            <foreignObject x="0" y="0" width="200" height="150" id="htmlObject">
+                <div xmlns="http://www.w3.org/1999/xhtml" id="textDiv">
+                    Rich <strong>text</strong> pane contains <a href="#">hyper text</a>
+                </div>
+            </foreignObject>
+        </p:Content>
+    </Shape>    
     <Shape id="RoundedRect" displayName="Rectangle" icon="Icons/rectangle.png">
         <Properties>
 
@@ -744,5 +877,207 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
             <g id="container"></g>
         </p:Content>
     </Shape>
+<!-- moved from the annotation collection -->
+        <Shape id="Balloon" displayName="Balloon" icon="Icons/balloon.png">
+            <Properties>
+                <PropertyGroup>
+                    <Property name="box" type="Dimension">200,80</Property>
+                    <Property name="withBlur" type="Bool" displayName="With Shadow">false</Property>
+                </PropertyGroup>
+                <PropertyGroup name="Handles">
+                    <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="Math.min($box.w, $box.h) / 2">8,0</Property>
 
+                    <Property name="leftStart" displayName="Start Point" type="Handle"
+                        p:lockX="true" p:minY="$radius.x + 2" p:maxY="$leftEnd.y - 5"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'left'">0,12</Property>
+                    <Property name="leftEnd" displayName="End Point" type="Handle"
+                        p:lockX="true" p:minY="$leftStart.y + 5" p:maxY="$box.h - $radius.x - 2"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'left'">0,33</Property>
+
+                    <Property name="rightStart" displayName="Start Point" type="Handle"
+                        p:lockX="true" p:expressionX="$box.w" p:minY="$radius.x + 2" p:maxY="$rightEnd.y - 5"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'right'">0,12</Property>
+                    <Property name="rightEnd" displayName="End Point" type="Handle"
+                        p:lockX="true" p:expressionX="$box.w" p:minY="$rightStart.y + 5" p:maxY="$box.h - $radius.x - 2"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'right'">0,33</Property>
+
+                    <Property name="topStart" displayName="Start Point" type="Handle"
+                        p:lockY="true" p:minX="$radius.x + 2" p:maxX="$topEnd.x - 5"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'top'">12,0</Property>
+                    <Property name="topEnd" displayName="End Point" type="Handle"
+                        p:lockY="true" p:minX="$topStart.x + 5" p:maxX="$box.w - $radius.x - 2"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'top'">33,0</Property>
+
+                    <Property name="bottomStart" displayName="Start Point" type="Handle"
+                        p:lockY="true" p:expressionY="$box.h" p:minX="$radius.x + 2" p:maxX="$bottomEnd.x - 5"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'bottom'">12,0</Property>
+                    <Property name="bottomEnd" displayName="End Point" type="Handle"
+                        p:lockY="true" p:expressionY="$box.h" p:minX="$bottomStart.x + 5" p:maxX="$box.w - $radius.x - 2"
+                        p:disabled="F.getRelativeLocation($pin, $box) != 'bottom'">33,0</Property>
+
+                    <Property name="pin" displayName="Balloon Pin" type="Handle"  >-12,23</Property>
+                </PropertyGroup>
+                <PropertyGroup name="Background">
+                    <Property name="fillColor" displayName="Color" type="Color"><E>$$fillColor</E></Property>
+                </PropertyGroup>
+                <PropertyGroup name="Border">
+                    <Property name="strokeColor" displayName="Color" type="Color"><E>$$strokeColor</E></Property>
+                    <Property name="strokeStyle" displayName="Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
+                </PropertyGroup>
+                <PropertyGroup name="Text">
+                    <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[Annotation]]></Property>
+                    <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                    <Property name="textColor" displayName="Default Text Color" type="Color"><E>$$defaultTextColor</E></Property>
+                    <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="rect">
+                  <D>
+                        var type = F.getRelativeLocation($pin, $box);
+
+                        var x = {"left": [M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                        L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                        L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                        L(0, $leftEnd.y), L($pin.x, $pin.y), L(0, $leftStart.y), L(0, $radius.x),
+                                        C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)],
+
+                                 "top": [M($radius.x, 0),L($topStart.x,0), L($pin.x, $pin.y), L($topEnd.x,0),
+                                        L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                        L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                        L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                        L(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)],
+                                 "right": [M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                        L($box.w, $rightStart.y),L($pin.x, $pin.y), L($box.w, $rightEnd.y), L($box.w, $box.h - $radius.x),  C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                        L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                        L(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)] ,
+                                 "bottom": [M($radius.x, 0), L($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                        L($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                        L($bottomEnd.x, $box.h), L($pin.x, $pin.y),L($bottomStart.x, $box.h),
+                                        L($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                        L(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)]
+                                  }[type];
+                    x</D>
+                <Fill>$fillColor</Fill>
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+            <For ref="text">
+                <TextContent>$textContent</TextContent>
+                <Font>$textFont</Font>
+                <Fill>$textColor</Fill>
+                <Color>$textColor</Color>
+                <BoxFit>
+                    <Arg>Bound.fromBox($box, $radius.x)</Arg>
+                    <Arg>$textAlign</Arg>
+                </BoxFit>
+            </For>
+            <For ref="bgCopy">
+                <ApplyFilter>$withBlur</ApplyFilter>
+                <Visibility>$withBlur</Visibility>
+            </For>
+        </Behaviors>
+        <p:Content    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                                xmlns="http://www.w3.org/2000/svg">
+
+            <defs>
+                <filter
+                   id="imageShading"
+                   height="1.2558399"
+                   y="-0.12792"
+                   width="1.06396"
+                   x="-0.03198">
+                    <feGaussianBlur stdDeviation="1.3325" in="SourceAlpha"/>
+                </filter>
+                <g id="container">
+                    <path
+                            transform="translate(0.5 0.5)"
+                            style="stroke-width: 1px;"
+                            id="rect" />
+                </g>
+            </defs>
+            <use xlink:href="#container" id="bgCopy" transform="translate(1, 1)" p:filter="url(#imageShading)" style=" opacity:0.6;" p:heavy="true"/>
+            <use xlink:href="#container"/>
+            <foreignObject x="0" y="0" width="200" height="150" id="text">
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+                            Balloon message
+                    </div>
+            </foreignObject>
+        </p:Content>
+    </Shape>
+    <Shape id="Bullet" displayName="Bullet" icon="Icons/bullet.png">
+        <Properties>
+            <PropertyGroup>
+                <Property name="box" type="Dimension" p:lockRatio="true">30,30</Property>
+                <Property name="withBlur" type="Bool" displayName="With Shadow">false</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Color" type="Color"><E>$$fillColor</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Color" type="Color"><E>$$strokeColor</E></Property>
+                <Property name="strokeStyle" displayName="Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[1]]></Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
+                <Property name="textColor" displayName="Color" type="Color"><E>$$defaultTextColor</E></Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="bgCopy">
+                <ApplyFilter>$withBlur</ApplyFilter>
+                <Visibility>$withBlur</Visibility>
+            </For>
+            <For ref="ellipse">
+                <EllipseFit>$box</EllipseFit>
+                <Fill>$fillColor</Fill>
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+            <For ref="text">
+                <TextContent>$textContent</TextContent>
+                <Fill>$textColor</Fill>
+                <Color>$textColor</Color>
+                <Font>$textFont</Font>
+                <BoxFit>
+                    <Arg>Bound.fromBox($box, 0)</Arg>
+                    <Arg>new Alignment(1, 1)</Arg>
+                </BoxFit>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="makeSquare" displayName="Make Square">
+                <Impl>
+                <![CDATA[
+                    var box = this.getProperty("box");
+                    var size = Math.max(box.w, box.h);
+                    this.setProperty("box", new Dimension(size, size));
+                ]]>
+                </Impl>
+            </Action>
+        </Actions>
+        <p:Content    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                                xmlns="http://www.w3.org/2000/svg">
+
+            <defs>
+                <filter
+                   id="imageShading"
+                   height="1.2558399"
+                   y="-0.12792"
+                   width="1.2558399"
+                   x="-0.12792">
+                    <feGaussianBlur stdDeviation="1.3325" in="SourceAlpha"/>
+                </filter>
+                <g id="container">
+                    <ellipse id="ellipse"/>
+                </g>
+            </defs>
+            <use xlink:href="#container" id="bgCopy" transform="translate(1, 1)" p:filter="url(#imageShading)" style=" opacity:0.6;" p:heavy="true"/>
+            <use xlink:href="#container"/>
+            <foreignObject x="0" y="0" width="200" height="150" id="text">
+                    <div xmlns="http://www.w3.org/1999/xhtml">1</div>
+            </foreignObject>
+        </p:Content>
+    </Shape>
 </Shapes>

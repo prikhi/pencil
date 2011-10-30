@@ -153,6 +153,7 @@ pcollectionpane .Collection .Content > div .Container {
     overflow: hidden;
     -moz-border-radius: 8px;
     display: table-cell;
+    line-height: 1px;
     vertical-align: middle;
 }
 pcollectionpane .Collection .Content > div:hover .Container {

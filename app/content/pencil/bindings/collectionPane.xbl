@@ -242,6 +242,7 @@
                     for (var i in CollectionManager.shapeDefinition.collections) {
                         var collection = CollectionManager.shapeDefinition.collections[i];
                         if (!CollectionManager.isCollectionVisible(collection)) continue;
+                        if (collection.system) continue;
                         this.addShapeCollection(collection);
                     }
                 ]]>

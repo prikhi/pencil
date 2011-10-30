@@ -117,25 +117,6 @@ Pencil.behaviors.Font = function (font) {
     Svg.setStyle(this, "font-weight", font.weight);
     Svg.setStyle(this, "font-style", font.style);
     Svg.setStyle(this, "text-decoration", font.decor);
-
-    //locate the path that makes the underline
-
-    var underline = Pencil.behaviors._createUnderline(this);
-
-    Svg.setStyle(underline, "visibility", font.isUnderlined() ? "visible" : "hidden");
-    if (font.isUnderlined()) {
-        var bbox = this.getBBox();
-        var dLiteral = [M(bbox.x, bbox.y + bbox.height + 1.5), L(bbox.x + bbox.width, bbox.y + bbox.height + 1.5)];
-        underline.setAttribute("d", dLiteral.join(" "));
-
-        try {
-            var color = Svg.getStyle(this, "fill");
-            Svg.setStyle(underline, "stroke", color);
-            Svg.setStyle(underline, "stroke-opacity", Svg.getStyle(this, "fill-opacity"));
-        } catch (e) {
-            Console.dumpError(e, "stdout");
-        }
-    }
 };
 Pencil.behaviors.BoxFit = function (bound, align) {
     try {

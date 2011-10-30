@@ -57,6 +57,10 @@ Shape.prototype.setInitialPropertyValues = function (overridingValueMap) {
         if (overridingValueMap && overridingValueMap[name]) {
             var spec = overridingValueMap[name];
             if (spec.initialValueExpression) {
+                //temporarily shift the context collection to the one contains the shortcut
+                if (overridingValueMap._collection) {
+                    this._evalContext.collection = overridingValueMap._collection;
+                }
                 value = this.evalExpression(spec.initialValueExpression);
             } else {
                 value = spec.initialValue;
