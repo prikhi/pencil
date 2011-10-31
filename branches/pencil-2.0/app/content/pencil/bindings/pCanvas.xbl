@@ -150,6 +150,8 @@
                     thiz.handleClick(event);
                 }, false);
                 this.svg.addEventListener("mousedown", function (event) {
+                    //document.commandDispatcher.advanceFocus();
+                    thiz.focus();
                     thiz.handleMouseDown(event);
                 }, false);
                 this.svg.ownerDocument.addEventListener("mouseup", function (event) {
@@ -1565,7 +1567,11 @@
             <method name="focus">
                 <body>
                 <![CDATA[
-                    document.commandDispatcher.rewindFocus();
+                    //if (!Util.isMac()) {
+                        document.commandDispatcher.rewindFocus();
+                        //document.commandDispatcher.advanceFocus();
+                    //}
+                    document.getElementById("richTextEditorToolbar").focus();
                     this.focusableBox.focus();
                 ]]>
                 </body>

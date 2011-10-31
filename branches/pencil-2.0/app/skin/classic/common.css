@@ -44,7 +44,7 @@ tabbox.Main #mainViewHeader > tab {
     padding-right: 1em;
 }
 tabbox.Main #mainViewHeader > tab[selected="true"] {
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 tabbox.Main > tabpanels {
@@ -55,7 +55,7 @@ tabbox.Main > * > tabpanel {
 tabbox > tabs#sideBoxTabs,
 tabbox.Main > tabs > tab,
 #pencilPropertyEditorDialog tabbox > tabs > tab {
-    min-height: 2.2em;
+    /*min-height: 2.2em;*/
 }
 tabbox > tabs#sideBoxTabs,
 tabbox.Main > tabs > tab label,
@@ -168,7 +168,7 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
     margin-bottom: 1px;
 }
 #mainView > hbox #mainViewHeader tab[selected='true'] {
-    margin-bottom: 0px;
+    /*margin-bottom: 0px;*/
 }
 
 #pencil-menu {
@@ -225,4 +225,9 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
     background: threedface;
     padding: 3px;
     border: outset 1px;
+}
+
+#pencilPropertyEditorDialog {
+	min-width: 470px;
+	width: 470xp;
 }
