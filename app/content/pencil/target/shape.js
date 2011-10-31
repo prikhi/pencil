@@ -186,9 +186,23 @@ Shape.prototype.setProperty = function (name, value, nested) {
 };
 Shape.prototype.getProperty = function (name) {
     var propNode = this.locatePropertyNode(name);
-    if (!propNode) return null;
-    var propType = this.def.getProperty(name).type;
+    if (!propNode) {
+        return null;
+        var prop = this.def.getProperty(name);
+        if (!this._evalContext) {
+            this._evalContext = {collection: this.def.collection};
+        } else {
+            this._evalContext.collection = this.def.collection;
+        }
+        
+        if (prop.initialValueExpression) {
+            return this.evalExpression(prop.initialValueExpression);
+        } else {
+            return prop.initialValue;
+        }
+    }
 
+    var propType = this.def.getProperty(name).type;
     var literal = propNode.textContent;
     if (!literal) literal = "";
     return propType.fromString(literal);
