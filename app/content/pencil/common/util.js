@@ -1111,7 +1111,9 @@ Util.isXul6OrLater = function() {
     }
     return false;
 };
-
+Util.isMac = function() {
+    return navigator.userAgent.indexOf("Intel Mac") != -1;
+}
 function debugx(ex) {
     debug("debugx is no longer supported");
 }
