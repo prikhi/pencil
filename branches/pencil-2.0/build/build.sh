@@ -151,7 +151,6 @@ mac() {
     find ./Outputs/Mac/ -name .svn | xargs -i rm -Rf {}
 
     cp -R ./Outputs/Pencil/application.ini.tpl ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
-    cp -R ./Outputs/Pencil/icons/default/main-window.icns ./Outputs/Mac/Pencil.app/Contents/Resources/main-window.icns
 
     ./replacer.sh ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
     ./replacer.sh ./Outputs/Mac/Pencil.app/Contents/Resources/defaults/preferences/pencil.js

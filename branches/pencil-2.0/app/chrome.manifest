@@ -11,3 +11,5 @@ overlay chrome://browser/content/browser.xul        chrome://pencil/content/fire
 
 # Support for Mac
 #override chrome://pencil-os/skin/icons.css chrome://pencil/skin/mac/icons.css os=Darwin
+
+override chrome://pencil-os/skin/platform.css chrome://pencil/skin/mac/platform.css os=Darwin
