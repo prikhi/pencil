@@ -7,6 +7,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil/skin/common.css" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil-os/skin/icons.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil-os/skin/platform.css" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil/skin/htmlForeignObject.css" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil/skin/htmlForeignObjectXUL.css" type="text/css"?>
 
@@ -264,9 +265,9 @@
         <key id="editFullKey" key="K" modifiers="accel" command="editInsertLinkCommand"/>
         <key id="escapeKey" keycode="VK_ESCAPE" command="quitCommand"/>
     </keyset>
-    <toolbox id="navigator-toolbox" class="toolbox-top" mode="icons" defaultmode="icons">
+    <toolbox id="navigator-toolbox" class="toolbox-top chromeclass-toolbar" mode="icons" defaultmode="icons">
         <!-- Menu -->
-        <toolbar type="menubar" id="toolbar-menubar" class="chromeclass-menubar" mode="icons" toolbarname="&toolbar.menubar.name;" context="toolbar-context-menu">
+        <toolbar type="menubar" id="toolbar-menubar" class="chromeclass-menubar chromeclass-toolbar" mode="icons" toolbarname="&toolbar.menubar.name;" context="toolbar-context-menu">
             <toolbaritem id="menubar-items" align="center">
                 <menubar id="main-menubar" style="border:0;padding:2px;margin:0;-moz-appearance:none;height:28px;">
                     <menu id="pencil-menu" label="Pencil ▾" class="menuitem-iconic menu-iconic" style="padding:3px;margin:0;">

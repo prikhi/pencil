@@ -1,0 +1,15 @@
+
+/*window[active="true"]:-moz-system-metric(windows-default-theme) {
+  background-color: #b9d1ea;
+}
+window:not([active="true"]):-moz-system-metric(windows-default-theme) {
+  background-color: #d7e4f2;
+}
+window:not(:-moz-system-metric(windows-default-theme)) {
+  background-color: -moz-Dialog;
+}*/
+
+window:-moz-system-metric(windows-compositor), toolbox, toolbar, statusbar {
+  background: transparent !important;
+  -moz-appearance: -moz-win-glass;
+}

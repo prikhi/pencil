@@ -47,7 +47,11 @@
                 }, false);
 
                 this.opacity.addEventListener("change", function(event) {
-                    thiz.opacityText.value = Util.getMessage("opacity.value", thiz.opacity.value) + "%";
+                    var a = thiz.opacity.value;
+                    if (a == 0) {
+                        a = "0";
+                    }
+                    thiz.opacityText.value = Util.getMessage("opacity.value", a) + "%";
                     thiz._updatePreviewColor();
                     event.stopPropagation();
                 }, false);
@@ -165,6 +169,9 @@
                     this.colorCode.value = colorText;
                     var a = Math.round(color.a * 100) % 101;
                     this.opacity.setAttribute("value", a);
+                    if (a == 0) {
+                        a = "0";
+                    }
                     this.opacityText.setAttribute("value", Util.getMessage("opacity.value", a) + "%");
 
                     this.isUserModified = false;

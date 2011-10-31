@@ -1,9 +1,8 @@
-
 window[p|probing],
 window[p|probing] *,
 dialog[p|probing],
 dialog[p|probing] * {
-    cursor: url(chrome://pencil-os/skin/images/moblin/stock_3d-color-picker?size=16) default !important;
+    	cursor: url(chrome://pencil-os/skin/images/moblin/stock_3d-color-picker?size=16) default !important;
 }
 
 #pencil-new-button {
