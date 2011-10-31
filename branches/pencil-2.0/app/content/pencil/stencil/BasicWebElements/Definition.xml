@@ -76,9 +76,10 @@
 
     <Shape id="pane" displayName="Pane" icon="Icons/pane.png">
         <Properties>
-            <PropertyGroup>
+            <PropertyGroup name="Style">
                 <Property name="box" type="Dimension">200,300</Property>
                 <Property name="cornerStyle" displayName="Corner Style" type="Enum" p:enumValues="['none|None', 'all|All rounded', 'top|Rounded top corners', 'bottom|Rounded bottom corners', 'left|Rounded left corners', 'right|Rounded right corners']">none</Property>
+                <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
 
             <PropertyGroup name="Handles">
@@ -124,6 +125,10 @@
                 </Bound>
             </For>
             <For ref="div">
+                <Attr>
+                    <Arg>"style"</Arg>
+                    <Arg>"-moz-box-sizing: border-box; overflow: hidden; " + $customStyle.value</Arg>
+                </Attr>
                 <CustomStyle>
                     <Arg>"-moz-box-shadow"</Arg>
                     <Arg>$shadowColor.a > 0 ? $shadowStyle.toCSSString($shadowColor) : "none"</Arg>
@@ -194,6 +199,20 @@
                         <![CDATA[
                             this.setProperty("textContent", RichText.fromLoremIpsum(100));
                         ]]>
+                </Impl>
+            </Action>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var b = this.getBounding();
+                        var shadow = this.getProperty("shadowStyle");
+                        return [
+                            new SnappingData("Left", b.x + shadow.size, "Left", true, this.id),
+                            new SnappingData("Right", b.x + b.width - shadow.size, "Right", true, this.id),
+                            new SnappingData("Top", b.y + shadow.size, "Top", false, this.id),
+                            new SnappingData("Bottom", b.y + b.height- shadow.size, "Bottom", false, this.id)
+                        ]
+                    ]]>
                 </Impl>
             </Action>
         </Actions>
@@ -802,11 +821,11 @@
     <Shape id="table" displayName="Table" icon="Icons/table.png">
         <Properties>
             <PropertyGroup name="Sizing">
-                <Property name="box" displayName="Size" type="Dimension">300,80</Property>
+                <Property name="box" displayName="Size" type="Dimension">350,100</Property>
                 <Property name="useHtmlContent" displayName="Use HTML Content" type="Bool">false</Property>
                 <Property name="fixedHeaderHeight" noScale="true" displayName="Fixed Header Height" type="Bool">false</Property>
                 <Property name="padding" displayName="Cell Padding" type="Handle" p:noScale="true" p:lockX="true" p:minY="0">0,4</Property>
-                <Property name="headerHeight" p:disabled="!$fixedHeaderHeight.value" p:noScale="true" displayName="Header Height" type="Handle" p:lockX="true" p:minY="10" p:maxY="$box.h">0,20</Property>
+                <Property name="headerHeight" p:disabled="!$fixedHeaderHeight.value" p:noScale="true" displayName="Header Height" type="Handle" p:lockX="true" p:minY="10" p:maxY="$box.h">0,30</Property>
             </PropertyGroup>
             <PropertyGroup name="Columns Width">
                 <Property name="h0" displayName="Column 1 width" type="Handle" p:lockY="true" p:maxX="collection.getMaxXForColumnHandle(0, properties)" p:minX="collection.getMinXForColumnHandle(0, properties)" p:disabled="collection.isColumnHandleDisabled(0, properties)">30,0</Property>
@@ -867,7 +886,7 @@
                 </CustomStyle>
                 <DomContent>
                     <![CDATA[
-                        var gen = function (isHeader, content, colIndex, colCount) {
+                        var gen = function (isHeader, content, colIndex, colCount, height) {
                             var style = new CSS();
 
                             style.set("border", "solid " + $strokeStyle.w + "px " + $strokeColor.toRGBAString());
@@ -883,7 +902,10 @@
                             style.set("vertical-align", ["top", "middle", "bottom"][$textAlign.v]);
                             style.set("min-width", "0px");
                             style.set("min-height", "0px");
+                            style.set("height", height + "px");
                             style.set("overflow", "hidden");
+                            style.set("-moz-box-sizing", "border-box");
+                            style.set("box-sizing", "border-box");
 
                             var w = 0;
                             if (colIndex < colCount - 1) {
@@ -894,6 +916,8 @@
                                 } else {
                                     w = properties["box"].w;
                                 }
+                                
+                                w -= $strokeStyle.w;
                             }
 
                             w -= $strokeStyle.w + ($strokeStyle.w % 2);
@@ -997,6 +1021,9 @@
 
                             tableStyle.set("width",  ($box.w - $strokeStyle.w) + "px");
                             tableStyle.set("height",  ($box.h - $strokeStyle.w) + "px");
+                            
+                            tableStyle.set("border", "solid " + $strokeStyle.w + "px " + $strokeColor.toRGBAString());
+                            tableStyle.set("border-width", "0px " + $strokeStyle.w + "px " + $strokeStyle.w + "px 0px");
 
                             var table = {
                                 _name: "table",
@@ -1004,8 +1031,14 @@
                                 _children: [],
                                 style: tableStyle.toString()
                             };
+                            
+                            var height = 0;
+                            
+                            var contentHeight = $box.h - $strokeStyle.w;
 
                             if (a.length > 0) {
+                                height = Math.floor(contentHeight / a.length);
+                                
                                 headers = a[0];
 
                                 var tr = {
@@ -1014,10 +1047,15 @@
                                     _children: []
                                 };
                                 if ($fixedHeaderHeight.value) {
-                                    tr.style = new CSS();
-                                    tr.style.set("height", $headerHeight.y + "px");
+                                    if (a.length > 1) {
+                                        height = Math.floor((contentHeight - $headerHeight.y) / (a.length - 1));
+                                    }
                                 }
-
+                                var headerHeight = contentHeight - (a.length - 1) * height;
+                                
+                                tr.style = new CSS();
+                                tr.style.set("height", headerHeight + "px");
+                                tr.style.set("min-height", "0px");
 
                                 table._children.push({
                                     _name: "thead",
@@ -1027,7 +1065,7 @@
 
                                 for (var i = 0; i < cols; i ++) {
                                     var header = i < headers.length ? headers[i] : "";
-                                    tr._children.push(gen(true, header, i, cols));
+                                    tr._children.push(gen(true, header, i, cols, headerHeight));
                                 }
                             }
                             if (a.length > 1) {
@@ -1044,12 +1082,15 @@
                                         _uri: "http://www.w3.org/1999/xhtml",
                                         _children: []
                                     };
+                                    tr.style = new CSS();
+                                    tr.style.set("height", height + "px");
+                                    tr.style.set("min-height", "0px");
 
                                     tbody._children.push(tr);
 
                                     for (var i = 0; i < cols; i ++) {
                                         var cell = i < cells.length ? cells[i] : "";
-                                        tr._children.push(gen(false, cell, i, cols));
+                                        tr._children.push(gen(false, cell, i, cols, height));
                                     }
                                 }
 

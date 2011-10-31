@@ -210,7 +210,12 @@
         <PropertyValue name="textContent" p:readonly="true"><![CDATA[**********]]></PropertyValue>
     </Shortcut>
 
-    <Shape id="Label" displayName="Label" icon="Icons/label.png">
+    <Shortcut displayName="Label" icon="Icons/label.png" to="Evolus.Common:PlainTextV2">
+        <PropertyValue name="label">Label</PropertyValue>
+        <PropertyValue name="textColor"><E>$$textColor</E></PropertyValue>
+        <PropertyValue name="textFont"><E>$$textFont</E></PropertyValue>
+    </Shortcut>
+    <Shape id="Label" system="true" displayName="Label" icon="Icons/label.png">
         <Properties>
             <PropertyGroup>
                 <Property name="box" displayName="Size" type="Dimension">80,20</Property>
