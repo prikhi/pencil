@@ -5,7 +5,7 @@
 #miniToolbar {
     border: solid 1px #ddd;
 
-    background-color: menu;
+    background-color: -moz-Dialog;
 
     visibility: hidden;
 
@@ -13,18 +13,16 @@
     -moz-box-shadow: 2px 2px 3px #999;
 
     cursor: move;
-
 }
 #miniToolbar toolbox {
-    padding: 1px;
-    background-color: menu;
+	background-color: -moz-Dialog;
 }
 #miniToolbar toolbox toolbar {
     border-bottom: none;
-
     padding-bottom: 1px;
 	-moz-appearance: none;
 	border: none;
+	background-color: -moz-Dialog;
 }
 #miniToolbar toolbox toolbar toolbarbutton {
 	min-width: 24px;

@@ -6,6 +6,7 @@
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil/skin/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/skin/font.css" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil-os/skin/icons.css" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil-os/skin/platform.css" type="text/css"?>
 <?xml-stylesheet href="chrome://pencil/skin/htmlForeignObject.css" type="text/css"?>
@@ -418,8 +419,8 @@
             <hbox>
                 <tabbox id="sideBox" width="300" persist="width" style="display:none;">
                     <tabs id="sideBoxTabs">
-                        <tab label="&tab.collections.label;"/>
-                        <tab label="&tab.my.stuffs.label;"/>
+                        <tab label="&tab.collections.label;" class="tabbrowser-tab"/>
+                        <tab label="&tab.my.stuffs.label;" class="tabbrowser-tab"/>
                     </tabs>
                     <tabpanels flex="1" id="sideBoxTabPanels">
                         <tabpanel id="tabCollectionPane">

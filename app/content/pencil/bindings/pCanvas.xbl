@@ -26,6 +26,7 @@
                 var box = document.createElementNS(PencilNamespaces.xul, "xul:box");
                 this.appendChild(box);
                 var box2 = document.createElementNS(PencilNamespaces.xul, "xul:box");
+                box2.setAttribute("focusable", true);
                 this.firstChild.appendChild(box2);
                 this.focusableBox = box2;
 
@@ -235,7 +236,6 @@
 
 
                 this.zoomTo(1);
-
             ]]>
             </constructor>
             <method name="getEventLocation">
@@ -1153,6 +1153,7 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
+                    if (OnScreenTextEditor.isEditing) return;
                     if (event.keyCode == event.DOM_VK_UP ||
                         event.keyCode == event.DOM_VK_DOWN ||
                         event.keyCode == event.DOM_VK_LEFT ||
@@ -1567,12 +1568,10 @@
             <method name="focus">
                 <body>
                 <![CDATA[
-                    //if (!Util.isMac()) {
-                        document.commandDispatcher.rewindFocus();
-                        //document.commandDispatcher.advanceFocus();
-                    //}
-                    document.getElementById("richTextEditorToolbar").focus();
-                    this.focusableBox.focus();
+                    //document.getElementById("richTextEditorToolbar").focus();
+                    //document.commandDispatcher.rewindFocus();
+                    //document.commandDispatcher.advanceFocus();
+                    this.focusableBox.focus("");
                 ]]>
                 </body>
             </method>
