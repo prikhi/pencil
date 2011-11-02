@@ -185,7 +185,7 @@
                     var h4 = document.createElementNS(PencilNamespaces.html, "h4");
                     div.appendChild(h4);
                     h4.appendChild(document.createTextNode(collection.displayName));
-                    
+
                     if (collection.description) {
                         var label = document.createElementNS(PencilNamespaces.xul, "label");
                         vboxx.appendChild(label);

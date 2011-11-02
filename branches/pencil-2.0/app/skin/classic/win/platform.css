@@ -1,15 +1,22 @@
-
-/*window[active="true"]:-moz-system-metric(windows-default-theme) {
-  background-color: #b9d1ea;
-}
-window:not([active="true"]):-moz-system-metric(windows-default-theme) {
-  background-color: #d7e4f2;
-}
-window:not(:-moz-system-metric(windows-default-theme)) {
-  background-color: -moz-Dialog;
-}*/
-
-window:-moz-system-metric(windows-compositor), toolbox, toolbar, statusbar {
+window:-moz-system-metric(windows-compositor), toolbar, toolbox, statusbar {
   background: transparent !important;
   -moz-appearance: -moz-win-glass;
+}
+
+tabs tab {
+  -moz-appearance: none;
+  background: -moz-linear-gradient(bottom, rgba(10%,10%,10%,.4) 1px, transparent 1px), -moz-linear-gradient(transparent, hsla(0,0%,45%,.1) 1px, hsla(0,0%,32%,.2) 80%, hsla(0,0%,0%,.2)),
+              -moz-linear-gradient(-moz-dialog, -moz-dialog);
+  background-origin: border-box;
+  background-position: 1px 2px;
+  background-size: -moz-calc(100% - 2px) -moz-calc(100% - 2px);
+  background-repeat: no-repeat;
+  margin: 0 1px 0 0;
+  padding: 2px 6px 4px;
+  -moz-border-image: url(chrome://pencil/skin/images/tab.png) 4 3 0 / 4px 3px 0 repeat stretch;
+  border-radius: 0;
+}
+tabs tab[selected="true"] {
+  background-image: -moz-linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.5) 50%),
+                    -moz-linear-gradient(-moz-dialog, -moz-dialog);
 }

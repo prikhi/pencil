@@ -38,7 +38,12 @@ pcollectionpane vbox[aid="filterPanel"] {
 	overflow: auto;
     background-color: threedface;
     border: solid 1px;
-    border-color: threedshadow;
+
+	border-radius: 3.5px;
+	border-bottom-left-radius:  0;
+	border-bottom-right-radius:  0;
+
+	border-color: threedshadow;
 	border-bottom: none;
 	padding: 0;
 	margin: 0;
@@ -53,6 +58,10 @@ pcollectionpane vbox[aid="contentBox"] {
     overflow: auto;
     border: solid 1px;
     border-color: threedshadow;
+
+	border-radius: 3.5px;
+	border-top-left-radius:  0;
+	border-top-right-radius:  0;
 }
 pcollectionpane .Collection {
     padding: 0px;
@@ -142,7 +151,7 @@ pcollectionpane .Collection .Content > div {
     width: 55px;
 
     margin: .6em;
-    
+
     vertical-align: top;
 	font-size: .85em;
 }

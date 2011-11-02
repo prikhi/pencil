@@ -10,6 +10,10 @@ const PR_TRUNCATE    = 0x20;
 const PR_SYNC        = 0x40;
 const PR_EXCL        = 0x80;
 
+Components.utils.import("resource://gre/modules/NetUtil.jsm");
+Components.utils.import("resource://gre/modules/FileUtils.jsm");
+Components.utils.import("resource://gre/modules/Services.jsm");
+
 /* class */ var Dom = {}
 
 /* static int */ Dom.workOn = function (xpath, node, worker) {
@@ -550,15 +554,13 @@ Svg.getHeight = function (dom) {
 
 var Local = {};
 Local.getInstalledFonts = function () {
-
-
     var localFonts;
     var enumerator = Components.classes["@mozilla.org/gfx/fontenumerator;1"]
                             .getService(Components.interfaces.nsIFontEnumerator);
     var localFontCount = { value: 0 }
     localFonts = enumerator.EnumerateAllFonts(localFontCount);
 
-    // google webfonts
+    /*/ google webfonts
     localFonts.push("Cantarell");
     localFonts.push("Cardo");
     localFonts.push("Crimson Text");
@@ -576,21 +578,110 @@ Local.getInstalledFonts = function () {
     localFonts.push("Tangerine");
     localFonts.push("Vollkorn");
     localFonts.push("Yanone Kaffeesatz");
-    localFonts.push("IM Fell English");
+    localFonts.push("IM Fell English");*/
 
-    for (var i = 0; i < localFonts.length - 1; i++) {
-        for (var j = i + 1; j < localFonts.length; j++) {
-            if (localFonts[j] < localFonts[i]) {
-                var k = localFonts[j];
-                localFonts[j] = localFonts[i];
-                localFonts[i] = k;
+    Local.cachedLocalFonts = localFonts;
+    Local.sortFont();
+
+    return localFonts;
+};
+Local.sortFont = function() {
+    for (var i = 0; i < Local.cachedLocalFonts.length - 1; i++) {
+        for (var j = i + 1; j < Local.cachedLocalFonts.length; j++) {
+            if (Local.cachedLocalFonts[j] < Local.cachedLocalFonts[i]) {
+                var k = Local.cachedLocalFonts[j];
+                Local.cachedLocalFonts[j] = Local.cachedLocalFonts[i];
+                Local.cachedLocalFonts[i] = k;
             }
         }
     }
+};
+Local.chromeToPath = function(aPath) {
+    if (!aPath || !(/^chrome:/.test(aPath))) {
+        return; //not a chrome url
+    }
 
-    Local.cachedLocalFonts = localFonts;
+    var rv;
+    var ios = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces["nsIIOService"]);
+    var uri = ios.newURI(aPath, "UTF-8", null);
+    var cr = Components.classes['@mozilla.org/chrome/chrome-registry;1'].getService(Components.interfaces["nsIChromeRegistry"]);
+    rv = cr.convertChromeURL(uri).spec;
 
-    return localFonts;
+    if (/^file:/.test(rv)) {
+        rv = this.urlToPath(rv);
+    } else {
+        rv = this.urlToPath("file://"+rv);
+    }
+    return rv;
+};
+
+Local.urlToPath = function(aPath) {
+    if (!aPath || !/^file:/.test(aPath)) {
+        return ;
+    }
+
+    var rv;
+    var ph = Components.classes["@mozilla.org/network/protocol;1?name=file"]
+        .createInstance(Components.interfaces.nsIFileProtocolHandler);
+    rv = ph.getFileFromURLSpec(aPath).path;
+    return rv;
+};
+
+Local.copyToChrome = function(src, dest) {
+    var ios = Components.classes["@mozilla.org/network/io-service;1"].
+              getService(Components.interfaces.nsIIOService);
+    var url = ios.newURI(src, null, null);
+
+    if (!url || !url.schemeIs("file")) throw "Expected a file URL.";
+
+    var pngFile = url.QueryInterface(Components.interfaces.nsIFileURL).file;
+
+    var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].
+                  createInstance(Components.interfaces.nsIFileInputStream);
+    istream.init(pngFile, -1, -1, false);
+
+    var bstream = Components.classes["@mozilla.org/binaryinputstream;1"].
+                  createInstance(Components.interfaces.nsIBinaryInputStream);
+    bstream.setInputStream(istream);
+
+    var bytes = bstream.readBytes(bstream.available());
+
+    var aFile = Components.classes["@mozilla.org/file/local;1"].
+                createInstance(Components.interfaces.nsILocalFile);
+
+    aFile.initWithPath(Local.chromeToPath(dest));
+    aFile.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0600);
+
+    var stream = Components.classes["@mozilla.org/network/safe-file-output-stream;1"].
+                 createInstance(Components.interfaces.nsIFileOutputStream);
+    stream.init(aFile, 0x04 | 0x08 | 0x20, 0600, 0); // readwrite, create, truncate
+
+    stream.write(bytes, bytes.length);
+    if (stream instanceof Components.interfaces.nsISafeOutputStream) {
+        stream.finish();
+    } else {
+        stream.close();
+    }
+};
+Local.installWebFont = function(name, url) {
+    var filename = Util.newUUID() + ".woff";
+    var index = url.lastIndexOf("/");
+    if (index != -1) {
+        filename = url.substring(index);
+    }
+
+    var fontChromeUrl = "chrome://pencil/content/font/" + filename;
+    Local.copyToChrome(url, fontChromeUrl);
+
+    var fontCssUrl = Local.chromeToPath("chrome://pencil/skin/font.css");
+    var fontFile = FileIO.open(fontCssUrl);
+    var fontFace = "@font-face{font-family:" + name + ";src:url('" + fontChromeUrl + "')}\r\n";
+
+    var content = FileIO.read(fontFile);
+    if (content.indexOf(fontFace) == -1) {
+        var rv = FileIO.write(fontFile, fontFace, 'a');
+        Services.obs.notifyObservers(null, "startupcache-invalidate", null)
+    }
 };
 Local.isFontExisting = function (font) {
     if (!Local.cachedLocalFonts) {

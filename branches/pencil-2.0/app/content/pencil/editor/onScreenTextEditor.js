@@ -170,6 +170,7 @@ OnScreenTextEditor.prototype.commitChange = function (event) {
     }
 };
 OnScreenTextEditor.prototype.cancelChange = function () {
+    if (!this.textEditingInfo) return;
     this.svgElement.style.visibility = "hidden";
     this.textEditingInfo.target.style.visibility = this._cachedVisibility;
     this.textEditingInfo = null;

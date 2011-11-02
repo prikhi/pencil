@@ -45,6 +45,8 @@ pcanvas > box > box {
     -moz-user-input: enabled;
     -moz-user-modify: read-write;
     */
+
+	-moz-user-focus: normal;
     border: solid 1px #666;
     background-color: #fff;
 }

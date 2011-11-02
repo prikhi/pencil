@@ -174,7 +174,40 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 #pencil-menu {
     font-weight: bold;
     list-style-image: url(images/pencil-22.png);
+
+	-moz-appearance: none;
+	background: -moz-linear-gradient(rgb(247,182,82), rgb(215,98,10) 95%);
+	background-clip: padding-box;
+	border-radius: 4px;
+	border: 1px solid rgba(83,42,6,.9);
+	/*border-top: none;*/
+	box-shadow: 0 1px 0 rgba(255,255,255,.25) inset,
+			  0 0 0 1px rgba(255,255,255,.25) inset;
+	color: white;
+	text-shadow: 0 0 1px rgba(0,0,0,.7),
+			   0 1px 1.5px rgba(0,0,0,.5);
+	font-weight: bold;
+	padding: 0 1.5em .05em;
+	margin: 0 0 2px;
 }
+#pencil-menu:hover:not(:active):not([open]) {
+  background-image: -moz-radial-gradient(center bottom, farthest-side, rgba(252,240,89,.5) 10%, rgba(252,240,89,0) 70%),
+                    -moz-radial-gradient(center bottom, farthest-side, rgb(236,133,0), rgba(255,229,172,0)),
+                    -moz-linear-gradient(rgb(246,170,69), rgb(209,74,0) 95%);
+  border-color: rgba(83,42,6,.9);
+  box-shadow: 0 1px 0 rgba(255,255,255,.1) inset,
+              0 0 1.5px 1px rgba(250,234,169,.7) inset,
+              0 -1px 0 rgba(250,234,169,.5) inset;
+}
+
+#pencil-menu:hover:active,
+#pencil-menu[open] {
+  background-image: -moz-linear-gradient(rgb(246,170,69), rgb(209,74,0) 95%);
+  /*border-radius: 0;*/
+  box-shadow: 0 2px 3px rgba(0,0,0,.4) inset,
+              0 1px 1px rgba(0,0,0,.2) inset;
+}
+
 #toolbar-menubar {
     -moz-appearance: none;
     padding: 0px !important;
@@ -224,10 +257,20 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 #toolbar-menubar button panel > hbox.PanelContent {
     background: threedface;
     padding: 3px;
-    border: outset 1px;
+    /*border: outset 1px;*/
 }
 
 #pencilPropertyEditorDialog {
 	min-width: 470px;
 	width: 470xp;
+}
+
+#toolbar-locsize-panel, #geometryToolbar {
+}
+
+#mainBox {
+	background-color: -moz-Dialog;
+	padding: 5px;
+
+	border-radius: 1px;
 }

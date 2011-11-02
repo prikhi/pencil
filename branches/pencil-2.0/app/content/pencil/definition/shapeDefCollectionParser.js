@@ -168,7 +168,6 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
     var parser = this;
 
-
     Dom.workOn("./p:Shape | ./p:Shortcut", shapeDefsNode, function (node) {
         if (node.localName == "Shape") {
             collection.addDefinition(parser.parseShapeDef(node, collection));
@@ -180,6 +179,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
     return collection;
 };
+
 /* private void */ ShapeDefCollectionParser.prototype.parseCollectionProperties = function (shapeDefsNode, collection) {
     Dom.workOn("./p:Properties/p:PropertyGroup", shapeDefsNode, function (propGroupNode) {
         var group = new PropertyGroup;
@@ -508,7 +508,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
 
         shortcut.propertyMap[name] = spec;
     });
-    
+
     shortcut.propertyMap._collection = collection;
 
     return shortcut;
