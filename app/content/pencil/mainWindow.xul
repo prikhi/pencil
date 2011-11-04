@@ -351,6 +351,7 @@
                             <menu id="help-menu" label="&menu.help.label;" accesskey="&menu.help.accesskey;">
                                 <menupopup>
                                     <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/aboutDialog.xul', 'pencilAboutDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
+                                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/print.xul', 'pencilPrintDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
                                 </menupopup>
                             </menu>
                         </menupopup>
