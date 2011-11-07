@@ -841,15 +841,19 @@ Controller.prototype.exportDocument = function () {
 
         //Select target dir
         var pageIndex = -1;
-        var destFile = Components.classes["@mozilla.org/file/local;1"]
-                             .createInstance(Components.interfaces.nsILocalFile);
-        destFile.initWithPath(data.selection.targetPath);
-
-        if (exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_DIRECTORY) {
-            if (!destFile.exists()) {
-                destFile.create(destFile.DIRECTORY_TYPE, 0777);
+        var destFile = null;
+        
+        if (data.selection.targetPath) {
+            destFile = Components.classes["@mozilla.org/file/local;1"]
+                                 .createInstance(Components.interfaces.nsILocalFile);
+            destFile.initWithPath(data.selection.targetPath);
+            if (exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_DIRECTORY) {
+                if (!destFile.exists()) {
+                    destFile.create(destFile.DIRECTORY_TYPE, 0777);
+                }
             }
         }
+
         
         var pagesDir = null;
         if (exporter.requireRasterizedData()) {
@@ -932,8 +936,11 @@ Controller.prototype.exportDocument = function () {
             starter = function (listener) {
                 thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
                     listener.onTaskDone();
-                    Util.showStatusBarInfo("Document has been exported, location: " + destFile.path, true);
-                    debug("Document has been exported, location: " + destFile.path);
+                    if (destFile) {
+                        Util.showStatusBarInfo("Document has been exported, location: " + destFile.path, true);
+                    } else {
+                        Util.showStatusBarInfo("Document has been exported.", true);
+                    }
                 });
             };
         }

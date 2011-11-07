@@ -4,6 +4,7 @@ function BaseExporter() {
 BaseExporter.OUTPUT_TYPE_DIRECTORY = "dir";
 BaseExporter.OUTPUT_TYPE_FILE = "file";
 BaseExporter.OUTPUT_TYPE_NETWORK = "net";
+BaseExporter.OUTPUT_TYPE_NONE = "none";
 
 BaseExporter.prototype.requireRasterizedData = function () {
     return false;
