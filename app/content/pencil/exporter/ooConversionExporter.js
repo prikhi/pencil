@@ -104,5 +104,5 @@ OOConversionExporter.prototype.getOutputFileExtensions = function () {
     ];
 };
 
-Pencil.registerDocumentExporter(new OOConversionExporter(Util.getMessage("pdf.document"), "PDFExporter", "application/pdf", Util.getMessage("filepicker.adobe.pdf.files.pdf"), "*.pdf"));
-Pencil.registerDocumentExporter(new OOConversionExporter(Util.getMessage("microsoft.word.document.doc.file"), "DOCExporter", "application/msword", Util.getMessage("filepicker.microsoft.word.97.xp.doc"), "*.doc"));
+//Pencil.registerDocumentExporter(new OOConversionExporter(Util.getMessage("pdf.document"), "PDFExporter", "application/pdf", Util.getMessage("filepicker.adobe.pdf.files.pdf"), "*.pdf"));
+//Pencil.registerDocumentExporter(new OOConversionExporter(Util.getMessage("microsoft.word.document.doc.file"), "DOCExporter", "application/msword", Util.getMessage("filepicker.microsoft.word.97.xp.doc"), "*.doc"));

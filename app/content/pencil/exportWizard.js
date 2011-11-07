@@ -17,6 +17,8 @@ ExportWizard.setup = function () {
     ExportWizard.templateDescription = document.getElementById("templateDescription");
     ExportWizard.copyBGLinkCheckbox = document.getElementById("copyBGLinkCheckbox");
     ExportWizard.targetFilePathText = document.getElementById("targetFilePathText");
+    ExportWizard.browseButton = document.getElementById("browseButton");
+    
 
 
     // Setup exporters
@@ -157,6 +159,15 @@ ExportWizard.onExporterChanged = function () {
     } else {
         ExportWizard.targetFilePathText.value = "";
     }
+    
+    if (exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_NONE) {
+        ExportWizard.targetFilePathText.disabled = true;
+        ExportWizard.targetFilePathText.value = "";
+        ExportWizard.browseButton.disabled = true;
+    } else {
+        ExportWizard.targetFilePathText.disabled = false;
+        ExportWizard.browseButton.disabled = false;
+    }
 
     //type of output
 };
@@ -223,21 +234,25 @@ ExportWizard.validatePageSelection = function () {
 
 };
 ExportWizard.validateOptions = function () {
-    if (!ExportWizard.targetFilePathText.value) {
-        Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.the.target.directory"));
-        ExportWizard.targetFilePathText.focus();
-        return false;
-    }
+    var exporter = ExportWizard.getSelectedExporter();
+    
+    if (exporter.getOutputType() != BaseExporter.OUTPUT_TYPE_NONE) {
+        if (!ExportWizard.targetFilePathText.value) {
+            Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.the.target.directory"));
+            ExportWizard.targetFilePathText.focus();
+            return false;
+        }
 
-    var file = Components.classes["@mozilla.org/file/local;1"]
-                         .createInstance(Components.interfaces.nsILocalFile);
-    file.initWithPath(ExportWizard.targetFilePathText.value);
+        var file = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
+        file.initWithPath(ExportWizard.targetFilePathText.value);
 
-    if (!file.parent.exists()) {
-        Util.error(Util.getMessage("error.title"), Util.getMessage("the.specified.path.does.not.exists"));
-        ExportWizard.targetFilePathText.focus();
+        if (!file.parent.exists()) {
+            Util.error(Util.getMessage("error.title"), Util.getMessage("the.specified.path.does.not.exists"));
+            ExportWizard.targetFilePathText.focus();
 
-        return false;
+            return false;
+        }
     }
 
     return true;

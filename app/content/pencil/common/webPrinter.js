@@ -12,7 +12,7 @@ function WebPrinter() {
     var box = document.createElement("box");
     box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
 
-    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; visibility: hidden;");
+    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; visibilityx: hidden;");
     iframe.setAttribute("src", "blank.html");
 
     box.appendChild(iframe);
@@ -42,7 +42,7 @@ function WebPrinter() {
                     var f = thiz.nextHandler;
                     thiz.nextHandler = null;
                     f();
-                }, 100);
+                }, 1000);
 
                 /*if (!event.originalTarget._isRasterizeFrame) return;
                 if (!thiz.nextHandler) return;
@@ -74,30 +74,38 @@ WebPrinter.prototype._printWindow = function (settings, callback) {
     var printSettings = Cc["@mozilla.org/gfx/printsettings-service;1"]
                                                             .getService(Ci.nsIPrintSettingsService)
                                                             .newPrintSettings;
-    printSettings.printSilent = true;
-    printSettings.showPrintProgress = false;
+                                                            
     printSettings.printBGImages = true;
     printSettings.printBGColors = true;
-    printSettings.printToFile = true;
-    printSettings.toFileName = settings.filePath;
+    printSettings.shrinkToFit = true;
     printSettings.printFrameType = Ci.nsIPrintSettings.kFramesAsIs;
-    printSettings.outputFormat = Ci.nsIPrintSettings.kOutputFormatPDF;
-
+    
+    if (settings.filePath) {
+        printSettings.printSilent = true;
+        printSettings.showPrintProgress = false;
+        printSettings.printToFile = true;
+        printSettings.toFileName = settings.filePath;
+        printSettings.outputFormat = Ci.nsIPrintSettings.kOutputFormatPDF;
+    } else {
+        printSettings.printSilent = false;
+        printSettings.showPrintProgress = true;
+        printSettings.printToFile = false;
+    }
+    
     printSettings.footerStrCenter = "";
     printSettings.footerStrLeft     = "";
     printSettings.footerStrRight    = "";
     printSettings.headerStrCenter = "";
     printSettings.headerStrLeft     = "";
     printSettings.headerStrRight    = "";
-    printSettings.marginTop = 0;
-    printSettings.marginRight = 0;
-    printSettings.marginBottom = 0;
-    printSettings.marginLeft = 0;
+    printSettings.marginTop = 0.25;
+    printSettings.marginRight = 0.25;
+    printSettings.marginBottom = 0.25;
+    printSettings.marginLeft = 0.25;
     printSettings.unwriteableMarginTop = 0;
     printSettings.unwriteableMarginRight = 0;
     printSettings.unwriteableMarginBottom = 0;
     printSettings.unwriteableMarginLeft = 0;
-    printSettings.printBGColors = true;
     printSettings.title = "Pencil printing";
     var listener = {
         onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {

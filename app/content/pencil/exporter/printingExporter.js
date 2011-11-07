@@ -1,6 +1,7 @@
-function PrintingExporter() {
-    this.name = "Export to printers";
-    this.id = "PrintingExporter";
+function PrintingExporter(pdfOutput) {
+    this.pdfOutput = pdfOutput;
+    this.name = pdfOutput ? "Export to PDF" : "Send to printer";
+    this.id = pdfOutput ? "PDFExporter" : "PrintingExporter";
     this.xsltProcessor = new XSLTProcessor();
     this.xsltDOM = null;
 }
@@ -67,15 +68,18 @@ PrintingExporter.prototype.export = function (doc, options, targetFile, xmlFile,
     var url = ios.newFileURI(htmlFile);
     
     debug(url.spec);
-    debug(targetFile.path);
     
-    Pencil.printer.printUrl(url.spec, {filePath: targetFile.path}, callback);
+    if (targetFile && targetFile.exists()) { 
+        targetFile.remove(true);
+    }
+    
+    Pencil.printer.printUrl(url.spec, {filePath: targetFile ? targetFile.path : null}, callback);
 };
 PrintingExporter.prototype.getWarnings = function () {
     return null;
 };
 PrintingExporter.prototype.getOutputType = function () {
-    return BaseExporter.OUTPUT_TYPE_FILE;
+    return this.pdfOutput ? BaseExporter.OUTPUT_TYPE_FILE : BaseExporter.OUTPUT_TYPE_NONE;
 };
 PrintingExporter.prototype.getOutputFileExtensions = function () {
     return [
@@ -85,4 +89,5 @@ PrintingExporter.prototype.getOutputFileExtensions = function () {
         }
     ];
 };
-Pencil.registerDocumentExporter(new PrintingExporter());
+Pencil.registerDocumentExporter(new PrintingExporter(true));
+Pencil.registerDocumentExporter(new PrintingExporter(false));
