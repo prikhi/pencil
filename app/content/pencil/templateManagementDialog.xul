@@ -22,9 +22,9 @@
         ondialogextra1="TemplateManagementDialog.uninstallSelectedTemplates();"
         ondialogcancel="return true;">
 
+    <script src="chrome://pencil/content/common/pencilNamespaces.js"></script>
     <script src="chrome://pencil/content/common/util.js"></script>
     <script src="chrome://pencil/content/common/io.js"></script>
-    <script src="chrome://pencil/content/common/pencilNamespaces.js"></script>
     <script src="chrome://pencil/content/templateManagementDialog.js"></script>
 
     <hbox align="center">
@@ -32,6 +32,7 @@
         <menulist flex="1" value="HTML" id="templateTypeSelector" oncommand="TemplateManagementDialog.loadTemplatesForSelectedType();">
             <menupopup>
                 <menuitem label="&menu.exporting.to.html.label;" value="HTML"/>
+                <menuitem label="&menu.exporting.to.print.label;" value="Print"/>
                 <menuitem label="&menu.exporting.to.text.label;" value="ODT"/>
             </menupopup>
         </menulist>

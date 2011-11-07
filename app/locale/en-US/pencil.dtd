@@ -175,7 +175,8 @@
 <!ENTITY export.template.management.title        "Export Template Management">
 <!ENTITY label.templates.for.value               "Templates for:">
 <!ENTITY menu.exporting.to.html.label            "Exporting to HTML Documents">
-<!ENTITY menu.exporting.to.text.label            "Exporting to Text Documents (ODT, DOC, PDF...)">
+<!ENTITY menu.exporting.to.print.label           "Printing and exporting to PDF">
+<!ENTITY menu.exporting.to.text.label            "Exporting to Text Documents (*.odt)">
 <!ENTITY treecol.author.label                    "Author">
 <!ENTITY treecol.information.label               "Information">
 <!ENTITY treecol.template.label                  "Template">

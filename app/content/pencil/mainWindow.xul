@@ -87,7 +87,8 @@
     <script src="chrome://pencil/content/common/externalEditorSupports.js"/>
 
     <script src="chrome://pencil/content/common/svgRasterizer.js"/>
-
+    <script src="chrome://pencil/content/common/webPrinter.js"/>
+    
     <script src="chrome://pencil/content/target/shape.js"/>
     <script src="chrome://pencil/content/target/targetSet.js"/>
     <script src="chrome://pencil/content/target/group.js"/>
@@ -116,6 +117,8 @@
     <script src="chrome://pencil/content/exporter/baseExporter.js"/>
     <script src="chrome://pencil/content/exporter/baseRasterizedExporter.js"/>
     <script src="chrome://pencil/content/exporter/webPageExporter.js"/>
+    <script src="chrome://pencil/content/exporter/printingExporter.js"/>
+    <script src="chrome://pencil/content/exporter/svgExporter.js"/>
     <script src="chrome://pencil/content/exporter/odtExporter.js"/>
     <script src="chrome://pencil/content/exporter/ooConversionExporter.js"/>
 
