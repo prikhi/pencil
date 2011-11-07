@@ -24,7 +24,16 @@ function test() {
     printSettings.headerStrCenter = "";
     printSettings.headerStrLeft     = "";
     printSettings.headerStrRight    = "";
-
+    printSettings.marginTop = 0;
+    printSettings.marginRight = 0;
+    printSettings.marginBottom = 0;
+    printSettings.marginLeft = 0;
+    printSettings.unwriteableMarginTop = 0;
+    printSettings.unwriteableMarginRight = 0;
+    printSettings.unwriteableMarginBottom = 0;
+    printSettings.unwriteableMarginLeft = 0;
+    printSettings.printBGColors = true;
+    printSettings.title = "Pencil printing";
     var listener = {
         onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
             if (aStateFlags & Ci.nsIWebProgressListener.STATE_STOP) {

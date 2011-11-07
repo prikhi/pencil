@@ -2,8 +2,9 @@ var ExportTemplateManager = {}
 ExportTemplateManager.templates = {};
 ExportTemplateManager.templateMap = {};
 
-ExportTemplateManager.SUPPORTED_TYPES = ["HTML", "ODT"];
+ExportTemplateManager.SUPPORTED_TYPES = ["HTML", "Print", "ODT"];
 ExportTemplateManager.SUPPORTED_TYPES_NAMES = {
+    "Print": Util.getMessage("templates.for.printing"),
     "HTML": Util.getMessage("templates.for.exporting.to.html.documents"),
     "ODT": Util.getMessage("templates.for.exporting.to.text.documents")
 };
@@ -51,12 +52,7 @@ ExportTemplateManager.getUserTemplateDirectory = function () {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
                      .getService(Components.interfaces.nsIProperties);
 
-    var templateDir = null;
-    if (Util.isXulrunner()) {
-        templateDir = properties.get("resource:app", Components.interfaces.nsIFile);
-    } else {
-        templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
-    }
+    var templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
 
     templateDir.append("Pencil");
     templateDir.append("Templates");

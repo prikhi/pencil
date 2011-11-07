@@ -850,11 +850,14 @@ Controller.prototype.exportDocument = function () {
                 destFile.create(destFile.DIRECTORY_TYPE, 0777);
             }
         }
+        
+        var pagesDir = null;
+        if (exporter.requireRasterizedData()) {
+            pagesDir = exporter.getRasterizedPageDestination(destFile);
 
-        var pagesDir = exporter.getRasterizedPageDestination(destFile);
-
-        if (!pagesDir.exists()) {
-            pagesDir.create(pagesDir.DIRECTORY_TYPE, 0777);
+            if (!pagesDir.exists()) {
+                pagesDir.create(pagesDir.DIRECTORY_TYPE, 0777);
+            }
         }
 
         //populating friendly-id. WARN: side-effect!
@@ -880,49 +883,61 @@ Controller.prototype.exportDocument = function () {
         }
 
         var thiz = this;
-        var starter = function (listener) {
-            var pageExtraInfos = {};
-            var rasterizeNext = function () {
-                try {
-                    pageIndex ++;
-                    if (pageIndex >= pages.length) {
-                        thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
-                            listener.onTaskDone();
-                            Util.showStatusBarInfo(Util.getMessage("document.has.been.exported", destFile.path), true);
-                            debug("Document has been exported, location: " + destFile.path);
-                        });
-                        return;
+        var starter = null;
+        
+        var pageExtraInfos = {};
+        if (exporter.requireRasterizedData()) {
+            starter = function (listener) {
+                var rasterizeNext = function () {
+                    try {
+                        pageIndex ++;
+                        if (pageIndex >= pages.length) {
+                            thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
+                                listener.onTaskDone();
+                                Util.showStatusBarInfo(Util.getMessage("document.has.been.exported", destFile.path), true);
+                                debug("Document has been exported, location: " + destFile.path);
+                            });
+                            return;
+                        }
+                        var page = pages[pageIndex];
+
+                        //signal progress
+                        var task = Util.getMessage("exporting.page.no.prefix", page.properties.name);
+                        listener.onProgressUpdated(task, pageIndex + 1, pages.length);
+
+                        var friendlyId = page.properties.fid;
+
+                        var file = pagesDir.clone();
+                        var fileName = friendlyId + ".png";
+                        file.append(fileName);
+
+                        var pagePath = file.path;
+                        debug("File path: " + pagePath);
+
+                        var pageExtraInfo = {
+                            rasterizedPath: pagePath
+                        };
+                        pageExtraInfos[page.properties.id] = pageExtraInfo;
+
+                        thiz._rasterizePage(page, pagePath, function() {
+                            window.setTimeout(rasterizeNext, 100);
+                        }, new LinkingGeometryPreprocessor(pageExtraInfo));
+                    } catch (e2) {
+                        Console.dumpError(e2, "stdout");
                     }
-                    var page = pages[pageIndex];
-
-                    //signal progress
-                    var task = Util.getMessage("exporting.page.no.prefix", page.properties.name);
-                    listener.onProgressUpdated(task, pageIndex + 1, pages.length);
-
-                    var friendlyId = page.properties.fid;
-
-                    var file = pagesDir.clone();
-                    var fileName = friendlyId + ".png";
-                    file.append(fileName);
-
-                    var pagePath = file.path;
-                    debug("File path: " + pagePath);
-
-                    var pageExtraInfo = {
-                        rasterizedPath: pagePath
-                    };
-                    pageExtraInfos[page.properties.id] = pageExtraInfo;
-
-                    thiz._rasterizePage(page, pagePath, function() {
-                        window.setTimeout(rasterizeNext, 100);
-                    }, new LinkingGeometryPreprocessor(pageExtraInfo));
-                } catch (e2) {
-                    Console.dumpError(e2, "stdout");
-                }
+                };
+                rasterizeNext();
             };
-            rasterizeNext();
+        } else {
+            starter = function (listener) {
+                thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
+                    listener.onTaskDone();
+                    Util.showStatusBarInfo("Document has been exported, location: " + destFile.path, true);
+                    debug("Document has been exported, location: " + destFile.path);
+                });
+            };
         }
-
+        
         //take a shower, doit together!!!
         Util.beginProgressJob(Util.getMessage("export.document.to.html"), starter);
     } catch (e) {
@@ -984,6 +999,8 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
     return validLinks;
 };
 Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, destFile, exportSelection, callback) {
+    var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
+    
     var dom = document.implementation.createDocument(PencilNamespaces.p, "Document", null);
 
     //properties
@@ -1026,7 +1043,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
 
     for (i in pages) {
         var page = pages[i];
-        var pageNode = page.toNode(dom, "no content");
+        var pageNode = page.toNode(dom, exporter.requireRasterizedData());
 
         //ugly walkarround for Gecko d-o-e bug (https://bugzilla.mozilla.org/show_bug.cgi?id=98168)
         //we have to reparse the provided notes as XHTML and append it directly to the dom

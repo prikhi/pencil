@@ -112,6 +112,7 @@ Pencil.boot = function (event) {
 
         Pencil.controller = new Controller(win);
         Pencil.rasterizer = new Rasterizer("image/png");
+        Pencil.printer = new WebPrinter();
 
         CollectionManager.loadStencils();
         ExportTemplateManager.loadTemplates();
