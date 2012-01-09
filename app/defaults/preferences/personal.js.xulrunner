@@ -1,0 +1,1 @@
+pref("toolkit.defaultChromeURI", "chrome://pencil/content/mainWindow.xul");
