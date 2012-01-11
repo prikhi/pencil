@@ -55,7 +55,7 @@
                 </menulist>
                 <toolbarseparator />
                 <button label="&toolbar.location.size.label;" type="panel" tooltiptext="&toolbar.location.size.tooltip;">
-                    <panel id="toolbar-locsize-panel" orient="horizontal">
+                    <panel id="toolbar-locsize-panel" orient="horizontal" backdrag="true">
                         <hbox align="center" id="geometryToolbar" class="PanelContent">
                             <hbox>
                                 <textbox type="number" min="-5000" max="5000" size="2" increment="1" id="shapeXTextBox"/>

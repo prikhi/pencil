@@ -12,8 +12,8 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>1.5</em:minVersion>
-        <em:maxVersion>8.0</em:maxVersion>
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>11.0</em:maxVersion>
       </Description>
     </em:targetApplication>
 
@@ -22,7 +22,7 @@
     <em:creator>Duong Thanh An</em:creator>
     <em:contributor>Maxime Delorme</em:contributor>
     <em:contributor>Frederic Vandaele</em:contributor>
-    <em:contributor>Kal (brainiac.kalel@gmail.com)</em:contributor>
+    <em:contributor>Brainiac Kalel</em:contributor>
     <em:iconURL>chrome://pencil/content/pencil.png</em:iconURL>
     <em:homepageURL>http://pencil.evolus.vn/</em:homepageURL>
     <em:updateURL>http://pencil.evolus.vn/update.rdf</em:updateURL>

@@ -110,7 +110,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
             <rect x="0" y="0" style="fill: none; stroke: none;" id="bgRect"/>
             <text id="text" y="9.0077095" x="17.999992" text-anchor="start" style="dominant-baseline: hanging;" xml:space="preserve">checkbutton2</text>
         </p:Content>
-    </Shape>    
+    </Shape>
     <Shape id="RichTextBox" system="true" displayName="Rich Text" icon="Icons/rich-text.png">
         <Properties>
             <PropertyGroup>
@@ -164,7 +164,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
             </foreignObject>
         </p:Content>
     </Shape>
-    
+
     <Shape id="RichTextBoxV2" displayName="Rich Text" icon="Icons/rich-text.png">
         <Properties>
             <PropertyGroup>
@@ -244,7 +244,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                 </div>
             </foreignObject>
         </p:Content>
-    </Shape>    
+    </Shape>
     <Shape id="RoundedRect" displayName="Rectangle" icon="Icons/rectangle.png">
         <Properties>
 

@@ -47,7 +47,7 @@ TargetSetXferHelper.prototype.handleData = function (data, length) {
         for (var t in this.canvas.currentController.targets) {
             this.canvas.snappingHelper.updateSnappingGuide(this.canvas.currentController.targets[t]);
         }
-    }, this, Util.getMessage("action.create.shape", this.canvas.currentController.getName()));
+    }, this, Util.getMessage("action.create.shape", "Paste Shapes"));
 
     this.canvas.invalidateEditors();
 

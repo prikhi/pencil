@@ -1,11 +1,11 @@
 #!/bin/sh
 export NAME='Pencil'
 export VERSION='1.3'
-export BUILD='2'
+export BUILD='3'
 export AUTHOR='Duong Thanh An (an.duong@evolus.vn) and Contributors'
 export XPI_NAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
 export MIN_VERSION='1.9.8'
-export MAX_VERSION='10.*'
+export MAX_VERSION='11.*'
 export UPDATE_URL="http://pencil.evolus.vn"
 export XULRUNNER_XUL="*"
 
@@ -25,6 +25,8 @@ prep() {
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/pencil.js
 
     rm ./Outputs/Pencil/defaults/preferences/personal.js
+    rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
+    rm ./Outputs/Pencil/defaults/preferences/debug.js
 }
 
 xpi() {
