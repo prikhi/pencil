@@ -76,12 +76,7 @@ PrivateCollectionManager.getPrivateCollectionDirectory = function () {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
                      .getService(Components.interfaces.nsIProperties);
 
-    var stencilDir = null;
-    if (Util.isXulrunner()) {
-        stencilDir = properties.get("resource:app", Components.interfaces.nsIFile);
-    } else {
-        stencilDir = properties.get("ProfD", Components.interfaces.nsIFile);
-    }
+    var stencilDir = properties.get("ProfD", Components.interfaces.nsIFile);
 
     stencilDir.append("Pencil");
     stencilDir.append("PrivateCollection");

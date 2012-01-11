@@ -17,10 +17,10 @@ PencilNamespaces["cc"] = "http://creativecommons.org/ns#";
 PencilNamespaces["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 PencilNamespaces["sodipodi"] = "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd";
 
-PencilNamespaces["content"] = "http://purl.org/rss/1.0/modules/content/"
-PencilNamespaces["itunes"] = "http://www.itunes.com/dtds/podcast-1.0.dtd"
-PencilNamespaces["media"] = "http://search.yahoo.com/mrss/"
-PencilNamespaces["atom"] = "http://www.w3.org/2005/Atom"
+PencilNamespaces["content"] = "http://purl.org/rss/1.0/modules/content/";
+PencilNamespaces["itunes"] = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+PencilNamespaces["media"] = "http://search.yahoo.com/mrss/";
+PencilNamespaces["atom"] = "http://www.w3.org/2005/Atom";
 
 
 PencilNamespaces.resolve = function (prefix) {

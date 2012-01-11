@@ -916,7 +916,7 @@
                                 } else {
                                     w = properties["box"].w;
                                 }
-                                
+
                                 w -= $strokeStyle.w;
                             }
 
@@ -1021,7 +1021,7 @@
 
                             tableStyle.set("width",  ($box.w - $strokeStyle.w) + "px");
                             tableStyle.set("height",  ($box.h - $strokeStyle.w) + "px");
-                            
+
                             tableStyle.set("border", "solid " + $strokeStyle.w + "px " + $strokeColor.toRGBAString());
                             tableStyle.set("border-width", "0px " + $strokeStyle.w + "px " + $strokeStyle.w + "px 0px");
 
@@ -1031,14 +1031,14 @@
                                 _children: [],
                                 style: tableStyle.toString()
                             };
-                            
+
                             var height = 0;
-                            
+
                             var contentHeight = $box.h - $strokeStyle.w;
 
                             if (a.length > 0) {
                                 height = Math.floor(contentHeight / a.length);
-                                
+
                                 headers = a[0];
 
                                 var tr = {
@@ -1052,7 +1052,7 @@
                                     }
                                 }
                                 var headerHeight = contentHeight - (a.length - 1) * height;
-                                
+
                                 tr.style = new CSS();
                                 tr.style.set("height", headerHeight + "px");
                                 tr.style.set("min-height", "0px");

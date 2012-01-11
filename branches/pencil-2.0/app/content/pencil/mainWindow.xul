@@ -88,7 +88,7 @@
 
     <script src="chrome://pencil/content/common/svgRasterizer.js"/>
     <script src="chrome://pencil/content/common/webPrinter.js"/>
-    
+
     <script src="chrome://pencil/content/target/shape.js"/>
     <script src="chrome://pencil/content/target/targetSet.js"/>
     <script src="chrome://pencil/content/target/group.js"/>
@@ -354,7 +354,7 @@
                             <menu id="help-menu" label="&menu.help.label;" accesskey="&menu.help.accesskey;">
                                 <menupopup>
                                     <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/aboutDialog.xul', 'pencilAboutDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
-                                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/print.xul', 'pencilPrintDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
+                                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/print.xul', 'pencilPrintDialog', 'chrome,centerscreen,modal,minimizable=false');" style="display:none;"/>
                                 </menupopup>
                             </menu>
                         </menupopup>

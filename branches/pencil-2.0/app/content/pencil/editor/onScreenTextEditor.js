@@ -22,6 +22,9 @@ OnScreenTextEditor.prototype.install = function (canvas) {
     this.singleTextEditor = Dom.getSingle(".//*[@p:name='TextEditor']", this.foPane);
     this.multiTextEditor = Dom.getSingle(".//*[@p:name='MultiLineTextEditor']", this.foPane);
 
+    this.singleTextEditor._editor = "plainText";
+    this.multiTextEditor._editor = "plainText";
+
     this.addEditorEvent("keypress", function (event) {
         event.cancelBubble = true;
         thiz.handleKeyPress(event);
@@ -29,8 +32,15 @@ OnScreenTextEditor.prototype.install = function (canvas) {
     this.addEditorEvent("dblclick", function (event) {
         event.cancelBubble = true;
     });
+    this.addEditorEvent("click", function (event) {
+        event.cancelBubble = true;
+        event.preventDefault();
+    });
     this.addEditorEvent("blur", function (event) {
         thiz.handleTextBlur(event);
+    });
+    this.addEditorEvent("focus", function (event) {
+        thiz._focused = true;
     });
     this.canvas.addEventListener("p:ShapeInserted", function (ev) {
         if (thiz.passivated) {
@@ -142,12 +152,18 @@ OnScreenTextEditor.prototype._setupEditor = function () {
 
     var thiz = this;
     window.setTimeout(function () {
-        thiz.textEditor.focus();
         thiz.textEditor.select();
+        thiz.textEditor.focus();
     }, 10);
 };
 OnScreenTextEditor.prototype.handleTextBlur = function (event) {
-    this.commitChange(event);
+    this._focused = false;
+    var that = this;
+    setTimeout(function() {
+        if (!that._focused) {
+            that.commitChange(event);
+        }
+    }, 100);
 };
 OnScreenTextEditor.prototype.handleKeyPress = function (event) {
     if (event.keyCode == event.DOM_VK_RETURN && !event.shiftKey && !event.accelKey && !event.ctrlKey) {

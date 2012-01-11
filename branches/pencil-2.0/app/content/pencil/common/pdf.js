@@ -13,7 +13,7 @@ function test() {
     printSettings.printBGImages = true;
     printSettings.printBGColors = true;
     printSettings.printToFile = true;
-    printSettings.toFileName = "/home/dgthanhan/Desktop/print.pdf";
+    printSettings.toFileName = "e:\\print.pdf";
     printSettings.printFrameType = Ci.nsIPrintSettings.kFramesAsIs;
     printSettings.outputFormat = Ci.nsIPrintSettings.kOutputFormatPDF;
 

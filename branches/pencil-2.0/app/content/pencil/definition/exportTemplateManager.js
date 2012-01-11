@@ -25,7 +25,7 @@ ExportTemplateManager.getTemplateById = function (templateId) {
 
 ExportTemplateManager.loadTemplatesIn = function (templateDir) {
     try {
-        for (i in ExportTemplateManager.SUPPORTED_TYPES) {
+        for (var i in ExportTemplateManager.SUPPORTED_TYPES) {
             var type = ExportTemplateManager.SUPPORTED_TYPES[i];
             var dir = templateDir.clone();
             dir.append(type);
@@ -73,12 +73,7 @@ ExportTemplateManager.getSystemWideTemplateDirectory = function () {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
                      .getService(Components.interfaces.nsIProperties);
 
-    var templateDir = null;
-    if (Util.isXulrunner()) {
-        templateDir = properties.get("resource:app", Components.interfaces.nsIFile);
-    } else {
-        templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
-    }
+    var templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
 
     templateDir.append("Templates");
 

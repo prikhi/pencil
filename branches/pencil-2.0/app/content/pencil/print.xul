@@ -21,7 +21,7 @@
             <label value="Test printing" flex="1"/>
             <button oncommand="test();" label="Test it!"/>
         </hbox>
-        <browser type="content" src="http://localhost:8080/sample.html" flex="1" id="browser"/>
+        <browser type="content" src="http://arstechnica.com/" flex="1" id="browser"/>
     </vbox>
 
 </dialog>

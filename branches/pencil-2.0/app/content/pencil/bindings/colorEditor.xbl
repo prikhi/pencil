@@ -101,7 +101,7 @@
                     this.dropperButton.style.display = "none";
                 }
 
-                this.setValue(Color.fromString('#00000000'));
+                //this.setValue(Color.fromString('#00000000'));
             ]]>
             </constructor>
             <method name="setAllowOpacity">
