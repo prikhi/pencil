@@ -52,6 +52,7 @@
 <!ENTITY menu.export.document.label              "Export Document...">
 <!ENTITY menu.export.page.as.png.label           "Export Page as PNG...">
 <!ENTITY menu.export.sel.as.png.label            "Export Selection as PNG...">
+<!ENTITY menu.print.document.label               "Print...">
 <!ENTITY menu.goto.label                         "Goto...">
 <!ENTITY menu.group.label                        "Group">
 <!ENTITY menu.help.accesskey                     "H">
