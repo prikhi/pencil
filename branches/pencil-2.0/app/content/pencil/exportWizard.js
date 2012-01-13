@@ -26,8 +26,14 @@ ExportWizard.setup = function () {
     Dom.empty(ExportWizard.exporterRadioGroup);
 
     var selectedExporterRadioItem = null;
-    var selectedExporter = lastSelection.exporterId ?
-                                ExportWizard.Pencil.getDocumentExporterById(lastSelection.exporterId) : null;
+    
+    var selectedExporter = null
+    if (ExportWizard.dialogData.forcedExporterId) {
+        selectedExporter = ExportWizard.Pencil.getDocumentExporterById(ExportWizard.dialogData.forcedExporterId);
+    } else if (lastSelection.exporterId) {
+        selectedExporter = ExportWizard.Pencil.getDocumentExporterById(lastSelection.exporterId);
+    }
+    
     if (!selectedExporter) selectedExporter = ExportWizard.Pencil.defaultDocumentExporter;
 
     for (var i = 0; i < exporters.length; i ++) {
@@ -88,6 +94,10 @@ ExportWizard.setup = function () {
 
     ExportWizard._setupFormatPageDone = true;
     window.sizeToContent();
+    
+    if (ExportWizard.dialogData.forcedExporterId) {
+        document.documentElement.advance();
+    }
 };
 ExportWizard.onPageSelectionChanged = function () {
     var label = document.getElementById("pageSelectionSummaryLabel");

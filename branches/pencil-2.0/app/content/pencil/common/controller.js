@@ -826,9 +826,13 @@ Controller.prototype.rasterizeDocument = function () {
         Console.dumpError(e, "stdout");
     }
 };
-Controller.prototype.exportDocument = function () {
+Controller.prototype.printDocument = function () {
+    this.exportDocument("PrintingExporter");
+}
+Controller.prototype.exportDocument = function (forcedExporterId) {
     var data = {
-        lastSelection: this.lastSelection ? this.lastSelection : null
+        lastSelection: this.lastSelection ? this.lastSelection : null,
+        forcedExporterId: forcedExporterId ? forcedExporterId : null
     };
     window.openDialog("chrome://pencil/content/exportWizard.xul", "", "chrome,centerscreen,modal", data);
 
@@ -856,7 +860,9 @@ Controller.prototype.exportDocument = function () {
 
         
         var pagesDir = null;
-        if (exporter.requireRasterizedData()) {
+        
+        var requireRasterizedData = exporter.requireRasterizedData(data.selection);
+        if (requireRasterizedData) {
             pagesDir = exporter.getRasterizedPageDestination(destFile);
 
             if (!pagesDir.exists()) {
@@ -871,7 +877,8 @@ Controller.prototype.exportDocument = function () {
             var fid = p.generateFriendlyId(usedFriendlyIds);
             p.properties.fid = fid;
         }
-
+        
+        this._updatePageFromView();
 
         var pages = [];
 
@@ -890,7 +897,7 @@ Controller.prototype.exportDocument = function () {
         var starter = null;
         
         var pageExtraInfos = {};
-        if (exporter.requireRasterizedData()) {
+        if (requireRasterizedData) {
             starter = function (listener) {
                 var rasterizeNext = function () {
                     try {
@@ -1005,6 +1012,17 @@ Controller.prototype._getPageLinks = function (page, pageExtraInfos, includeBack
 
     return validLinks;
 };
+Controller.prototype.getFriendlyDocumentName = function () {
+    if (!this.isBoundToFile()) return "Untitled Document";
+    
+    var epFile = Components.classes["@mozilla.org/file/local;1"]
+                     .createInstance(Components.interfaces.nsILocalFile);
+
+    epFile.initWithPath(this.filePath);
+    var name = epFile.leafName;
+    name = name.replace(/\.ep$/, "").replace(/([^ A-Z])([A-Z]+)/g, "$1 $2");
+    return name;
+};
 Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, destFile, exportSelection, callback) {
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
     
@@ -1035,6 +1053,8 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
 
         docProperties["fileName"] = epFile.leafName;
     }
+    
+    docProperties["friendlyName"] = this.getFriendlyDocumentName();
 
     for (name in docProperties) {
         var propertyNode = dom.createElementNS(PencilNamespaces.p, "Property");
@@ -1047,10 +1067,33 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
     //pages
     var pageContainerNode = dom.createElementNS(PencilNamespaces.p, "Pages");
     dom.documentElement.appendChild(pageContainerNode);
+    
+    var requireRasterizedData = exporter.requireRasterizedData(exportSelection);
 
     for (i in pages) {
         var page = pages[i];
-        var pageNode = page.toNode(dom, exporter.requireRasterizedData());
+        var pageNode = page.toNode(dom, requireRasterizedData);
+        pageNode.setAttribute("id", page.properties.id);
+        
+        if (!requireRasterizedData) {
+            var bgPageNode = dom.createElementNS(PencilNamespaces.p, "BackgroundPages");
+            var bgId = page.properties.background;
+            while (bgId) {
+                var bgPage = this.doc.getPageById(bgId);
+                if (!bgPage) break;
+                if (bgPageNode.firstChild) {
+                    bgPageNode.insertBefore(bgPage.toNode(dom, false), bgPageNode.firstChild);
+                } else {
+                    bgPageNode.appendChild(bgPage.toNode(dom, false));
+                }
+                
+                bgId = bgPage.properties.background;
+            }
+            
+            if (bgPageNode.firstChild) {
+                pageNode.appendChild(bgPageNode);
+            }
+        }
 
         //ugly walkarround for Gecko d-o-e bug (https://bugzilla.mozilla.org/show_bug.cgi?id=98168)
         //we have to reparse the provided notes as XHTML and append it directly to the dom
@@ -1110,7 +1153,8 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
 
     try {
         exporter.export(this.doc, exportSelection, destFile, xmlFile, function () {
-            xmlFile.remove(true);
+            debug("Finish exporting, DOC XML = " + xmlFile.path);
+            //xmlFile.remove(true);
             callback();
         });
     } catch (e) {

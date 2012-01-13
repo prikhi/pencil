@@ -265,7 +265,9 @@ dialog[p|probing] * {
 .export-document-menu {
 	list-style-image: url(chrome://pencil-os/skin/images/moblin/stock_export.png);
 }
-
+.print-document-menu {
+	list-style-image: url(chrome://pencil-os/skin/images/moblin/system-config-printer.png);
+}
 .exit-menu {
 	list-style-image: url(chrome://pencil-os/skin/images/moblin/application-exit.png);
 }

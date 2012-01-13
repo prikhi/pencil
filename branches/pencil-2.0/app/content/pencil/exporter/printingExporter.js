@@ -8,11 +8,18 @@ function PrintingExporter(pdfOutput) {
 PrintingExporter.HTML_FILE = "index.html";
 PrintingExporter.prototype = new BaseExporter();
 
-PrintingExporter.prototype.requireRasterizedData = function () {
-    return false;
+PrintingExporter.prototype.requireRasterizedData = function (options) {
+    var templateId = options.templateId;
+    if (!templateId) return false;
+
+    var template = ExportTemplateManager.getTemplateById(templateId);
+    if (!template) return false;
+    
+    return "true" == template["useRasterizedImages"];
 };
 PrintingExporter.prototype.getRasterizedPageDestination = function (baseDir) {
-    return null;
+    this.tempDir = Local.createTempDir("printing");
+    return this.tempDir;
 };
 PrintingExporter.prototype.supportTemplating = function () {
     return true;
@@ -21,7 +28,9 @@ PrintingExporter.prototype.getTemplates = function () {
     return ExportTemplateManager.getTemplatesForType("Print");
 };
 PrintingExporter.prototype.export = function (doc, options, targetFile, xmlFile, callback) {
-    var destDir = Local.createTempDir("printing");
+    if (!this.tempDir) this.tempDir = Local.createTempDir("printing");
+    var destDir = this.tempDir;
+    
     debug("destDir: " + destDir.path);
 
     var templateId = options.templateId;
@@ -69,11 +78,19 @@ PrintingExporter.prototype.export = function (doc, options, targetFile, xmlFile,
     
     debug(url.spec);
     
-    if (targetFile && targetFile.exists()) { 
-        targetFile.remove(true);
+    if (this.pdfOutput) {
+        if (targetFile && targetFile.exists()) { 
+            targetFile.remove(true);
+        }
+    }
+    var settings = {filePath: (targetFile && this.pdfOutput) ? targetFile.path : null};
+    for (var propName in template) {
+        if (("" + propName).match(/^print\./)) {
+            settings[propName] = template[propName];
+        }
     }
     
-    Pencil.printer.printUrl(url.spec, {filePath: targetFile ? targetFile.path : null}, callback);
+    Pencil.printer.printUrl(url.spec, settings, callback);
 };
 PrintingExporter.prototype.getWarnings = function () {
     return null;
