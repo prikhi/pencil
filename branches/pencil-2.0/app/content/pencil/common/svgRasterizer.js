@@ -9,7 +9,7 @@ function Rasterizer(format) {
     var box = document.createElement("box");
     box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
 
-    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; visibility: hidden;");
+    iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; visibility: visible;");
     iframe.setAttribute("src", "blank.html");
 
     box.appendChild(iframe);
@@ -21,6 +21,8 @@ function Rasterizer(format) {
     var thiz = this;
 
     this.nextHandler = null;
+    
+    var start = 0;
 
     window.addEventListener("DOMFrameContentLoaded", function (event) {
         var win = iframe.contentWindow;
@@ -32,14 +34,16 @@ function Rasterizer(format) {
                 //debug("MozAfterPaint: " + [event, event.originalTarget, win.document]);
 
                 if (!event.originalTarget._isRasterizeFrame) return;
-                win.setTimeout(function () {
+                if (!thiz.nextHandler) return;
+                start = new Date().getTime();
+                doLater(function () {
                     if (!thiz.nextHandler) return;
 
-                    debug("calling next handler");
                     var f = thiz.nextHandler;
                     thiz.nextHandler = null;
+                    //alert("calling next handler after " + (new Date().getTime() - start) + " ms");
                     f();
-                }, 100);
+                }, 500, win);
 
                 /*if (!event.originalTarget._isRasterizeFrame) return;
                 if (!thiz.nextHandler) return;
@@ -84,7 +88,7 @@ Rasterizer.prototype.rasterizePageToUrl = function (page, callback) {
     this._width = page.properties.width;
     this._height = page.properties.height;
 
-    this._backgroundColor = page.properties.transparentBackground == "false" ? page.properties.backgroundColor : null;
+    this._backgroundColor = page.properties.transparentBackground == "false" && !page.properties.background ? page.properties.backgroundColor : null;
 
     if (page._view.canvas.hasBackgroundImage) {
         var bgImage = page._view.canvas.backgroundImage.cloneNode(true);
@@ -155,8 +159,14 @@ Rasterizer.prototype._prepareWindowForRasterization = function(backgroundColor) 
 Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
     debug("Rasterizing window to URL");
     canvas = this._prepareWindowForRasterization();
+    var dataURL = canvas.canvas.toDataURL("image/png", "");
+    
+    var path = "/home/dgthanhan/Desktop/tmp.png";
+    //this.saveURI(dataURL, path);
+    //alert("data saved to " + path);
+    
     data = {
-        url: canvas.canvas.toDataURL("image/png", ""),
+        url: dataURL,
         width: canvas.width,
         height: canvas.height
     };
@@ -213,6 +223,7 @@ Rasterizer.prototype.rasterizeDOM = function (svgNode, filePath, callback, prepr
     debug("Rasterizing DOM");
     this._width = svgNode.width.baseVal.value;
     this._height = svgNode.height.baseVal.value;
+    this._backgroundColor = null;
 
     var thiz = this;
     this._saveNodeToTempFileAndLoad(svgNode, function () {

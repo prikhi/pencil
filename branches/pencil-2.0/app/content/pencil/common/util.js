@@ -1454,3 +1454,18 @@ function pEval(expression, extra) {
         Console.dumpError(e);
     }
 };
+function doLater(f, ms, win) {
+    var w = win ? win : window;
+    var start = new Date().getTime();
+    var g = function () {
+        var now = new Date().getTime();
+        if (now - start > ms) {
+            //alert(now - start);
+            f();
+            return;
+        }
+        w.setTimeout(g, 100);
+    };
+    
+    g();
+}
