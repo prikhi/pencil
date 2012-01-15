@@ -16,6 +16,7 @@ ExternalEditorSupports.getEditorPath = function (extension) {
 };
 
 ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite UniversalBrowserRead");
     var tmpFile = Local.newTempFile("pencil", contentProvider.extension);
     contentProvider.saveTo(tmpFile, function () {
 
@@ -27,7 +28,9 @@ ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
 
         var app = Components.classes["@mozilla.org/file/local;1"]
                          .createInstance(Components.interfaces.nsILocalFile);
-        app.initWithPath(ExternalEditorSupports.getEditorPath(contentProvider.extension));
+        var executablePath = ExternalEditorSupports.getEditorPath(contentProvider.extension);
+        alert(executablePath);
+        app.initWithPath(executablePath);
 
         var process = Components.classes["@mozilla.org/process/util;1"]
                             .createInstance(Components.interfaces.nsIProcess);
@@ -62,3 +65,5 @@ ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
         window.setTimeout(tracker, 1000);
     });
 };
+
+pencilSandbox.ImageData.ExternalEditorSupports = ExternalEditorSupports;

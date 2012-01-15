@@ -1257,7 +1257,8 @@ Controller.prototype._rasterizePage = function (page, path, callback, preprocess
 
     //debug("bgr: " + page.properties.backgroundColor);
     //debug("trans: " + page.properties.transparentBackground);
-    Pencil.rasterizer.rasterizeDOM(svg, path, callback, preprocessor, page.properties.transparentBackground == "false" ? page.properties.backgroundColor : null);
+    Pencil.rasterizer.rasterizeDOM(svg, path, callback, preprocessor,
+        (page.properties.transparentBackground == "false" && !page.properties.background) ? page.properties.backgroundColor : null);
 
 };
 Controller.prototype.rasterizeSelection = function () {

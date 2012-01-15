@@ -145,6 +145,7 @@ Page.prototype.isBackgroundValid = function () {
 };
 
 Page.prototype.ensureBackground = function (callback) { // callback: function() {} called when done
+//    alert("ensureBackground() for " + this.properties.name);
     if (Config.get("object.snapping.background") == null) {
         Config.set("object.snapping.background", true);
     }
@@ -162,6 +163,7 @@ Page.prototype.ensureBackground = function (callback) { // callback: function() 
         return;
     }
     var thiz = this;
+    //alert("ensureBackground(), use bit map of " + page.properties.name  + " as bg for " + this.properties.name);
     page.getRasterizeData(function (rasterizeData) {
         thiz.bgToken = rasterizeData.token;
         //alert([page.properties.name, rasterizeData.image.width, rasterizeData.image.height]);
@@ -182,6 +184,7 @@ Page.prototype.getRasterizeData = function (callback) {
     }
     var thiz = this;
     this.ensureBackground(function () {
+        //alert("rasterizing page: " + thiz.properties.name);
         Pencil.rasterizer.rasterizePageToUrl(thiz, function (imageData) {
             thiz.rasterizeDataCache = {
                 token: thiz._generateToken(),
