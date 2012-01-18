@@ -1,7 +1,7 @@
 #!/bin/sh
 export NAME='Pencil'
 export VERSION='1.3'
-export BUILD='3'
+export BUILD='4'
 export AUTHOR='Duong Thanh An (an.duong@evolus.vn) and Contributors'
 export XPI_NAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
 export MIN_VERSION='1.9.8'
@@ -12,11 +12,14 @@ export XULRUNNER_XUL="*"
 prep() {
     rm -Rf ./Outputs/
     mkdir -p ./Outputs
+
     echo "----------------------"
     echo "* Cleaning up source *"
     echo "----------------------"
+
     rm -Rf ./Outputs/Pencil/
     mkdir ./Outputs/Pencil/
+
     cp -R ../app/* ./Outputs/Pencil/
     find ./Outputs/Pencil/ -name .svn | xargs -i rm -Rf {}
 
@@ -54,65 +57,66 @@ xpi() {
 }
 
 linux() {
-echo "-------------------------------------"
-echo "* Building Linux Shared XRE version *"
-echo "-------------------------------------"
-rm -Rf ./Outputs/Linux/
-mkdir ./Outputs/Linux/
-cp -R ./Linux/* ./Outputs/Linux/
-cp -R ./XULRunner/* ./Outputs/Linux/
-find ./Outputs/Linux/ -name .svn | xargs -i rm -Rf {}
+    echo "-------------------------------------"
+    echo "* Building Linux Shared XRE version *"
+    echo "-------------------------------------"
+    rm -Rf ./Outputs/Linux/
+    mkdir ./Outputs/Linux/
 
-mkdir -p ./Outputs/Linux/chrome/content
-cp -R ./Outputs/Pencil/* ./Outputs/Linux/chrome/content/
+    cp -R ./Linux/* ./Outputs/Linux/
+    cp -R ./XULRunner/* ./Outputs/Linux/
 
-mkdir -p ./Outputs/Linux/chrome/icons/default/
-cp ./Outputs/Pencil/Icons/pencil.ico ./Outputs/Linux/chrome/icons/default/pencilMainWindow.ico
-cp ./Outputs/Pencil/Icons/pencil.xpm ./Outputs/Linux/chrome/icons/default/pencilMainWindow.xpm
+    find ./Outputs/Linux/ -name .svn | xargs -i rm -Rf {}
 
-./replacer.sh ./Outputs/Linux/application.ini
-chmod +x ./Outputs/Linux/pencil
+    mkdir -p ./Outputs/Linux/chrome/content
+    cp -R ./Outputs/Pencil/* ./Outputs/Linux/chrome/content/
 
-echo "Compressing..."
-cd ./Outputs/Linux/
-tar -czvf ../Pencil-$VERSION-$BUILD-linux-gtk.tar.gz * > /dev/null
-cd ../../
-rm -Rf ./Outputs/Linux/
+    mkdir -p ./Outputs/Linux/chrome/icons/default/
+    cp ./Outputs/Pencil/Icons/pencil.ico ./Outputs/Linux/chrome/icons/default/pencilMainWindow.ico
+    cp ./Outputs/Pencil/Icons/pencil.xpm ./Outputs/Linux/chrome/icons/default/pencilMainWindow.xpm
 
+    ./replacer.sh ./Outputs/Linux/application.ini
+    chmod +x ./Outputs/Linux/pencil
+
+    echo "Compressing..."
+    cd ./Outputs/Linux/
+    tar -czvf ../Pencil-$VERSION-$BUILD-linux-gtk.tar.gz * > /dev/null
+    cd ../../
+    rm -Rf ./Outputs/Linux/
 }
 
 fedorarpm()  {
-echo "--------------------------------------"
-echo "* Building Fedora RPM with Shared XRE *"
-echo "--------------------------------------"
-rm -Rf ./Outputs/RPM/
-export BUILDROOT=./Outputs/RPM/buildroot
+    echo "--------------------------------------"
+    echo "* Building Fedora RPM with Shared XRE *"
+    echo "--------------------------------------"
+    rm -Rf ./Outputs/RPM/
+    export BUILDROOT=./Outputs/RPM/buildroot
 
-export OUTPUT=$BUILDROOT/usr/lib/evolus-pencil-$VERSION
-mkdir -p $OUTPUT/
-cp -R ./XULRunner/* $OUTPUT/
-./replacer.sh $OUTPUT/application.ini
+    export OUTPUT=$BUILDROOT/usr/lib/evolus-pencil-$VERSION
+    mkdir -p $OUTPUT/
+    cp -R ./XULRunner/* $OUTPUT/
+    ./replacer.sh $OUTPUT/application.ini
 
-mkdir -p $OUTPUT/chrome/content/
-cp -R ./Outputs/Pencil/* $OUTPUT/chrome/content/
-mkdir -p $OUTPUT/chrome/icons/default/
-cp ./Outputs/Pencil/Icons/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
-cp ./Outputs/Pencil/Icons/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
+    mkdir -p $OUTPUT/chrome/content/
+    cp -R ./Outputs/Pencil/* $OUTPUT/chrome/content/
+    mkdir -p $OUTPUT/chrome/icons/default/
+    cp ./Outputs/Pencil/Icons/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
+    cp ./Outputs/Pencil/Icons/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
 
-cp -R ./Fedora-RPM/* ./Outputs/RPM/
-./replacer.sh $BUILDROOT/usr/bin/evoluspencil
-chmod 775 $BUILDROOT/usr/bin/evoluspencil
+    cp -R ./Fedora-RPM/* ./Outputs/RPM/
+    ./replacer.sh $BUILDROOT/usr/bin/evoluspencil
+    chmod 775 $BUILDROOT/usr/bin/evoluspencil
 
-./replacer.sh ./Outputs/RPM/evolus-pencil.spec
+    ./replacer.sh ./Outputs/RPM/evolus-pencil.spec
 
-find ./Outputs/RPM/ -name .svn | xargs -i rm -Rf {}
+    find ./Outputs/RPM/ -name .svn | xargs -i rm -Rf {}
 
-cd $BUILDROOT
-BUILDROOTASB=`pwd`
-find . -type f | sed s#./usr/#/usr/#g >> ../evolus-pencil.spec
+    cd $BUILDROOT
+    BUILDROOTASB=`pwd`
+    find . -type f | sed s#./usr/#/usr/#g >> ../evolus-pencil.spec
 
-cd ..
-rpmbuild -ba --buildroot "$BUILDROOTASB" ./evolus-pencil.spec
+    cd ..
+    rpmbuild -ba --buildroot "$BUILDROOTASB" ./evolus-pencil.spec
 }
 
 win32() {

@@ -23,14 +23,12 @@
             <h2>
                 <xsl:value-of select="p:Properties/p:Property[@name='name']/text()"/>
             </h2>
-            
-            <svg xmlns="http://www.w3.org/2000/svg" width="{p:Properties/p:Property[@name='width']/text()}" height="{p:Properties/p:Property[@name='width']/text()}">
-                <g inkscape:label="{p:Properties/p:Property[@name='name']/text()}"
-                   inkscape:groupmode="layer" id="layer_{p:Properties/p:Property[@name='fid']/text()}">
-                    <xsl:apply-templates select="p:Content/*" mode="copy" />
-                </g>
-            </svg>
-            
+            <div class="ImageContainer">
+                <img src="{@rasterized}"
+                    width="{p:Properties/p:Property[@name='width']/text()}"
+                    height="{p:Properties/p:Property[@name='height']/text()}"
+                    usemap="#map_{p:Properties/p:Property[@name='fid']/text()}"/>
+            </div>
             <xsl:if test="p:Note">
                 <p class="Notes">
                     <xsl:apply-templates select="p:Note/node()" mode="processing-notes"/>

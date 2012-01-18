@@ -1183,6 +1183,11 @@ Util.getMessage = function (msg, args) {
     }
     return "!!! " + msg;
 };
+Util.showNotification = function (title, ms) {
+    Components.classes['@mozilla.org/alerts-service;1'].
+              getService(Components.interfaces.nsIAlertsService).
+              showAlertNotification(null, title, ms, false, '', null);
+};
 Util.isXulrunner = function() {
     return navigator.userAgent.indexOf("Firefox") == -1;
 };
@@ -1393,6 +1398,29 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
     channel.notificationCallbacks = listener;
     channel.asyncOpen(listener, null);
 };
+Net.downloadAsync = function(url, destPath, listener) {
+    var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+              .createInstance(Components.interfaces.nsIWebBrowserPersist);
+    var file = Components.classes["@mozilla.org/file/local;1"]
+               .createInstance(Components.interfaces.nsILocalFile);
+    file.initWithPath(destPath); // download destination
+    var obj_URI = Components.classes["@mozilla.org/network/io-service;1"]
+                  .getService(Components.interfaces.nsIIOService)
+                  .newURI(url, null, null);
+
+    persist.progressListener = listener;
+    /*{
+      onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+        var percentComplete = (aCurTotalProgress/aMaxTotalProgress)*100;
+        var ele = document.getElementById("progress_element");
+        ele.innerHTML = percentComplete +"%";
+      },
+      onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
+        // do something
+      }
+    }*/
+    persist.saveURI(obj_URI, null, null, null, "", file);
+}
 Util.goDoCommand = function (command, doc) {
     var dom = doc ? doc : document;
     var controller = dom.commandDispatcher.getControllerForCommand(command);

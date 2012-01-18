@@ -7,6 +7,7 @@ function Color() {
 Color.REG_EX = /^#([0-9A-F]{2,2})([0-9A-F]{2,2})([0-9A-F]{2,2})([0-9A-F]{2,2})$/i;
 Color.REG_EX_NO_ALPHA = /^#([0-9A-F]{2,2})([0-9A-F]{2,2})([0-9A-F]{2,2})$/i;
 Color.REG_EX_RGB = /^rgb\(([0-9]+)\,[ ]*([0-9]+)\,[ ]*([0-9]+)\)$/i;
+Color.REG_EX_RGBA = /^rgba\(([0-9]+)\,[ ]*([0-9]+)\,[ ]*([0-9]+)\,[ ]*([0-9\.]+)\)$/i;
 Color.hexdig = '0123456789ABCDEF';
 
 Color.fromString = function (literal) {
@@ -23,6 +24,13 @@ Color.fromString = function (literal) {
         color.g = parseInt(RegExp.$2, 16);
         color.b = parseInt(RegExp.$3, 16);
         color.a = 1;
+    } else if (literal.match(Color.REG_EX_RGBA)) {
+        //debug("found rgba()");
+        color.r = parseInt(RegExp.$1, 10);
+        color.g = parseInt(RegExp.$2, 10);
+        color.b = parseInt(RegExp.$3, 10);
+        color.a = parseFloat(RegExp.$4, 10);;
+        //debug("found rgba(): " + color);
     } else if (literal.match(Color.REG_EX_RGB)) {
         //debug("found rgb()");
         color.r = parseInt(RegExp.$1, 10);

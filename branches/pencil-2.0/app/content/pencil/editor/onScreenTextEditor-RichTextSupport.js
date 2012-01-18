@@ -203,6 +203,9 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
             OnScreenTextEditor._updateButtonByCommandState("justifycenter", "malignCenterCommand");
             OnScreenTextEditor._updateButtonByCommandState("justifyright", "malignRightCommand");
 
+            OnScreenTextEditor._updateColorButtonByCommandValue("forecolor", "mtextColorButton");
+            OnScreenTextEditor._updateColorButtonByCommandValue("hilitecolor", "mhilightColorButton");
+
             OnScreenTextEditor.isEditing = temp;
         };
 

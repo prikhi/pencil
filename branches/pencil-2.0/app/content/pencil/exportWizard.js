@@ -18,7 +18,7 @@ ExportWizard.setup = function () {
     ExportWizard.copyBGLinkCheckbox = document.getElementById("copyBGLinkCheckbox");
     ExportWizard.targetFilePathText = document.getElementById("targetFilePathText");
     ExportWizard.browseButton = document.getElementById("browseButton");
-    
+
 
 
     // Setup exporters
@@ -130,9 +130,9 @@ ExportWizard.onExporterChanged = function () {
 
     Dom.empty(warningPane);
     if (!warnings) {
-        warningPane.style.display = "none";
+        warningPane.style.visibility = "hidden";
     } else {
-        warningPane.style.display = "";
+        warningPane.style.visibility = "visible";
         warningPane.appendChild(document.createTextNode(warnings));
     }
 
@@ -169,7 +169,7 @@ ExportWizard.onExporterChanged = function () {
     } else {
         ExportWizard.targetFilePathText.value = "";
     }
-    
+
     if (exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_NONE) {
         ExportWizard.targetFilePathText.disabled = true;
         ExportWizard.targetFilePathText.value = "";
@@ -186,22 +186,26 @@ ExportWizard.browseTargetFile = function () {
     var exporter = ExportWizard.getSelectedExporter();
     var isChoosingFile = exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_FILE;
 
-    //if value specified, use it
-    if (ExportWizard.targetFilePathText.value) {
-        var file = Components.classes["@mozilla.org/file/local;1"]
-                             .createInstance(Components.interfaces.nsILocalFile);
-        file.initWithPath(ExportWizard.targetFilePathText.value);
+    try {
+        //if value specified, use it
+        if (ExportWizard.targetFilePathText.value) {
+            var file = Components.classes["@mozilla.org/file/local;1"]
+                                 .createInstance(Components.interfaces.nsILocalFile);
+            file.initWithPath(ExportWizard.targetFilePathText.value);
 
-        if (file.exists()) currentDir = isChoosingFile ? file.parent : file;
-    }
+            if (file.exists()) currentDir = isChoosingFile ? file.parent : file;
+        }
 
-    //if still not, use the bound file
-    if (!currentDir && ExportWizard.Pencil.controller.isBoundToFile()) {
-        var file = Components.classes["@mozilla.org/file/local;1"]
-                             .createInstance(Components.interfaces.nsILocalFile);
-        file.initWithPath(ExportWizard.Pencil.controller.filePath);
+        //if still not, use the bound file
+        if (!currentDir && ExportWizard.Pencil.controller.isBoundToFile()) {
+            var file = Components.classes["@mozilla.org/file/local;1"]
+                                 .createInstance(Components.interfaces.nsILocalFile);
+            file.initWithPath(ExportWizard.Pencil.controller.filePath);
 
-        currentDir = file.parent;
+            currentDir = file.parent;
+        }
+    } catch (ex) {
+        Console.dumpError(ex, "stdout");
     }
 
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
@@ -236,7 +240,7 @@ ExportWizard.validatePageSelection = function () {
     });
 
     if (selected == 0) {
-        Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.at.least.one.page.to.export"));
+        Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.at.least.one.page.to.export"), Util.getMessage("button.close.label"));
         return false;
     }
 
@@ -245,10 +249,10 @@ ExportWizard.validatePageSelection = function () {
 };
 ExportWizard.validateOptions = function () {
     var exporter = ExportWizard.getSelectedExporter();
-    
+
     if (exporter.getOutputType() != BaseExporter.OUTPUT_TYPE_NONE) {
         if (!ExportWizard.targetFilePathText.value) {
-            Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.the.target.directory"));
+            Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.the.target.directory"), Util.getMessage("button.close.label"));
             ExportWizard.targetFilePathText.focus();
             return false;
         }
@@ -258,7 +262,7 @@ ExportWizard.validateOptions = function () {
         file.initWithPath(ExportWizard.targetFilePathText.value);
 
         if (!file.parent.exists()) {
-            Util.error(Util.getMessage("error.title"), Util.getMessage("the.specified.path.does.not.exists"));
+            Util.error(Util.getMessage("error.title"), Util.getMessage("the.specified.path.does.not.exists"), Util.getMessage("button.close.label"));
             ExportWizard.targetFilePathText.focus();
 
             return false;
@@ -268,6 +272,12 @@ ExportWizard.validateOptions = function () {
     return true;
 };
 ExportWizard.onFinish = function () {
+    var templateId = ExportWizard.templateMenu.value;
+    if (!ExportWizard.templateMenu.disabled && (!templateId || templateId == null)) {
+        Util.error(Util.getMessage("error.title"), Util.getMessage("no.template.has.been.installed.for.exporting"), Util.getMessage("button.close.label"));
+        return false;
+    }
+
     var selection = {
         exporterId: ExportWizard.exporterRadioGroup.value,
         pageMode: ExportWizard.pageSelectionGroup.value,
@@ -280,6 +290,7 @@ ExportWizard.onFinish = function () {
         targetPath: ExportWizard.targetFilePathText.value
     };
 
+
     selection.pageIds = null;
 
     if (ExportWizard.pageSelectionGroup.value == "only") {
@@ -291,8 +302,6 @@ ExportWizard.onFinish = function () {
     }
 
     ExportWizard.dialogData.selection = selection;
-
-    debug(selection.toSource());
 };
 ExportWizard.callManageTemplateDialog = function () {
     window.opener.openDialog('chrome://pencil/content/templateManagementDialog.xul', '', 'modal,centerscreen,chrome');
