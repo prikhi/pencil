@@ -5,4 +5,7 @@
     <Property name="description">The simple/default printing template</Property>
 
     <Property name="styleSheet">StyleSheet.xslt</Property>
+
+    <Property name="print.paperSize">iso_a4</Property>
+    <Property name="print.orientation">portrait</Property>
 </Template>

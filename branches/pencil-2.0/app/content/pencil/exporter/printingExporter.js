@@ -61,8 +61,9 @@ PrintingExporter.prototype.export = function (doc, options, targetFile, xmlFile,
     //this.fixAbsoluteRasterizedPaths(sourceDOM, destDir);
     var xsltDOM = Dom.parseFile(template.styleSheetFile);
 
-    this.xsltProcessor.importStylesheet(xsltDOM);
-    var result = this.xsltProcessor.transformToDocument(sourceDOM);
+    var xsltProcessor = new XSLTProcessor();
+    xsltProcessor.importStylesheet(xsltDOM);
+    var result = xsltProcessor.transformToDocument(sourceDOM);
 
     var htmlFile = destDir.clone();
     htmlFile.append(PrintingExporter.HTML_FILE);

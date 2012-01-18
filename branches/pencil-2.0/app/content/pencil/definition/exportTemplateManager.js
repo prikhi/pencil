@@ -92,7 +92,8 @@ ExportTemplateManager.getDefaultTemplateDirectory = function () {
     templateDir.append("content");
     templateDir.append("pencil");
     templateDir.append("templates");
-    debug("templateDir: " + templateDir.path);
+
+    debug("default templateDir: " + templateDir.path);
 
     return templateDir;
 };
