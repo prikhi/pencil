@@ -14,7 +14,7 @@ PrintingExporter.prototype.requireRasterizedData = function (options) {
 
     var template = ExportTemplateManager.getTemplateById(templateId);
     if (!template) return false;
-    
+
     return "true" == template["useRasterizedImages"];
 };
 PrintingExporter.prototype.getRasterizedPageDestination = function (baseDir) {
@@ -30,7 +30,7 @@ PrintingExporter.prototype.getTemplates = function () {
 PrintingExporter.prototype.export = function (doc, options, targetFile, xmlFile, callback) {
     if (!this.tempDir) this.tempDir = Local.createTempDir("printing");
     var destDir = this.tempDir;
-    
+
     debug("destDir: " + destDir.path);
 
     var templateId = options.templateId;
@@ -59,27 +59,24 @@ PrintingExporter.prototype.export = function (doc, options, targetFile, xmlFile,
 
     //changing rasterized path to relative
     //this.fixAbsoluteRasterizedPaths(sourceDOM, destDir);
-
     var xsltDOM = Dom.parseFile(template.styleSheetFile);
 
-    var xsltProcessor = new XSLTProcessor();
-    xsltProcessor.importStylesheet(xsltDOM);
-
-    var result = xsltProcessor.transformToDocument(sourceDOM);
+    this.xsltProcessor.importStylesheet(xsltDOM);
+    var result = this.xsltProcessor.transformToDocument(sourceDOM);
 
     var htmlFile = destDir.clone();
     htmlFile.append(PrintingExporter.HTML_FILE);
 
     Dom.serializeNodeToFile(result, htmlFile);
-    
+
     var ios = Components.classes["@mozilla.org/network/io-service;1"].
               getService(Components.interfaces.nsIIOService);
     var url = ios.newFileURI(htmlFile);
-    
+
     debug(url.spec);
-    
+
     if (this.pdfOutput) {
-        if (targetFile && targetFile.exists()) { 
+        if (targetFile && targetFile.exists()) {
             targetFile.remove(true);
         }
     }
@@ -89,7 +86,7 @@ PrintingExporter.prototype.export = function (doc, options, targetFile, xmlFile,
             settings[propName] = template[propName];
         }
     }
-    
+
     Pencil.printer.printUrl(url.spec, settings, callback);
 };
 PrintingExporter.prototype.getWarnings = function () {

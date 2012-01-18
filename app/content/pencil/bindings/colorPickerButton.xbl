@@ -50,7 +50,7 @@
         <xbl:content xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
             <toolbarbutton aid="button" xbl:inherits="image,disabled"/>
             <panel aid="popup" position="after_start">
-                <pcoloreditor aid="picker" color="#ffffffff" onselect="runEditorCommand('hilitecolor', this.color); this.parentNode.hidePopup();"/>
+                <pcoloreditor aid="picker" color="#ffffffff"/>
             </panel>
         </xbl:content>
     </binding>

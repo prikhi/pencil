@@ -87,15 +87,19 @@ CollectionManager.loadStencils = function() {
     CollectionManager.shapeDefinition.collections = [];
     CollectionManager.shapeDefinition.shapeDefMap = { };
 
+    alert(1);
     //load all system stencils
     var parser = new ShapeDefCollectionParser();
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Common/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Annotation/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/BasicWebElements/Definition.xml"));
-    //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Gtk.GUI/Definition.xml"));
-    //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/WindowsXP-GUI/Definition.xml"));
-    //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Native.GUI/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/SketchyGUI/Definition.xml"));
+
+    CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Gtk.GUI/Definition.xml"));
+    CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/WindowsXP-GUI/Definition.xml"));
+    CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Native.GUI/Definition.xml"));
+
+    //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/iPhone/Definition.xml"));
 
     CollectionManager.loadUserDefinedStencils();
     PrivateCollectionManager.loadPrivateCollections();
@@ -208,11 +212,9 @@ CollectionManager.installCollectionFromFile = function (file) {
             throw Util.getMessage("collection.specification.is.not.found.in.the.archive");
         }
     } catch (e) {
-        Util.error(Util.getMessage("error.installing.collection"), "" + e);
-
+        Util.error(Util.getMessage("error.installing.collection"), e.message, Util.getMessage("button.close.label"));
         //removing the extracted dir
         extractedDir.remove(true);
-
         return;
     }
 };
@@ -222,6 +224,18 @@ CollectionManager.installCollectionFromFilePath = function (filePath) {
     file.initWithPath(filePath);
 
     CollectionManager.installCollectionFromFile(file);
+};
+CollectionManager.installCollectionFromUrl = function (url) {
+    Net.downloadAsync(url, "e:\\t.txt", {
+        onProgressChange: function(aWebProgress, aRequest, aCurSelfProgress, aMaxSelfProgress, aCurTotalProgress, aMaxTotalProgress) {
+            var percentComplete = (aCurTotalProgress/aMaxTotalProgress)*100;
+            Util.showStatusBarInfo(percentComplete + "%");
+        },
+        onStateChange: function(aWebProgress, aRequest, aStateFlags, aStatus) {
+            // do something
+        }
+    });
+    //CollectionManager.installCollectionFromFile(file);
 };
 CollectionManager.setCollectionVisible = function (collection, visible) {
     collection.visible = visible;

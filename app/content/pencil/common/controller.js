@@ -842,11 +842,12 @@ Controller.prototype.exportDocument = function (forcedExporterId) {
 
     try {
         var exporter = Pencil.getDocumentExporterById(data.selection.exporterId);
+        if (!exporter) return;
 
         //Select target dir
         var pageIndex = -1;
         var destFile = null;
-        
+
         if (data.selection.targetPath) {
             destFile = Components.classes["@mozilla.org/file/local;1"]
                                  .createInstance(Components.interfaces.nsILocalFile);
@@ -858,7 +859,7 @@ Controller.prototype.exportDocument = function (forcedExporterId) {
             }
         }
 
-        
+
         var pagesDir = null;
         
         var requireRasterizedData = exporter.requireRasterizedData(data.selection);
@@ -895,7 +896,7 @@ Controller.prototype.exportDocument = function (forcedExporterId) {
 
         var thiz = this;
         var starter = null;
-        
+
         var pageExtraInfos = {};
         if (requireRasterizedData) {
             starter = function (listener) {
@@ -934,24 +935,30 @@ Controller.prototype.exportDocument = function (forcedExporterId) {
                             window.setTimeout(rasterizeNext, 100);
                         }, new LinkingGeometryPreprocessor(pageExtraInfo));
                     } catch (e2) {
-                        Console.dumpError(e2, "stdout");
+                        listener.onTaskDone();
+                        Util.error(Util.getMessage("error.title"), e2.message, Util.getMessage("button.cancel.close"));
                     }
                 };
                 rasterizeNext();
             };
         } else {
             starter = function (listener) {
-                thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
+                try {
+                    thiz._exportDocumentToXML(pages, pageExtraInfos, destFile, data.selection, function () {
+                        listener.onTaskDone();
+                        if (destFile) {
+                            Util.showStatusBarInfo("Document has been exported, location: " + destFile.path, true);
+                        } else {
+                            Util.showStatusBarInfo("Document has been exported.", true);
+                        }
+                    });
+                } catch (ex) {
                     listener.onTaskDone();
-                    if (destFile) {
-                        Util.showStatusBarInfo("Document has been exported, location: " + destFile.path, true);
-                    } else {
-                        Util.showStatusBarInfo("Document has been exported.", true);
-                    }
-                });
+                    Util.error(Util.getMessage("error.title"), ex.message, Util.getMessage("button.cancel.close"));
+                }
             };
         }
-        
+
         //take a shower, doit together!!!
         Util.beginProgressJob(Util.getMessage("export.document.to.html"), starter);
     } catch (e) {
@@ -1025,7 +1032,7 @@ Controller.prototype.getFriendlyDocumentName = function () {
 };
 Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, destFile, exportSelection, callback) {
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
-    
+
     var dom = document.implementation.createDocument(PencilNamespaces.p, "Document", null);
 
     //properties
@@ -1158,8 +1165,8 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
             callback();
         });
     } catch (e) {
-        Util.error(Util.getMessage("error.exporting.document"), "" + e);
         Console.dumpError(e);
+        throw e;
     }
 };
 
@@ -1271,18 +1278,18 @@ Controller.prototype.rasterizeSelection = function () {
         //alert("The selected objects cannot be exported\nPlease try selecting a single object or a grouped object set.");
         return;
     }
-    
+
     var padding = 2 * Config.get("export.selection.padding", 0);
-    
+
     //stroke fix?
     var strokeStyle = target.getProperty("strokeStyle");
     if (strokeStyle) {
         padding += strokeStyle.w;
     }
-    
+
     var w = geo.dim.w + padding;
     var h = geo.dim.h + padding;
-    
+
     debug("w: " + w);
 
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
@@ -1296,7 +1303,7 @@ Controller.prototype.rasterizeSelection = function () {
     var svg = document.createElementNS(PencilNamespaces.svg, "svg");
     svg.setAttribute("width", "" + w  + "px");
     svg.setAttribute("height", "" + h  + "px");
-    
+
     var content = target.svg.cloneNode(true);
     content.removeAttribute("transform");
     content.removeAttribute("id");

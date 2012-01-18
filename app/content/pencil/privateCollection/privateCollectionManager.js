@@ -275,7 +275,7 @@ PrivateCollectionManager.installCollectionFromFile = function (file) {
             throw Util.getMessage("collection.specification.is.not.found.in.the.archive");
         }
     } catch (e) {
-        Util.error(Util.getMessage("error.installing.collection"), "" + e);
+        Util.error(Util.getMessage("error.installing.collection"), e.message, Util.getMessage("button.close.label"));
     } finally {
         extractedDir.remove(true);
         return;

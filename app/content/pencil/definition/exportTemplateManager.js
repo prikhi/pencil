@@ -38,8 +38,6 @@ ExportTemplateManager.loadTemplatesIn = function (templateDir) {
 };
 
 ExportTemplateManager.loadUserDefinedTemplates = function () {
-
-
     try {
         var templateDir = ExportTemplateManager.getUserTemplateDirectory();
         ExportTemplateManager.loadTemplatesIn(templateDir);
@@ -60,8 +58,6 @@ ExportTemplateManager.getUserTemplateDirectory = function () {
     return templateDir;
 };
 ExportTemplateManager.loadSystemWideDefinedTemplates = function () {
-
-
     try {
         var templateDir = ExportTemplateManager.getSystemWideTemplateDirectory();
         ExportTemplateManager.loadTemplatesIn(templateDir);
@@ -79,10 +75,28 @@ ExportTemplateManager.getSystemWideTemplateDirectory = function () {
 
     return templateDir;
 };
+ExportTemplateManager.loadDefaultTemplates = function () {
+    try {
+        var templateDir = ExportTemplateManager.getDefaultTemplateDirectory();
+        ExportTemplateManager.loadTemplatesIn(templateDir);
+    } catch (e) {
+        Console.dumpError(e);
+    }
+};
+ExportTemplateManager.getDefaultTemplateDirectory = function () {
+    var properties = Components.classes["@mozilla.org/file/directory_service;1"]
+                     .getService(Components.interfaces.nsIProperties);
 
+    var templateDir = properties.get("CurProcD", Components.interfaces.nsIFile);
+
+    templateDir.append("content");
+    templateDir.append("pencil");
+    templateDir.append("templates");
+    debug("templateDir: " + templateDir.path);
+
+    return templateDir;
+};
 ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type) {
-
-
     //loading all templates
     debug("Loading template in " + templateDir.path);
     try {
@@ -124,6 +138,7 @@ ExportTemplateManager.loadTemplates = function() {
         ExportTemplateManager.templates[type] = [];
     }
 
+    ExportTemplateManager.loadDefaultTemplates();
     ExportTemplateManager.loadSystemWideDefinedTemplates();
     ExportTemplateManager.loadUserDefinedTemplates();
 };
@@ -206,7 +221,7 @@ ExportTemplateManager.installTemplateFromFile = function (file, type) {
         Util.info(Util.getMessage("template.has.been.installed.successfully", template.name));
         ExportTemplateManager.loadTemplates();
     } catch (e) {
-        Util.error(Util.getMessage("error.installing.template"), "" + e);
+        Util.error(Util.getMessage("error.installing.template"), e.message, Util.getMessage("button.close.label"));
         extractedDir.remove(true);
     }
 };
@@ -215,7 +230,7 @@ ExportTemplateManager.uninstallTemplate = function (template) {
         debug("About to remove: " + template.dir.path);
         template.dir.remove(true);
     } catch (e) {
-        Util.error(Util.getMessage("failed.to.uninstall.the.template"), "" + e);
+        Util.error(Util.getMessage("failed.to.uninstall.the.template"), e.message, Util.getMessage("button.close.label"));
         Console.dumpError(e);
     }
 

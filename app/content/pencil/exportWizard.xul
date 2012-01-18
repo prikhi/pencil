@@ -11,14 +11,14 @@
         title="&document.export.wizard.title;"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:html="http://www.w3.org/1999/xhtml"
-        onwizardfinish="ExportWizard.onFinish();">
+        onwizardfinish="return ExportWizard.onFinish();">
 
     <script src="chrome://pencil/content/common/pencilNamespaces.js"/>
     <script src="chrome://pencil/content/common/util.js"/>
     <script src="chrome://pencil/content/exporter/baseExporter.js"/>
     <script src="chrome://pencil/content/exportWizard.js"/>
 
-    <wizardpage description="&wizard.select.output.description;">
+    <wizardpage description="&wizard.select.output.description;" style="min-height:280px;">
         <label value="&label.output.format.value;" class="Primary"/>
         <radiogroup id="exporterRadioGroup" oncommand="ExportWizard.onExporterChanged();">
         </radiogroup>
