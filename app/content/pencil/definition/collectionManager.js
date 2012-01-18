@@ -87,7 +87,6 @@ CollectionManager.loadStencils = function() {
     CollectionManager.shapeDefinition.collections = [];
     CollectionManager.shapeDefinition.shapeDefMap = { };
 
-    alert(1);
     //load all system stencils
     var parser = new ShapeDefCollectionParser();
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Common/Definition.xml"));
