@@ -1,4 +1,4 @@
-#Pencil Frequently asked questions
+#summary Pencil Frequently asked questions
 
 Here is a list of Frequently asked questions related to Pencil.
 
