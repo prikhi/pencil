@@ -7,6 +7,13 @@ Here is a list of Frequently asked questions related to Pencil.
 
 ----
 
+*Where is the main source of inforamtion about this project?
+
+If you want more information about this wonderful wireframing & GUI tool, visit the Product web site http://pencil.evolus.vn
+or the Pencil Project Home at Google Code: http://code.google.com/p/evoluspencil/
+
+----
+
 *How can I zoom the screen in version 1.3?
 
 Use CTRL + mouse scroll wheel
@@ -51,4 +58,3 @@ There is a page on the project's wiki that explain how to use templates:
 http://code.google.com/p/evoluspencil/wiki/UsingTemplates
 
 ----
-
