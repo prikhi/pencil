@@ -58,3 +58,10 @@ There is a page on the project's wiki that explain how to use templates:
 http://code.google.com/p/evoluspencil/wiki/UsingTemplates
 
 ----
+
+*In the table (Basic Web elements) i cannot add more than 3 lines. Any
+suggestions?
+
+To add more lines you should use shift+enter and to separate columns, use the | character.
+
+----
