@@ -21,10 +21,11 @@ If you are using a space in your page/tab title, it will be replaced by an under
 
 use the page note functionality for that.
 
-1. Right click on the page tab - http://db.tt/DCOrfyl4
+1.Right click on the page tab - http://db.tt/DCOrfyl4
 
-2. Select Edit page note - http://db.tt/A9rAS7rT
+2.Select Edit page note - http://db.tt/A9rAS7rT
 
-3. Write down your ideas and design decisions to share - http://db.tt/ObDJXBde
+3.Write down your ideas and design decisions to share - http://db.tt/ObDJXBde
+
 
 This description will be include in your exported documentation.
