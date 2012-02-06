@@ -65,3 +65,15 @@ suggestions?
 To add more lines you should use shift+enter and to separate columns, use the | character.
 
 ----
+
+*How to link 2 pages?
+
+1. create Page1 and Page2
+
+2. In Page1 create an HyperLink which links to Page2
+
+3. Export the project using the HTML template.
+
+4. Open exported version, pages are linked magically ;-)
+
+----
