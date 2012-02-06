@@ -3,7 +3,7 @@
 Here is a list of Frequently asked questions related to Pencil.
 
 
-= General Usage =
+= General =
 
 *How can I zoom the screen in version 1.3
 
@@ -28,4 +28,3 @@ use the page note functionality for that.
 3. Write down your ideas and design decisions to share - http://db.tt/ObDJXBde
 
 This description will be include in your exported documentation.
-
