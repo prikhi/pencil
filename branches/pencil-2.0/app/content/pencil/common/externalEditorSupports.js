@@ -54,7 +54,6 @@ ExternalEditorSupports.handleEditRequest = function (contentProvider, contentRec
                 if (process.isRunning) {
                     window.setTimeout(tracker, 1000);
                 } else {
-                    alert("Process finish!");
                     localFile.remove(true);
                 }
             }
