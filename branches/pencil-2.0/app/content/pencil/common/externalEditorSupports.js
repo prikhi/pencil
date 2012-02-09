@@ -14,9 +14,9 @@ ExternalEditorSupports.getEditorPath = function (extension) {
 
     throw Util.getMessage("unsupported.type", extension);
 };
+ExternalEditorSupports.queue = [];
 
-ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserWrite UniversalBrowserRead");
+ExternalEditorSupports.handleEditRequest = function (contentProvider, contentReceiver) {
     var tmpFile = Local.newTempFile("pencil", contentProvider.extension);
     contentProvider.saveTo(tmpFile, function () {
 
@@ -29,14 +29,11 @@ ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
         var app = Components.classes["@mozilla.org/file/local;1"]
                          .createInstance(Components.interfaces.nsILocalFile);
         var executablePath = ExternalEditorSupports.getEditorPath(contentProvider.extension);
-        alert(executablePath);
         app.initWithPath(executablePath);
 
         var process = Components.classes["@mozilla.org/process/util;1"]
                             .createInstance(Components.interfaces.nsIProcess);
         process.init(app);
-
-        debug(localFile.path);
 
         var args = [localFile.path];
         process.runAsync(args, args.length);
@@ -57,6 +54,7 @@ ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
                 if (process.isRunning) {
                     window.setTimeout(tracker, 1000);
                 } else {
+                    alert("Process finish!");
                     localFile.remove(true);
                 }
             }
@@ -66,4 +64,101 @@ ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
     });
 };
 
+ExternalEditorSupports.edit = function (contentProvider, contentReceiver) {
+    ExternalEditorSupports.queue.push({
+            provider: contentProvider,
+            receiver: contentReceiver
+        });
+};
+
+ExternalEditorSupports.checkQueue = function () {
+    if (ExternalEditorSupports.queue.length > 0) {
+        try {
+            var request = ExternalEditorSupports.queue.pop();
+            ExternalEditorSupports.handleEditRequest(request.provider, request.receiver);
+        } catch (e) {
+            alert(e);
+        }
+    }
+    window.setTimeout(ExternalEditorSupports.checkQueue, 300);
+};
+
+ExternalEditorSupports.editImageData = function (imageData, ext, ownerObject) {
+    var thiz = ownerObject;
+    ExternalEditorSupports.edit({
+            extension: ext,
+            saveTo: function (file, callback) {
+                var io = Components.classes["@mozilla.org/network/io-service;1"]
+                                    .getService(Components.interfaces.nsIIOService);
+                var source = io.newURI(imageData.data, "UTF8", null);
+
+                var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
+                                          .createInstance(Components.interfaces.nsIWebBrowserPersist);
+
+                persist.persistFlags = Components.interfaces.nsIWebBrowserPersist.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
+                persist.persistFlags |= Components.interfaces.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+
+                persist.progressListener = new PersistProgressListener(callback);
+
+                // save the canvas data to the file
+                persist.saveURI(source, null, null, null, null, file);
+            }
+        }, {
+            update: function (file) {
+                window.setTimeout(function () {
+                    var handler = function (imageData) {
+                        var dim = new Dimension(imageData.w, imageData.h);
+                        thiz.setProperty("imageData", imageData);
+                        thiz.setProperty("box", dim);
+                    };
+                    var url = Util.ios.newFileURI(file).spec + "?" + (new Date().getTime());
+
+                    ImageData.fromUrlEmbedded(url, handler);
+                }, 1000);
+            }
+        });
+};
+ExternalEditorSupports.editSVGData = function (originalDim, container, ownerObject) {
+    var svg = document.createElementNS(PencilNamespaces.svg, "svg");
+    svg.setAttribute("width", originalDim.w);
+    svg.setAttribute("height", originalDim.h);
+    
+    var thiz = ownerObject;
+    ExternalEditorSupports.edit({
+        extension: "svg",
+        saveTo: function (file, callback) {
+            if (container.firstChild) {
+                svg.appendChild(document.importNode(container.firstChild, true));
+            }
+
+            Dom.serializeNodeToFile(svg, file);
+            callback();
+        }
+    }, {
+        update: function (file) {
+            debug("Update SVG content from file: " + file.path);
+            //parse the file
+            var fileContents = FileIO.read(file, XMLDocumentPersister.CHARSET);
+            var domParser = new DOMParser();
+            var dom = domParser.parseFromString(fileContents, "text/xml");
+
+            var node = dom.documentElement.firstChild;
+
+            if (dom.documentElement.childNodes.length > 1) {
+                node = dom.createElementNS(PencilNamespaces.svg, "g");
+                for (var i = 0; i < dom.documentElement.childNodes.length; i ++) {
+                    var e = dom.documentElement.childNodes[i].cloneNode(true);
+                    node.appendChild(e);
+                }
+            }
+
+            var content = Dom.serializeNode(node);
+
+            debug(content);
+
+            thiz.setProperty("svgXML", content);
+        }
+    });
+};
 pencilSandbox.ImageData.ExternalEditorSupports = ExternalEditorSupports;
+window.setTimeout(ExternalEditorSupports.checkQueue, 300);
