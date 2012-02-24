@@ -6,6 +6,7 @@ Caption "Pencil"
 Icon "app\icons\default\main-window.ico"
 OutFile "pencil.exe"
 
+RequestExecutionLevel user
 SilentInstall silent
 AutoCloseWindow true
 ShowInstDetails nevershow
