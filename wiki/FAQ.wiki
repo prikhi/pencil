@@ -1,4 +1,5 @@
 #summary Pencil Frequently asked questions
+#labels Featured
 
 Here is a list of Frequently asked questions related to Pencil.
 
