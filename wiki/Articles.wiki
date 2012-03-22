@@ -1,4 +1,5 @@
 #summary Articles about Pencil
+#labels Featured
 
 = Articles =
 
