@@ -1,0 +1,31 @@
+#Articles about Pencil
+
+= Articles =
+
+This is a collection of articles about Pencil from the web.
+
+If you've written an article about Pencil and would like it listed here, let us know! 
+
+
+== English ==
+
+ 
+*[http://www.dedoimedo.com/computers/pencil.html Pencil Project - The GUI prototyping tool]*
+
+Review of the Pencil Project, a free, open-source, cross-platform GUI prototyping tool available as standalone program or Firefox addon, which allows you to ...
+
+*[http://imar.spaanjaars.com/539/sketch-and-prototype-tools-review-part-4-pencil Sketch and Prototype Tools Review - Part 4 - Pencil ]*
+
+This is part four in a multi-part series on Sketching and Prototype Tools. In this part we talk about Pencil.
+
+* [http://mozillalinks.org/2008/07/fast-prototyping/ Fast prototyping and sketching with Pencil] * 
+
+Duong Thanh An, has just released Pencil, a simple and efficient open source tool to create user interface prototypes with native Windows and ...
+
+
+== French ==
+
+* [http://www.kgaut.net/journal/pencil-logiciel-gratuit-de-prototyping.html Pencil logiciel gratuit de prototyping ]*
+
+Je suis tombé par hasard sur un logiciel opensource qui permet de faire des prototypes d'interfaces graphiques, web ou logicielle, facilement ...
+
