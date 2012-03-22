@@ -1,4 +1,4 @@
-#Articles about Pencil
+#summary Articles about Pencil
 
 = Articles =
 
@@ -28,4 +28,3 @@ Duong Thanh An, has just released Pencil, a simple and efficient open source too
 * [http://www.kgaut.net/journal/pencil-logiciel-gratuit-de-prototyping.html Pencil logiciel gratuit de prototyping ]*
 
 Je suis tombé par hasard sur un logiciel opensource qui permet de faire des prototypes d'interfaces graphiques, web ou logicielle, facilement ...
-
