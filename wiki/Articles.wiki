@@ -10,6 +10,10 @@ If you've written an article about Pencil and would like it listed here, let us 
 
 == English ==
 
+*[http://speckyboy.com/2010/01/11/10-completely-free-wireframe-and-mockup-applications/ 10 Completely Free Wireframe and Mockup Applications]*
+
+Wireframe - Mockup Free Tools The popular and fairly powerful Pencil Project is a free and opensource Firefox addon tool for making diagrams ...
+
  
 *[http://www.dedoimedo.com/computers/pencil.html Pencil Project - The GUI prototyping tool]*
 
@@ -25,6 +29,10 @@ Duong Thanh An, has just released Pencil, a simple and efficient open source too
 
 
 == French ==
+
+*[http://aroundme.fr/2011/05/17/pencil-un-puissant-outil-de-wireframes/ Pencil : un puissant outil de Wireframes]*
+
+Pencil est un outil de Wireframes que j'ai découvert durant mon stage. Pour commencer, qu'est ce qu'un Wireframe ...
 
 * [http://www.kgaut.net/journal/pencil-logiciel-gratuit-de-prototyping.html Pencil logiciel gratuit de prototyping ]*
 
