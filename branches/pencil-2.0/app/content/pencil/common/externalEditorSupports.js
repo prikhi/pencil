@@ -155,6 +155,14 @@ ExternalEditorSupports.editSVGData = function (originalDim, container, ownerObje
 
             debug(content);
 
+            var w = dom.documentElement.getAttribute("width");
+            var h = dom.documentElement.getAttribute("height");
+            
+            if (w && h) {
+                var originalDim = new Dimension(Math.round(parseFloat(w)), Math.round(parseFloat(h)));
+                thiz.setProperty("originalDim", originalDim);
+            }
+            
             thiz.setProperty("svgXML", content);
         }
     });

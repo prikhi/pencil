@@ -202,36 +202,61 @@
                     collection._shapeCount = 0;
 
                     var thiz = this;
-                    for (var i in collection.shapeDefs) {
-                        var def = collection.shapeDefs[i];
-                        if (def.system) continue;
-                        var button = document.createElementNS(PencilNamespaces.html, "div");
-                        button._def = def;
-                        button.setAttribute("title", def.displayName);
-                        div.appendChild(button);
+                    if (collection.customLayout) {
+                        var importedLayout = div.ownerDocument.importNode(collection.customLayout, true);
+                        div.appendChild(importedLayout);
+                        div.setAttribute("class", "CustomLayoutContent");
+                        Dom.workOn(".//html:*[@ref]", div, function (node) {
+                            var ref = node.getAttribute("ref");
+                            if (ref.indexOf(":") < 0) ref = collection.id + ":" + ref;
+                            var def = collection.getShapeDefById(ref);
+                            if (!def) {
+                                def = collection.getShortcutByDisplayName(ref);
+                            }
+                            
+                            if (def) {
+                                node._def = def;
+                                node.setAttribute("ptype", def.constructor.name);
+                                node.addEventListener("draggesture", function (event) {
+                                    thiz.handleDragStart(event);
+                                }, false);
 
-                        collection._shapeCount++;
+                            }
+                        });
+                        //alert(collection.customLayout.innerHTML);
+                    } else {
+                        for (var i in collection.shapeDefs) {
+                            var def = collection.shapeDefs[i];
+                            if (def.system) continue;
+                            var button = document.createElementNS(PencilNamespaces.html, "div");
+                            button._def = def;
+                            button.setAttribute("title", def.displayName);
+                            div.appendChild(button);
 
-                        button.addEventListener("draggesture", function (event) {
-                            thiz.handleDragStart(event);
-                        }, false);
+                            collection._shapeCount++;
 
-                        var image = document.createElementNS(PencilNamespaces.html, "img");
-                        image.onError = function () {
-                            div.setAttribute("noimage", true);
-                        };
-                        image.setAttribute("src", def.iconPath);
-                        var imageContainer = document.createElementNS(PencilNamespaces.html, "div");
-                        imageContainer.setAttribute("class", "Container");
-                        imageContainer.appendChild(image);
-                        button.appendChild(imageContainer);
+                            button.addEventListener("draggesture", function (event) {
+                                thiz.handleDragStart(event);
+                            }, false);
 
-                        var label = document.createElementNS(PencilNamespaces.html, "label");
-                        label.appendChild(document.createTextNode(def.displayName));
-                        button.appendChild(label);
+                            var image = document.createElementNS(PencilNamespaces.html, "img");
+                            image.onError = function () {
+                                div.setAttribute("noimage", true);
+                            };
+                            image.setAttribute("src", def.iconPath);
+                            var imageContainer = document.createElementNS(PencilNamespaces.html, "div");
+                            imageContainer.setAttribute("class", "Container");
+                            imageContainer.appendChild(image);
+                            button.appendChild(imageContainer);
 
-                        button.setAttribute("ptype", def.constructor.name);
+                            var label = document.createElementNS(PencilNamespaces.html, "label");
+                            label.appendChild(document.createTextNode(def.displayName));
+                            button.appendChild(label);
+
+                            button.setAttribute("ptype", def.constructor.name);
+                        }
                     }
+
                 ]]>
                 </body>
             </method>

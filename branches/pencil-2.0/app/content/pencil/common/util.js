@@ -1241,10 +1241,12 @@ if (typeof(console) == "undefined") {
 }
 
 function debug(value) {
+/*
     var out = document.getElementById("out");
     if (out) {
         out.innerHTML = value + "\n" + out.innerHTML;
     }
+*/
     if (true) {
         Components.classes['@mozilla.org/consoleservice;1']
 	            .getService(Components.interfaces.nsIConsoleService)
@@ -1438,6 +1440,10 @@ Util.getFileExtension = function (path) {
     return null;
 };
 
+function stencilDebug(x) {
+    alert(x);
+}
+
 window.addEventListener("DOMContentLoaded", function () {
     document.documentElement.setAttribute("platform", navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux");
     Util.platform = navigator.platform.indexOf("Linux") < 0 ? "Other" : "Linux";
@@ -1470,6 +1476,9 @@ function pEval(expression, extra) {
             pencilSandbox[name] = extra[name];
         }
     }
+    
+    pencilSandbox.importFunction(stencilDebug);
+    
     try {
         //debug("eval: " + expression);
         for (var pa = 0; pa < propertyTypeArray.length; pa++) {

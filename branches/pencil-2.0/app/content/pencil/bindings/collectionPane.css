@@ -133,7 +133,8 @@ pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child:hover label {
     opacity: .5;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div > p,
-pcollectionpane *[pcollapsed='true'].Collection .Content {
+pcollectionpane *[pcollapsed='true'].Collection .Content,
+pcollectionpane *[pcollapsed='true'].Collection .CustomLayoutContent {
     display: none;
 }
 pcollectionpane .Collection .Content {
