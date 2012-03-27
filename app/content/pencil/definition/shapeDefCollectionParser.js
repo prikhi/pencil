@@ -136,9 +136,43 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
         Console.dumpError(e, "stdout");
     }
 };
+ShapeDefCollectionParser.prototype.loadCustomLayout = function (uri) {
+    var url = uri.toString();
+    var layoutUri = url.replace(/Definition\.xml$/, "Layout.html");
+    try {
+        var request = new XMLHttpRequest();
+        request.open("GET", layoutUri, false);
+        request.send("");
+        var dom = request.responseXML;
+        if (dom && request.status != 404) {
+            Dom.workOn("//html:img[@src]", dom, function (image) {
+                var src = image.getAttribute("src");
+                if (src && src.indexOf("data:image") != 0) {
+                    src = url.substring(0, url.lastIndexOf("/") + 1) + src;
+                    image.setAttribute("src", src);
+                }
+            });
+            
+            var items = Dom.getList("//html:body/*", dom);
+            var div = dom.createElementNS(PencilNamespaces.html, "div");
+            for (var i = 0; i < items.length; i ++) {
+                var node = items[i];
+                div.appendChild(node);
+            }
+            
+            return div;
+        }
+    } catch (ex) {
+        //throw ex;
+    }
+    
+    return null;
+};
 /* public ShapeDefCollection */ ShapeDefCollectionParser.prototype.parse = function (dom, uri) {
     var collection = new ShapeDefCollection();
     collection.url = uri ? uri : dom.documentURI;
+    
+    collection.customLayout = this.loadCustomLayout(collection.url);
 
     var s1 = collection.url.toString();
     var s2 = window.location.href.toString();
