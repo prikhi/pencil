@@ -143,22 +143,30 @@ ShapeDefCollectionParser.prototype.loadCustomLayout = function (uri) {
         var request = new XMLHttpRequest();
         request.open("GET", layoutUri, false);
         request.send("");
-        var dom = request.responseXML;
-        if (dom && request.status != 404) {
-            Dom.workOn("//html:img[@src]", dom, function (image) {
+        
+        var html = request.responseText;
+        
+        if (html && request.status != 404) {
+            var div = document.createElementNS(PencilNamespaces.html, "div");
+            html = html.replace(/^.*<body[^>]*>/i, "").replace(/<\/body>.*$/i, "");
+            html = html.replace(/style="([^"]+)"/gi, "title=\"$1\"");
+            var parser = Components.classes["@mozilla.org/feed-unescapehtml;1"]
+                            .getService(Components.interfaces.nsIScriptableUnescapeHTML);
+            var fragment = parser.parseFragment(html, false, null, div);
+            div.appendChild(fragment);
+            
+            Dom.workOn("//html:img[@src]", div, function (image) {
                 var src = image.getAttribute("src");
                 if (src && src.indexOf("data:image") != 0) {
                     src = url.substring(0, url.lastIndexOf("/") + 1) + src;
                     image.setAttribute("src", src);
                 }
             });
-            
-            var items = Dom.getList("//html:body/*", dom);
-            var div = dom.createElementNS(PencilNamespaces.html, "div");
-            for (var i = 0; i < items.length; i ++) {
-                var node = items[i];
-                div.appendChild(node);
-            }
+            Dom.workOn("//*[@title]", div, function (node) {
+                var title = node.getAttribute("title");
+                node.removeAttribute("title");
+                node.setAttribute("style", title);
+            });
             
             return div;
         }

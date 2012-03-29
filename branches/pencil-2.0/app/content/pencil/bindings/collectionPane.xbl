@@ -206,8 +206,8 @@
                         var importedLayout = div.ownerDocument.importNode(collection.customLayout, true);
                         div.appendChild(importedLayout);
                         div.setAttribute("class", "CustomLayoutContent");
-                        Dom.workOn(".//html:*[@ref]", div, function (node) {
-                            var ref = node.getAttribute("ref");
+                        Dom.workOn(".//html:*[@id]", div, function (node) {
+                            var ref = node.getAttribute("id");
                             if (ref.indexOf(":") < 0) ref = collection.id + ":" + ref;
                             var def = collection.getShapeDefById(ref);
                             if (!def) {
