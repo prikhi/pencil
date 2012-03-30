@@ -351,6 +351,7 @@
                                     <menuitem label="&menu.dom.inspector.label;" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
                                     <menuitem label="&menu.install.new.collection.label;" command="installNewCollectionCommand"/>
                                     <menuitem label="&menu.manage.template.label;" command="manageExportTemplateCommand"/>
+                                    <menuitem label="Export as Layout..." oncommand="Pencil.controller._exportAsLayout()"/>
                                     <menuseparator/>
                                     <menuitem id="menu_preferences" class="menuitem-iconic options-menu" label="&menu.options.label;" oncommand="window.openDialog('chrome://pencil/content/settingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
                                 </menupopup>
@@ -425,7 +426,7 @@
         <spacer style="min-width:3px;"/>
         <stack flex="1" id="mainBoxStack">
             <hbox>
-                <tabbox id="sideBox" width="300" persist="width" style="display:none;">
+                <tabbox id="sideBox" width="300" persist="width" style="display:none;" onresize="alert(0);">
                     <tabs id="sideBoxTabs">
                         <tab label="&tab.collections.label;" class="tabbrowser-tab"/>
                         <tab label="&tab.my.stuffs.label;" class="tabbrowser-tab"/>
