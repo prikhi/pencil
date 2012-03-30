@@ -10,6 +10,14 @@ If you've written an article about Pencil and would like it listed here, let us 
 
 == English ==
 
+*[http://www.howtogeek.com/53294/use-firefox-to-create-simple-mockups/ Use Firefox to Create Simple Mockups]*
+
+A "Getting Started with Pencil" by How-to geek 
+
+*[http://www.graphicrating.com/2009/10/05/creating-wireframes-with-pencil-firefox-addon/ Creating Wireframes with Pencil (Firefox Addon) | Graphic Rating]*
+
+A tutorial on how to create wireframes using Pencil.
+
 *[http://speckyboy.com/2010/01/11/10-completely-free-wireframe-and-mockup-applications/ 10 Completely Free Wireframe and Mockup Applications]*
 
 Wireframe - Mockup Free Tools The popular and fairly powerful Pencil Project is a free and opensource Firefox addon tool for making diagrams ...
