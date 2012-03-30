@@ -30,6 +30,10 @@ Duong Thanh An, has just released Pencil, a simple and efficient open source too
 
 == French ==
 
+* [http://korben.info/pencil-un-clone-open-source-de-visio-pour-creer-des-maquettes-de-sites-ou-dapplications.html Pencil, un clone open source de Visio pour créer des maquettes de sites ou d’applications]*
+
+Pencil Project est une application open source qui va venir concurrencer la partie design d'application de Microsoft Visio ...
+
 *[http://aroundme.fr/2011/05/17/pencil-un-puissant-outil-de-wireframes/ Pencil : un puissant outil de Wireframes]*
 
 Pencil est un outil de Wireframes que j'ai découvert durant mon stage. Pour commencer, qu'est ce qu'un Wireframe ...
