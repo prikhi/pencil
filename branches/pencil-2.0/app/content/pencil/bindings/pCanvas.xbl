@@ -509,6 +509,10 @@
                     var shape = this.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
                     shape.setAttributeNS(PencilNamespaces.p, "p:type", "Shape");
                     shape.setAttributeNS(PencilNamespaces.p, "p:def", shapeDef.id);
+                    if (overridingValueMap && overridingValueMap._shortcut) {
+                        shape.setAttributeNS(PencilNamespaces.p, "p:sc",
+                                overridingValueMap._shortcut.displayName);
+                    }
 
                     shape.appendChild(this.ownerDocument.createElementNS(PencilNamespaces.p, "p:metadata"));
 

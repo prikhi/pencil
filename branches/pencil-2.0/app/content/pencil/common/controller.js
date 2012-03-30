@@ -1340,6 +1340,166 @@ Controller.prototype.sizeToContent = function (passedPage, askForPadding) {
     }
 };
 
+Controller.prototype._exportAsLayout = function () {
+    var page = this.getCurrentPage();
+    var container = page._view.canvas.drawingLayer;
+    
+    var pw = parseFloat(page.properties.width);
+    var ph = parseFloat(page.properties.height);
+    
+    var items = [];
+    
+    Dom.workOn("//svg:g[@p:type='Shape']", container, function (g) {
+            var dx = 0; //rect.left;
+            var dy = 0; //rect.top;
+
+            var owner = g.ownerSVGElement;
+
+            if (owner.parentNode && owner.parentNode.getBoundingClientRect) {
+                var rect = owner.parentNode.getBoundingClientRect();
+                dx = rect.left;
+                dy = rect.top;
+            }
+
+            debug("dx, dy: " + [dx, dy]);
+
+            rect = g.getBoundingClientRect();
+            var refId = g.getAttributeNS(PencilNamespaces.p, "sc");
+            if (!refId) {
+                refId = g.getAttributeNS(PencilNamespaces.p, "def");
+            }
+            
+            refId = refId.replace(/^system:ref:/, "");
+            
+            var linkingInfo = {
+                node: g,
+                refId: refId,
+                geo: {
+                    x: rect.left - dx,
+                    y: rect.top - dy,
+                    w: rect.width,
+                    h: rect.height
+                }
+            };
+//            if (!linkingInfo.refId) return;
+
+            items.push(linkingInfo);
+    });
+    
+    var nsIFilePicker = Components.interfaces.nsIFilePicker;
+    var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, "Select folder", nsIFilePicker.modeGetFolder);
+    fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
+
+    if (fp.show() == nsIFilePicker.returnCancel) return false;
+    
+    var dir = fp.file;
+    dir.append("Shapes");
+    if (!dir.exists()) {
+        dir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0777);  
+    }
+
+    var current = 0;
+    var done = function () {
+        var html = document.createElementNS(PencilNamespaces.html, "html");
+        
+        var body = document.createElementNS(PencilNamespaces.html, "body");
+        html.appendChild(body);
+        
+        var div = document.createElementNS(PencilNamespaces.html, "div");
+        div.setAttribute("style", "position: relative; width: 100%;");
+        body.appendChild(div);
+        
+        var canvas = document.createElementNS(PencilNamespaces.html, "canvas");
+        canvas.setAttribute("width", pw);
+        canvas.setAttribute("height", ph);
+        
+        var bg = document.createElementNS(PencilNamespaces.html, "img");
+        bg.setAttribute("style", "width: 100%;");
+        bg.setAttribute("src", canvas.toDataURL("image/png"));
+        div.appendChild(bg);
+        
+        for (var i = 0; i < items.length; i ++) {
+            var link = items[i];
+            var img = document.createElementNS(PencilNamespaces.html, "img");
+            img.setAttribute("src", "Shapes/" + link.path);
+            img.setAttribute("ref", link.refId);
+            img.setAttribute("id", link.refId);
+            var css = new CSS();
+            css.set("position", "absolute");
+            css.set("left", "" + (100 * link.geo.x / pw) + "%");
+            css.set("top", "" + (100 * link.geo.y / ph) + "%");
+            css.set("width", "" + (100 * link.geo.w / pw) + "%");
+            css.set("height", "" + (100 * link.geo.h / ph) + "%");
+            img.setAttribute("style", css.toString());
+            
+            div.appendChild(img);
+        }
+        
+        dir = dir.parent;
+        dir.append("Layout.html");
+        if (dir.exists()) dir.remove(true);
+        Dom.serializeNodeToFile(html, dir, "");
+    };
+    
+    var next = function  (listener) {
+        if (current >= items.length) {
+            done();
+            listener.onTaskDone();        
+            return;
+        }
+
+        var link = items[current];
+        
+        var padding = 2 * Config.get("export.selection.padding", 0);
+        var target = page._view.canvas.createControllerFor(link.node);
+        
+        var geo = target.getGeometry();
+
+        //stroke fix?
+        var strokeStyle = target.getProperty("strokeStyle");
+        if (strokeStyle) {
+            padding += 2 * strokeStyle.w;
+        }
+        
+        var w = geo.dim.w + padding;
+        var h = geo.dim.h + padding;
+
+        debug("w: " + w);
+        
+        var fileName = "" + current + ".png";
+        dir.append(fileName);
+        var path = dir.path;
+        
+        dir = dir.parent;
+
+        var svg = document.createElementNS(PencilNamespaces.svg, "svg");
+        svg.setAttribute("width", "" + w  + "px");
+        svg.setAttribute("height", "" + h  + "px");
+
+        var content = target.svg.cloneNode(true);
+        content.removeAttribute("transform");
+        content.removeAttribute("id");
+
+        try  {
+            var dx = Math.round((w - geo.dim.w) / 2);
+            var dy = Math.round((h - geo.dim.h) / 2);
+            content.setAttribute("transform", "translate(" + dx + ", " + dy + ")");
+        } catch (e) {
+            Console.dumpError(e);
+        }
+        svg.appendChild(content);
+
+        Pencil.rasterizer.rasterizeDOM(svg, path, function () {
+            link.path = fileName;
+            current ++;
+            listener.onProgressUpdated("Rasterizing", current, items.length);
+            next(listener);
+        });
+    };
+    Util.beginProgressJob("Exporting layout", next);
+};
+
 function LinkingGeometryPreprocessor(pageExtraInfo) {
     this.pageExtraInfo = pageExtraInfo;
 }

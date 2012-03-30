@@ -233,6 +233,7 @@ ShapeShortcutDragObserver.prototype = {
         var shortcut = CollectionManager.shapeDefinition.locateShortcut(defId);
         var def = shortcut.shape;
         var overridingValueMap = shortcut.propertyMap;
+        overridingValueMap._shortcut = shortcut;
 
         var loc = this.canvas.getEventLocation(event);
 
