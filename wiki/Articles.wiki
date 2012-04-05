@@ -38,7 +38,12 @@ Duong Thanh An, has just released Pencil, a simple and efficient open source too
 
 == French ==
 
+*[http://www.webaaz.com/2010/03/pencil-sketching/ Maquettage avec Pencil Sketching]*
+
+Un outil prometteur à tester !
+
 *[http://www.planet-libre.org/index.php?post_id=5931 Planet Libre - Wireframing avec Pencil]*
+
 Pencil est un logiciel libre de prototypage d'interface graphique : il permet de créer facilement des maquettes à partir d'éléments prédéfinis (boutons, cadres, ...
 
 *[http://korben.info/pencil-un-clone-open-source-de-visio-pour-creer-des-maquettes-de-sites-ou-dapplications.html Pencil, un clone open source de Visio pour créer des maquettes de sites ou d’applications]*
