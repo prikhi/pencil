@@ -221,7 +221,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
             <Action id="generateLoremLongRichTextBox" displayName="Generate Long Random Texts">
                 <Impl>
                         <![CDATA[
-                            this.setProperty("textContent", RichText.fromLoremIpsum(45));
+                            this.setProperty("textContent", RichText.fromLoremIpsum(65));
                             this.setProperty("fixedWidth", new Bool(true));
                         ]]>
                 </Impl>
@@ -274,8 +274,8 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
         </Properties>
         <Behaviors>
             <For ref="rrRect">
-                <Box>$box.narrowed($strokeStyle.w % 2 == 0 ? 0 : 1)</Box>
-                <Transform>[translate(($strokeStyle.w % 2 == 0 ? 0 : 0.5), ($strokeStyle.w % 2 == 0 ? 0 : 0.5))]</Transform>
+                <Box>$box.narrowed($strokeStyle.w)</Box>
+                <Transform>[translate(($strokeStyle.w / 2), ($strokeStyle.w / 2))]</Transform>
                 <Fill>$fillColor</Fill>
                 <StrokeColor>$strokeColor</StrokeColor>
                 <StrokeStyle>$strokeStyle</StrokeStyle>
@@ -319,6 +319,23 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                         ]]>
                         </Impl>
             </Action>
+            <Action id="getSnappingGuide">
+                <Impl>
+                    <![CDATA[
+                        var b = this.getBounding();
+                        var sw = this.getProperty("strokeStyle").w;
+                        var w = this.getProperty("box").w;
+                        var h = this.getProperty("box").h;
+                        return [
+                            new SnappingData("Left", b.x - sw / 2, "Left", true, this.id),
+                            new SnappingData("Top", b.y - sw / 2 , "Top", false, this.id),
+                            new SnappingData("Right", b.x - sw / 2 + w, "Right", true, this.id),
+                            new SnappingData("Bottom", b.y - sw / 2 + h, "Bottom", false, this.id)
+                        ]
+                    ]]>
+                </Impl>
+            </Action>
+            
         </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
 

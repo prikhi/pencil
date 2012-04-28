@@ -260,6 +260,32 @@ GeometryEditor.prototype.handleMouseDown = function (event) {
     this._minY2 = r == 0 ? minY2 : (minY2 + grid.y - r);
 
     this._minDim = minDim;
+    
+    try {
+        var guides = this.canvas.currentController.getSnappingGuide();
+        this._lastGuides = {
+            left: null,
+            top: null,
+            bottom: null,
+            right: null
+        };
+        
+        
+        for (var i = 0; i < guides.vertical.length; i ++) {
+            var guide = guides.vertical[i];
+            debug([guide.type, guide.pos]);
+            if (guide.type == "Left") this._lastGuides.left = guide;
+            if (guide.type == "Right") this._lastGuides.right = guide;
+        }
+        for (var i = 0; i < guides.horizontal.length; i ++) {
+            var guide = guides.horizontal[i];
+            debug([guide.type, guide.pos]);
+            if (guide.type == "Top") this._lastGuides.top = guide;
+            if (guide.type == "Bottom") this._lastGuides.bottom = guide;
+        }
+    } catch (e) {
+        Console.dumpError(e);
+    }
 };
 
 GeometryEditor.prototype.handleMouseUp = function (event) {
@@ -360,7 +386,7 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
 
     var controller = this.canvas.currentController;
     var bound = controller.getBounding();
-
+    
     //HORIZONTAL
     if (!locking.width) {
         dx = matrix.dx * mdx;
@@ -376,10 +402,11 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             var delta = newXNormalized - newX;
 
             if (!locking.ratio) {
+                var snapping = this._lastGuides.left ? this._lastGuides.left.clone() :
+                            new SnappingData("Left", bound.x, "Left", true, Util.newUUID());
+                snapping.pos += dx;
                 var snap = this.canvas.snappingHelper.findSnapping(true, false, {
-                    vertical: [
-                        new SnappingData("Left", bound.x + dx, "Left", true, Util.newUUID())
-                    ], horizontal: []
+                    vertical: [ snapping ], horizontal: []
                 }, (grid.w / 2) - 1);
 
                 if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
@@ -409,10 +436,12 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             var delta = newX2Normalized - newX2;
 
             if (!locking.ratio) {
+                var snapping = this._lastGuides.right ? this._lastGuides.right.clone() :
+                new SnappingData("Right", bound.x + bound.width, "Right", true, Util.newUUID());
+                snapping.pos += dw;
+
                 var snap = this.canvas.snappingHelper.findSnapping(true, false, {
-                    vertical: [
-                        new SnappingData("Right", bound.x + bound.width + dw, "Right", true, Util.newUUID())
-                    ], horizontal: []
+                    vertical: [snapping], horizontal: []
                 }, (grid.w / 2) - 1);
                 if (snap && (snap.dx != 0 && !this.canvas.snappingHelper.snappedX)) {
                     this.canvas.snappingHelper.snappedX = true;
@@ -450,11 +479,13 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             var delta = newYNormalized - newY;
 
             if (!locking.ratio) {
+                var snapping = this._lastGuides.top ? this._lastGuides.top.clone() :
+                new SnappingData("Top", bound.y, "Top", true, Util.newUUID());
+                snapping.pos += dy;
+
                 var snap = this.canvas.snappingHelper.findSnapping(false, true, {
                     vertical: [],
-                    horizontal: [
-                        new SnappingData("Top", bound.y + dy, "Top", true, Util.newUUID())
-                    ]
+                    horizontal: [snapping]
                 }, (grid.w / 2) - 1);
                 if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
                     this.canvas.snappingHelper.snappedY = true;
@@ -482,11 +513,14 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             var delta = newY2Normalized - newY2;
 
             if (!locking.ratio) {
+                var snapping = this._lastGuides.bottom ? this._lastGuides.bottom.clone() :
+                new SnappingData("Bottom", bound.y + bound.height, "Bottom", true, Util.newUUID());
+                snapping.pos += dh;
+
+
                 var snap = this.canvas.snappingHelper.findSnapping(false, true, {
                     vertical: [],
-                    horizontal: [
-                        new SnappingData("Bottom", bound.y + bound.height + dh, "Bottom", true, Util.newUUID())
-                    ]
+                    horizontal: [snapping]
                 }, (grid.w / 2) - 1);
                 if (snap && (snap.dy != 0 && !this.canvas.snappingHelper.snappedY)) {
                     this.canvas.snappingHelper.snappedY = true;
