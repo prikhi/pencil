@@ -14,6 +14,9 @@
 
 <?xul-overlay href="chrome://pencil/content/textToolOverlay.xul"?>
 <?xul-overlay href="chrome://pencil/content/colorToolOverlay.xul"?>
+<!--
+<?xul-overlay href="chrome://pencil/content/androidSupportOverlay.xul"?>
+-->
 
 <window
         title="&pencil.title;"
@@ -123,6 +126,9 @@
     <script src="chrome://pencil/content/exporter/ooConversionExporter.js"/>
 
     <script src="chrome://pencil/content/common/colorDroppers.js"/>
+    <!--
+    <script src="chrome://pencil/content/common/androidSupports.js"/>
+    -->
 
     <commandset>
         <command id="newDocumentCommand" oncommand="Pencil.controller.newDocument();"/>
@@ -351,7 +357,9 @@
                                     <menuitem label="&menu.dom.inspector.label;" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
                                     <menuitem label="&menu.install.new.collection.label;" command="installNewCollectionCommand"/>
                                     <menuitem label="&menu.manage.template.label;" command="manageExportTemplateCommand"/>
+                                    <!--
                                     <menuitem label="Export as Layout..." oncommand="Pencil.controller._exportAsLayout()"/>
+                                    -->
                                     <menuseparator/>
                                     <menuitem id="menu_preferences" class="menuitem-iconic options-menu" label="&menu.options.label;" oncommand="window.openDialog('chrome://pencil/content/settingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
                                 </menupopup>
