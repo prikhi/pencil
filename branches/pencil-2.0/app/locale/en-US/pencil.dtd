@@ -95,8 +95,8 @@
 <!ENTITY pencil.title                            "Pencil">
 <!ENTITY tab.collections.label                   "Collections">
 <!ENTITY tab.collections.label                   "Collections">
-<!ENTITY tab.my.stuffs.label                     "My Stuffs">
-<!ENTITY tab.my.stuffs.label                     "My Stuffs">
+<!ENTITY tab.my.stuffs.label                     "My Stuff">
+<!ENTITY tab.my.stuffs.label                     "My Stuff">
 <!ENTITY toolbar.align.bottom.label              "Align bottom">
 <!ENTITY toolbar.align.bottom.tooltiptext        "Align bottom">
 <!ENTITY toolbar.align.center.label              "Align center">

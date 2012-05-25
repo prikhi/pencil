@@ -88,18 +88,19 @@ fedorarpm()  {
 
     export OUTPUT=$BUILDROOT/usr/lib/evolus-pencil-$VERSION
     mkdir -p $OUTPUT/
-    cp -R ./XULRunner/* $OUTPUT/
+    cp -R ./Outputs/Pencil/* $OUTPUT/
+    cp ../app/defaults/preferences/personal.js.xulrunner $OUTPUT/defaults/preferences/xre.js
+    
     ./replacer.sh $OUTPUT/application.ini
 
-    mkdir -p $OUTPUT/chrome/content/
-    cp -R ./Outputs/Pencil/* $OUTPUT/chrome/content/
     mkdir -p $OUTPUT/chrome/icons/default/
-    cp ./Outputs/Pencil/Icons/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
-    cp ./Outputs/Pencil/Icons/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
+    cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
+    cp ./Outputs/Pencil/skin/classic/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
 
     cp -R ./Fedora-RPM/* ./Outputs/RPM/
     ./replacer.sh $BUILDROOT/usr/bin/evoluspencil
     chmod 775 $BUILDROOT/usr/bin/evoluspencil
+    ./replacer.sh $BUILDROOT/usr/share/applications/evolus-pencil.desktop
 
     ./replacer.sh ./Outputs/RPM/evolus-pencil.spec
 
@@ -169,11 +170,11 @@ cleanup() {
 }
 
 prep
-xpi
+#xpi
 #linux
-win32
-mac
-#fedorarpm
+#win32
+#mac
+fedorarpm
 cleanup
 
 echo "Done!"

@@ -113,6 +113,10 @@ pcollectionpane .Collection > hbox:first-child div > p {
 }
 pcollectionpane .Collection > hbox:first-child div {
 }
+pcollectionpane .Collection .CustomLayoutContent {
+    height: auto !important;
+    background: blue;
+}
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child {
     opacity: .7;
 }

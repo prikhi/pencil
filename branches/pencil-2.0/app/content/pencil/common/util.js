@@ -1400,6 +1400,154 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
     channel.notificationCallbacks = listener;
     channel.asyncOpen(listener, null);
 };
+Net.submitMultiplart = function (url, parts, externalListener, options) {
+
+    var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                                .getService(Components.interfaces.nsIIOService);
+
+    var uri = ioService.newURI(url, null, null);
+    var channel = ioService.newChannelFromURI(uri);
+
+    var httpChannel = channel.QueryInterface(Components.interfaces.nsIHttpChannel);
+    
+    var listener = {
+        foStream: null,
+        file: downloadTargetFile,
+        listener: externalListener,
+        size: 0,
+
+        writeMessage: function (message) {
+            if (this.listener && this.listener.onMessage) {
+                this.listener.onMessage(message);
+            }
+        },
+        onStartRequest: function (request, context) {
+            this.writeMessage("Request started");
+        },
+        onDataAvailable: function (request, context, stream, sourceOffset, length) {
+        },
+        onStopRequest: function (request, context, status) {
+            this.foStream.close();
+            this.writeMessage("Done");
+            this.listener.onDone();
+        },
+        onChannelRedirect: function (oldChannel, newChannel, flags) {
+        },
+        getInterface: function (aIID) {
+            try {
+                return this.QueryInterface(aIID);
+            } catch (e) {
+                throw Components.results.NS_NOINTERFACE;
+            }
+        },
+        onProgress : function (aRequest, aContext, aProgress, aProgressMax) { },
+        onStatus : function (aRequest, aContext, aStatus, aStatusArg) {
+            this.writeMessage("onStatus: " + [aRequest, aContext, aStatus, aStatusArg]);
+        },
+        onRedirect : function (aOldChannel, aNewChannel) { },
+
+        QueryInterface : function(aIID) {
+            if (aIID.equals(Components.interfaces.nsISupports) ||
+                aIID.equals(Components.interfaces.nsIInterfaceRequestor) ||
+                aIID.equals(Components.interfaces.nsIChannelEventSink) ||
+                aIID.equals(Components.interfaces.nsIProgressEventSink) ||
+                aIID.equals(Components.interfaces.nsIHttpEventSink) ||
+                aIID.equals(Components.interfaces.nsIStreamListener)) {
+
+                return this;
+            }
+
+            throw Components.results.NS_NOINTERFACE;
+        }
+    }; //listener
+    
+    var stream = Components.classes["@mozilla.org/io/multiplex-input-stream;1"]
+                            .createInstance(Components.interfaces.nsIMultiplexInputStream)
+                            .QueryInterface(Components.interfaces.nsIInputStream);
+                            
+    var boundary = "--------PENCIL--" + new Date().getTime();
+    var boundaryStart = "\r\n--" + boundary + "\r\n" ;
+    var boundaryEnd = "\r\n--" + boundary + "--" ;
+                            
+    for (var i = 0; i < parts.length; i ++) {
+        var part = parts[i];
+        if (part.file) {
+            //append the open boundary   
+            stream.appendStream(Net.createSimpleTextStream(boundaryStart));
+            
+            var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+                                .createInstance(Components.interfaces.nsIFileInputStream);
+            inputStream.init(part.file, 0x04 | 0x08, 0644, 0x04); // file is an nsIFile instance
+            
+            var bufferedInputStream = Components.classes["@mozilla.org/network/buffered-input-stream;1"]
+                                .createInstance(Components.interfaces.nsIBufferedInputStream);
+            bufferedInputStream.init(inputStream, 4096);
+         
+            //wrap the file stream into a MIME-input stream
+            var mimeInputStream = Components.classes["@mozilla.org/network/mime-input-stream;1"]
+                                    .createInstance(Components.interfaces.nsIMIMEInputStream);
+
+            mimeInputStream.addHeader("Content-Type", "image/png");
+            mimeInputStream.addHeader("Content-Disposition", "form-data; name=\"" + part.name + "\"; filename=\"" + part.file.leafName + "\"");
+            mimeInputStream.addContentLength = true;
+
+            mimeInputStream.setData(bufferedInputStream);
+            stream.appendStream(mimeInputStream);
+        } else {
+            //append the open boundary   
+            stream.appendStream(Net.createSimpleTextStream(boundaryStart));
+
+            var mimeInputStream = Components.classes["@mozilla.org/network/mime-input-stream;1"]
+                                    .createInstance(Components.interfaces.nsIMIMEInputStream);
+
+            mimeInputStream.addContentLength = true;
+            mimeInputStream.addHeader("Content-Type", "application/x-www-form-urlencoded");
+            mimeInputStream.addHeader("Content-Disposition", "form-data; name=\"" + part.name + "\"");
+            mimeInputStream.setData(Net.createSimpleTextStream(part.value));
+            stream.appendStream(mimeInputStream);
+        }
+    }
+    
+    stream.appendStream(Net.createSimpleTextStream(boundaryEnd));
+
+    var uploadChannel = channel.QueryInterface(Components.interfaces.nsIUploadChannel);
+    uploadChannel.setUploadStream(stream, null, -1);
+
+    httpChannel.requestMethod = "POST";
+    httpChannel.setRequestHeader("Content-Length", stream.available() - 2, false);
+    httpChannel.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + boundary, false);
+    httpChannel.allowPipelining = false;
+    
+    if (options.auth) {
+        var authenticator = Components.classes["@mozilla.org/network/http-authenticator;1?scheme=" + options.auth.scheme]
+                            .getService(Components.interfaces.nsIHttpAuthenticator);
+                            
+        var credentials = authenticator.generateCredentials(httpChannel, "Basic realm=\"Bugzilla\"",
+                                                              false, uri.host,
+                                                              {value: options.auth.user},
+                                                              {value: options.auth.password},
+                                                              {},
+                                                              {});
+        httpChannel.setRequestHeader("Authorization", credentials, true);
+    }
+
+
+    if (options && options.headers) {
+        for (name in options.headers) {
+            httpChannel.setRequestHeader(name, options.headers[name], false);
+        }
+    }
+
+    channel.notificationCallbacks = listener;
+    channel.asyncOpen(listener, null);
+};
+Net.createSimpleTextStream = function (text) {
+    var stream = Components.classes['@mozilla.org/io/string-input-stream;1']
+                    .createInstance(Components.interfaces.nsIStringInputStream);
+    stream.setData(text, -1);
+    
+    return stream;
+};
 Net.downloadAsync = function(url, destPath, listener) {
     var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
               .createInstance(Components.interfaces.nsIWebBrowserPersist);
