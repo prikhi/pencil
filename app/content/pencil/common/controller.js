@@ -1407,9 +1407,10 @@ Controller.prototype._exportAsLayout = function () {
         html.appendChild(body);
         
         var div = document.createElementNS(PencilNamespaces.html, "div");
-        div.setAttribute("style", "position: relative; width: 100%;");
+        div.setAttribute("style", "position: relative;");
         body.appendChild(div);
         
+        /*
         var canvas = document.createElementNS(PencilNamespaces.html, "canvas");
         canvas.setAttribute("width", pw);
         canvas.setAttribute("height", ph);
@@ -1418,6 +1419,7 @@ Controller.prototype._exportAsLayout = function () {
         bg.setAttribute("style", "width: 100%;");
         bg.setAttribute("src", canvas.toDataURL("image/png"));
         div.appendChild(bg);
+        */
         
         for (var i = 0; i < items.length; i ++) {
             var link = items[i];
@@ -1427,10 +1429,16 @@ Controller.prototype._exportAsLayout = function () {
             img.setAttribute("id", link.refId);
             var css = new CSS();
             css.set("position", "absolute");
+            css.set("left", "" + link.geo.x + "px");
+            css.set("top", "" + link.geo.y + "px");
+            css.set("width", "" + link.geo.w + "px");
+            css.set("height", "" + link.geo.h + "px");
+            /*
             css.set("left", "" + (100 * link.geo.x / pw) + "%");
             css.set("top", "" + (100 * link.geo.y / ph) + "%");
             css.set("width", "" + (100 * link.geo.w / pw) + "%");
             css.set("height", "" + (100 * link.geo.h / ph) + "%");
+            */
             img.setAttribute("style", css.toString());
             
             div.appendChild(img);
