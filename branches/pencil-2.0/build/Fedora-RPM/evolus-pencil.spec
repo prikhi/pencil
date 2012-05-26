@@ -4,6 +4,7 @@ Version: @VERSION@
 Release: @BUILD@
 License: GPLv2
 Group: Applications/Development
+BuildArch: noarch
 Source: http://code.google.com/p/evoluspencil/source/browse/
 URL: http://www.evolus.vn/Pencil
 Distribution: Linux
