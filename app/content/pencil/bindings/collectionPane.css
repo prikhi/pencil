@@ -75,13 +75,13 @@ pcollectionpane *[_hidden='true'].Collection + .Collection {
 }
 pcollectionpane .Collection > hbox:first-child {
     -moz-box-align: start;
-    background-image: -moz-linear-gradient(bottom, rgb(200,200,200) 0%, rgb(221,221,221) 100%);
-    color: -moz-button;
+    background-image: -moz-linear-gradient(bottom, rgb(221,221,221) 0%, rgb(255,255,255) 100%);
+    color: #333;
     padding: .3em;
     cursor: default;
 }
 pcollectionpane .Collection > hbox:first-child h4 {
-    color: #666;
+    color: #333;
     text-shadow: 1px 1px 0px rgba(255, 255, 255, .4);
 }
 pcollectionpane .Collection > hbox:first-child > button {
@@ -118,14 +118,14 @@ pcollectionpane .Collection .CustomLayoutContent {
     background: blue;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child {
-    opacity: .7;
+    background-image: -moz-linear-gradient(bottom, rgba(200,200,200, 0.5) 0%, rgba(200,200,200, 0.5) 100%);
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child > button {
     background-position: -9px 0px;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div,
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child label {
-    opacity: .2;
+    opacity: .5;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child label {
     display: none;
@@ -134,7 +134,7 @@ pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child:hover div {
     opacity: 1;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child:hover label {
-    opacity: .5;
+    opacity: 1;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child div > p,
 pcollectionpane *[pcollapsed='true'].Collection .Content,
