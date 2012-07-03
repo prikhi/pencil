@@ -1157,6 +1157,7 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
+                    if (this != Pencil.activeCanvas) return;
                     if (OnScreenTextEditor.isEditing) return;
                     if (event.keyCode == event.DOM_VK_UP ||
                         event.keyCode == event.DOM_VK_DOWN ||
