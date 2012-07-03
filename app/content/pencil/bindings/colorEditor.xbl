@@ -133,12 +133,17 @@
             <method name="changeColorPicker">
                 <body>
                 <![CDATA[
+                    var color = this.getValue();
+                    
                     this.colorPicker.style.display = "none";
                     if (this.colorPicker.name == "GridColorPicker") {
                         this.colorPicker = this.wcolorPicker; // document.getAnonymousElementByAttribute(this, "aid", "wcolorPicker");
                     } else {
                         this.colorPicker = this.gcolorPicker; // document.getAnonymousElementByAttribute(this, "aid", "gcolorPicker");
                     }
+
+                    this.colorPicker.setColor(color);
+                    
                     var thiz = this;
                     //this.colorPicker.addEventListener("ValueChange", function(event) {
                     //    thiz._handleColorPickerValueChange();
