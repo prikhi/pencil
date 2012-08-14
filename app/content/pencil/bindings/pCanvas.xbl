@@ -76,17 +76,18 @@
                         var dx = matrix.e - Math.floor(matrix.e);
                         var dy = matrix.f - Math.floor(matrix.f);
 
-                        if (dx != 0 || dy != 0) {
+                        if ((dx != 0 || dy != 0) && thiz.zoom == 1) {
                             matrix = fixRef.getScreenCTM();
-                            dx = matrix.e - Math.floor(matrix.e);
-                            dy = matrix.f - Math.floor(matrix.f);
+                            dx = (matrix.e - Math.floor(matrix.e)) / thiz.zoom;
+                            dy = (matrix.f - Math.floor(matrix.f)) / thiz.zoom;
 
                             var t = "translate(" + (0 - dx) + "," + (0 - dy) + ")";
                             fixTarget.setAttribute("transform", t);
                         }
                     } catch (e) { }
                     window.setTimeout(arguments.callee, 1000);
-                }, 1000);
+                }, 1000); 
+                
                 this.svg.appendChild(this.topGroup);
 
                 //create the background layer
@@ -441,6 +442,17 @@
                 ]]>
                 </body>
             </method>
+            <method name="getSize">
+                <body>
+                <![CDATA[
+                    return {
+                        width: parseInt(this.getAttribute("width"), 10),
+                        height: parseInt(this.getAttribute("height"), 10),
+                    };
+                ]]>
+                </body>
+            </method>
+
             <method name="getZoomedRect">
                 <parameter name="rect"/>
                 <body>
@@ -1158,7 +1170,9 @@
                 <body>
                 <![CDATA[
                     if (this != Pencil.activeCanvas) return;
+                    debug("Key event: OnScreenTextEditor.isEditing = " + OnScreenTextEditor.isEditing);
                     if (OnScreenTextEditor.isEditing) return;
+                    debug("X");
                     if (event.keyCode == event.DOM_VK_UP ||
                         event.keyCode == event.DOM_VK_DOWN ||
                         event.keyCode == event.DOM_VK_LEFT ||
@@ -1233,6 +1247,8 @@
                         event.preventDefault();
                         this.selectAll();
                         event.preventDefault();
+                    } else if (event.keyCode == event.DOM_VK_ESCAPE) {
+                        this.endFormatPainter();
                     } else if (event.keyCode == event.DOM_VK_ESCAPE) {
                         this.endFormatPainter();
                     }
@@ -2360,19 +2376,17 @@
 
                     <menu label="&menu.arrangement.label;" aid="arrangementMenu" p:for="Shape,TargetSet">
                         <menupopup>
-                            <menuitem label="&menu.bring.to.front.label;" oncommand="this.parentNode.parentNode._controller.bringToFront()"/>
-                            <menuitem label="&menu.bring.forward.label;" oncommand="this.parentNode.parentNode._controller.bringForward()"/>
-                            <menuitem label="&menu.send.backward.label;" oncommand="this.parentNode.parentNode._controller.sendBackward()"/>
-                            <menuitem label="&menu.send.to.back.label;" oncommand="this.parentNode.parentNode._controller.sendToBack()"/>
+                            <menuitem label="&menu.bring.to.front.label;" command="bringToFrontCommand" key="bringToFrontKey"/>
+                            <menuitem label="&menu.bring.forward.label;" command="bringForwardCommand" key="bringForwardKey"/>
+                            <menuitem label="&menu.send.backward.label;" command="sendBackwardCommand" key="sendBackwardKey"/>
+                            <menuitem label="&menu.send.to.back.label;" command="sendToBackCommand" key="sendToBackKey"/>
                         </menupopup>
                     </menu>
 
+                    <menuseparator/>
                     <menuseparator aid="contextPopupSeparator"/>
 
                     <menuitem class="menuitem-iconic locking-menu" aid="lockingMenuItem" label="&menu.locked.label;" type="checkbox" oncommand="this._canvas.toggleLocking();"/>
-
-                    <menuseparator/>
-
                     <menuitem class="menuitem-iconic group-menu" label="&menu.group.label;" command="groupCommand" p:for="TargetSet" key="groupKey"/>
                     <menuitem class="menuitem-iconic ungroup-menu" label="&menu.ungroup.label;" command="unGroupCommand" p:for="Group" key="unGroupKey"/>
                     <menuitem class="menuitem-iconic delete-menu" label="&menu.delete.label;" p:for="Shape,TargetSet,Group" oncommand="this._canvas.deleteSelected();"/>

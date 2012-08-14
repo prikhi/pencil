@@ -158,8 +158,7 @@ F.reflect = function(x, o) {
     };
 };
 F.debug = function(o) {
-    var box = o.getBBox();
-    alert([box.y, box.height]);
+    alert(o);
 };
 F.stripAccessKey = function (label) {
     return label.replace(/_([^_])/, function (zero, one) { return one; })

@@ -343,7 +343,9 @@ Shape.prototype.getBounding = function (to) {
         x: p.x,
         y: p.y,
         width: 0,
-        height: 0
+        height: 0,
+        originalDy: bbox.y,
+        originalDx: bbox.x
     };
 
     Svg.expandRectTo(rect, Svg.pointInCTM(bbox.x + bbox.width, bbox.y, ctm));

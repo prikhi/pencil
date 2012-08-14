@@ -179,12 +179,17 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         OnScreenTextEditor.richTextEditorPane.addEventListener("keypress", function (event) {
             if (event.keyCode == event.DOM_VK_ESCAPE) {
                 OnScreenTextEditor._hide();
-            } else if (event.keyCode == event.DOM_VK_RETURN && !event.shiftKey) {
+            } else if (event.keyCode == event.DOM_VK_RETURN && !event.shiftKey && !event.ctrlKey) {
                 if (OnScreenTextEditor.currentInstance) {
                     OnScreenTextEditor.currentInstance.applyChanges();
                 }
                 OnScreenTextEditor._hide();
                 Dom.cancelEvent(event);
+            } else if (event.keyCode == event.DOM_VK_UP ||
+                        event.keyCode == event.DOM_VK_DOWN ||
+                        event.keyCode == event.DOM_VK_LEFT ||
+                        event.keyCode == event.DOM_VK_RIGHT) {
+                event.stopPropagation();
             }
         }, false);
         var selectListener = function (event) {
@@ -452,7 +457,7 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor.miniToolbarPane._oY = event.clientY;
 
     var mx = x;
-    var my = y - 75;
+    var my = y - OnScreenTextEditor.miniToolbarPane.getBoundingClientRect().height - 5;
     var buttonBox = document.getElementById("mclearButton").getBoundingClientRect();
     var mw = buttonBox.left + buttonBox.width + 1 - OnScreenTextEditor.miniToolbarPane.getBoundingClientRect().left;
 
@@ -467,6 +472,8 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     if (mw + mx > boxObject.width) {
         mx -= mw + mx - boxObject.width + 30;
     }
+
+    //my -= 10;
 
     OnScreenTextEditor.miniToolbarPane.setAttribute("left", mx);
     OnScreenTextEditor.miniToolbarPane.setAttribute("top", my);
@@ -486,6 +493,7 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor.richTextEditor.contentWindow.scrollTo(0, 0);
 
     window.setTimeout(function () {
+        OnScreenTextEditor.richTextEditor.contentWindow.focus();
         OnScreenTextEditor._runEditorCommand("selectall");
     }, 10);
 

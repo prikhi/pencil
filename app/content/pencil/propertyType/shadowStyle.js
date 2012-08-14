@@ -17,7 +17,9 @@ ShadowStyle.prototype.toString = function () {
     return [this.dx, this.dy, this.size].join('|');
 };
 ShadowStyle.prototype.toCSSString = function (color) {
-    return [this.dx + "px", this.dy + "px", this.size + "px", color.toRGBAString()].join(" ");
+    var css = [this.dx + "px", this.dy + "px", Math.abs(this.size) + "px", color.toRGBAString()].join(" ");
+    if (this.size < 0) css = "inset " + css;
+    return css;
 };
 
 pencilSandbox.ShadowStyle = {

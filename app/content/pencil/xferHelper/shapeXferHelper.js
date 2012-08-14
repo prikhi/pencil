@@ -44,7 +44,23 @@ ShapeXferHelper.prototype.handleData = function (data, length) {
         this.canvas.drawingLayer.appendChild(shape);
         this.canvas.selectShape(shape);
 
-        this.canvas.currentController.moveBy(dx, dy);
+        var rect = this.canvas.currentController.getBoundingRect();
+        var mx = 0;
+        var my = 0;
+        
+        if (rect.x + rect.width > this.canvas.getSize().width) {
+            mx = this.canvas.getSize().width - (rect.x + rect.width);
+        }
+        if (rect.y + rect.height > this.canvas.getSize().height) {
+            my = this.canvas.getSize().height - (rect.y + rect.height);
+        }
+
+        if (mx < 0 || my < 0) {
+            this.canvas.currentController.moveBy(mx, my);
+        } else {
+            this.canvas.currentController.moveBy(dx, dy);
+        }
+        
         this.canvas.ensureControllerInView();
 
         this.canvas.snappingHelper.updateSnappingGuide(this.canvas.currentController);

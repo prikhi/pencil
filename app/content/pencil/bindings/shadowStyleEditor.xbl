@@ -69,7 +69,7 @@
                 <textbox type="number" min="-30" max="30" size="2" aid="dy" xbl:inherits="disabled"/>
 
                 <label value="&label.blur.size.value;"/>
-                <textbox type="number" min="0" max="30" size="2" aid="size" xbl:inherits="disabled"/>
+                <textbox type="number" min="-30" max="30" size="2" aid="size" xbl:inherits="disabled"/>
             </hbox>
         </content>
     </binding>
