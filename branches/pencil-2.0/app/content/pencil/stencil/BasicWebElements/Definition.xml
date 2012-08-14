@@ -127,10 +127,10 @@
             <For ref="div">
                 <Attr>
                     <Arg>"style"</Arg>
-                    <Arg>"-moz-box-sizing: border-box; overflow: hidden; " + $customStyle.value</Arg>
+                    <Arg>"box-sizing: border-box; -moz-box-sizing: border-box; overflow: hidden; " + $customStyle.value</Arg>
                 </Attr>
                 <CustomStyle>
-                    <Arg>"-moz-box-shadow"</Arg>
+                    <Arg>"box-shadow"</Arg>
                     <Arg>$shadowColor.a > 0 ? $shadowStyle.toCSSString($shadowColor) : "none"</Arg>
                 </CustomStyle>
                 <CustomStyle>
@@ -150,19 +150,23 @@
                     <Arg>$fillColor.toRGBAString()</Arg>
                 </CustomStyle>
                 <CustomStyle>
-                    <Arg>"-moz-border-radius-topleft"</Arg>
+                    <Arg>"border-radius"</Arg>
+                    <Arg>($cornerStyle.value == "all") ? ($radius.x + "px") : "0px"</Arg>
+                </CustomStyle>
+                <CustomStyle>
+                    <Arg>"border-radius-topleft"</Arg>
                     <Arg>($cornerStyle.value == "all" || $cornerStyle.value == "top" || $cornerStyle.value == "left") ? ($radius.x + "px") : "0px"</Arg>
                 </CustomStyle>
                 <CustomStyle>
-                    <Arg>"-moz-border-radius-topright"</Arg>
+                    <Arg>"border-radius-topright"</Arg>
                     <Arg>($cornerStyle.value == "all" || $cornerStyle.value == "top" || $cornerStyle.value == "right") ? ($radius.x + "px") : "0px"</Arg>
                 </CustomStyle>
                 <CustomStyle>
-                    <Arg>"-moz-border-radius-bottomleft"</Arg>
+                    <Arg>"border-radius-bottomleft"</Arg>
                     <Arg>($cornerStyle.value == "all" || $cornerStyle.value == "bottom" || $cornerStyle.value == "left") ? ($radius.x + "px") : "0px"</Arg>
                 </CustomStyle>
                 <CustomStyle>
-                    <Arg>"-moz-border-radius-bottomright"</Arg>
+                    <Arg>"border-radius-bottomright"</Arg>
                     <Arg>($cornerStyle.value == "all" || $cornerStyle.value == "bottom" || $cornerStyle.value == "right") ? ($radius.x + "px") : "0px"</Arg>
                 </CustomStyle>
                 <CustomStyle>
