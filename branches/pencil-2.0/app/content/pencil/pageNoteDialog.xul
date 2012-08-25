@@ -121,5 +121,5 @@
             <toolbarbutton id="insertLinkButton" class="ed-toolbar-button" tooltiptext="&toolbar.insert.link.tooltiptext;" oncommand="doInsertLink();"/>
         </toolbar>
     </toolbox>
-    <editor id="editor" type="html" width="300" height="150" src="chrome://pencil/content/editor-blank.html"/>
+    <editor id="editor" type="html" width="300" height="150" src="about:blank"/>
 </dialog>

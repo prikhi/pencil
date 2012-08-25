@@ -26,7 +26,7 @@ OnScreenTextEditor._runEditorCommandByList = function (command, list) {
 };
 
 OnScreenTextEditor._enableTextToolbar = function (enable) {
-    var toolbar = document.getElementById("richTextEditorToolbar");
+    var toolbar = document.getElementById("textFormatToolbar");
     Dom.workOn(".//*[local-name() = 'toolbarbutton' or local-name() = 'menulist']", toolbar, function (node) {
         node.disabled = !enable;
     });
@@ -56,7 +56,7 @@ OnScreenTextEditor._ensureSupportElements = function () {
     try {
         OnScreenTextEditor._ensureSupportElementsImpl();
     } catch (e) {
-        Console.dumpError(e, "stdout");
+        Console.alertError(e, "stdout");
     }
 };
 
@@ -77,14 +77,6 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
             item1.setAttribute("label", localFonts[i]);
             item1.setAttribute("value", localFonts[i]);
             mfontPopup.appendChild(item1);
-        }
-        var fontsizeList = [4,6,8,9,10,12,13,14,16,18,20,22,24,28,32,36,40,48,50,56,64,72,128,144];
-        var fontsizePopup = document.getElementById("fontsize-popup");
-        for (var i = 0; i < fontsizeList.length; i++) {
-            var item = document.createElement("menuitem");
-            item.setAttribute("label", fontsizeList[i]);
-            item.setAttribute("value", fontsizeList[i]);
-            fontsizePopup.appendChild(item);
         }
         OnScreenTextEditor._enableTextToolbar(false);
 
@@ -176,7 +168,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
             }, 20)
 
         }, false);
-        OnScreenTextEditor.richTextEditorPane.addEventListener("keypress", function (event) {
+        OnScreenTextEditor.richTextEditorPane.addEventListener("keyup", function (event) {
             if (event.keyCode == event.DOM_VK_ESCAPE) {
                 OnScreenTextEditor._hide();
             } else if (event.keyCode == event.DOM_VK_RETURN && !event.shiftKey && !event.ctrlKey) {
@@ -189,7 +181,11 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
                         event.keyCode == event.DOM_VK_DOWN ||
                         event.keyCode == event.DOM_VK_LEFT ||
                         event.keyCode == event.DOM_VK_RIGHT) {
+                //Dom.cancelEvent(event);
+                
                 event.stopPropagation();
+                //OnScreenTextEditor._arrow = true;
+                //event.preventDefault();
             }
         }, false);
         var selectListener = function (event) {
@@ -215,7 +211,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         };
 
         OnScreenTextEditor.richTextEditor.contentDocument.body.addEventListener("mouseup", selectListener, false);
-        OnScreenTextEditor.richTextEditor.contentDocument.body.addEventListener("keypress", selectListener, false);
+        //OnScreenTextEditor.richTextEditor.contentDocument.body.addEventListener("keypress", selectListener, false);
 
         OnScreenTextEditor._installListCommandHandler("mfontList", "fontname");
         OnScreenTextEditor._installListCommandHandler("mfontSize", "fontsize");
@@ -490,11 +486,12 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor.richtextEditorSizeGrip.style.display = "";
 
     OnScreenTextEditor.richTextEditor.contentWindow.focus();
-    OnScreenTextEditor.richTextEditor.contentWindow.scrollTo(0, 0);
+    //OnScreenTextEditor.richTextEditor.contentWindow.scrollTo(0, 0);
 
     window.setTimeout(function () {
         OnScreenTextEditor.richTextEditor.contentWindow.focus();
         OnScreenTextEditor._runEditorCommand("selectall");
+        OnScreenTextEditor.isEditing = true;
     }, 10);
 
     OnScreenTextEditor._updateListByCommandValue("fontname", "mfontList");

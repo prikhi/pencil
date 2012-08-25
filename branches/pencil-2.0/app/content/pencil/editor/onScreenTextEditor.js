@@ -5,7 +5,11 @@ function OnScreenTextEditor() {
 
 OnScreenTextEditor.configDoc = Dom.loadSystemXml("chrome://pencil/content/editor/onScreenTextEditor.config.xml");
 OnScreenTextEditor.prototype.install = function (canvas) {
-    OnScreenTextEditor._ensureSupportElements();
+    try {
+        OnScreenTextEditor._ensureSupportElements();
+    } catch (e) {
+        Console.alertError(e);
+    }
 
     this.canvas = canvas;
     this.canvas.onScreenEditors.push(this);
@@ -95,7 +99,11 @@ OnScreenTextEditor.prototype.handleShapeDoubleClicked = function (event) {
             this._setupEditor();
         } else if (this.textEditingInfo.type == RichText) {
             OnScreenTextEditor.currentInstance = this;
-            this._setupRichTextEditor(event);
+            try {
+                this._setupRichTextEditor(event);
+            } catch (e) {
+                Console.dumpError(e, "stdout");
+            }
         }
     } else {
     }

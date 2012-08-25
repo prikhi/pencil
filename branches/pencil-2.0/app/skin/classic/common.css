@@ -274,3 +274,55 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 
 	border-radius: 1px;
 }
+
+#primaryToolbar .Section {
+    padding: 0px 3px;
+    margin: 0px 2px;
+    border-left: solid 2px !important;
+    -moz-border-left-colors: rgba(0, 0, 0, .2) rgba(255, 255, 255, .5) !important;
+}
+#primaryToolbar .Section:first-child {
+    border-left: none !important;
+}
+#primaryToolbar .Section > label {
+    font-size: .8em;
+    margin: 0px;
+    line-height: 1em;
+    margin-left: 5px;
+    xdisplay: none;
+    text-transform: lowercase;
+    font-weight: bold;
+    color: rgba(0, 0, 0, .5);
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9);
+}
+#primaryToolbar toolbarbutton + toolbarbutton {
+    margin-left: 2px;
+}
+#primaryToolbar menulist,
+#primaryToolbar textbox {
+    margin: 0px 2px !important;
+    font-size: 1em;
+}
+#primaryToolbar .Section > hbox {
+    font-size: .8em;
+}
+#primaryToolbar #textFormatToolbar textbox {
+    width: 3.5em;
+}
+#primaryToolbar #geometryToolbar textbox {
+    width: 4.5em;
+}
+#primaryToolbar separator {
+    -moz-appearance: none !important;
+    display: none;
+}
+#primaryToolbar {
+    -moz-box-align: stretch;
+    box-align: stretch;
+}
+#primaryToolbar vbox.Hidden {
+    display: none;
+}
+#primaryToolbar vbox.Hidden + separator {
+    display: none;
+}

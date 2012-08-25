@@ -35,6 +35,14 @@ PageNoteDialog.handleLoad = function (event) {
                     if (PageNoteDialog.doCancel()) window.close();
                 }
         }, false);
+        document.addEventListener("keydown", function (event) {
+            if (event.keyCode == event.DOM_VK_UP ||
+                        event.keyCode == event.DOM_VK_DOWN ||
+                        event.keyCode == event.DOM_VK_LEFT ||
+                        event.keyCode == event.DOM_VK_RIGHT) {
+                event.stopPropagation();
+            }
+        }, true);
         PageNoteDialog.editor.addEventListener("keyup", function (event) {
                 PageNoteDialog.markNoteModified();
         }, false);

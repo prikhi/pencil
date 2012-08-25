@@ -1170,9 +1170,10 @@
                 <body>
                 <![CDATA[
                     if (this != Pencil.activeCanvas) return;
-                    debug("Key event: OnScreenTextEditor.isEditing = " + OnScreenTextEditor.isEditing);
-                    if (OnScreenTextEditor.isEditing) return;
-                    debug("X");
+                    if (OnScreenTextEditor.isEditing) {
+                        debug("OnScreenTextEditor.isEditing = true");
+                        return;
+                    }
                     if (event.keyCode == event.DOM_VK_UP ||
                         event.keyCode == event.DOM_VK_DOWN ||
                         event.keyCode == event.DOM_VK_LEFT ||
@@ -2402,7 +2403,8 @@
                     <menu label="&menu.resize.canvas.label;" aid="resizeMenu">
                         <menupopup>
                             <menuitem label="&menu.fit.content.label;" oncommand="Pencil.controller.sizeToContent(null, false);"/>
-                            <menuitem label="&menu.fit.content.padding.label;" oncommand="Pencil.controller.sizeToContent(null, true);"/>
+                            <menuitem label="&menu.fit.content.padding.label;" oncommand="Pencil.controller.sizeToContent(null, true); alert('done');"/>
+                            <menuitem label="&menu.fit.bestfit.label;" oncommand="Pencil.controller.sizeToBestFit();"/>
                         </menupopup>
                     </menu>
 

@@ -271,6 +271,7 @@
 <!ENTITY menu.delete.label                       "Delete">
 <!ENTITY menu.fit.content.label                  "Fit Content">
 <!ENTITY menu.fit.content.padding.label          "Fit Content with Padding...">
+<!ENTITY menu.fit.bestfit.label                  "Fit Screen">
 <!ENTITY menu.group.label                        "Group">
 <!ENTITY menu.locked.label                       "Locked">
 <!ENTITY menu.properties.label                   "Properties...">

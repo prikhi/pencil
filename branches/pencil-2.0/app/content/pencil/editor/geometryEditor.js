@@ -228,6 +228,7 @@ GeometryEditor.prototype.findAnchor = function (element) {
     return anchor;
 };
 GeometryEditor.prototype.handleMouseDown = function (event) {
+    if (!this.canvas.currentController) return;
     this.currentAnchor = this.findAnchor(event.originalTarget);
     this.oX = event.clientX;
     this.oY = event.clientY;
@@ -300,6 +301,7 @@ GeometryEditor.prototype.handleMouseUp = function (event) {
                         var geo = this.targetObject.getGeometry();
                         if (!geo.dim) return;
                         this.targetObject.scaleTo(geo.dim.w + this.adw / this.canvas.zoom, geo.dim.h + this.adh / this.canvas.zoom);
+                        Dom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
                     }
                     if (this.ada != 0 && this.targetObject.rotateBy) {
                         this.targetObject.rotateBy(this.ada);

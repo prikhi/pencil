@@ -34,3 +34,34 @@ xpcolorbutton pcoloreditor label[aid='opacityText'],
 xpcolorbutton pcoloreditor scale[aid='opacity'] {
     display: none;
 }
+pcolorbutton[mode='text'] label {
+    background: none !important;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, .1);
+}
+pcolorbutton[mode='text'] box[aid='colorBox'] {
+    display: none;
+}
+pcolorbutton[mode='border'] label,
+pcolorbutton[mode='full'] label {
+    display: none;
+}
+pcolorbutton[mode='border'] box[aid='colorBox'],
+pcolorbutton[mode='full'] box[aid='colorBox'] {
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, .1);
+}
+
+pcolorbutton[mode='full'] box[aid='colorBox'] {
+    border-width: 0px !important;
+}
+pcolorbutton[mode='border'] box[aid='colorBox'] {
+    background: none !important;
+    border-width: 2px;
+    border-style: solid;
+}
+pcolorbutton toolbarbutton > box {
+    background: none !important;
+}
+pcolorbutton toolbarbutton[disabled] {
+    opacity: .05 !important;
+}

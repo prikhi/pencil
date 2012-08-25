@@ -277,98 +277,151 @@
     </keyset>
     <toolbox id="navigator-toolbox" class="toolbox-top chromeclass-toolbar" mode="icons" defaultmode="icons">
         <!-- Menu -->
-        <toolbar type="menubar" id="toolbar-menubar" class="chromeclass-menubar chromeclass-toolbar" mode="icons" toolbarname="&toolbar.menubar.name;" context="toolbar-context-menu">
+        <menubar>
+            <menu id="file-menu" label="&menu.document.label;" accesskey="&menu.document.accesskey;">
+                <menupopup id="file-popup">
+                    <menuitem class="menuitem-iconic new-window-menu" label="&menu.new.window.label;" command="newWindowCommand"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic new-document-menu" label="&menu.new.document.label;" command="newDocumentCommand" key="newDocumentKey"/>
+                    <menuitem class="menuitem-iconic open-document-menu" label="&menu.open.label;" command="loadDocumentCommand" key="loadDocumentKey"/>
+                    <menuitem class="menuitem-iconic save-document-menu" label="&menu.save.label;" command="saveDocumentCommand" key="saveDocumentKey"/>
+                    <menuitem class="menuitem-iconic save-as-document-menu" label="&menu.save.as.label;" command="saveDocumentAsCommand" key="saveDocumentAsKey"/>
+                    <menuseparator/>
+                    <menu label="&menu.recent.documents.label;">
+                        <menupopup id="recentDocumentMenu">
+                        </menupopup>
+                    </menu>
+                    <menuseparator/>
+                    <menuitem label="&menu.export.sel.as.png.label;" command="rasterizeSelectionCommand" key="exportSelectionKey"/>
+                    <menuitem label="&menu.export.page.as.png.label;" command="rasterizeCommand" key="exportPageKey"/>
+                    <menuitem class="menuitem-iconic export-document-menu" label="&menu.export.document.label;" command="exportCommand" key="exportDocumentKey"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic print-document-menu" label="&menu.print.document.label;" command="printCommand" key="printKey"/>
+                    <menuseparator/>
+                    <menuitem id="menu_FileQuitItem" class="menuitem-iconic exit-menu" label="&menu.exit.label;" oncommand="if (!Pencil.controller.modified || Pencil.controller._confirmAndSaveDocument()) window.close();"/>
+                </menupopup>
+            </menu>
+            <menu id="edit-menu" label="&menu.edit.label;" accesskey="&menu.edit.accesskey;">
+                <menupopup id="edit-popup">
+                    <menuitem class="menuitem-iconic undo-menu" label="&menu.undo.label;" key="undoKey" command="undoCommand" id="editUndoMenu"/>
+                    <menuitem class="menuitem-iconic redo-menu" label="&menu.redo.label;" key="redoKey" command="redoCommand" id="editRedoMenu"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic cut-menu" label="&menu.cut.label;" key="cutKey" command="cutCommand"/>
+                    <menuitem class="menuitem-iconic copy-menu" label="&menu.copy.label;" key="copyKey" command="copyCommand"/>
+                    <menuitem class="menuitem-iconic paste-menu" label="&menu.paste.label;" key="pasteKey" command="pasteCommand"/>
+                    <menuitem class="menuitem-iconic delete-menu" label="&menu.delete.label;" key="deleteKey" command="deleteSelectedCommand" id="deleteSelectedCommand"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic select-all-menu" label="&menu.select.all.label;" key="selectAllKey" oncommand="Pencil.activeCanvas.selectAll();"/>
+                </menupopup>
+            </menu>
+            <menu id="view-menu" label="&menu.view.label;" accesskey="&menu.view.accesskey;">
+                <menupopup id="view-popup">
+                    <menuitem class="menuitem-iconic view-collection-pane-menu" label="&menu.collection.pane.label;" type="checkbox" checked="false" key="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
+                </menupopup>
+            </menu>
+            <menu id="shape-menu" label="&menu.shape.label;" accesskey="&menu.shape.accesskey;">
+                <menupopup>
+                    <menuitem class="menuitem-iconic group-menu" label="&menu.group.label;" command="groupCommand" key="groupKey"/>
+                    <menuitem class="menuitem-iconic ungroup-menu" label="&menu.ungroup.label;" command="unGroupCommand" key="unGroupKey"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic same-width-menu" label="&menu.make.same.width.label;" command="makeSameWidthCommand" key="makeSameWidthKey"/>
+                    <menuitem class="menuitem-iconic same-height-menu" label="&menu.make.same.height.label;" command="makeSameHeightCommand" key="makeSameHeightKey"/>
+                    <menuitem class="menuitem-iconic same-min-width-menu" label="&menu.make.same.mwidth.label;" command="makeSameMinWidthCommand" key="makeSameMinWidthKey"/>
+                    <menuitem class="menuitem-iconic same-min-height-menu" label="&menu.make.same.mheight.label;" command="makeSameMinHeightCommand" key="makeSameMinHeightKey"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic align-left-menu" label="&menu.align.left.label;" command="alignLeftCommand" key="alignLeftKey"/>
+                    <menuitem class="menuitem-iconic align-center-menu" label="&menu.align.center.label;" command="alignCenterCommand" key="alignCenterKey"/>
+                    <menuitem class="menuitem-iconic align-right-menu" label="&menu.align.right.label;" command="alignRightCommand" key="alignRightKey"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic same-horz-menu" label="&menu.same.horiz.space.label;" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommandKey"/>
+                    <menuitem class="menuitem-iconic same-vert-menu" label="&menu.same.vert.space.label;" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommandKey"/>
+                    <menuseparator/>
+                    <menuitem class="menuitem-iconic align-top-menu" label="&menu.align.top.label;" command="alignTopCommand" key="alignTopKey"/>
+                    <menuitem class="menuitem-iconic align-middle-menu" label="&menu.align.middle.label;" command="alignMiddleCommand" key="alignMiddleKey"/>
+                    <menuitem class="menuitem-iconic align-bottom-menu" label="&menu.align.bottom.label;" command="alignBottomCommand" key="alignBottomKey"/>
+                    <menuseparator/>
+                    <menuitem id="hideHeavyElementsMenuItem" label="&menu.hide.heavy.elements.label;" type="checkbox" checked="false" command="hideHeavyElementsCommand" key="hideHeavyElementsKey"/>
+                </menupopup>
+            </menu>
+            <menu id="tools-menu" label="&menu.tools.label;" accesskey="&menu.tools.accesskey;">
+                <menupopup>
+                    <menuitem class="menuitem-iconic stencil-generator-menu" label="&menu.stencil.generator.label;" oncommand="window.openDialog('chrome://pencil/content/stencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen', Pencil);"/>
+                    <menuitem class="menuitem-iconic clipart-browser-menu" label="&menu.clipart.browser.label;" oncommand="if (!Pencil._clipartShowing) { window.openDialog('chrome://pencil/content/clipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
+                    <menuseparator/>
+                    <menuitem label="&menu.dom.inspector.label;" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
+                    <menuitem label="&menu.install.new.collection.label;" command="installNewCollectionCommand"/>
+                    <menuitem label="&menu.manage.template.label;" command="manageExportTemplateCommand"/>
+                    <!--
+                    <menuitem label="Export as Layout..." oncommand="Pencil.controller._exportAsLayout()"/>
+                    -->
+                    <menuseparator/>
+                    <menuitem id="menu_preferences" class="menuitem-iconic options-menu" label="&menu.options.label;" oncommand="window.openDialog('chrome://pencil/content/settingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
+                </menupopup>
+            </menu>
+            <menu id="help-menu" label="&menu.help.label;" accesskey="&menu.help.accesskey;">
+                <menupopup>
+                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/aboutDialog.xul', 'pencilAboutDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
+                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/print.xul', 'pencilPrintDialog', 'chrome,centerscreen,modal,minimizable=false');" style="display:none;"/>
+                </menupopup>
+            </menu>
+        </menubar>
+        <menupopup id="toolbarContextMenu">
+        </menupopup>
+        <toolbar id="primaryToolbar" style="display: block;" context="toolbarContextMenu" oncontextmenu="setupToolbarContextMenu();">
+            <vbox class="Section" id="fileToolbar">
+                <label value="File:"/>
+                <hbox>
+                    <toolbarbutton command="newDocumentCommand" image="chrome://pencil/skin/images/toolbar/document-new.png"/>
+                    <toolbarbutton command="loadDocumentCommand" image="chrome://pencil/skin/images/toolbar/document-open.png"/>
+                    <toolbarbutton command="saveDocumentCommand" image="chrome://pencil/skin/images/toolbar/document-save.png"/>
+                    <toolbarbutton command="printCommand" image="chrome://pencil/skin/images/toolbar/document-print.png"/>
+                </hbox>
+            </vbox>
+            <separator/>
+            <vbox class="Section" id="editToolbar">
+                <label value="Edit:"/>
+                <hbox>
+                    <toolbarbutton command="copyCommand" image="chrome://pencil/skin/images/toolbar/edit-copy.png"/>
+                    <toolbarbutton command="cutCommand" image="chrome://pencil/skin/images/toolbar/edit-cut.png"/>
+                    <toolbarbutton command="pasteCommand" image="chrome://pencil/skin/images/toolbar/edit-paste.png"/>
+                </hbox>
+            </vbox>
+            <separator/>
+            <vbox class="Section" id="zoomToolbar">
+                <label value="Zoom:"/>
+                <hbox>
+                    <toolbarbutton command="zoomInCommand" image="chrome://pencil/skin/images/toolbar/zoom-in.png"/>
+                    <toolbarbutton command="zoom1Command" image="chrome://pencil/skin/images/toolbar/zoom-original.png"/>
+                    <toolbarbutton command="zoomOutCommand" image="chrome://pencil/skin/images/toolbar/zoom-out.png"/>
+                </hbox>
+            </vbox>
+            <separator id="alignmentToolbarSeparator"/>
+            <vbox class="Section" id="alignmentToolbar">
+                <label value="Alignment:"/>
+                <hbox align="middle">
+                    <toolbarbutton command="alignLeftCommand" image="chrome://pencil/skin/images/toolbar/align-left.png"/>
+                    <toolbarbutton command="alignCenterCommand" image="chrome://pencil/skin/images/toolbar/align-center.png"/>
+                    <toolbarbutton command="alignRightCommand" image="chrome://pencil/skin/images/toolbar/align-right.png"/>
+                    <toolbarbutton command="alignTopCommand" image="chrome://pencil/skin/images/toolbar/align-top.png"/>
+                    <toolbarbutton command="alignMiddleCommand" image="chrome://pencil/skin/images/toolbar/align-middle.png"/>
+                    <toolbarbutton command="alignBottomCommand" image="chrome://pencil/skin/images/toolbar/align-right.png"/>
+                </hbox>
+            </vbox>
+            <separator/>
+            <vbox class="Section" id="sizeAndSpacingToolbar">
+                <label value="Same sizes &amp; spaces:"/>
+                <hbox align="middle">
+                    <toolbarbutton command="makeSameWidthCommand" image="chrome://pencil/skin/images/toolbar/same-width.png"/>
+                    <toolbarbutton command="makeSameHeightCommand" image="chrome://pencil/skin/images/toolbar/same-height.png"/>
+                    <toolbarbutton command="makeSameHorizontalSpaceCommand" image="chrome://pencil/skin/images/toolbar/same-h-space.png"/>
+                    <toolbarbutton command="makeSameVerticalSpaceCommand" image="chrome://pencil/skin/images/toolbar/same-v-space.png"/>
+                </hbox>
+            </vbox>
+        </toolbar>
+        <toolbar style="display: none;" type="menubar" id="toolbar-menubar" class="chromeclass-menubar chromeclass-toolbar" mode="icons" toolbarname="&toolbar.menubar.name;" context="toolbar-context-menu">
             <toolbaritem id="menubar-items" align="center">
                 <menubar id="main-menubar" style="border:0;padding:2px;margin:0;-moz-appearance:none;height:28px;">
                     <menu id="pencil-menu" label="Pencil ▾" class="menuitem-iconic menu-iconic" style="padding:3px;margin:0;">
-                        <menupopup id="pencil-menu-popup">
-                            <menu id="file-menu" label="&menu.document.label;" accesskey="&menu.document.accesskey;">
-                                <menupopup id="file-popup">
-                                    <menuitem class="menuitem-iconic new-window-menu" label="&menu.new.window.label;" command="newWindowCommand"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic new-document-menu" label="&menu.new.document.label;" command="newDocumentCommand" key="newDocumentKey"/>
-                                    <menuitem class="menuitem-iconic open-document-menu" label="&menu.open.label;" command="loadDocumentCommand" key="loadDocumentKey"/>
-                                    <menuitem class="menuitem-iconic save-document-menu" label="&menu.save.label;" command="saveDocumentCommand" key="saveDocumentKey"/>
-                                    <menuitem class="menuitem-iconic save-as-document-menu" label="&menu.save.as.label;" command="saveDocumentAsCommand" key="saveDocumentAsKey"/>
-                                    <menuseparator/>
-                                    <menu label="&menu.recent.documents.label;">
-                                        <menupopup id="recentDocumentMenu">
-                                        </menupopup>
-                                    </menu>
-                                    <menuseparator/>
-                                    <menuitem label="&menu.export.sel.as.png.label;" command="rasterizeSelectionCommand" key="exportSelectionKey"/>
-                                    <menuitem label="&menu.export.page.as.png.label;" command="rasterizeCommand" key="exportPageKey"/>
-                                    <menuitem class="menuitem-iconic export-document-menu" label="&menu.export.document.label;" command="exportCommand" key="exportDocumentKey"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic print-document-menu" label="&menu.print.document.label;" command="printCommand" key="printKey"/>
-                                    <menuseparator/>
-                                    <menuitem id="menu_FileQuitItem" class="menuitem-iconic exit-menu" label="&menu.exit.label;" oncommand="if (!Pencil.controller.modified || Pencil.controller._confirmAndSaveDocument()) window.close();"/>
-                                </menupopup>
-                            </menu>
-                            <menu id="edit-menu" label="&menu.edit.label;" accesskey="&menu.edit.accesskey;">
-                                <menupopup id="edit-popup">
-                                    <menuitem class="menuitem-iconic undo-menu" label="&menu.undo.label;" key="undoKey" command="undoCommand" id="editUndoMenu"/>
-                                    <menuitem class="menuitem-iconic redo-menu" label="&menu.redo.label;" key="redoKey" command="redoCommand" id="editRedoMenu"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic cut-menu" label="&menu.cut.label;" key="cutKey" command="cutCommand"/>
-                                    <menuitem class="menuitem-iconic copy-menu" label="&menu.copy.label;" key="copyKey" command="copyCommand"/>
-                                    <menuitem class="menuitem-iconic paste-menu" label="&menu.paste.label;" key="pasteKey" command="pasteCommand"/>
-                                    <menuitem class="menuitem-iconic delete-menu" label="&menu.delete.label;" key="deleteKey" command="deleteSelectedCommand" id="deleteSelectedCommand"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic select-all-menu" label="&menu.select.all.label;" key="selectAllKey" oncommand="Pencil.activeCanvas.selectAll();"/>
-                                </menupopup>
-                            </menu>
-                            <menu id="view-menu" label="&menu.view.label;" accesskey="&menu.view.accesskey;">
-                                <menupopup id="view-popup">
-                                    <menuitem class="menuitem-iconic view-collection-pane-menu" label="&menu.collection.pane.label;" type="checkbox" checked="false" key="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
-                                </menupopup>
-                            </menu>
-                            <menu id="shape-menu" label="&menu.shape.label;" accesskey="&menu.shape.accesskey;">
-                                <menupopup>
-                                    <menuitem class="menuitem-iconic group-menu" label="&menu.group.label;" command="groupCommand" key="groupKey"/>
-                                    <menuitem class="menuitem-iconic ungroup-menu" label="&menu.ungroup.label;" command="unGroupCommand" key="unGroupKey"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic same-width-menu" label="&menu.make.same.width.label;" command="makeSameWidthCommand" key="makeSameWidthKey"/>
-                                    <menuitem class="menuitem-iconic same-height-menu" label="&menu.make.same.height.label;" command="makeSameHeightCommand" key="makeSameHeightKey"/>
-                                    <menuitem class="menuitem-iconic same-min-width-menu" label="&menu.make.same.mwidth.label;" command="makeSameMinWidthCommand" key="makeSameMinWidthKey"/>
-                                    <menuitem class="menuitem-iconic same-min-height-menu" label="&menu.make.same.mheight.label;" command="makeSameMinHeightCommand" key="makeSameMinHeightKey"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic align-left-menu" label="&menu.align.left.label;" command="alignLeftCommand" key="alignLeftKey"/>
-                                    <menuitem class="menuitem-iconic align-center-menu" label="&menu.align.center.label;" command="alignCenterCommand" key="alignCenterKey"/>
-                                    <menuitem class="menuitem-iconic align-right-menu" label="&menu.align.right.label;" command="alignRightCommand" key="alignRightKey"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic same-horz-menu" label="&menu.same.horiz.space.label;" command="makeSameHorizontalSpaceCommand" key="makeSameHorizontalSpaceCommandKey"/>
-                                    <menuitem class="menuitem-iconic same-vert-menu" label="&menu.same.vert.space.label;" command="makeSameVerticalSpaceCommand" key="makeSameVerticalSpaceCommandKey"/>
-                                    <menuseparator/>
-                                    <menuitem class="menuitem-iconic align-top-menu" label="&menu.align.top.label;" command="alignTopCommand" key="alignTopKey"/>
-                                    <menuitem class="menuitem-iconic align-middle-menu" label="&menu.align.middle.label;" command="alignMiddleCommand" key="alignMiddleKey"/>
-                                    <menuitem class="menuitem-iconic align-bottom-menu" label="&menu.align.bottom.label;" command="alignBottomCommand" key="alignBottomKey"/>
-                                    <menuseparator/>
-                                    <menuitem id="hideHeavyElementsMenuItem" label="&menu.hide.heavy.elements.label;" type="checkbox" checked="false" command="hideHeavyElementsCommand" key="hideHeavyElementsKey"/>
-                                </menupopup>
-                            </menu>
-                            <menu id="tools-menu" label="&menu.tools.label;" accesskey="&menu.tools.accesskey;">
-                                <menupopup>
-                                    <menuitem class="menuitem-iconic stencil-generator-menu" label="&menu.stencil.generator.label;" oncommand="window.openDialog('chrome://pencil/content/stencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen', Pencil);"/>
-                                    <menuitem class="menuitem-iconic clipart-browser-menu" label="&menu.clipart.browser.label;" oncommand="if (!Pencil._clipartShowing) { window.openDialog('chrome://pencil/content/clipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
-                                    <menuseparator/>
-                                    <menuitem label="&menu.dom.inspector.label;" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
-                                    <menuitem label="&menu.install.new.collection.label;" command="installNewCollectionCommand"/>
-                                    <menuitem label="&menu.manage.template.label;" command="manageExportTemplateCommand"/>
-                                    <!--
-                                    <menuitem label="Export as Layout..." oncommand="Pencil.controller._exportAsLayout()"/>
-                                    -->
-                                    <menuseparator/>
-                                    <menuitem id="menu_preferences" class="menuitem-iconic options-menu" label="&menu.options.label;" oncommand="window.openDialog('chrome://pencil/content/settingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
-                                </menupopup>
-                            </menu>
-                            <menu id="help-menu" label="&menu.help.label;" accesskey="&menu.help.accesskey;">
-                                <menupopup>
-                                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/aboutDialog.xul', 'pencilAboutDialog', 'chrome,centerscreen,modal,minimizable=false');"/>
-                                    <menuitem id="aboutName" class="menuitem-iconic about-menu" label="&menu.about.label;" oncommand="window.open('chrome://pencil/content/print.xul', 'pencilPrintDialog', 'chrome,centerscreen,modal,minimizable=false');" style="display:none;"/>
-                                </menupopup>
-                            </menu>
-                        </menupopup>
                     </menu>
                 </menubar>
             </toolbaritem>
@@ -460,7 +513,7 @@
                 </tabbox>
             </hbox>
 
-            <tabbox id="sideBoxFloat" minwidth="150" width="300" minheight="200" height="455" top="-5" persist="width,height" style="display:none;opacity:0;" class="CollectionPane">
+            <tabbox id="sideBoxFloat" minwidth="150" width="300" minheight="200" height="455" top="-5" left="0" persist="width,height" style="display:none;opacity:0; min-width: 0px; background: buttonface; padding: 8px; border: #333; box-shadow: 2px 2px 3px rgba(0, 0, 0, .5);" class="CollectionPane">
                 <tabs id="sideBoxTabs" class="CollectionPane">
                     <tab label="&tab.collections.label;" class="CollectionPane"/>
                     <tab label="&tab.my.stuffs.label;" class="CollectionPane"/>
