@@ -33,6 +33,7 @@ Pencil.postBoot = function() {
         }, false);
 
         Pencil.buildRecentFileMenu();
+        invalidateToolbars();
 
         if (navigator.userAgent.indexOf("Intel Mac") != -1) {
             var pencilMenu = document.getElementById("pencil-menu");
@@ -104,6 +105,10 @@ Pencil.getBestFitSize = function () {
     var mainViewPanel = document.getElementById("mainViewPanel");
     return [mainViewPanel.boxObject.width - 50, mainViewPanel.boxObject.height - 50].join("x");
 };
+Pencil.getBestFitSizeObject = function () {
+    var mainViewPanel = document.getElementById("mainViewPanel");
+    return {width: mainViewPanel.boxObject.width - 50, height: mainViewPanel.boxObject.height - 50};
+};
 Pencil.toggleShowHeavyElements = function () {
     var show = Config.get("view.showHeavyElements", false);
 
@@ -143,3 +148,52 @@ Pencil.insertPNGImage = function (url, w, h, x, y) {
         }, 10);
     }
 };
+
+var registeredToolbars = [];
+function registerToolbar(info) {
+    registeredToolbars.push(info);
+}
+function isToolbarVisible(id) {
+    return Config.get("view.toolbar_" + id, true);
+}
+function setToolbarVisible(id, visible) {
+    Config.set("view.toolbar_" + id, visible);
+}
+function invalidateToolbars() {
+    for (var i = 0; i < registeredToolbars.length; i ++) {
+        var info = registeredToolbars[i];
+        var toolbar = document.getElementById(info.id + "Toolbar");
+        if (isToolbarVisible(info.id)) {
+            Dom.removeClass(toolbar, "Hidden");
+        } else {
+            Dom.addClass(toolbar, "Hidden");
+        }
+    }
+};
+function setupToolbarContextMenu() {
+    var menu = document.getElementById("toolbarContextMenu");
+    Dom.empty(menu);
+    for (var i = 0; i < registeredToolbars.length; i ++) {
+        var info = registeredToolbars[i];
+        var menuItem = document.createElementNS(PencilNamespaces.xul, "menuitem");
+        menuItem.setAttribute("label", info.name);
+        menuItem.setAttribute("toolbar", info.id);
+        menuItem.setAttribute("type", "checkbox");
+        menuItem.setAttribute("checked", isToolbarVisible(info.id));
+        menu.appendChild(menuItem);
+        menuItem.addEventListener("command", function (event) {
+                var target = event.originalTarget;
+                var toolbarId = target.getAttribute("toolbar");
+                setToolbarVisible(toolbarId, target.getAttribute("checked") == "true");
+                invalidateToolbars();
+            }, false);
+    }
+}
+registerToolbar({id: "file", name: "File Toolbar"});
+registerToolbar({id: "edit", name: "Edit Toolbar"});
+registerToolbar({id: "zoom", name: "Zoom Toolbar"});
+registerToolbar({id: "textFormat", name: "Text Format Toolbar"});
+registerToolbar({id: "geometry", name: "Geometry Toolbar"});
+registerToolbar({id: "alignment", name: "Alignment Toolbar"});
+registerToolbar({id: "sizeAndSpacing", name: "Size and Spacing Toolbar"});
+registerToolbar({id: "color", name: "Color Toolbar"});

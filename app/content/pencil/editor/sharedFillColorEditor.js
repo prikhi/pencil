@@ -30,7 +30,7 @@ SharedFillColorEditor.prototype.attach = function (target) {
         this.detach();
         return;
     }
-    this.fillColorButton.removeAttribute("disabled");
+    this.fillColorButton.setEnable(true);
 
     //set the value
     this.fillColorButton.color = this.color;
@@ -38,7 +38,7 @@ SharedFillColorEditor.prototype.attach = function (target) {
     this.target = target;
 };
 SharedFillColorEditor.prototype.detach = function () {
-    this.fillColorButton.setAttribute("disabled", "true");
+    this.fillColorButton.setEnable(false);
 
     this.target = null;
     this.font = null;

@@ -640,6 +640,18 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                     ]]>
                     </Impl>
             </Action>
+            <Action id="convertToEmbeded" displayName="Convert to embedded">
+                <Impl>
+                    <![CDATA[
+                        var imageData = this.getProperty("imageData");
+                        var thiz = this;
+                        ImageData.convertToEmbeded(imageData, function (convertedData) {
+                            if (!convertedData) return;
+                            thiz.setProperty("imageData", convertedData);
+                        });
+                    ]]>
+                    </Impl>
+            </Action>
             <Action id="editExternal" displayName="Edit with External Editor...">
                 <Impl>
                     <![CDATA[

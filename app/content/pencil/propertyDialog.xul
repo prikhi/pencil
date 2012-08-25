@@ -19,9 +19,9 @@
         ondialogaccept="return PropertyDialog.doApply();"
         ondialogcancel="return PropertyDialog.doCancel();">
 
+    <script src="chrome://pencil/content/common/pencilNamespaces.js"/>
     <script src="chrome://pencil/content/common/config.js"/>
     <script src="chrome://pencil/content/common/util.js"/>
-    <script src="chrome://pencil/content/common/pencilNamespaces.js"/>
 
     <script src="chrome://pencil/content/propertyType/alignment.js"/>
     <script src="chrome://pencil/content/propertyType/font.js"/>

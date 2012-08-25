@@ -76,6 +76,15 @@ ImageData.fromUrlEmbedded = function (url, callback) {
     image.src = url;
 };
 
+ImageData.convertToEmbeded = function (imageData, callback) {
+    if (imageData.data.match(/^data:/)) {
+        alert("This image is already in the embedded mode. No conversion was taken.");
+        return;
+    }
+    ImageData.fromUrlEmbedded(imageData.data, callback);
+};
+
+
 ImageData.prototype.toString = function () {
     return [this.w, this.h, this.data].join(",");
 };

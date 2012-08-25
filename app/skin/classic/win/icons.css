@@ -239,7 +239,7 @@ dialog[p|probing] * {
 }
 
 #toolbarFormatPainterCommand {
-	list-style-image: url(chrome://pencil-os/skin/images/moblin/brush.png);
+	list-style-image: url(chrome://pencil/skin/images/toolbar/brush.png);
 }
 
 .new-window-menu {

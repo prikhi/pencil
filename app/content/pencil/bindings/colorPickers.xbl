@@ -393,7 +393,7 @@
                 if (!mIsPopup && this.getAttribute('focused') != 'true') {
                     //debug("focused");
                     this.setAttribute('focused','true');
-                    document.addEventListener("keydown", this, true);
+                    //document.addEventListener("keydown", this, true);
                     if (this.mSelectedCell)
                         this.hoverCell(this.mSelectedCell);
                 }

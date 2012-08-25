@@ -1339,6 +1339,18 @@ Controller.prototype.sizeToContent = function (passedPage, askForPadding) {
         page.properties.height = newSize.height;
     }
 };
+Controller.prototype.sizeToBestFit = function (passedPage) {
+    var page = passedPage ? passedPage : this.getCurrentPage();
+    var canvas = page._view.canvas;
+    if (!canvas) return;
+
+    var newSize = Pencil.getBestFitSizeObject();
+    if (newSize) {
+        canvas.setSize(newSize.width, newSize.height);
+        page.properties.width = newSize.width;
+        page.properties.height = newSize.height;
+    }
+};
 
 Controller.prototype._exportAsLayout = function () {
     var page = this.getCurrentPage();

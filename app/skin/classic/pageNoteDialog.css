@@ -22,3 +22,10 @@ toolbar menuitem.NameItem {
     font-weight: bold;
     background: threedface;
 }
+
+* {
+    -moz-user-focus: ignore;
+}
+editor {
+    -moz-user-focus: normal;
+}
