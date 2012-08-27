@@ -40,11 +40,11 @@ toolbarbutton.AttachedAction {
 }
 
 tabbox.Main #mainViewHeader > tab {
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: .5em;
+    padding-right: .5em;
 }
 tabbox.Main #mainViewHeader > tab[selected="true"] {
-    /*font-weight: bold;*/
+    font-weight: bold;
 }
 
 tabbox.Main > tabpanels {
