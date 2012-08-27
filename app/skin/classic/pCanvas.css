@@ -28,14 +28,16 @@ pcanvas.PanDown {
     cursor: url(chrome://pencil/skin/images/pandown.cur) 16 16, default !important;
 }
 pcanvas > box {
-    padding: 0px 4px 4px 0px;
+    padding: 0px;
 	/*padding: 0;*/
     background-color: #666;
     -moz-user-focus: normal;
-    margin: 5px 0px 0px 5px;
+    margin: 0px;
+    -moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, .4);
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, .4);
 }
 pcanvas > box > box {
-    margin: -5px 0px 0px -5px;
+    margin: 0px;
 	/*margin: 0;*/
     -moz-box-orient: horizontal;
     -moz-box-align: center;
