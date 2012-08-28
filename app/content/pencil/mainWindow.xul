@@ -367,7 +367,7 @@
         </menubar>
         <menupopup id="toolbarContextMenu">
         </menupopup>
-        <toolbar id="primaryToolbar" style="display: block;" context="toolbarContextMenu" oncontextmenu="setupToolbarContextMenu();">
+        <toolbar id="primaryToolbar" context="toolbarContextMenu" oncontextmenu="setupToolbarContextMenu();">
             <vbox class="Section" id="fileToolbar">
                 <label value="File:"/>
                 <hbox>

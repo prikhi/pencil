@@ -4,7 +4,6 @@ window:-moz-system-metric(windows-compositor), toolbar, toolbox, statusbar {
   -moz-appearance: -moz-win-glass;
 }
 */
-/*
 tabs tab {
   -moz-appearance: none;
   background: -moz-linear-gradient(bottom, rgba(10%,10%,10%,.4) 1px, transparent 1px), -moz-linear-gradient(transparent, hsla(0,0%,45%,.1) 1px, hsla(0,0%,32%,.2) 80%, hsla(0,0%,0%,.2)),
@@ -18,8 +17,8 @@ tabs tab {
   -moz-border-image: url(chrome://pencil/skin/images/tab.png) 4 3 0 / 4px 3px 0 repeat stretch;
   border-radius: 0;
 }
-*/
 tabs tab[selected="true"] {
   background-image: -moz-linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.5) 50%),
                     -moz-linear-gradient(-moz-dialog, -moz-dialog);
 }
+
