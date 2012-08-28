@@ -689,6 +689,7 @@
                 <body>
                 <![CDATA[
                     tick("begin");
+                    Dom.emitEvent("p:CanvasMouseDown", this, {});
 
                     var canvasList = Pencil.getCanvasList();
                     for (var i = 0; i < canvasList.length; i++) {

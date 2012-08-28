@@ -60,8 +60,22 @@ OnScreenTextEditor._ensureSupportElements = function () {
     }
 };
 
+OnScreenTextEditor.focusCausedByCanvasClick = false;
 OnScreenTextEditor._ensureSupportElementsImpl = function() {
     if (!OnScreenTextEditor.richTextEditor) {
+
+        window.addEventListener("focus", function (event) {
+                if (event.originalTarget != OnScreenTextEditor.richTextEditor) {
+                    if (OnScreenTextEditor.isEditing) {
+                        OnScreenTextEditor.richTextEditor.focus();
+                        OnScreenTextEditor.shoudClose = false;
+                    }
+                }
+            }, false);
+        document.addEventListener("p:CanvasMouseDown", function (event) {
+                OnScreenTextEditor.currentInstance.applyChanges();
+                OnScreenTextEditor._hide();
+            }, false);
 
         //setup toolbar
         var fontPopup = document.getElementById("fontlist-popup");
@@ -152,7 +166,6 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         }, true);
 
         OnScreenTextEditor.richTextEditor.contentWindow.addEventListener("blur", function (event) {
-
             OnScreenTextEditor.shoudClose = true;
 
             window.setTimeout(function() {
@@ -168,7 +181,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
             }, 20)
 
         }, false);
-        OnScreenTextEditor.richTextEditorPane.addEventListener("keyup", function (event) {
+        OnScreenTextEditor.richTextEditor.contentDocument.addEventListener("keypress", function (event) {
             if (event.keyCode == event.DOM_VK_ESCAPE) {
                 OnScreenTextEditor._hide();
             } else if (event.keyCode == event.DOM_VK_RETURN && !event.shiftKey && !event.ctrlKey) {
@@ -181,13 +194,15 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
                         event.keyCode == event.DOM_VK_DOWN ||
                         event.keyCode == event.DOM_VK_LEFT ||
                         event.keyCode == event.DOM_VK_RIGHT) {
-                //Dom.cancelEvent(event);
-                
-                event.stopPropagation();
-                //OnScreenTextEditor._arrow = true;
-                //event.preventDefault();
+
+                var code = event.keyCode;
+                var char = event.charCode;
+                if (event.eventPhase == 3) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                }
             }
-        }, false);
+        }, true);
         var selectListener = function (event) {
             var temp = OnScreenTextEditor.isEditing;
             OnScreenTextEditor.isEditing = false;
@@ -311,6 +326,8 @@ OnScreenTextEditor._updateButtonByCommandState = function (commandName, controlI
     }
 }
 OnScreenTextEditor._hide = function () {
+    Dom.removeClass(document.documentElement, "RichTextEditActivated");
+
     if (!OnScreenTextEditor.isEditing) return;
     OnScreenTextEditor.isEditing = false;
     OnScreenTextEditor._enableGlobalClipboardKeys(true);
@@ -374,6 +391,8 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
             Console.dumpError(e, "stdout");
         }
     }
+
+    Dom.addClass(document.documentElement, "RichTextEditActivated");
 
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = "";
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = this.textEditingInfo.value;
