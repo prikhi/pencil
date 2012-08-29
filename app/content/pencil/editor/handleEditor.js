@@ -129,8 +129,8 @@ HandleEditor.prototype.handleMouseMove = function (event) {
     dx = constraints.lockX ? 0 : dx;
     dy = constraints.lockY ? 0 : dy;
 
-    var grid = Pencil.getGridSize();
-    if (!event.shiftKey) {
+    if (!event.shiftKey && Config.get("edit.snap.grid", false) == true) {
+        var grid = Pencil.getGridSize();
         dx = grid.w * Math.round(dx / grid.w);
         dy = grid.h * Math.round(dy / grid.h);
     }

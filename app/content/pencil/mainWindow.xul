@@ -371,50 +371,50 @@
             <vbox class="Section" id="fileToolbar">
                 <label value="File:"/>
                 <hbox>
-                    <toolbarbutton command="newDocumentCommand" image="chrome://pencil/skin/images/toolbar/document-new.png"/>
-                    <toolbarbutton command="loadDocumentCommand" image="chrome://pencil/skin/images/toolbar/document-open.png"/>
-                    <toolbarbutton command="saveDocumentCommand" image="chrome://pencil/skin/images/toolbar/document-save.png"/>
-                    <toolbarbutton command="printCommand" image="chrome://pencil/skin/images/toolbar/document-print.png"/>
+                    <toolbarbutton command="newDocumentCommand" tooltiptext="New document" image="chrome://pencil/skin/images/toolbar/document-new.png"/>
+                    <toolbarbutton command="loadDocumentCommand" tooltiptext="Open existing document" image="chrome://pencil/skin/images/toolbar/document-open.png"/>
+                    <toolbarbutton command="saveDocumentCommand" tooltiptext="Save current document" image="chrome://pencil/skin/images/toolbar/document-save.png"/>
+                    <toolbarbutton command="printCommand" tooltiptext="Print current document" image="chrome://pencil/skin/images/toolbar/document-print.png"/>
                 </hbox>
             </vbox>
             <separator/>
             <vbox class="Section" id="editToolbar">
                 <label value="Edit:"/>
                 <hbox>
-                    <toolbarbutton command="copyCommand" image="chrome://pencil/skin/images/toolbar/edit-copy.png"/>
-                    <toolbarbutton command="cutCommand" image="chrome://pencil/skin/images/toolbar/edit-cut.png"/>
-                    <toolbarbutton command="pasteCommand" image="chrome://pencil/skin/images/toolbar/edit-paste.png"/>
+                    <toolbarbutton command="copyCommand" tooltiptext="Copy" image="chrome://pencil/skin/images/toolbar/edit-copy.png"/>
+                    <toolbarbutton command="cutCommand" tooltiptext="Cut" image="chrome://pencil/skin/images/toolbar/edit-cut.png"/>
+                    <toolbarbutton command="pasteCommand" tooltiptext="Paste" image="chrome://pencil/skin/images/toolbar/edit-paste.png"/>
                 </hbox>
             </vbox>
             <separator/>
             <vbox class="Section" id="zoomToolbar">
                 <label value="Zoom:"/>
                 <hbox>
-                    <toolbarbutton command="zoomInCommand" image="chrome://pencil/skin/images/toolbar/zoom-in.png"/>
-                    <toolbarbutton command="zoom1Command" image="chrome://pencil/skin/images/toolbar/zoom-original.png"/>
-                    <toolbarbutton command="zoomOutCommand" image="chrome://pencil/skin/images/toolbar/zoom-out.png"/>
+                    <toolbarbutton command="zoomInCommand" tooltiptext="Zoom in" image="chrome://pencil/skin/images/toolbar/zoom-in.png"/>
+                    <toolbarbutton command="zoom1Command" tooltiptext="Actual size" image="chrome://pencil/skin/images/toolbar/zoom-original.png"/>
+                    <toolbarbutton command="zoomOutCommand" tooltiptext="Zoom out" image="chrome://pencil/skin/images/toolbar/zoom-out.png"/>
                 </hbox>
             </vbox>
             <separator id="alignmentToolbarSeparator"/>
             <vbox class="Section" id="alignmentToolbar">
                 <label value="Alignment:"/>
                 <hbox align="middle">
-                    <toolbarbutton command="alignLeftCommand" image="chrome://pencil/skin/images/toolbar/align-left.png"/>
-                    <toolbarbutton command="alignCenterCommand" image="chrome://pencil/skin/images/toolbar/align-center.png"/>
-                    <toolbarbutton command="alignRightCommand" image="chrome://pencil/skin/images/toolbar/align-right.png"/>
-                    <toolbarbutton command="alignTopCommand" image="chrome://pencil/skin/images/toolbar/align-top.png"/>
-                    <toolbarbutton command="alignMiddleCommand" image="chrome://pencil/skin/images/toolbar/align-middle.png"/>
-                    <toolbarbutton command="alignBottomCommand" image="chrome://pencil/skin/images/toolbar/align-right.png"/>
+                    <toolbarbutton command="alignLeftCommand" tooltiptext="Align left" image="chrome://pencil/skin/images/toolbar/align-left.png"/>
+                    <toolbarbutton command="alignCenterCommand" tooltiptext="Align center" image="chrome://pencil/skin/images/toolbar/align-center.png"/>
+                    <toolbarbutton command="alignRightCommand" tooltiptext="Align right" image="chrome://pencil/skin/images/toolbar/align-right.png"/>
+                    <toolbarbutton command="alignTopCommand" tooltiptext="Align top" image="chrome://pencil/skin/images/toolbar/align-top.png"/>
+                    <toolbarbutton command="alignMiddleCommand" tooltiptext="Align middle" image="chrome://pencil/skin/images/toolbar/align-middle.png"/>
+                    <toolbarbutton command="alignBottomCommand" tooltiptext="Align bottom" image="chrome://pencil/skin/images/toolbar/align-right.png"/>
                 </hbox>
             </vbox>
             <separator/>
             <vbox class="Section" id="sizeAndSpacingToolbar">
                 <label value="Same sizes &amp; spaces:"/>
                 <hbox align="middle">
-                    <toolbarbutton command="makeSameWidthCommand" image="chrome://pencil/skin/images/toolbar/same-width.png"/>
-                    <toolbarbutton command="makeSameHeightCommand" image="chrome://pencil/skin/images/toolbar/same-height.png"/>
-                    <toolbarbutton command="makeSameHorizontalSpaceCommand" image="chrome://pencil/skin/images/toolbar/same-h-space.png"/>
-                    <toolbarbutton command="makeSameVerticalSpaceCommand" image="chrome://pencil/skin/images/toolbar/same-v-space.png"/>
+                    <toolbarbutton command="makeSameWidthCommand" tooltiptext="Make same width" image="chrome://pencil/skin/images/toolbar/same-width.png"/>
+                    <toolbarbutton command="makeSameHeightCommand" tooltiptext="Make same height" image="chrome://pencil/skin/images/toolbar/same-height.png"/>
+                    <toolbarbutton command="makeSameHorizontalSpaceCommand" tooltiptext="Make same horizontal space" image="chrome://pencil/skin/images/toolbar/same-h-space.png"/>
+                    <toolbarbutton command="makeSameVerticalSpaceCommand" tooltiptext="Make same vertical space" image="chrome://pencil/skin/images/toolbar/same-v-space.png"/>
                 </hbox>
             </vbox>
         </toolbar>

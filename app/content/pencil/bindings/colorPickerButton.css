@@ -34,7 +34,7 @@ xpcolorbutton pcoloreditor label[aid='opacityText'],
 xpcolorbutton pcoloreditor scale[aid='opacity'] {
     display: none;
 }
-pcolorbutton[mode='text'] label {
+pcolorbutton[mode='text'] toolbarbutton label {
     background: none !important;
     font-weight: bold;
     text-shadow: 1px 1px 0px rgba(0, 0, 0, .1);
@@ -42,8 +42,8 @@ pcolorbutton[mode='text'] label {
 pcolorbutton[mode='text'] box[aid='colorBox'] {
     display: none;
 }
-pcolorbutton[mode='border'] label,
-pcolorbutton[mode='full'] label {
+pcolorbutton[mode='border'] toolbarbutton label,
+pcolorbutton[mode='full'] toolbarbutton label {
     display: none;
 }
 pcolorbutton[mode='border'] box[aid='colorBox'],

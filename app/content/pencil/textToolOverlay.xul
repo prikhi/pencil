@@ -35,30 +35,30 @@
             </commandset>
             <label value="Text format:"/>
             <hbox>
-                <toolbarbutton id="edBoldButton" type="checkbox" image="chrome://pencil/skin/images/toolbar/format-text-bold.png"/>
-                <toolbarbutton id="edItalicButton" type="checkbox" image="chrome://pencil/skin/images/toolbar/format-text-italic.png"/>
+                <toolbarbutton id="edBoldButton" tooltiptext="Bold" type="checkbox" image="chrome://pencil/skin/images/toolbar/format-text-bold.png"/>
+                <toolbarbutton id="edItalicButton" tooltiptext="Italic" type="checkbox" image="chrome://pencil/skin/images/toolbar/format-text-italic.png"/>
                 <toolbarbutton class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="&toolbar.copy.format.tooltiptext;" id="toolbarFormatPainterCommand" type="checkbox" command="formatPainterCommand"/>
-                <menulist class="PropertyList" id="fontlist" style="width: 10em;">
+                <menulist class="PropertyList" id="fontlist" tooltiptext="Font face">
                     <menupopup id="fontlist-popup">
                         <menuitem label="&menu.text.font.label;" value="" class="NameItem"/>
                     </menupopup>
                 </menulist>
-                <textbox id="fontsize" type="number" size="1"/>
+                <textbox id="fontsize" type="number" size="1" tooltiptext="Font size"/>
             </hbox>
         </vbox>
         <separator insertbefore="alignmentToolbarSeparator"/>
         <vbox class="Section" id="geometryToolbar" insertbefore="alignmentToolbarSeparator">
             <label value="Location &amp; size:"/>
             <hbox align="center">
-                <textbox type="number" size="2" id="shapeXTextBox"/>
+                <textbox type="number" size="2" id="shapeXTextBox" tooltiptext="Left"/>
                 <label value=":"/>
-                <textbox type="number" size="2" id="shapeYTextBox"/>
+                <textbox type="number" size="2" id="shapeYTextBox" tooltiptext="Top"/>
                 <label value=" "/>
-                <textbox type="number" size="2" id="shapeWidthTextBox"/>
+                <textbox type="number" size="2" id="shapeWidthTextBox" tooltiptext="Width"/>
                 <label value="x"/>
-                <textbox type="number" size="2" id="shapeHeightTextBox"/>
+                <textbox type="number" size="2" id="shapeHeightTextBox" tooltiptext="Height"/>
                 <label value=" a:"/>
-                <textbox type="number" size="2" id="shapeAngleTextBox"/>
+                <textbox type="number" size="2" id="shapeAngleTextBox" tooltiptext="Rotation"/>
             </hbox>
         </vbox>
     </toolbar>
