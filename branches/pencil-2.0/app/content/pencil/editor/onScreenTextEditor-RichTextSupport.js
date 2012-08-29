@@ -84,11 +84,13 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         for (var i in localFonts) {
             var item = document.createElement("menuitem");
             item.setAttribute("label", localFonts[i]);
+            item.setAttribute("cropt", "center");
             item.setAttribute("value", localFonts[i]);
             fontPopup.appendChild(item);
 
             var item1 = document.createElement("menuitem");
             item1.setAttribute("label", localFonts[i]);
+            item1.setAttribute("cropt", "center");
             item1.setAttribute("value", localFonts[i]);
             mfontPopup.appendChild(item1);
         }

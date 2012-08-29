@@ -293,7 +293,7 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
     text-transform: lowercase;
     font-weight: bold;
     color: rgba(0, 0, 0, .5);
-    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.4);
 }
 #primaryToolbar toolbarbutton + toolbarbutton {
     margin-left: 2px;
@@ -325,4 +325,11 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 }
 #primaryToolbar vbox.Hidden + separator {
     display: none;
+}
+
+#primaryToolbar #fontlist menuitem {
+    font-size: 1em;
+}
+#primaryToolbar #textFormatToolbar menulist {
+    width: 15m;
 }

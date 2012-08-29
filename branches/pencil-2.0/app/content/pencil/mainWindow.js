@@ -23,6 +23,9 @@ Pencil.buildRecentFileMenu = function (files) {
     }
 };
 Pencil.postBoot = function() {
+    window.addEventListener("focus", function (event) {
+            debug("focused to: " + [event.originalTarget, event.originalTarget.localName, event.originalTarget.id]);
+        }, true);
     try {
         var menu = document.getElementById("recentDocumentMenu");
         menu.addEventListener("command", function (event) {
