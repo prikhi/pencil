@@ -333,3 +333,34 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 #primaryToolbar #textFormatToolbar menulist {
     width: 15m;
 }
+
+window.Fullscreen toolbox,
+window.Fullscreen #sideBox,
+window.Fullscreen #mainBox spacer,
+window.Fullscreen #mainBoxStack splitter,
+window.Fullscreen #mainView > hbox {
+    display: none;
+}
+window.Fullscreen #mainBox {
+    padding: 0px;
+    margin: 0px;
+}
+window.Fullscreen tabpanels,
+window.Fullscreen tabpannel,
+window.Fullscreen tabbox {
+    -moz-appearance: none !important;
+    border: none !important;
+}
+window.Fullscreen tabpanels,
+window.Fullscreen tabpanel,
+window.Fullscreen pcanvas {
+    -moz-appearance: none;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+window.Fullscreen > box {
+    height: 0px !important;
+    display: none;
+}
+
+
