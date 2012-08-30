@@ -103,14 +103,16 @@ function czGetScreenColor(x, y) {
 	var col = gCZComponent.GetPixel(x, y);
 	return col;
 }
-
+Pencil._getCanvasPadding = function () {
+    return window.fullScreen ? 10 : 50;
+};
 Pencil.getBestFitSize = function () {
     var mainViewPanel = document.getElementById("mainViewPanel");
-    return [mainViewPanel.boxObject.width - 50, mainViewPanel.boxObject.height - 50].join("x");
+    return [mainViewPanel.boxObject.width - Pencil._getCanvasPadding(), mainViewPanel.boxObject.height - Pencil._getCanvasPadding()].join("x");
 };
 Pencil.getBestFitSizeObject = function () {
     var mainViewPanel = document.getElementById("mainViewPanel");
-    return {width: mainViewPanel.boxObject.width - 50, height: mainViewPanel.boxObject.height - 50};
+    return {width: mainViewPanel.boxObject.width - Pencil._getCanvasPadding(), height: mainViewPanel.boxObject.height - Pencil._getCanvasPadding()};
 };
 Pencil.toggleShowHeavyElements = function () {
     var show = Config.get("view.showHeavyElements", false);
@@ -149,6 +151,21 @@ Pencil.insertPNGImage = function (url, w, h, x, y) {
         window.setTimeout(function() {
             canvas.currentController.setProperty("box", dim);
         }, 10);
+    }
+};
+
+Pencil.toggleFullscreen = function () {
+    var isFullscreen = Dom.hasClass(document.documentElement, "Fullscreen");
+    if (isFullscreen) {
+        Dom.removeClass(document.documentElement, "Fullscreen");
+        window.fullScreen = false;
+    } else {
+        Dom.addClass(document.documentElement, "Fullscreen");
+        window.fullScreen = true;
+    }
+
+    if (Pencil.activeCanvas) {
+        Pencil.activeCanvas.setSize(Pencil.activeCanvas.width, Pencil.activeCanvas.height);
     }
 };
 
@@ -192,6 +209,7 @@ function setupToolbarContextMenu() {
             }, false);
     }
 }
+
 registerToolbar({id: "file", name: "File Toolbar"});
 registerToolbar({id: "edit", name: "Edit Toolbar"});
 registerToolbar({id: "zoom", name: "Zoom Toolbar"});

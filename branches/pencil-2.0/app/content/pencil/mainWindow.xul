@@ -197,7 +197,7 @@
         <command id="toggleCollectionPaneCommand" oncommand="Pencil.toggleCollectionPane();"/>
 
         <command id="toggleCollectionPaneCommand1" oncommand="Pencil.toggleCollectionPane(true);"/>
-
+        <command id="toggleFullscreenCommand" oncommand="Pencil.toggleFullscreen();"/>
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="accel" key="N"/>
@@ -260,6 +260,7 @@
         <key id="shapeFilter" command="shapeFilterCommand" modifiers="accel ctrl" key="F"/>
         <key id="toggleCollectionPaneCommandKey" command="toggleCollectionPaneCommand" key="A"/>
         <key id="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" modifiers="alt" key="A"/>
+        <key id="toggleFullscreenKey" command="toggleFullscreenCommand" keycode="VK_F11"/>
 
     </keyset>
     <keyset>

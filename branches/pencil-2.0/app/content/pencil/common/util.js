@@ -75,8 +75,12 @@ Dom.cancelEvent = function (e) {
     else event.returnValue = false;
 };
 Dom.addClass = function (node, className) {
-    if ((" " + node.className + " ").indexOf(" " + className + " ") >= 0) return;
+    if (Dom.hasClass(node, className)) return;
     node.className += " " + className;
+};
+Dom.hasClass = function (node, className) {
+    if ((" " + node.className + " ").indexOf(" " + className + " ") >= 0) return true;
+    return false;
 };
 Dom.removeClass = function (node, className) {
     if (node.className == className) {
