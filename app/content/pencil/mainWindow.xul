@@ -14,9 +14,7 @@
 
 <?xul-overlay href="chrome://pencil/content/textToolOverlay.xul"?>
 <?xul-overlay href="chrome://pencil/content/colorToolOverlay.xul"?>
-<!--
 <?xul-overlay href="chrome://pencil/content/androidSupportOverlay.xul"?>
--->
 
 <window
         title="&pencil.title;"
@@ -126,9 +124,7 @@
     <script src="chrome://pencil/content/exporter/ooConversionExporter.js"/>
 
     <script src="chrome://pencil/content/common/colorDroppers.js"/>
-    <!--
-    <script src="chrome://pencil/content/common/androidSupports.js"/>
-    -->
+    <script src="chrome://pencil/content/common/connectorSupports.js"/>
 
     <commandset>
         <command id="newDocumentCommand" oncommand="Pencil.controller.newDocument();"/>

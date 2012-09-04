@@ -91,3 +91,5 @@ AndroidSupports.screenCaptureStarter = function (listener) {
 AndroidSupports.submit = function () {
     
 };
+
+registerToolbar({id: "android", name: "Android Toolbar"});

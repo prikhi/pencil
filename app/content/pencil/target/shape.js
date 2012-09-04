@@ -182,6 +182,7 @@ Shape.prototype.setProperty = function (name, value, nested) {
         this.storeProperty(name, value);
         this.applyBehaviorForProperty(name);
     }
+    Connector.invalidateInboundConnections(this.canvas, this.svg);
     this.canvas.invalidateEditors();
 };
 Shape.prototype.getProperty = function (name) {
@@ -205,7 +206,20 @@ Shape.prototype.getProperty = function (name) {
     var propType = this.def.getProperty(name).type;
     var literal = propNode.textContent;
     if (!literal) literal = "";
-    return propType.fromString(literal);
+    var value = propType.fromString(literal);
+    
+    var attrs = propNode.attributes;
+    var meta = null;
+    for (var i = attrs.length - 1; i >= 0; i --) {
+        if (attrs[i].namespaceURI == PencilNamespaces.p) {
+            if (meta == null) meta = {};
+            meta[attrs[i].localName] = attrs[i].value;
+        }
+    }
+
+    value.meta = meta;
+
+    return value;
 };
 Shape.prototype.setMetadata = function (name, value) {
     return Util.setNodeMetadata(this.svg, name, value);
@@ -224,6 +238,18 @@ Shape.prototype.storeProperty = function (name, value) {
         propNode.setAttribute("name", name);
         this.metaNode.appendChild(propNode);
     } else Dom.empty(propNode);
+
+    var attrs = propNode.attributes;
+    for (var i = attrs.length - 1; i >= 0; i --) {
+        if (attrs[i].namespaceURI == PencilNamespaces.p) {
+            propNode.removeAttributeNS(PencilNamespaces.p, attrs[i].localName);
+        }
+    }
+    if (value.meta) {
+        for (var p in value.meta) {
+            propNode.setAttributeNS(PencilNamespaces.p, p, value.meta[p]);
+        }
+    }
 
     var cdata = propNode.ownerDocument.createCDATASection(value.toString());
     propNode.appendChild(cdata);
@@ -286,6 +312,8 @@ Shape.prototype.scaleTo = function (nw, nh, group) {
             if (p.type != Handle || p.meta.noScale) continue;
 
             var h = this.getProperty(name);
+            if (h.meta && h.meta.connectedShapeId) continue;
+            
             //debug("before: " + [h.x, h.y]);
             h.x = h.x * fw;
             h.y = h.y * fh;
@@ -296,6 +324,9 @@ Shape.prototype.scaleTo = function (nw, nh, group) {
         }
 
         this.applyBehaviorForProperty("box");
+        Connector.invalidateOutboundConnections(this.canvas, this.svg);
+        Connector.invalidateInboundConnections(this.canvas, this.svg);
+
 
         //if (Config.get("docking.enabled")) {
         //    this.dockingManager.handleScaleTo(nw, nh, box.w, box.h, group);
@@ -327,6 +358,8 @@ Shape.prototype.rotateBy = function (da) {
     ctm = ctm.translate(0 - x, 0 - y);
 
     Svg.ensureCTM(this.svg, ctm);
+    Connector.invalidateOutboundConnections(this.canvas, this.svg);
+    Connector.invalidateInboundConnections(this.canvas, this.svg);
 
     //if (Config.get("docking.enabled")) {
     //    this.dockingManager.handleRotateBy(da);
@@ -754,6 +787,9 @@ Shape.prototype.canDetach = function () {
         }
     }
     return false;
+};
+Shape.prototype.getConnectorOutlets = function () {
+    return this.performAction("getConnectorOutlets");
 };
 Shape.prototype.getSnappingGuide = function () {
     var b = this.getBounding();

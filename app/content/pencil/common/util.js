@@ -89,7 +89,7 @@ Dom.removeClass = function (node, className) {
     }
     var re = new RegExp("(^" + className + " )|( " + className + " )|( " + className + "$)", "g");
     var reBlank = /(^[ ]+)|([ ]+$)/g;
-    node.className = node.className.replace(re, " ").replace(reBlank, "");
+    node.className = (node.className + "").replace(re, " ").replace(reBlank, "");
 };
 Dom.findUpward = function (node, evaluator) {
     try {
@@ -1613,7 +1613,7 @@ window.addEventListener("DOMContentLoaded", function () {
     //Util.initTextMetricFrame();
 }, false);
 
-var propertyTypeArray = ["Alignment", "Bool", "Bound", "Color", "CSS", "Dimension", "Enum", "Font", "Handle", "ImageData", "PlainText", "Point", "RichText", "RichTextArray", "ShadowStyle", "SnappingData", "StrokeStyle"];
+var propertyTypeArray = ["Alignment", "Bool", "Bound", "Color", "CSS", "Dimension", "Enum", "Font", "Handle", "ImageData", "PlainText", "Point", "RichText", "RichTextArray", "ShadowStyle", "SnappingData", "StrokeStyle", "Outlet"];
 var pencilSandbox = Components.utils.Sandbox("http://pencil.evolus.vn/");
 pencilSandbox.Dom = Dom;
 pencilSandbox.Console = Console;

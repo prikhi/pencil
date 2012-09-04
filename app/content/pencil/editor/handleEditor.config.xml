@@ -23,6 +23,11 @@
                     stroke-opacity: .3;
                     fill-opacity: 1;
                 }
+                g.HandleEditor rect[p|name='Handle'][p|connected='true'] {
+                    stroke-width: 15 !important;
+                    stroke: #f00 !important;
+                    stroke-opacity: .5 !important;
+                }
             ]]></style>
         </defs>
         <g class="Inner"/>

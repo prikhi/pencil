@@ -75,14 +75,16 @@ pcollectionpane *[_hidden='true'].Collection + .Collection {
 }
 pcollectionpane .Collection > hbox:first-child {
     -moz-box-align: start;
-    background-image: -moz-linear-gradient(bottom, rgb(221,221,221) 0%, rgb(255,255,255) 100%);
-    color: #333;
+    background-image: -moz-linear-gradient(bottom, #4084B0 0%, #417496 100%);
+    color: rgba(255, 255, 255, .85);
     padding: .3em;
     cursor: default;
 }
 pcollectionpane .Collection > hbox:first-child h4 {
-    color: #333;
-    text-shadow: 1px 1px 0px rgba(255, 255, 255, .4);
+    color: #FFF;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, .4);
+    margin: 0px;
+    line-height: 1.1em;
 }
 pcollectionpane .Collection > hbox:first-child > button {
     -moz-appearance: none;
@@ -118,7 +120,12 @@ pcollectionpane .Collection .CustomLayoutContent {
     background: blue;
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child {
-    background-image: -moz-linear-gradient(bottom, rgba(200,200,200, 0.5) 0%, rgba(200,200,200, 0.5) 100%);
+    background-image: -moz-linear-gradient(bottom, #CACACA 0%, #CACACA 100%);
+    opacity: .7;
+}
+pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child h4 {
+    color: #333;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, .6);
 }
 pcollectionpane *[pcollapsed='true'].Collection > hbox:first-child > button {
     background-position: -9px 0px;
@@ -141,11 +148,13 @@ pcollectionpane *[pcollapsed='true'].Collection .Content,
 pcollectionpane *[pcollapsed='true'].Collection .CustomLayoutContent {
     display: none;
 }
+pcollectionpane .Collection {
+    background: #E7EDF1;
+}
 pcollectionpane .Collection .Content {
     padding: .3em;
     min-width: 8em;
     margin: 0px auto;
-    background: #EEEEEE;
 }
 pcollectionpane .Collection .Content > div {
     border: none;
@@ -185,8 +194,8 @@ pcollectionpane .Collection .Content > div label {
 	overflow: hidden;
 	font: -moz-list;
 	font-size: 1em;
-	color: #999;
-	text-shadow: 1px 1px 0px rgba(255, 255, 255, .6);
+	color: #666;
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, .7);
 }
 
 
