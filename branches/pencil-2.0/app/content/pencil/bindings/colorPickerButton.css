@@ -63,5 +63,5 @@ pcolorbutton toolbarbutton > box {
     background: none !important;
 }
 pcolorbutton toolbarbutton[disabled] {
-    opacity: .05 !important;
+    opacity: .3 !important;
 }

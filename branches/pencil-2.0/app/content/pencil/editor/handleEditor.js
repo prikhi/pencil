@@ -91,6 +91,19 @@ HandleEditor.prototype.handleMouseDown = function (event) {
     this.currentHandle = this.findHandle(event.originalTarget);
     this.oX = event.clientX;
     this.oY = event.clientY;
+
+    //finding matching outlet
+    if (this.currentHandle) {
+        var def = this.currentHandle._def;
+        if (def.meta && def.meta.connectTo) {
+            var classes = def.meta.connectTo;
+            this.currentMatchingOutlets = Connector.getMatchingOutlets(this.canvas, this.targetObject.svg, classes);
+        } else {
+            this.currentMatchingOutlets = [];
+        }
+
+        debug("matching outlets: " + this.currentMatchingOutlets.length);
+    }
 };
 HandleEditor.prototype.handleMouseUp = function (event) {
     try {
@@ -99,9 +112,17 @@ HandleEditor.prototype.handleMouseUp = function (event) {
             this.currentHandle._x = this.currentHandle._newX;
             this.currentHandle._y = this.currentHandle._newY;
 
-            var h = new Handle(Math.round(this.currentHandle._x / this.canvas.zoom), Math.round(this.currentHandle._y / this.canvas.zoom));
-            Console.log(event.originalTarget.nodeName + ": " + this.targetObject);
-            this.targetObject.setProperty(this.currentHandle._def.name, h);
+            if (this.lastMatchedOutlet) {
+                var h = new Handle(Math.round(this.lastMatchedOutlet.x), Math.round(this.lastMatchedOutlet.y));
+                h.meta = {
+                    connectedShapeId: this.lastMatchedOutlet.shapeId,
+                    connectedOutletId: this.lastMatchedOutlet.id
+                };
+                this.targetObject.setProperty(this.currentHandle._def.name, h);
+            } else {
+                var h = new Handle(Math.round(this.currentHandle._x / this.canvas.zoom), Math.round(this.currentHandle._y / this.canvas.zoom));
+                this.targetObject.setProperty(this.currentHandle._def.name, h);
+            }
 
             this.canvas.invalidateEditors(this);
         }
@@ -165,6 +186,33 @@ HandleEditor.prototype.handleMouseMove = function (event) {
 
     Svg.setX(this.currentHandle, this.currentHandle._newX);
     Svg.setY(this.currentHandle, this.currentHandle._newY);
+
+    //find matching outlets
+    var x = this.currentHandle._newX / this.canvas.zoom;
+    var y = this.currentHandle._newY / this.canvas.zoom;
+
+    var delta = 8;
+    var found = false;
+    for (var i = 0; i < this.currentMatchingOutlets.length; i ++) {
+        var outlet = this.currentMatchingOutlets[i];
+        if (Math.abs(x - outlet.x) < delta &&
+            Math.abs(y - outlet.y) < delta) {
+            this.lastMatchedOutlet = outlet;
+            this.currentHandle.setAttributeNS(PencilNamespaces.p, "p:connected", "true");
+            
+            Svg.setX(this.currentHandle, outlet.x * this.canvas.zoom);
+            Svg.setY(this.currentHandle, outlet.y * this.canvas.zoom);
+            
+            debug("Found matching outlet: " + outlet.id);
+            found = true;
+            break;
+        }
+    };
+
+    if (!found) {
+        this.currentHandle.removeAttributeNS(PencilNamespaces.p, "connected");
+        this.lastMatchedOutlet = null;
+    }
 
 };
 HandleEditor.prototype.getPropertyConstraints = function (handle) {

@@ -82,7 +82,7 @@
                     </menupopup>
                 </menulist>
                 <hbox id="backgroundColorPane">
-                    <pcolorbutton id="backgroundColorButton" tooltiptext="&colorbutton.select.bgr.tooltiptext;" type="preview" allow-opacity="false"/>
+                    <pcolorbutton id="backgroundColorButton" tooltiptext="&colorbutton.select.bgr.tooltiptext;" mode="full" type="preview" allow-opacity="false"/>
                 </hbox>
                 <hbox id="dimBackgroundPane" style="visibility:hidden;">
                     <checkbox id="dimBackground" label="&checkbox.dim.background.label;" checked="false"/>

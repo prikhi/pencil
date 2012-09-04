@@ -38,18 +38,22 @@ CollectionManager.loadUserDefinedStencils = function () {
     }
 };
 CollectionManager.getUserStencilDirectory = function () {
+    return getSpecialDirs("ProfD", "Pencil/Stencils");
+};
+CollectionManager.getSpecialDirs = function (id, subFolders) {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
                      .getService(Components.interfaces.nsIProperties);
 
-    var stencilDir = properties.get("ProfD", Components.interfaces.nsIFile);
-
-    stencilDir.append("Pencil");
-    stencilDir.append("Stencils");
+    var stencilDir = properties.get(id, Components.interfaces.nsIFile);
+    var subs = subFolders.split(/\//);
+    for (var i = 0; i < subs.length; i ++) {
+        stencilDir.append(subs[i]);
+    }
 
     return stencilDir;
 };
-CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
-
+CollectionManager._loadUserDefinedStencilsIn = function (stencilDir, excluded) {
+    debug("Loading stencils in: " + stencilDir.path + "\n excluded: " + excluded);
 
     var parser = new ShapeDefCollectionParser();
 
@@ -61,11 +65,14 @@ CollectionManager._loadUserDefinedStencilsIn = function (stencilDir) {
         {
             var definitionFile = entries.getNext();
             definitionFile.QueryInterface(Components.interfaces.nsIFile);
+            if (excluded && excluded.indexOf(definitionFile.leafName) >= 0) {
+                continue;
+            }
+            
             definitionFile.append("Definition.xml");
             if (!definitionFile.exists() || definitionFile.isDirectory()) continue;
 
             var uri = ios.newFileURI(definitionFile);
-
 
             try {
                 var collection = parser.parseFile(definitionFile, uri.spec);
@@ -97,10 +104,16 @@ CollectionManager.loadStencils = function() {
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Gtk.GUI/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/WindowsXP-GUI/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Native.GUI/Definition.xml"));
+        
+    if (navigator.userAgent.indexOf("Firefox") < 0) {
+        CollectionManager._loadUserDefinedStencilsIn(CollectionManager.getSpecialDirs("CurProcD", "content/pencil/stencil"),
+        "Common, Annotation, BasicWebElements, SketchyGUI, Gtk.GUI, WindowsXP-GUI, Native.GUI");
+    }
 
     //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/iPhone/Definition.xml"));
 
-    CollectionManager.loadUserDefinedStencils();
+    CollectionManager._loadUserDefinedStencilsIn(CollectionManager.getSpecialDirs("ProfD", "Pencil/Stencils"));
+    
     PrivateCollectionManager.loadPrivateCollections();
 
     Pencil.collectionPane.reloadCollections();

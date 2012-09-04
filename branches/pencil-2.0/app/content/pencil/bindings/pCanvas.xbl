@@ -848,6 +848,8 @@
                         this.invalidateEditors();
 
                         Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+                        Connector.invalidateOutboundConnections(this, this.currentController.svg);
+                        Connector.invalidateInboundConnections(this, this.currentController.svg);
                     }
                     if (this.controllerHeld && this.hasMoved) {
                         //just to save state
@@ -949,6 +951,10 @@
                                 return;
                             }
                             this.endFormatPainter();
+                        }
+
+                        if (event.shiftKey) {
+                            Connector.invalidateInboundConnections(this, this.currentController.svg);
                         }
                     } catch (e) {
                         Console.dumpError(e);

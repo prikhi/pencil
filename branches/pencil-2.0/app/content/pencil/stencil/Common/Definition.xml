@@ -335,6 +335,24 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                     ]]>
                 </Impl>
             </Action>
+            <Action id="getConnectorOutlets">
+                <Impl>
+                    <![CDATA[
+                        var box = this.getProperty("box");
+                        return [
+                            new Outlet("top-left", "Bounding", 0, 0),
+                            new Outlet("top-center", "Bounding", box.w / 2, 0),
+                            new Outlet("top-right", "Bounding", box.w, 0),
+                            new Outlet("middle-left", "Bounding", 0, box.h / 2),
+                            new Outlet("middle-center", "Bounding", box.w / 2, box.h / 2),
+                            new Outlet("middle-right", "Bounding", box.w, box.h / 2),
+                            new Outlet("bottom-left", "Bounding", 0, box.h),
+                            new Outlet("bottom-center", "Bounding", box.w / 2, box.h),
+                            new Outlet("bottom-right", "Bounding", box.w, box.h)
+                        ]
+                    ]]>
+                </Impl>
+            </Action>
             
         </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
@@ -876,7 +894,8 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                         p:lockY="true" p:expressionY="$box.h" p:minX="$bottomStart.x + 5" p:maxX="$box.w - $radius.x - 2"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'bottom'">33,0</Property>
 
-                    <Property name="pin" displayName="Balloon Pin" type="Handle"  >-12,23</Property>
+                    <Property name="pin" displayName="Balloon Pin" type="Handle"
+                        p:connectTo="*">-12,23</Property>
                 </PropertyGroup>
                 <PropertyGroup name="Background">
                     <Property name="fillColor" displayName="Color" type="Color"><E>$$fillColor</E></Property>
