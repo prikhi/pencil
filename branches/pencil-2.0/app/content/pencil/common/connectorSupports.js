@@ -234,18 +234,36 @@ Connector.getMatchingOutlets = function (canvas, shape, classes) {
 var ConnectorUtil = {};
 ConnectorUtil.generateStandarOutlets = function (shape, classes) {
     var box = shape.getProperty("box");
-    if (!box) return [];
-    return [
-        new Outlet("top-left", classes ? classes : "Bounding", 0, 0),
-        new Outlet("top-center", classes ? classes : "Bounding", box.w / 2, 0),
-        new Outlet("top-right", classes ? classes : "Bounding", box.w, 0),
-        new Outlet("middle-left", classes ? classes : "Bounding", 0, box.h / 2),
-        new Outlet("middle-center", classes ? classes : "Bounding", box.w / 2, box.h / 2),
-        new Outlet("middle-right", classes ? classes : "Bounding", box.w, box.h / 2),
-        new Outlet("bottom-left", classes ? classes : "Bounding", 0, box.h),
-        new Outlet("bottom-center", classes ? classes : "Bounding", box.w / 2, box.h),
-        new Outlet("bottom-right", classes ? classes : "Bounding", box.w, box.h)
-    ]
+    if (box) {
+        return [
+                new Outlet("top-left", classes ? classes : "Bounding", 0, 0),
+                new Outlet("top-center", classes ? classes : "Bounding", box.w / 2, 0),
+                new Outlet("top-right", classes ? classes : "Bounding", box.w, 0),
+                new Outlet("middle-left", classes ? classes : "Bounding", 0, box.h / 2),
+                new Outlet("middle-center", classes ? classes : "Bounding", box.w / 2, box.h / 2),
+                new Outlet("middle-right", classes ? classes : "Bounding", box.w, box.h / 2),
+                new Outlet("bottom-left", classes ? classes : "Bounding", 0, box.h),
+                new Outlet("bottom-center", classes ? classes : "Bounding", box.w / 2, box.h),
+                new Outlet("bottom-right", classes ? classes : "Bounding", box.w, box.h)
+            ]
+    } else {
+    	if (shape.svg) {
+        	var box = shape.svg.getBBox();
+        	return [
+                new Outlet("top-left", classes ? classes : "Bounding", box.x, box.y + box.y),
+                new Outlet("top-center", classes ? classes : "Bounding", box.width / 2 + box.x, 0 + box.y),
+                new Outlet("top-right", classes ? classes : "Bounding", box.width + box.x, 0 + box.y),
+                new Outlet("middle-left", classes ? classes : "Bounding", 0 + box.x, box.height / 2 + box.y),
+                new Outlet("middle-center", classes ? classes : "Bounding", box.width / 2 + box.x, box.height / 2 + box.y),
+                new Outlet("middle-right", classes ? classes : "Bounding", box.width + box.x, box.height / 2 + box.y),
+                new Outlet("bottom-left", classes ? classes : "Bounding", 0 + box.x, box.height + box.y),
+                new Outlet("bottom-center", classes ? classes : "Bounding", box.width / 2 + box.x, box.height + box.y),
+                new Outlet("bottom-right", classes ? classes : "Bounding", box.width + box.x, box.height + box.y)
+        	];
+    	} else {
+    		return [];
+    	}
+    }
 
 }
 
