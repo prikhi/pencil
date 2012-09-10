@@ -1260,13 +1260,13 @@ function debug(value) {
     if (out) {
         out.innerHTML = value + "\n" + out.innerHTML;
     }
-*/
     if (true) {
         Components.classes['@mozilla.org/consoleservice;1']
 	            .getService(Components.interfaces.nsIConsoleService)
                 .logStringMessage(value);
     }
     console.info(value);
+*/
 }
 function warn(value) {
     //console.warn(value);

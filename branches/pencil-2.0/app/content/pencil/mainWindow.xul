@@ -14,8 +14,10 @@
 
 <?xul-overlay href="chrome://pencil/content/textToolOverlay.xul"?>
 <?xul-overlay href="chrome://pencil/content/colorToolOverlay.xul"?>
+<!-- 
 <?xul-overlay href="chrome://pencil/content/androidSupportOverlay.xul"?>
-
+ -->
+ 
 <window
         title="&pencil.title;"
         id="main-window"

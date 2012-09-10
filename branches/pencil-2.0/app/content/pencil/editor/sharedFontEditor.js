@@ -65,11 +65,7 @@ SharedFontEditor.prototype._applyValue = function () {
 };
 SharedFontEditor.prototype.attach = function (target) {
     this.target = target;
-    if (target.getTextEditingInfo && target.getTextEditingInfo()) {
-        this.font = target.getTextEditingInfo().font;
-    } else {
-        this.font = target.getProperty(SharedFontEditor.PROPERTY_NAME, "any");
-    }
+    this.font = target.getProperty(SharedFontEditor.PROPERTY_NAME, "any");
     if (!this.font)  {
         this.detach();
         return;
