@@ -30,6 +30,14 @@ Handle.prototype.applyExpressionX = function (value) {
 Handle.prototype.applyExpressionY = function (value) {
     this.y = value;
 };
+Handle.prototype.applyUnconnectedValue = function (value) {
+	debug("applyUnconnectedValue is called");
+	if (!this.meta || !this.meta.connectedShapeId) {
+		debug("unconnected! " + [value.x, value.y]);
+	    this.x = value.x;
+	    this.y = value.y;
+	}
+};
 Handle.prototype.applyConstraintFunction = function (value) {
     try {
         this._fromApplyConstraintFunction = true;
@@ -42,6 +50,9 @@ Handle.prototype.applyConstraintFunction = function (value) {
 };
 Handle.prototype.toString = function () {
     return this.x + "," + this.y;
+};
+Handle.prototype.isConnected = function () {
+    return this.meta && this.meta.connectedShapeId && this.meta.connectedOutletId;
 };
 
 pencilSandbox.Handle = {

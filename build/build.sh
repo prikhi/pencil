@@ -170,11 +170,11 @@ cleanup() {
 }
 
 prep
-xpi
+#xpi
 #linux
 win32
-mac
-fedorarpm
+#mac
+#fedorarpm
 cleanup
 
 echo "Done!"

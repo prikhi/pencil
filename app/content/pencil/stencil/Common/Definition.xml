@@ -895,7 +895,7 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                         p:disabled="F.getRelativeLocation($pin, $box) != 'bottom'">33,0</Property>
 
                     <Property name="pin" displayName="Balloon Pin" type="Handle"
-                        p:connectTo="*">-12,23</Property>
+                        p:connectTo="*" p:noMove="true">-12,23</Property>
                 </PropertyGroup>
                 <PropertyGroup name="Background">
                     <Property name="fillColor" displayName="Color" type="Color"><E>$$fillColor</E></Property>

@@ -23,9 +23,6 @@ Pencil.buildRecentFileMenu = function (files) {
     }
 };
 Pencil.postBoot = function() {
-    window.addEventListener("focus", function (event) {
-            debug("focused to: " + [event.originalTarget, event.originalTarget.localName, event.originalTarget.id]);
-        }, true);
     try {
         var menu = document.getElementById("recentDocumentMenu");
         menu.addEventListener("command", function (event) {
@@ -108,11 +105,13 @@ Pencil._getCanvasPadding = function () {
 };
 Pencil.getBestFitSize = function () {
     var mainViewPanel = document.getElementById("mainViewPanel");
-    return [mainViewPanel.boxObject.width - Pencil._getCanvasPadding(), mainViewPanel.boxObject.height - Pencil._getCanvasPadding()].join("x");
+    var zoom = Pencil.activeCanvas ? (1 / Pencil.activeCanvas.zoom) : 1;
+    return [zoom * (mainViewPanel.boxObject.width - Pencil._getCanvasPadding()), zoom * (mainViewPanel.boxObject.height - Pencil._getCanvasPadding())].join("x");
 };
 Pencil.getBestFitSizeObject = function () {
     var mainViewPanel = document.getElementById("mainViewPanel");
-    return {width: mainViewPanel.boxObject.width - Pencil._getCanvasPadding(), height: mainViewPanel.boxObject.height - Pencil._getCanvasPadding()};
+    var zoom = Pencil.activeCanvas ? (1 / Pencil.activeCanvas.zoom) : 1;
+    return {width: zoom * (mainViewPanel.boxObject.width - Pencil._getCanvasPadding()), height: zoom * (mainViewPanel.boxObject.height - Pencil._getCanvasPadding())};
 };
 Pencil.toggleShowHeavyElements = function () {
     var show = Config.get("view.showHeavyElements", false);

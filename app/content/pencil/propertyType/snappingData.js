@@ -3,6 +3,7 @@ function SnappingData(type, pos, applyTo, vertical, id, disabled, limit1, limit2
     this.applyTo = applyTo ? applyTo : "";
     this.vertical = vertical ? true : false;
     this.disabled = disabled;
+    this.local = false;
 
     if (this.applyTo && typeof(this.applyTo) == "string") {
         this.applyTo = this.applyTo.split(",");
@@ -37,6 +38,10 @@ SnappingData.prototype.toString = function () {
 };
 SnappingData.prototype.clone = function () {
     return new SnappingData(this.type, this.pos, this.applyTo, this.vertical, Util.newUUID(), false, this.limit1, this.limit2);
+};
+SnappingData.prototype.makeLocal = function (local) {
+	this.local = local;
+	return this;
 };
 
 pencilSandbox.SnappingData = {

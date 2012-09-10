@@ -293,6 +293,8 @@ Shape.prototype.moveBy = function (dx, dy, targetSet, moving) {
 
     matrix = matrix.multiply(ctm);
     Svg.ensureCTM(this.svg, matrix);
+    //Connector.invalidateOutboundConnections(this.canvas, this.svg);
+    //Connector.invalidateInboundConnections(this.canvas, this.svg);
 
     //if (Config.get("docking.enabled")) {
     //    this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
@@ -789,7 +791,11 @@ Shape.prototype.canDetach = function () {
     return false;
 };
 Shape.prototype.getConnectorOutlets = function () {
-    return this.performAction("getConnectorOutlets");
+    var outlets = this.performAction("getConnectorOutlets");
+    if (outlets == null) {
+    	outlets = ConnectorUtil.generateStandarOutlets(this);
+    }
+    return outlets;
 };
 Shape.prototype.getSnappingGuide = function () {
     var b = this.getBounding();
@@ -808,29 +814,39 @@ Shape.prototype.getSnappingGuide = function () {
     var customSnappingData = this.performAction("getSnappingGuide");
     if (customSnappingData) {
         for (var i = 0; i < customSnappingData.length; i++) {
-            if (customSnappingData[i].vertical) {
+        	var data = customSnappingData[i];
+        	var m = this.svg.getTransformToElement(this.canvas.drawingLayer);
+        	
+            if (data.vertical) {
+            	if (data.local) {
+            		data.pos = Svg.pointInCTM(data.pos, 0, m).x;
+            	}
+
                 var ik = -1;
                 for (var k = 0; k < vertical.length; k++) {
-                    if (vertical[k].type == customSnappingData[i].type) {
+                    if (vertical[k].type == data.type) {
                         ik = k;
                     }
                 }
                 if (ik != -1) {
-                    vertical[ik] = customSnappingData[i];
+                    vertical[ik] = data;
                 } else {
-                    vertical.push(customSnappingData[i]);
+                    vertical.push(data);
                 }
             } else {
+            	if (data.local) {
+            		data.pos = Svg.pointInCTM(0, data.pos, m).y;
+            	}
                 var ik = -1;
                 for (var k = 0; k < horizontal.length; k++) {
-                    if (horizontal[k].type == customSnappingData[i].type) {
+                    if (horizontal[k].type == data.type) {
                         ik = k;
                     }
                 }
                 if (ik != -1) {
-                    horizontal[ik] = customSnappingData[i];
+                    horizontal[ik] = data;
                 } else {
-                    horizontal.push(customSnappingData[i]);
+                    horizontal.push(data);
                 }
             }
         }
