@@ -52,6 +52,43 @@ CollectionManager.getSpecialDirs = function (id, subFolders) {
 
     return stencilDir;
 };
+CollectionManager._loadDeveloperStencil = function () {
+	try {
+		var path = Config.get("dev.stencil.path", "null");
+		if (!path || path == "none" || path == "null") {
+			Config.set("dev.stencil.path", "none")
+			return;
+		}
+		
+		var file = Components.classes["@mozilla.org/file/local;1"].
+	    createInstance(Components.interfaces.nsILocalFile);
+		file.initWithPath(path);
+		
+		if (!file.exists()) return;
+		
+		var parser = new ShapeDefCollectionParser();
+		CollectionManager._loadStencil(file, parser);
+	} catch (e) {
+        Util.error("Failed to load developer stencil", ex.message + "\n" + definitionFile.path, Util.getMessage("button.cancel.close"));
+	}
+};
+CollectionManager._loadStencil = function (dir, parser) {
+	var definitionFile = dir;
+	definitionFile.append("Definition.xml");
+    if (!definitionFile.exists() || definitionFile.isDirectory()) return;
+
+    var uri = ios.newFileURI(definitionFile);
+
+    try {
+        var collection = parser.parseFile(definitionFile, uri.spec);
+        collection.userDefined = true;
+        collection.installDirPath = definitionFile.parent.path;
+        CollectionManager.addShapeDefCollection(collection);
+    } catch (ex) {
+        Util.error(Util.getMessage("error.title"), Util.getMessage("stencil.cannot.be.parsed", definitionFile.path, ex.message), Util.getMessage("button.cancel.close"))
+        //alert("Warning:\nThe stencil at: " + definitionFile.path + " cannot be parsed.\nError: " + ex.message);
+    }
+};
 CollectionManager._loadUserDefinedStencilsIn = function (stencilDir, excluded) {
     debug("Loading stencils in: " + stencilDir.path + "\n excluded: " + excluded);
 
@@ -69,21 +106,7 @@ CollectionManager._loadUserDefinedStencilsIn = function (stencilDir, excluded) {
                 continue;
             }
             
-            definitionFile.append("Definition.xml");
-            if (!definitionFile.exists() || definitionFile.isDirectory()) continue;
-
-            var uri = ios.newFileURI(definitionFile);
-
-            try {
-                var collection = parser.parseFile(definitionFile, uri.spec);
-                collection.userDefined = true;
-                collection.installDirPath = definitionFile.parent.path;
-                CollectionManager.addShapeDefCollection(collection);
-            } catch (ex) {
-                Util.error(Util.getMessage("error.title"), Util.getMessage("stencil.cannot.be.parsed", definitionFile.path, ex.message), Util.getMessage("button.cancel.close"))
-                //alert("Warning:\nThe stencil at: " + definitionFile.path + " cannot be parsed.\nError: " + ex.message);
-                continue;
-            }
+            CollectionManager._loadStencil(definitionFile, parser);
         }
     } catch (e) {
         Console.dumpError(e);
@@ -113,6 +136,7 @@ CollectionManager.loadStencils = function() {
     //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/iPhone/Definition.xml"));
 
     CollectionManager._loadUserDefinedStencilsIn(CollectionManager.getSpecialDirs("ProfD", "Pencil/Stencils"));
+    CollectionManager._loadDeveloperStencil();
     
     PrivateCollectionManager.loadPrivateCollections();
 
