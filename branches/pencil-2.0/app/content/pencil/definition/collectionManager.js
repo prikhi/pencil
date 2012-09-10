@@ -38,7 +38,7 @@ CollectionManager.loadUserDefinedStencils = function () {
     }
 };
 CollectionManager.getUserStencilDirectory = function () {
-    return getSpecialDirs("ProfD", "Pencil/Stencils");
+    return CollectionManager.getSpecialDirs("ProfD", "Pencil/Stencils");
 };
 CollectionManager.getSpecialDirs = function (id, subFolders) {
     var properties = Components.classes["@mozilla.org/file/directory_service;1"]
