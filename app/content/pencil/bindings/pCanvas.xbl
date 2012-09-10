@@ -200,8 +200,9 @@
                 }, false);
 
                 this.svg.addEventListener("dblclick", function (event) {
+                    stencilDebug("pCanvas, dblclick");
                     thiz.handleDblclick(event);
-                }, false);
+                }, true);
 
                 this.careTaker = new CanvasCareTaker(this);
 
@@ -1577,16 +1578,21 @@
                 <parameter name="event"/>
                 <body>
                 <![CDATA[
+                    stencilDebug("handleDblclick, start finding top");
+                    
                     //find the top, get the def
                     var thiz = this;
                     var top = Dom.findTop(event.originalTarget, function (node) {
                         return node.hasAttributeNS && node.hasAttributeNS(PencilNamespaces.p, "type") && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape" && !thiz.isShapeLocked(node);
                     });
+                    
+                    stencilDebug("handleDblclick, top = " + top);
 
                     if (!top) return;
 
                     var target = this.createControllerFor(top);
-
+                    
+                    stencilDebug("emitting event p:ShapeDoubleClicked");
                     Dom.emitEvent("p:ShapeDoubleClicked", top, {controller: target, origTarget: event.originalTarget, clientX: event.clientX, clientY: event.clientY});
 
                 ]]>

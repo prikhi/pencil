@@ -591,6 +591,7 @@ Shape.prototype.sendToBack = function () {
     } catch (e) { alert(e); }
 };
 Shape.prototype.getTextEditingInfo = function (editingEvent) {
+	debug("getTextEditingInfo(), editingEvent = " + editingEvent.type);
     var infos = [];
 
     this.prepareExpressionEvaluation();
@@ -713,21 +714,36 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
             }
         }
     }
+    debug("infos.length: " + infos.length + ", editingEvent: " + editingEvent);
 
     if (infos.length == 0) return null;
-
-    if (!editingEvent || !editingEvent.origTarget) return infos[0];
+    var eventDetail = editingEvent;
+    
+    if (!editingEvent) return infos[0];
+    
+    if (Util.isXul6OrLater()) {
+    	eventDetail = editingEvent.detail;
+    }
+    if (!eventDetail || !eventDetail.origTarget) return infos[0];
 
     var min = 200000;
     var selectedInfo = null;
     for (var i = 0; i < infos.length; i ++) {
         var info = infos[i];
         var clientRect = info.target.getBoundingClientRect();
+        
+        debug("target: " + info.target.getAttributeNS(PencilNamespaces.p, "name"));
+        
         var c = {x: clientRect.left + clientRect.width / 2, y: clientRect.top + clientRect.height / 2};
         var dx = editingEvent.clientX - c.x;
         var dy = editingEvent.clientY - c.y;
         var d = Math.sqrt(dx * dx + dy * dy);
-
+        
+        debug("\tclientRect: " + [clientRect.left, clientRect.top, clientRect.width, clientRect.height]);
+        debug("\teditingEvent: " + [editingEvent.clientX, editingEvent.clientY]);
+        debug("\tcenter: " + [c.x, c.y]);
+        debug("\td: " + d);
+        
         if (d < min) {
             selectedInfo = info;
             min = d;
