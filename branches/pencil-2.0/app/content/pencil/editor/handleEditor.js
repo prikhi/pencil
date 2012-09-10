@@ -88,6 +88,7 @@ HandleEditor.prototype.findHandle = function (element) {
     return handle;
 };
 HandleEditor.prototype.handleMouseDown = function (event) {
+	this.lastMatchedOutlet = null;
     this.currentHandle = this.findHandle(event.originalTarget);
     this.oX = event.clientX;
     this.oY = event.clientY;
@@ -118,10 +119,22 @@ HandleEditor.prototype.handleMouseUp = function (event) {
                     connectedShapeId: this.lastMatchedOutlet.shapeId,
                     connectedOutletId: this.lastMatchedOutlet.id
                 };
+                if (this.lastMatchedOutlet._via) {
+                    h.meta.viax = this.lastMatchedOutlet._via.x;
+                    h.meta.viay = this.lastMatchedOutlet._via.y;
+                }
+                
                 this.targetObject.setProperty(this.currentHandle._def.name, h);
             } else {
-                var h = new Handle(Math.round(this.currentHandle._x / this.canvas.zoom), Math.round(this.currentHandle._y / this.canvas.zoom));
-                this.targetObject.setProperty(this.currentHandle._def.name, h);
+                if (this.currentHandle._def.meta
+                		&& this.currentHandle._def.meta.unconnectedValue) {
+                	var value = this.targetObject.evalExpression(this.currentHandle._def.meta.unconnectedValue);
+                    var h = new Handle(Math.round(value.x), Math.round(value.y));
+                    this.targetObject.setProperty(this.currentHandle._def.name, h);
+                } else {
+                    var h = new Handle(Math.round(this.currentHandle._x / this.canvas.zoom), Math.round(this.currentHandle._y / this.canvas.zoom));
+                    this.targetObject.setProperty(this.currentHandle._def.name, h);
+                }
             }
 
             this.canvas.invalidateEditors(this);

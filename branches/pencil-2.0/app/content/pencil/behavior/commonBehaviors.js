@@ -33,8 +33,13 @@ Pencil.behaviors.Fill = function (color) {
     Svg.setStyle(this, "fill-opacity", color.a);
 };
 Pencil.behaviors.Color = function (color) {
-    Svg.setStyle(this, "color", color ? color.toRGBString() : null);
-    Svg.setStyle(this, "opacity", color ? color.a : null);
+	if (this.localName == "text") {
+	    Svg.setStyle(this, "fill", color.toRGBString());
+	    Svg.setStyle(this, "fill-opacity", color.a);
+	} else {
+	    Svg.setStyle(this, "color", color ? color.toRGBString() : null);
+	    Svg.setStyle(this, "opacity", color ? color.a : null);
+	}
 };
 Pencil.behaviors.StrokeColor = function (color) {
     Svg.setStyle(this, "stroke", color.toRGBString());
@@ -52,6 +57,7 @@ Pencil.behaviors.Visibility = function (bool) {
     var value = bool;
     if (bool && bool.constructor == Bool) value = bool.value;
     Svg.setStyle(this, "visibility", value ? "visible" : "hidden");
+    Svg.setStyle(this, "display", value ? null : "none");
 };
 Pencil.behaviors.ApplyFilter = function (bool) {
     var value = bool;
@@ -119,22 +125,14 @@ Pencil.behaviors.Font = function (font) {
     Svg.setStyle(this, "text-decoration", font.decor);
 };
 Pencil.behaviors.BoxFit = function (bound, align) {
+	debug("BoxFit called");
     try {
         var isText = (this.localName == "text");
         if (isText) {
-            Svg.setStyle(this, "dominant-baseline", "auto");
             var bbox = this.getBBox();
-
-            var x = Math.round(((bound.w - bbox.width) * align.h) / 2 + bound.x);
-
-            var baseLineDiff = bbox.height / 2;
-            if (this.hasAttribute("y")) {
-                var realY = parseInt(this.getAttribute("y"), 10);
-                baseLineDiff = realY - bbox.y;
-            }
-            var y = Math.round(((bound.h - bbox.height) * align.v) / 2 + bound.y + baseLineDiff);
-            this.setAttribute("x", x);
-            this.setAttribute("y", y);
+            var dx = Math.round(((bound.w - bbox.width) * align.h) / 2 + bound.x - bbox.x);
+            var dy = Math.round(((bound.h - bbox.height) * align.v) / 2 + bound.y - bbox.y);
+            this.setAttribute("transform", "translate(" + dx + "," + dy + ")");
         } else {
             Svg.setWidth(this, bound.w);
             Svg.setHeight(this, 500);

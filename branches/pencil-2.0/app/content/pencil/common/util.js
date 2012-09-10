@@ -1603,7 +1603,7 @@ Util.getFileExtension = function (path) {
 };
 
 function stencilDebug(x) {
-    alert(x);
+    debug(x);
 }
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -1668,3 +1668,99 @@ function doLater(f, ms, win) {
     
     g();
 }
+
+function geo_translate (p, dx, dy) {
+    return {x: p.x + dx, y: p.y + dy};
+};
+function geo_rotate (p, a) {
+    return {x: p.x * Math.cos(a) - p.y * Math.sin(a), y: p.x * Math.sin(a) + p.y * Math.cos(a)};
+};
+
+/**
+ * p1: rotated point
+ * p2: center
+ * d: new length
+ * a: rotated angle
+ */
+function geo_getRotatedPoint(p1, p2, d, a) {
+    var p = geo_translate(p1, 0 - p2.x, 0 - p2.y);
+    p = geo_rotate(p, a);
+    p = geo_translate(p, p2.x, p2.y);
+
+    var dx = p.x - p2.x;
+    var dy = p.y - p2.y;
+
+    var l = Math.sqrt(dx * dx + dy * dy);
+    var r = d / l;
+    p = {
+        x: Math.round(p2.x + dx * r),
+        y: Math.round(p2.y + dy * r)
+    };
+
+    return p;
+};
+function geo_vectorLength (p1, p2) {
+    var dx = p1.x - p2.x;
+    var dy = p1.y - p2.y;
+
+    return Math.sqrt(dx * dx + dy * dy);
+};
+
+function geo_pointAngle (x, y) {
+    if (x == 0) return y > 0 ? Math.PI / 2 : 0 - Math.PI / 2;
+    return Math.atan2(y, x);
+};
+
+function geo_vectorAngle (p1, p2, q1, q2) {
+    return geo_pointAngle(q2.x - q1.x, q2.y - q1.y) - geo_pointAngle(p2.x - p1.x, p2.y - p1.y);
+};
+
+function geo_buildQuickSmoothCurve(points) {
+	debug("geo_buildQuickSmoothCurve: points = " + points.length);
+	if (points.length != 4) {
+		return geo_buildSmoothCurve(points);
+		return;
+	}
+	
+    var spec = [M(points[0].x, points[0].y)];
+    var controlLength = Math.min(geo_vectorLength(points[0], points[3]) / 2, 60);
+    var p1 = geo_getRotatedPoint(points[1], points[0], controlLength, 0);
+    var p2 = geo_getRotatedPoint(points[2], points[3], controlLength, 0);
+    spec.push(C(p1.x, p1.y, p2.x, p2.y, points[3].x, points[3].y));
+
+    return spec;
+};
+function geo_buildSmoothCurve (points) {
+    var spec = [M(points[0].x, points[0].y)];
+    var len = points.length;
+    var lastAngle = null;
+    for (var i = 1; i < len; i ++) {
+        var p1 = points[i - 1];
+        if (lastAngle != null) {
+            p1 = geo_getRotatedPoint(points[i], points[i - 1],
+                                            geo_vectorLength(points[i], points[i - 1]) / 5,
+                                            angle
+                                            );
+        }
+
+        var p2 = points[i];
+        if (i < len - 1) {
+            var a = geo_vectorAngle(points[i], points[i- 1], points[i], points[i + 1]);
+            if (a < 0) a = Math.PI * 2 + a;
+            
+            angle = (Math.PI / 2 - Math.abs(a) / 2);
+            p2 = geo_getRotatedPoint(points[i - 1], points[i],
+                                            geo_vectorLength(points[i], points[i - 1]) / 5,
+                                            0 - angle
+                                            );
+            lastAngle = angle;
+        }
+        
+        spec.push(C(p1.x, p1.y, p2.x, p2.y, points[i].x, points[i].y));
+        //spec.push(L(points[i].x, points[i].y));
+    }
+
+    return spec;
+};
+
+Util.importSandboxFunctions(geo_buildQuickSmoothCurve, geo_buildSmoothCurve, geo_getRotatedPoint, geo_pointAngle, geo_rotate, geo_translate, geo_vectorAngle, geo_vectorLength);
