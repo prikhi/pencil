@@ -184,6 +184,9 @@ Shape.prototype.setProperty = function (name, value, nested) {
     }
     Connector.invalidateInboundConnections(this.canvas, this.svg);
     this.canvas.invalidateEditors();
+    if (!nested) {
+    	Dom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
+    }
 };
 Shape.prototype.getProperty = function (name) {
     var propNode = this.locatePropertyNode(name);

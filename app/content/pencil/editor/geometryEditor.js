@@ -305,6 +305,7 @@ GeometryEditor.prototype.handleMouseUp = function (event) {
                     }
                     if (this.ada != 0 && this.targetObject.rotateBy) {
                         this.targetObject.rotateBy(this.ada);
+                        Dom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
                     }
                 } finally {
                     this.resetAccomulatedChanges();

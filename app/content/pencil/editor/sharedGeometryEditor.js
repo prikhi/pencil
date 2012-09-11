@@ -73,14 +73,13 @@ SharedGeomtryEditor.prototype.isDisabled = function () {
 SharedGeomtryEditor.prototype._applyValue = function () {
     var thiz = this;
     Pencil.activeCanvas.run(function() {
-        return;
+    	return;
         this.setProperty(SharedGeomtryEditor.PROPERTY_NAME, thiz.font);
         debug("applied: " + thiz.font);
-    }, this.target)
+    }, this.target);
 };
 SharedGeomtryEditor.prototype.attach = function (targetObject) {
-    if (this.isDisabled()) return;
-    if (targetObject.constructor == TargetSet) {
+    if (this.isDisabled() || targetObject.constructor == TargetSet) {
         this.detach();
         return;
     }
@@ -114,6 +113,7 @@ SharedGeomtryEditor.prototype.detach = function () {
     this.shapeHeightTextBox.disabled = true;
     this.shapeAngleTextBox.disabled = true;
     //this.geometryToolbar.style.display = 'none';
+    this.targetObject = null;
 };
 SharedGeomtryEditor.prototype.invalidate = function () {
     if (!this.targetObject) {
@@ -121,6 +121,6 @@ SharedGeomtryEditor.prototype.invalidate = function () {
     } else {
         this.attach(this.targetObject);
     }
-}
+};
 
 Pencil.registerSharedEditor(new SharedGeomtryEditor());

@@ -1255,18 +1255,19 @@ if (typeof(console) == "undefined") {
 }
 
 function debug(value) {
-/*
-    var out = document.getElementById("out");
-    if (out) {
-        out.innerHTML = value + "\n" + out.innerHTML;
-    }
     if (true) {
         Components.classes['@mozilla.org/consoleservice;1']
 	            .getService(Components.interfaces.nsIConsoleService)
                 .logStringMessage(value);
     }
     console.info(value);
-*/
+}
+function stackTrace() {
+	var lines = [];
+	for (var frame = Components.stack; frame; frame = frame.caller) {
+		lines.push(frame.name + " (" + frame.filename + "@" + frame.lineNumber + ")");	
+	}
+	debug(lines.join("\n"));
 }
 function warn(value) {
     //console.warn(value);
