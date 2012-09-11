@@ -848,7 +848,11 @@
                         this.currentController.clearPositionSnapshot();
                         this.invalidateEditors();
 
-                        Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+                        if (this.hasMoved) {
+                            debug("current controller: " + this.currentController.constructor.name);
+                            Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+                        }
+                        
                         if (this.currentController.invalidateOutboundConnections) {
                             this.currentController.invalidateOutboundConnections();
                         }

@@ -23,12 +23,14 @@ PropertyDialog.setupReally = function () {
 
         PropertyDialog.propertyMap = {};
         //creating tabs
+        var lastLabel = null;
         for (var i in editor.groups) {
             var group = editor.groups[i];
 
             //create a tab for this group
             var tab = document.createElementNS(PencilNamespaces.xul, "tab");
-            tab.setAttribute("label", group.name);
+            tab.setAttribute("label", group.name + (group.name == lastLabel ? " (cont.)" : ""));
+            lastLabel = group.name;
             tabs.appendChild(tab);
 
             var tabPanel = document.createElementNS(PencilNamespaces.xul, "tabpanel");
