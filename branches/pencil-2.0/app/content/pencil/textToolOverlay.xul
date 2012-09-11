@@ -58,7 +58,7 @@
                 <label value="x"/>
                 <textbox type="number" size="2" id="shapeHeightTextBox" tooltiptext="Height"/>
                 <label value=" a:"/>
-                <textbox type="number" size="2" id="shapeAngleTextBox" tooltiptext="Rotation"/>
+                <textbox type="number" size="2" min="-180" id="shapeAngleTextBox" tooltiptext="Rotation"/>
             </hbox>
         </vbox>
     </toolbar>
