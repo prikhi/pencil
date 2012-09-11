@@ -849,9 +849,11 @@
                         this.invalidateEditors();
 
                         Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
-                        if (this.currentController.svg) {
-                            Connector.invalidateOutboundConnections(this, this.currentController.svg);
-                            Connector.invalidateInboundConnections(this, this.currentController.svg);
+                        if (this.currentController.invalidateOutboundConnections) {
+                            this.currentController.invalidateOutboundConnections();
+                        }
+                        if (this.currentController.invalidateInboundConnections) {
+                            this.currentController.invalidateInboundConnections();
                         }
                     }
                     if (this.controllerHeld && this.hasMoved) {

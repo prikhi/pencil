@@ -134,10 +134,9 @@ Group.prototype.scaleTo = function (nw, nh, group) {
         var newW = targetGeo.dim.w * dw;
         var newH = targetGeo.dim.h * dh;
 
-        target.scaleTo(newW, newH, true);
-
         bounding = target.getBounding(this.svg);
         target.moveBy(newX - bounding.x, newY - bounding.y, true);
+        target.scaleTo(newW, newH, true);
     }
 
     //if (Config.get("docking.enabled")) {
@@ -158,6 +157,9 @@ Group.prototype.rotateBy = function (da) {
     ctm = ctm.translate(0 - x, 0 - y);
 
     Svg.ensureCTM(this.svg, ctm);
+    
+    this.invalidateInboundConnections();
+    this.invalidateOutboundConnections();
 
     //if (Config.get("docking.enabled")) {
     //    this.dockingManager.handleRotateBy(da);
@@ -389,5 +391,15 @@ Group.prototype.getSnappingGuide = function () {
 
     return {
         vertical: vertical, horizontal: horizontal
+    };
+};
+Group.prototype.invalidateInboundConnections = function () {
+    for (t in this.targets) {
+        this.targets[t].invalidateInboundConnections();
+    }
+};
+Group.prototype.invalidateOutboundConnections = function () {
+    for (t in this.targets) {
+        this.targets[t].invalidateOutboundConnections();
     }
 };
