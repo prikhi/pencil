@@ -326,8 +326,8 @@ Shape.prototype.scaleTo = function (nw, nh, group) {
         }
 
         this.applyBehaviorForProperty("box");
-        Connector.invalidateOutboundConnections(this.canvas, this.svg);
-        Connector.invalidateInboundConnections(this.canvas, this.svg);
+        this.invalidateOutboundConnections();
+        this.invalidateInboundConnections();
 
 
         //if (Config.get("docking.enabled")) {
@@ -360,8 +360,8 @@ Shape.prototype.rotateBy = function (da) {
     ctm = ctm.translate(0 - x, 0 - y);
 
     Svg.ensureCTM(this.svg, ctm);
-    Connector.invalidateOutboundConnections(this.canvas, this.svg);
-    Connector.invalidateInboundConnections(this.canvas, this.svg);
+    this.invalidateOutboundConnections();
+    this.invalidateInboundConnections();
 
     //if (Config.get("docking.enabled")) {
     //    this.dockingManager.handleRotateBy(da);
@@ -870,5 +870,11 @@ Shape.prototype.getSnappingGuide = function () {
 
     return {
         vertical: vertical, horizontal: horizontal
-    }
+    };
+};
+Shape.prototype.invalidateInboundConnections = function () {
+	Connector.invalidateInboundConnectionsForShapeTarget(this);
+};
+Shape.prototype.invalidateOutboundConnections = function () {
+	Connector.invalidateOutboundConnectionsForShapeTarget(this);
 };

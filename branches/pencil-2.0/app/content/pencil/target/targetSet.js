@@ -566,3 +566,14 @@ TargetSet.prototype.supportAttach = function () {
     }
     return this._container != null && this._container._target.constructor != Group;
 };
+
+TargetSet.prototype.invalidateInboundConnections = function () {
+    for (t in this.targets) {
+        this.targets[t].invalidateInboundConnections();
+    }
+};
+TargetSet.prototype.invalidateOutboundConnections = function () {
+    for (t in this.targets) {
+        this.targets[t].invalidateOutboundConnections();
+    }
+};

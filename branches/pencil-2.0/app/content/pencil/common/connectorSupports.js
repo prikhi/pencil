@@ -14,8 +14,12 @@ Connector.invalidateInboundConnections = function (canvas, shape) {
         Connector.isWorking = false;
     }
 };
-Connector.invalidateInboundConnectionsImpl = function (canvas, shape) {
-    var target = canvas.createControllerFor(shape);
+Connector.invalidateInboundConnectionsForShapeTarget = function (target) {
+	if (!target.getConnectorOutlets) return;
+	
+	var canvas = target.canvas;
+	var shape = target.svg;
+    
     var outlets = target.getConnectorOutlets();
     if (outlets == null) return;
     var outletMap = {};
@@ -23,7 +27,7 @@ Connector.invalidateInboundConnectionsImpl = function (canvas, shape) {
         outletMap[outlets[i].id] = outlets[i];
     }
 
-    Dom.workOn("./svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
+    Dom.workOn(".//svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
         if (canvas.isShapeLocked(node)) return;
         
         var defId = canvas.getType(node);
@@ -39,7 +43,7 @@ Connector.invalidateInboundConnectionsImpl = function (canvas, shape) {
             }
         }
         if (handleProps.length == 0) return;
-        var source = canvas.createControllerFor(node);
+        var source = target.canvas.createControllerFor(node);
 
         for (var i = 0; i < handleProps.length; i ++) {
             var prop = handleProps[i];
@@ -73,6 +77,13 @@ Connector.invalidateInboundConnectionsImpl = function (canvas, shape) {
             source.setProperty(prop.name, handle);
         }
     });
+};
+Connector.invalidateInboundConnectionsImpl = function (canvas, shape) {
+    var target = canvas.createControllerFor(shape);
+    
+    if (target.invalidateInboundConnections) {
+    	target.invalidateInboundConnections();
+    }
 };
 
 Connector.calculateViaPoint = function (target, outlet, matrix) {
@@ -132,10 +143,13 @@ Connector.invalidateOutboundConnections = function (canvas, node) {
         Connector.isWorking = false;
     }
 };
-Connector.invalidateOutboundConnectionsImpl = function (canvas, node) {
-    var defId = canvas.getType(node);
+Connector.invalidateOutboundConnectionsForShapeTarget = function (target) {
+	var canvas = target.canvas;
+	var node = target.svg;
+	
+    var def = target.def;
+    if (!def) return;
     
-    var def = CollectionManager.shapeDefinition.locateDefinition(defId);
     var handleProps = [];
     for (var i = 0; i < def.propertyGroups.length; i ++) {
         for (var j = 0; j < def.propertyGroups[i].properties.length; j ++) {
@@ -188,6 +202,13 @@ Connector.invalidateOutboundConnectionsImpl = function (canvas, node) {
         }
 
         source.setProperty(prop.name, handle);
+    }	
+};
+Connector.invalidateOutboundConnectionsImpl = function (canvas, node) {
+    var target = canvas.createControllerFor(node);
+    
+    if (target.invalidateOutboundConnections) {
+    	target.invalidateOutboundConnections();
     }
 };
 
@@ -202,7 +223,7 @@ Connector.areClassesMatched = function (classes1, classes2) {
 Connector.getMatchingOutlets = function (canvas, shape, classes) {
     var matchingOutlets = [];
     var classes1 = classes.split(/[ ]*\,[ ]*/);
-    Dom.workOn("./svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
+    Dom.workOn(".//svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
         if (node.id == shape.id) return;
         
         var source = canvas.createControllerFor(node);
