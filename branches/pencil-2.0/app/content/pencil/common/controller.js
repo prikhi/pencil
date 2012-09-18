@@ -45,6 +45,7 @@ function Controller(win) {
     this.pagePropertiesMenuItem.addEventListener("command", function (event) {
         if (thiz._pageToEdit) {
             thiz.editPageProperties(thiz._pageToEdit);
+            thiz._pageToEdit = null;
         }
     }, false);
     this.pageNoteMenuItem.addEventListener("command", function (event) {
@@ -1332,7 +1333,7 @@ Controller.prototype.sizeToContent = function (passedPage, askForPadding) {
         var padding = parseInt(paddingString, 10);
         if (!padding) padding = 0;
     }
-
+    
     var newSize = canvas.sizeToContent(padding, padding);
     if (newSize) {
         page.properties.width = newSize.width;

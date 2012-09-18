@@ -425,9 +425,12 @@ Pencil.handlePropertiesCommand = function () {
     if (Pencil.activeCanvas.currentController) {
         Pencil.activeCanvas._showPropertyDialog();
     } else {
-        if (!Pencil.controller._pageToEdit)
+        if (!Pencil.controller._pageToEdit) {
             Pencil.controller._pageToEdit = Pencil.controller.getCurrentPage();
+        }
+        
         Pencil.controller.editPageProperties(Pencil.controller._pageToEdit);
+        Pencil.controller._pageToEdit = null;
     }
 };
 Pencil.updateUndoRedoMenu = function (currentAction, prevAction) {
