@@ -1275,8 +1275,8 @@ Controller.prototype.rasterizeSelection = function () {
 
     var geo = target.getGeometry();
     if (!geo) {
-        Util.showStatusBarWarning(Util.getMessage("the.selected.objects.cannot.be.exported"), true);
-        //alert("The selected objects cannot be exported\nPlease try selecting a single object or a grouped object set.");
+        //Util.showStatusBarWarning(Util.getMessage("the.selected.objects.cannot.be.exported"), true);
+        alert(Util.getMessage("the.selected.objects.cannot.be.exported"));
         return;
     }
 
