@@ -99,18 +99,13 @@
                         z
                     ]
                 </D>
-             </For>
-            <For ref="rect">
-                <Transform>[translate(($strokeStyle.w % 2 == 0 ? 0 : 0.5), ($strokeStyle.w % 2 == 0 ? 0 : 0.5))]</Transform>
                 <Fill>$fillColor</Fill>
                 <StrokeColor>$strokeColor</StrokeColor>
                 <StrokeStyle>$strokeStyle</StrokeStyle>
              </For>
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-            <g id="rect">
-    			<path id="line1" style="stroke-linejoin: round;"/>
-    		</g>
+            <path id="line1" style="stroke-linejoin: round;"/>
             <foreignObject x="0" y="0" width="200" height="150" id="text">
                 <div xmlns="http://www.w3.org/1999/xhtml"></div>
             </foreignObject>
