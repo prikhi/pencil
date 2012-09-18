@@ -217,8 +217,26 @@ function A(rx, ry, f1, f2, f3, x, y) {
 Util.importSandboxFunctions(M, L, C, c, S, s, Q, q, T, a, A);
 
 const DEFAULT_SKETCHY_SEG_SIZE = 20;
+const DEFAULT_SKETCHY_OVERSHOOT = 3;
+const ROTATED_ANGLE = 10;
 
 function sk(x1, y1, x2, y2, d, noMove) {
+	var delta = (Math.random() - 1) * DEFAULT_SKETCHY_OVERSHOOT;
+	
+	var a = Math.PI * (180 - ROTATED_ANGLE + (Math.random() * ROTATED_ANGLE)) / 180;
+	var p1 = geo_getRotatedPoint({x: x2, y: y2}, {x: x1, y: y1}, delta, a);
+	
+	delta = (Math.random() - 1) * DEFAULT_SKETCHY_OVERSHOOT;
+	a = Math.PI * (180 - ROTATED_ANGLE + (Math.random() * ROTATED_ANGLE)) / 180;
+	var p2 = geo_getRotatedPoint({x: x1, y: y1}, {x: x2, y: y2}, delta, a);
+	x1 = p1.x;
+	y1 = p1.y;
+	
+	x2 = p2.x;
+	y2 = p2.y;
+	
+	var last = {x: x2, y: y2};
+	
     var dx = x2 - x1;
     var dy = y2 - y1;
     var l = Math.sqrt(dx * dx + dy * dy);
@@ -239,22 +257,21 @@ function sk(x1, y1, x2, y2, d, noMove) {
 
     for (var i = 0; i < count - 1; i ++) {
         al = al + Math.round(segment + Math.random() * segmentRandom - segmentRandom / 2);
-        var x = x1 + (dx * al / l) + Math.random() - 0.5;
-        var y = y1 + (dy * al / l) + Math.random() - 0.5;
+        var x = x1 + (dx * al / l) + Math.random() * 2 - 1;
+        var y = y1 + (dy * al / l) + Math.random() * 2 - 1;
 
         result.push(L(x, y));
     }
 
     result.push(L(x2, y2));
 
-    Pencil.behaviors.D._setLastLocation(x2, y2);
+    Pencil.behaviors.D._setLastLocation(last.x, last.y);
 
     return result.join(" ");
 }
 function skTo(x, y, d) {
     return sk(Pencil.behaviors.D._lastX, Pencil.behaviors.D._lastY, x, y,
-        d ? d : DEFAULT_SKETCHY_SEG_SIZE,
-        "noMove");
+        d ? d : DEFAULT_SKETCHY_SEG_SIZE, "noMove");
 }
 var z = "z";
 pencilSandbox.z = z;
