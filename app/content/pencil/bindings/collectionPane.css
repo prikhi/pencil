@@ -66,13 +66,6 @@ pcollectionpane vbox[aid="contentBox"] {
 pcollectionpane .Collection {
     padding: 0px;
 }
-pcollectionpane .Collection + .Collection {
-    margin-top: 2em;
-}
-pcollectionpane *[pcollapsed='true'].Collection + .Collection,
-pcollectionpane *[_hidden='true'].Collection + .Collection {
-    margin-top: 0em;
-}
 pcollectionpane .Collection > hbox:first-child {
     -moz-box-align: start;
     background-image: -moz-linear-gradient(bottom, #4084B0 0%, #417496 100%);
