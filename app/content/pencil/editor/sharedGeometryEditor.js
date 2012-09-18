@@ -26,10 +26,9 @@ SharedGeomtryEditor.prototype.setup = function () {
         thiz.handleCommandEvent();
     }, false);
 
-    this.geometryToolbar.addEventListener("keypressx", function (event) {
-        debug(event.keyCode);
-        if (event.keyCode == KeyEvent.DOM_VK_RETURN) {
-            thiz.handleCommandEvent();
+    this.geometryToolbar.addEventListener("keypress", function (event) {
+        if (event.keyCode == KeyEvent.DOM_VK_UP || event.keyCode == KeyEvent.DOM_VK_DOWN) {
+            event.stopPropagation();
         }
     }, false);
 
