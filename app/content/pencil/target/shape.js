@@ -639,17 +639,29 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 break;
                             }
                         }
-                        info = {prop: prop,
-                                value: this.getProperty(name),
-                                targetName: target,
-                                type: PlainText,
-                                target: Dom.getSingle(".//*[@p:name='" + target + "']", this.svg),
-                                bound: bound,
-                                align: align,
-                                readonly: prop.meta.readonly,
-                                font: font};
-
-                        break;
+                    	var targetObject = Dom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                    	//checking if the target is ok for use to base the location calculation 
+                    	var ok = true;
+                    	try {
+                        	var clientRect = targetObject.getBoundingClientRect();
+                        	if (clientRect.width == 0 || clientRect.height == 0) {
+                        		ok = false;
+                        	}
+                    	} catch (e) {}
+                    	
+                    	if (ok) {                        
+	                        info = {prop: prop,
+	                                value: this.getProperty(name),
+	                                targetName: target,
+	                                type: PlainText,
+	                                target: targetObject,
+	                                bound: bound,
+	                                align: align,
+	                                readonly: prop.meta.readonly,
+	                                font: font};
+	
+	                        break;
+                    	}
                     }
                 }
                 if (info) {
@@ -691,21 +703,35 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 }
                             }
                         }
+                    	
                         if (font) {
-                            info = {
-                                prop: prop,
-                                targetName: target,
-                                target: Dom.getSingle(".//*[@p:name='" + target + "']", this.svg),
-                                value: this.getProperty(name),
-                                font: font,
-                                bound: bound,
-                                align: align,
-                                readonly: prop.meta.readonly,
-                                inlineEditor: prop.meta.inlineEditor,
-                                type: RichText
-                            };
+                        	
+                        	var targetObject = Dom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                        	//checking if the target is ok for use to base the location calculation 
+                        	var ok = true;
+                        	try {
+                            	var clientRect = targetObject.getBoundingClientRect();
+                            	if (clientRect.width == 0 || clientRect.height == 0) {
+                            		ok = false;
+                            	}
+                        	} catch (e) {}
+                        	
+                        	if (ok) {
+                                info = {
+                                        prop: prop,
+                                        targetName: target,
+                                        target: targetObject,
+                                        value: this.getProperty(name),
+                                        font: font,
+                                        bound: bound,
+                                        align: align,
+                                        readonly: prop.meta.readonly,
+                                        inlineEditor: prop.meta.inlineEditor,
+                                        type: RichText
+                                    };
 
-                            break;
+                                    break;
+                        	}
                         }
                     }
                 }
