@@ -7,7 +7,6 @@ Group:          Development/Tools
 License:        GPLv2
 URL:            http://code.google.com/p/evoluspencil/
 Source0:        http://evoluspencil.googlecode.com/files/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       xulrunner >= @MIN_VERSION@
 BuildArch:      noarch
@@ -33,7 +32,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files
-%defattr(-,root,root,-)
 %doc COPYING
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/%{name}/
