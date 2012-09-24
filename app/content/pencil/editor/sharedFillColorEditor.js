@@ -12,6 +12,7 @@ SharedFillColorEditor.prototype.setup = function () {
     var thiz = this;
     this.fillColorButton.addEventListener("change", function(event) {
         if (!thiz.target || !thiz.color) return;
+        Pencil.activeCanvas.endFormatPainter();
         thiz.color = thiz.fillColorButton.color;
         thiz._applyValue();
     }, false);
