@@ -84,9 +84,10 @@ fedorarpm()  {
     echo "* Building Fedora RPM with Shared XRE *"
     echo "--------------------------------------"
     rm -Rf ./Outputs/RPM/
-    export BUILDROOT=./Outputs/RPM/buildroot
+    export TMP=./Outputs/RPM/tmp
+    export BUILDROOT=$TMP/pencil-$VERSION
 
-    export OUTPUT=$BUILDROOT/usr/lib/evolus-pencil-$VERSION
+    export OUTPUT=$BUILDROOT/usr/share/pencil
     mkdir -p $OUTPUT/
     cp -R ./Outputs/Pencil/* $OUTPUT/
     cp ../app/defaults/preferences/personal.js.xulrunner $OUTPUT/defaults/preferences/xre.js
@@ -97,21 +98,30 @@ fedorarpm()  {
     cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
     cp ./Outputs/Pencil/skin/classic/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
 
-    cp -R ./Fedora-RPM/* ./Outputs/RPM/
-    ./replacer.sh $BUILDROOT/usr/bin/evoluspencil
-    chmod 775 $BUILDROOT/usr/bin/evoluspencil
-    ./replacer.sh $BUILDROOT/usr/share/applications/evolus-pencil.desktop
+    cp -R ./Fedora-RPM/buildroot/* $BUILDROOT
+    cp -R ../app/license.txt $BUILDROOT/COPYING
+    cp ./Fedora-RPM/*.spec $TMP
+    
+    ./replacer.sh $BUILDROOT/usr/bin/pencil
+    chmod 775 $BUILDROOT/usr/bin/pencil
+    ./replacer.sh $BUILDROOT/usr/share/applications/pencil.desktop
 
-    ./replacer.sh ./Outputs/RPM/evolus-pencil.spec
+    ./replacer.sh $TMP/pencil.spec
 
     find ./Outputs/RPM/ -name .svn | xargs -i rm -Rf {}
+    
+    echo "Creating source tarball..."
+    CURRENT_DIR=`pwd`
+    cd $TMP
+    tar -pczf $HOME/rpmbuild/SOURCES/pencil-$VERSION.tar.gz pencil-$VERSION
+    cd $CURRENT_DIR
 
     cd $BUILDROOT
     BUILDROOTASB=`pwd`
-    find . -type f | sed s#./usr/#/usr/#g >> ../evolus-pencil.spec
 
     cd ..
-    rpmbuild -ba --buildroot "$BUILDROOTASB" ./evolus-pencil.spec
+    echo "Build RPM now..."
+    rpmbuild -ba pencil.spec
 }
 
 win32() {
@@ -170,11 +180,11 @@ cleanup() {
 }
 
 prep
-#xpi
+xpi
 #linux
-win32
+#win32
 #mac
-#fedorarpm
+fedorarpm
 cleanup
 
 echo "Done!"

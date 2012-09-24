@@ -3,10 +3,11 @@ Encoding=UTF-8
 Name=Pencil
 Comment=Sketching and GUI prototyping tool
 Comment[vi_VN]=Công cụ phát thảo giao diện Pencil
-Exec=/usr/bin/evoluspencil
+Exec=/usr/bin/pencil
 Terminal=false
 Type=Application
 StartupNotify=true
-Icon=/usr/lib/evolus-pencil-@VERSION@/skin/classic/icon.svg
-Categories=Graphics;2DGraphics;Development
-MimeType=application/ep
+Icon=/usr/share/pencil/skin/classic/icon.svg
+Categories=Graphics;2DGraphics;Development;
+MimeType=application/ep;
+

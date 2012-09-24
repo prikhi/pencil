@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+
+/usr/bin/xulrunner --app "/usr/share/pencil/application.ini"
+
