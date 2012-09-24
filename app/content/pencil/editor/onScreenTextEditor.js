@@ -13,7 +13,7 @@ OnScreenTextEditor.initialize = function (canvas) {
 	
 	OnScreenTextEditor.htmlDiv = canvas.ownerDocument.importNode(Dom.getSingle("/p:Config/html:div", OnScreenTextEditor.configDoc), true);
 
-	//OnScreenTextEditor.htmlDiv.style.visibility = "hidden";
+	OnScreenTextEditor.htmlDiv.style.display = "none";
     //canvas.installControlSVGElement(this.svgElement);
     
     var mainBoxStack = document.getElementById("mainBoxStack");
