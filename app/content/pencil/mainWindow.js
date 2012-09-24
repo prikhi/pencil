@@ -33,6 +33,11 @@ Pencil.postBoot = function() {
         }, false);
 
         Pencil.buildRecentFileMenu();
+        
+        var toolBox = document.getElementById("navigator-toolbox");
+        toolBox.addEventListener("mouseup", function (event) {
+            Pencil.activeCanvas.endFormatPainter();
+        }, false);
         invalidateToolbars();
 
         if (navigator.userAgent.indexOf("Intel Mac") != -1) {
