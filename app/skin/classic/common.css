@@ -307,7 +307,7 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
     font-size: .8em;
 }
 #primaryToolbar #textFormatToolbar textbox {
-    width: 3.5em;
+    width: 4em;
 }
 #primaryToolbar #geometryToolbar textbox {
     width: 4.5em;

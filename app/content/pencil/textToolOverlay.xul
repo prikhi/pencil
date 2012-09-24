@@ -43,7 +43,7 @@
                         <menuitem label="&menu.text.font.label;" value="" class="NameItem"/>
                     </menupopup>
                 </menulist>
-                <textbox id="fontsize" type="number" size="1" tooltiptext="Font size"/>
+                <textbox id="fontsize" type="number" size="2" tooltiptext="Font size"/>
             </hbox>
         </vbox>
         <separator insertbefore="alignmentToolbarSeparator"/>
