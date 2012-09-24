@@ -42,7 +42,7 @@
                         <tabpanel>
                             <vbox flex="1">
                                 <hbox>
-                                    <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Dương Thành An&#13;Nguyễn Tiến Dũng"></textbox>
+                                    <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Dương Thành An&#13;Nguyễn Tiến Dũng&#13;Nguyễn Nữ Hải Anh"></textbox>
                                 </hbox>
                                 <hbox style="padding-top: 5px;">
                                     <vbox flex="1" >
@@ -55,7 +55,7 @@
                             </vbox>
                         </tabpanel>
                         <tabpanel>
-                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Maxime Delorme&#13;Frederic Vandaele&#13;Brainiac Kalel"/>
+                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Maxime Delorme&#13;Frederic Vandaele&#13;Brainiac Kalel&#13;Trương Anh Tuấn"/>
                         </tabpanel>
                         <tabpanel>
                             <textbox id="licenseText" flex="1" multiline="true" readonly="true" rows="13" class="Readonly"/>
