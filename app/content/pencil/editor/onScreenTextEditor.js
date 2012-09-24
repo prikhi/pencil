@@ -4,6 +4,48 @@ function OnScreenTextEditor() {
 }
 
 OnScreenTextEditor.configDoc = Dom.loadSystemXml("chrome://pencil/content/editor/onScreenTextEditor.config.xml");
+OnScreenTextEditor._initialized = false;
+OnScreenTextEditor._activeEditor = null;
+
+OnScreenTextEditor.initialize = function (canvas) {
+	if (OnScreenTextEditor._initialized) return;
+	
+	
+	OnScreenTextEditor.htmlDiv = canvas.ownerDocument.importNode(Dom.getSingle("/p:Config/html:div", OnScreenTextEditor.configDoc), true);
+
+	//OnScreenTextEditor.htmlDiv.style.visibility = "hidden";
+    //canvas.installControlSVGElement(this.svgElement);
+    
+    var mainBoxStack = document.getElementById("mainBoxStack");
+    mainBoxStack.appendChild(OnScreenTextEditor.htmlDiv);
+
+
+    //register event
+    OnScreenTextEditor.singleTextEditor = Dom.getSingle(".//*[@p:name='TextEditor']", OnScreenTextEditor.htmlDiv);
+    OnScreenTextEditor.multiTextEditor = Dom.getSingle(".//*[@p:name='MultiLineTextEditor']", OnScreenTextEditor.htmlDiv);
+
+    OnScreenTextEditor.singleTextEditor._editor = "plainText";
+    OnScreenTextEditor.multiTextEditor._editor = "plainText";
+    
+    OnScreenTextEditor.addEditorEvent("keypress", function (event) {
+        event.cancelBubble = true;
+        if (OnScreenTextEditor._activeEditor) OnScreenTextEditor._activeEditor.handleKeyPress(event);
+    });
+    OnScreenTextEditor.addEditorEvent("dblclick", function (event) {
+        event.cancelBubble = true;
+    });
+    OnScreenTextEditor.addEditorEvent("click", function (event) {
+        event.cancelBubble = true;
+        event.preventDefault();
+    });
+    OnScreenTextEditor.addEditorEvent("blur", function (event) {
+    	if (OnScreenTextEditor._activeEditor) OnScreenTextEditor._activeEditor.handleTextBlur(event);
+    });
+    OnScreenTextEditor.addEditorEvent("focus", function (event) {
+    	if (OnScreenTextEditor._activeEditor) OnScreenTextEditor._activeEditor._focused = true;
+    });
+
+};
 OnScreenTextEditor.prototype.install = function (canvas) {
     try {
         OnScreenTextEditor._ensureSupportElements();
@@ -13,39 +55,12 @@ OnScreenTextEditor.prototype.install = function (canvas) {
 
     this.canvas = canvas;
     this.canvas.onScreenEditors.push(this);
-    this.svgElement = canvas.ownerDocument.importNode(Dom.getSingle("/p:Config/svg:g", OnScreenTextEditor.configDoc), true);
-
-    this.svgElement.style.visibility = "hidden";
-    canvas.installControlSVGElement(this.svgElement);
-
-
-    //register event
+    
+    OnScreenTextEditor.initialize(canvas);
+    
+    
     var thiz = this;
-
-    this.foPane = Dom.getSingle("./svg:foreignObject[@p:name='FOPane']", this.svgElement);
-    this.singleTextEditor = Dom.getSingle(".//*[@p:name='TextEditor']", this.foPane);
-    this.multiTextEditor = Dom.getSingle(".//*[@p:name='MultiLineTextEditor']", this.foPane);
-
-    this.singleTextEditor._editor = "plainText";
-    this.multiTextEditor._editor = "plainText";
-
-    this.addEditorEvent("keypress", function (event) {
-        event.cancelBubble = true;
-        thiz.handleKeyPress(event);
-    });
-    this.addEditorEvent("dblclick", function (event) {
-        event.cancelBubble = true;
-    });
-    this.addEditorEvent("click", function (event) {
-        event.cancelBubble = true;
-        event.preventDefault();
-    });
-    this.addEditorEvent("blur", function (event) {
-        thiz.handleTextBlur(event);
-    });
-    this.addEditorEvent("focus", function (event) {
-        thiz._focused = true;
-    });
+    
     this.canvas.addEventListener("p:ShapeInserted", function (ev) {
         if (thiz.passivated) {
             thiz.canvas.removeEventListener("p:ShapeInserted", arguments.callee, false);
@@ -68,10 +83,11 @@ OnScreenTextEditor.prototype.install = function (canvas) {
         }
         thiz.handleShapeDoubleClicked(ev);
     }, false);
+    
 };
-OnScreenTextEditor.prototype.addEditorEvent = function (name, handler) {
-    this.singleTextEditor.addEventListener(name, handler, false);
-    this.multiTextEditor.addEventListener(name, handler, false);
+OnScreenTextEditor.addEditorEvent = function (name, handler) {
+	OnScreenTextEditor.singleTextEditor.addEventListener(name, handler, false);
+	OnScreenTextEditor.multiTextEditor.addEventListener(name, handler, false);
 };
 OnScreenTextEditor.prototype.attach = function (targetObject) {
 };
@@ -96,7 +112,12 @@ OnScreenTextEditor.prototype.handleShapeDoubleClicked = function (event) {
         if (this.textEditingInfo.type == PlainText) {
             //setup
             this._lastTarget = this.currentTarget;
-            this._setupEditor();
+            try {
+                this._setupEditor();
+			} catch (e) {
+                Console.dumpError(e, "stdout");
+                alert(e);
+			}
         } else if (this.textEditingInfo.type == RichText) {
             OnScreenTextEditor.currentInstance = this;
             try {
@@ -110,11 +131,11 @@ OnScreenTextEditor.prototype.handleShapeDoubleClicked = function (event) {
 };
 OnScreenTextEditor.prototype._setupEditor = function () {
     var geo = this.canvas.getZoomedGeo(this.currentTarget);
-    Svg.ensureCTM(this.svgElement, geo.ctm);
+    //Svg.ensureCTM(this.svgElement, geo.ctm);
     this.geo = geo;
 
-    this.textEditor = this.textEditingInfo.multi ? this.multiTextEditor : this.singleTextEditor;
-    this.foPane.setAttributeNS(PencilNamespaces.p, "p:mode", this.textEditingInfo.multi ? "Multi" : "Single");
+    this.textEditor = this.textEditingInfo.multi ? OnScreenTextEditor.multiTextEditor : OnScreenTextEditor.singleTextEditor;
+    OnScreenTextEditor.htmlDiv.setAttributeNS(PencilNamespaces.p, "p:mode", this.textEditingInfo.multi ? "Multi" : "Single");
 
     var bound = this.textEditingInfo.bound;
     var bbox = this.textEditingInfo.target.getBBox();
@@ -125,25 +146,63 @@ OnScreenTextEditor.prototype._setupEditor = function () {
         h: this.textEditingInfo.multi ? (Math.max(bound.h, bbox.height) + 2) : Math.floor(font.getPixelHeight() * 1.2 + 2),
         w: Math.max(bound.w, bbox.width) + 2
     };
-    var x = Math.round(((bound.w - size.w) * align.h) / 2 + bound.x);
-    var y = Math.round(((bound.h - size.h) * align.v) / 2 + bound.y);
+    var ctm = this.textEditingInfo.target.getScreenCTM();
+    var svgCTM = this.canvas.svg.getScreenCTM();
 
-    var dx = Math.round(geo.ctm.e);
-    var dy = Math.round(geo.ctm.f);
+    //tricky dx, dy: screenCTM of SVG and screen location of its parent is not the same.
+    var dx = this.canvas.svg.parentNode.boxObject.screenX - svgCTM.e;
+    var dy = this.canvas.svg.parentNode.boxObject.screenY - svgCTM.f;
 
-    Svg.setX(this.foPane, x - dx);
-    Svg.setY(this.foPane, y - dy);
-    Svg.setWidth(this.foPane, size.w + dx);
-    Svg.setHeight(this.foPane, size.h + dy + 5);
+    // mainStack boxObject
+    var boxObject = OnScreenTextEditor.htmlDiv.parentNode.boxObject;
+    var targetCtm = this.currentTarget.svg.getScreenCTM();
 
-    this.foPane.setAttribute("transform", "scale(" + this.canvas.zoom + ")");
+    //var x = ctm.e - boxObject.screenX + dx;
+    //var y = ctm.f - boxObject.screenY + dy;
+    var x = targetCtm.e - boxObject.x;
+    var y = targetCtm.f - boxObject.y;
+
+    var bbox = this.textEditingInfo.target.getBBox();
+
+    var width = Math.max(bbox.width, 100);
+    var height = Math.min(Math.max(bbox.height + 2, 50), 500);
+
+    if (this.textEditingInfo.bound) {
+        x += this.textEditingInfo.bound.x - 1;
+        y += this.textEditingInfo.bound.y - 1;
+        width = this.textEditingInfo.bound.w + 4;
+        height = this.textEditingInfo.bound.h + 4;
+    }
+
+    if (x < 0) {
+        width += x;
+        x = 0;
+    }
+    if (y < 0) {
+        height += y;
+        y = 0;
+    }
+
+    if (width + x > boxObject.width) {
+        width = boxObject.width - x;
+    }
+    if (height + y > boxObject.height) {
+        height = boxObject.height - y;
+    }
+
+    OnScreenTextEditor.htmlDiv.setAttribute("left", x);
+    OnScreenTextEditor.htmlDiv.setAttribute("top", y + 5);
+    OnScreenTextEditor.htmlDiv.setAttribute("width", width);
+    OnScreenTextEditor.htmlDiv.setAttribute("height", height);
+
+    //this.foPane.setAttribute("transform", "scale(" + this.canvas.zoom + ")");
 
     //setup font
-    this.textEditor.style.marginLeft = "" + dx + "px";
-    this.textEditor.style.marginTop = "" + dy + "px";
+    //this.textEditor.style.marginLeft = "" + dx + "px";
+    //this.textEditor.style.marginTop = "" + dy + "px";
     this.textEditor.style.width = "" + size.w + "px";
-
     Svg.setStyle(this.textEditor, "height", this.textEditingInfo.multi ? (size.h + "px") : null);
+    
     this.textEditor.style.fontFamily = this.textEditingInfo.font.family;
     this.textEditor.style.fontSize = this.textEditingInfo.font.size;
     this.textEditor.style.lineHeight = this.textEditingInfo.font.size;
@@ -153,10 +212,11 @@ OnScreenTextEditor.prototype._setupEditor = function () {
 
     this.textEditor.value = this.textEditingInfo.value.value;   //PlainText.value
 
-
     this._cachedVisibility = this.textEditingInfo.target.style.visibility;
-    //this.textEditingInfo.target.style.visibility = "hidden";
-    this.svgElement.style.visibility = "visible";
+    this.textEditingInfo.target.style.visibility = "hidden";
+    OnScreenTextEditor.htmlDiv.style.display = "";
+    
+    OnScreenTextEditor._activeEditor = this;
 
     var thiz = this;
     window.setTimeout(function () {
@@ -188,14 +248,14 @@ OnScreenTextEditor.prototype.commitChange = function (event) {
         this._lastTarget.setProperty(this.textEditingInfo.prop.name, plainText);
         this.canvas.invalidateEditors(this);
     } finally {
-        this.svgElement.style.visibility = "hidden";
+    	OnScreenTextEditor.htmlDiv.style.display = "none";
         this.textEditingInfo = null;
         this.canvas.focus();
     }
 };
 OnScreenTextEditor.prototype.cancelChange = function () {
     if (!this.textEditingInfo) return;
-    this.svgElement.style.visibility = "hidden";
+    OnScreenTextEditor.htmlDiv.style.display = "none";
     this.textEditingInfo.target.style.visibility = this._cachedVisibility;
     this.textEditingInfo = null;
     this.canvas.focus();
