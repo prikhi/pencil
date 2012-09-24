@@ -61,7 +61,7 @@ OnScreenTextEditor.prototype.install = function (canvas) {
         thiz.handleShapeDoubleClicked(ev);
     }, false);
 
-    this.canvas.svg.ownerDocument.addEventListener("p:TextEditingRequested", function (ev) {
+    this.canvas.addEventListener("p:TextEditingRequested", function (ev) {
         if (thiz.passivated) {
             thiz.canvas.removeEventListener("p:TextEditingRequested", arguments.callee, false);
             return;
