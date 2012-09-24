@@ -955,6 +955,8 @@
                                     var p2 = currentTargetProperties[name];
                                     if (p1 && p2) {
                                         this.currentController.setProperty(name, Pencil._painterSourceProperties[name]);
+                                        this.invalidateEditors();
+                                        this._sayTargetChanged();
                                     }
                                 }
                                 return;

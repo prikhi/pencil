@@ -25,7 +25,7 @@ SharedFillColorEditor.prototype._applyValue = function () {
 };
 SharedFillColorEditor.prototype.attach = function (target) {
     this.target = null;
-    this.color = target.getProperty(this.propertyName, "any");
+    this.color = target.getProperty(this.propertyName);
     if (!this.color)  {
         this.detach();
         return;
