@@ -142,10 +142,6 @@ OnScreenTextEditor.prototype._setupEditor = function () {
     var font = this.textEditingInfo.font;
     var align = this.textEditingInfo.align;
 
-    var size = {
-        h: this.textEditingInfo.multi ? (Math.max(bound.h, bbox.height) + 2) : Math.floor(font.getPixelHeight() * 1.2 + 2),
-        w: Math.max(bound.w, bbox.width) + 2
-    };
     var ctm = this.textEditingInfo.target.getScreenCTM();
     var svgCTM = this.canvas.svg.getScreenCTM();
 
@@ -200,8 +196,8 @@ OnScreenTextEditor.prototype._setupEditor = function () {
     //setup font
     //this.textEditor.style.marginLeft = "" + dx + "px";
     //this.textEditor.style.marginTop = "" + dy + "px";
-    this.textEditor.style.width = "" + size.w + "px";
-    Svg.setStyle(this.textEditor, "height", this.textEditingInfo.multi ? (size.h + "px") : null);
+    this.textEditor.style.width = "" + width + "px";
+    Svg.setStyle(this.textEditor, "height", this.textEditingInfo.multi ? (height + "px") : null);
     
     this.textEditor.style.fontFamily = this.textEditingInfo.font.family;
     this.textEditor.style.fontSize = this.textEditingInfo.font.size;
