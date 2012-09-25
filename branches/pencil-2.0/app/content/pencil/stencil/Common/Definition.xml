@@ -525,6 +525,35 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                     ]]>
                     </Impl>
                 </Action>
+                <Action id="getConnectorOutlets">
+                    <Impl>
+                        <![CDATA[
+                            function createOutlet(a, b, t, name) {
+                                var x = Math.PI * x / 180;
+                                var x = a * Math.cos(x) + a;
+                                var y = b * Math.sin(x) + b;
+                                
+                                return new Outlet(name, "Input", x, y);
+                            }
+                            
+                            var box = this.getProperty("box");
+                            var a = box.w / 2;
+                            var b = box.h / 2;
+                            
+                            
+                            return [
+                                new Outlet("right", "Input", a * Math.cos(0) + a, b * Math.sin(0) + b),
+                                new Outlet("topRight", "Input", a * Math.cos(0 - Math.PI / 4) + a, b * Math.sin( - Math.PI / 4) + b),
+                                new Outlet("top", "Input", a * Math.cos(0 - Math.PI / 2) + a, b * Math.sin(0 - Math.PI / 2) + b),
+                                new Outlet("topLeft", "Input", a * Math.cos(0 - 3 * Math.PI / 4) + a, b * Math.sin(0 - 3 * Math.PI / 4) + b),
+                                new Outlet("left", "Input", a * Math.cos(0 - Math.PI) + a, b * Math.sin(0 - Math.PI) + b),
+                                new Outlet("bottomRight", "Input", a * Math.cos(Math.PI / 4) + a, b * Math.sin(Math.PI / 4) + b),
+                                new Outlet("bottom", "Input", a * Math.cos(Math.PI / 2) + a, b * Math.sin(Math.PI / 2) + b),
+                                new Outlet("bottomLeft", "Input", a * Math.cos(3 * Math.PI / 4) + a, b * Math.sin(3 * Math.PI / 4) + b),
+                            ];
+                        ]]>
+                    </Impl>
+                </Action>
             </Actions>
             <Behaviors>
                 <For ref="ellipse">
