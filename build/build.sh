@@ -180,11 +180,27 @@ cleanup() {
 }
 
 prep
-xpi
-#linux
-#win32
-#mac
-fedorarpm
+
+if [ "$1" = "xpi" ] 
+then
+    xpi
+fi
+
+if [ "$1" = "win32" ] 
+then
+    win32
+fi
+
+if [ "$1" = "mac" ] 
+then
+    mac
+fi
+
+if [ "$1" = "fedorarpm" ] 
+then
+    fedorarpm
+fi
+
 cleanup
 
 echo "Done!"
