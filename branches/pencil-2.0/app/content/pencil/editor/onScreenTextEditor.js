@@ -185,6 +185,8 @@ OnScreenTextEditor.prototype._setupEditor = function () {
     if (height + y > boxObject.height) {
         height = boxObject.height - y;
     }
+    
+    width = Math.max(width, 60);
 
     OnScreenTextEditor.htmlDiv.setAttribute("left", x);
     OnScreenTextEditor.htmlDiv.setAttribute("top", y + 5);
