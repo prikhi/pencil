@@ -346,6 +346,7 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
     if (!this.currentAnchor) return;
 
     var locking = this.getLockingPolicy();
+    if (event.ctrlKey) locking.ratio = true;
 
     if (this.tool == "rotate") {
         if (!locking.rotation) {
