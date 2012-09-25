@@ -712,7 +712,15 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                         	try {
                             	var clientRect = targetObject.getBoundingClientRect();
                             	if (clientRect.width == 0 || clientRect.height == 0) {
-                            		ok = false;
+                            		if(targetObject.style.visibility != "hidden" 
+                            			&& targetObject.style.display != "none") {
+                            			clientRect.left = 0;
+                            			clientRect.top = 0;
+                            			clientRect.width = 10;
+                            			clientRect.height = 10;
+                            		} else {
+                                		ok = false;
+                            		}
                             	}
                         	} catch (e) {}
                         	

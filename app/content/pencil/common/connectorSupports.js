@@ -266,7 +266,7 @@ ConnectorUtil.generateStandarOutlets = function (shape, classes) {
                 new Outlet("bottom-left", classes ? classes : "Bounding", 0, box.h),
                 new Outlet("bottom-center", classes ? classes : "Bounding", box.w / 2, box.h),
                 new Outlet("bottom-right", classes ? classes : "Bounding", box.w, box.h)
-            ]
+            ];
     } else {
     	if (shape.svg) {
         	var box = shape.svg.getBBox();
@@ -286,7 +286,7 @@ ConnectorUtil.generateStandarOutlets = function (shape, classes) {
     	}
     }
 
-}
+};
 
 function getSegmentsToHandle(startPoints, handle, VIA_LENGTH) {
     var points = [];
@@ -299,7 +299,7 @@ function getSegmentsToHandle(startPoints, handle, VIA_LENGTH) {
     var end = {x: handle.x, y: handle.y};
     var via = null;
     if (handle.meta && handle.meta.viax && handle.meta.viay) {
-        via = {x: parseFloat(handle.meta.viax), y: parseFloat(handle.meta.viay)}
+        via = {x: parseFloat(handle.meta.viax), y: parseFloat(handle.meta.viay)};
     } else {
     	if (startPoints.length > 0) {
     		via = startPoints[startPoints.length - 1];
@@ -324,32 +324,71 @@ function getSegmentsToHandle(startPoints, handle, VIA_LENGTH) {
 
     return points;
 };
-function arrowTo(startPoints, handle, w, VIA_LENGTH, supportUnconnected) {
+function arrowTo(startPoints, handle, w, VIA_LENGTH, supportUnconnected,
+					withStartArrow, withEndArrow, straight, detachedDelta) {
     if (!supportUnconnected && !handle.isConnected()) return [];
-    debug("start point: " + [startPoints[0].x, startPoints[0].y]);
+    
+    if (typeof(withStartArrow) == "undefined") withStartArrow = true;
+    if (typeof(withEndArrow) == "undefined") withEndArrow = true;
+    
     const ANGLE = Math.PI / 4;
     const ARROW_WING_LENGTH = Math.max(w * 4, 6);
     
     if (startPoints[0].x == handle.x &&
         startPoints[0].y == handle.y) return [];
 
-    debug("before calling getSegmentsToHandle");
-    var points = getSegmentsToHandle(startPoints, handle, VIA_LENGTH);
-    debug("after calling getSegmentsToHandle, points = " + points.length);
-
-    var spec = geo_buildQuickSmoothCurve(points);
+    var points = straight ? [startPoints[0], handle] : getSegmentsToHandle(startPoints, handle, VIA_LENGTH);
     var len = points.length;
-
-    if (!handle.meta || handle.meta.connectedOutletId != "flowchartSegmentInput") {
+    
+    if (typeof(detachedDelta) == "number" && detachedDelta != 0) {
+    	//shift the two ends away
+    	var maxDelta = 2 * VIA_LENGTH / 3;
+    	if (detachedDelta > maxDelta) {
+    		detachedDelta = maxDelta;
+    	}
+    	
+    	var l = geo_vectorLength(points[0], points[1]);
+    	var f = (l - detachedDelta) / l;
+    	var p1 = {
+    		x: points[1].x + f * (points[0].x - points[1].x),
+    		y: points[1].y + f * (points[0].y - points[1].y)
+    	};
+    	
+    	l = geo_vectorLength(points[len - 2], points[len - 1]);
+    	f = (l - detachedDelta) / l;
+    	var p2 = {
+    		x: points[len - 2].x + f * (points[len - 1].x - points[len - 2].x),
+    		y: points[len - 2].y + f * (points[len - 1].y - points[len - 2].y)
+    	};
+    	
+    	points[0] = p1;
+    	points[len - 1] = p2;
+    }
+    
+    var spec = geo_buildQuickSmoothCurve(points);
+    
+    if (withStartArrow) {
         var a1 = geo_getRotatedPoint(
-                {x: points[len - 2].x, y: points[len - 2].y},
-                {x: points[len - 1].x, y: points[len - 1].y}, ARROW_WING_LENGTH, ANGLE);
+        		points[1],
+        		points[0], ARROW_WING_LENGTH, ANGLE);
                 
-            var a2 = geo_getRotatedPoint(
-                {x: points[len - 2].x, y: points[len - 2].y},
-                {x: points[len - 1].x, y: points[len - 1].y}, ARROW_WING_LENGTH, 0 - ANGLE);
+        var a2 = geo_getRotatedPoint(
+        	points[1],
+        	points[0], ARROW_WING_LENGTH, 0 - ANGLE);
 
-            spec.push(M(a1.x, a1.y), L(points[len - 1].x, points[len - 1].y), L(a2.x, a2.y));
+        spec.unshift(M(a1.x, a1.y), L(points[0].x, points[0].y), L(a2.x, a2.y));
+    }
+
+    if (withEndArrow && (!handle.meta || handle.meta.connectedOutletId.indexOf("SegmentInput") < 0)) {
+        var a1 = geo_getRotatedPoint(
+        		points[len - 2],
+        		points[len - 1], ARROW_WING_LENGTH, ANGLE);
+                
+        var a2 = geo_getRotatedPoint(
+        		points[len - 2],
+        		points[len - 1], ARROW_WING_LENGTH, 0 - ANGLE);
+
+        spec.push(M(a1.x, a1.y), L(points[len - 1].x, points[len - 1].y), L(a2.x, a2.y));
     }
 
     return spec;
@@ -376,4 +415,4 @@ pencilSandbox.Outlet = {
 };
 for (var p in Outlet) {
     pencilSandbox.Outlet[p] = Outlet[p];
-};
+}
