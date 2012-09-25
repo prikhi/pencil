@@ -148,7 +148,7 @@ function handleDialogAccept() {
         var data = this.getData();
         returnValueHolder.data = data;
         returnValueHolder.ok = true;
-        Config.set("lastSize", [data.width, data.height].join("x"))
+        Config.set("lastSize", [data.width, data.height].join("x"));
         return true;
     } catch (e) {
         Console.dumpError(e);

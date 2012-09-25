@@ -189,6 +189,7 @@ Controller.prototype.newDocument = function () {
     }
 
     this._addPage(Util.getMessage("untitled.page"), this._generateId(), size.width, size.height);
+    
     this._setSelectedPageIndex(0);
     this.filePath = null;
     this.modified = false;
@@ -1350,6 +1351,7 @@ Controller.prototype.sizeToBestFit = function (passedPage) {
         canvas.setSize(newSize.width, newSize.height);
         page.properties.width = newSize.width;
         page.properties.height = newSize.height;
+        Config.set("lastSize", [newSize.width, newSize.height].join("x"));
     }
 };
 

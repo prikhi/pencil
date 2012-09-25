@@ -106,7 +106,7 @@ function czGetScreenColor(x, y) {
 	return col;
 }
 Pencil._getCanvasPadding = function () {
-    return window.fullScreen ? 10 : 50;
+    return window.fullScreen ? 10 : 60;
 };
 Pencil.getBestFitSize = function () {
     var mainViewPanel = document.getElementById("mainViewPanel");
