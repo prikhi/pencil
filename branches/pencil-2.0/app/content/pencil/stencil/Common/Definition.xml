@@ -15,6 +15,11 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
             <Property name="fillColor" type="Color" displayName="Default Background Color">#4388CCff</Property>
         </PropertyGroup>
     </Properties>
+    <Script>
+        <![CDATA[
+            collection.VIA_LENGTH = 10;
+        ]]>
+    </Script>
 
     <Shape id="PlainText" displayName="Plain Text" icon="Icons/plain-text.png" system="true">
         <Properties>
@@ -762,7 +767,127 @@ url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html"
                 <path id="path" fill="none" style="stroke-linejoin: round;"/>
             </p:Content>
     </Shape>
-    <Shape id="2pointline" displayName="Free Line" icon="Icons/free-line.png">
+    <Shape displayName="Free Line" icon="Icons/FreeLine2.png" id="arrow">
+        <Properties>
+            <PropertyGroup>
+                <Property displayName="Start" name="startPin" p:connectTo="*" type="Handle">0,0</Property>
+                <Property displayName="End" name="endPin" p:connectTo="*" type="Handle">100,70</Property>
+                <Property displayName="Start Arrow" name="withStartArrow" type="Bool">true</Property>
+                <Property displayName="End Arrow" name="withEndArrow" type="Bool">true</Property>
+                <Property displayName="Use Straight Line" name="straight" type="Bool">false</Property>
+                <Property displayName="Slightly Detached" name="detached" type="Bool">false</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property displayName="Border Color" name="strokeColor" type="Color">
+                    <E>$$strokeColor</E>
+                </Property>
+                <Property displayName="Border Style" name="strokeStyle" type="StrokeStyle">
+                    <E>$$strokeStyle</E>
+                </Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property displayName="Text Content" name="textContent" p:editInfo="({targetName: 'text', bound: new Bound($startPin.x, $startPin.y, 100, 20), font: $textFont, align: $textAlign, multi: false})" type="PlainText" />
+                <Property displayName="Text Font" name="textFont" type="Font">
+                    <E>$$defaultTextFont</E>
+                </Property>
+                <Property displayName="Text Color" name="textColor" type="Color">
+                    <E>$$defaultTextColor</E>
+                </Property>
+                <Property displayName="Text Align" name="textAlign" type="Alignment">1,1</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="outArrow1">
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+            <For ref="path">
+                <D><![CDATA[
+                    var startVia = null;
+                    if ($startPin.meta && $startPin.meta.viax && $startPin.meta.viay) {
+                        startVia = {x: parseFloat($startPin.meta.viax), y: parseFloat($startPin.meta.viay)};
+                    } else {
+                        if ($endPin.meta && $endPin.meta.viax && $endPin.meta.viay) {
+                            endVia = {x: parseFloat($endPin.meta.viax), y: parseFloat($endPin.meta.viay)};
+                            var dx = Math.abs($endPin.x - endVia.x);
+                            var dy = Math.abs($endPin.y - endVia.y);
+
+                            startVia = {x: $endPin.x, y: $endPin.y };
+                            
+                            if (dx > dy) {  //horizontal
+                                startVia.x = $startPin.x;
+                            } else {
+                                startVia.y = $startPin.y;
+                            }
+                            startVia = geo_getRotatedPoint(startVia, $startPin, collection.VIA_LENGTH, 0);
+                        } else {
+                            startVia = geo_getRotatedPoint($endPin, $startPin, collection.VIA_LENGTH, 0);
+                        }
+                    }
+                    
+                    arrowTo([{x: $startPin.x, y: $startPin.y}, startVia], $endPin,
+                                $strokeStyle.w,
+                                collection.VIA_LENGTH,
+                                "supportUnconnected",
+                                $withStartArrow.value,
+                                $withEndArrow.value,
+                                $straight.value,
+                                $detached.value ? 5 : 0)
+                ]]></D>
+            </For>
+            <For ref="text">
+                <Color>$textColor</Color>
+                <Font>$textFont</Font>
+            </For>
+            <For ref="textSpan">
+                <InnerText>$textContent</InnerText>
+                <Attr>
+                    <Arg>"dy"</Arg>
+                    <Arg>0 - $textFont.getPixelHeight() / 3</Arg>
+                </Attr>
+                <Attr>
+                    <Arg>"dx"</Arg>
+                    <Arg>
+                        var arrowLength = Math.max($strokeStyle.w * 4, 6) * 2;
+                        var dx = 0;
+                        if ($withStartArrow.value) dx += arrowLength;
+                        if ($withEndArrow.value) dx -= arrowLength;
+                        dx;
+                    </Arg>
+                </Attr>
+            </For>
+        </Behaviors>
+        <Actions>
+            <Action id="getConnectorOutlets">
+                <Impl>
+                    <![CDATA[
+                        var startPin = this.getProperty("startPin");
+                        var endPin = this.getProperty("endPin");
+                        var outlet = new Outlet("commonSegmentInput", "Input", startPin.x, startPin.y);
+                        outlet.via = geo_getRotatedPoint(endPin, startPin, collection.VIA_LENGTH, Math.PI);
+                        outlet.noVia = true;
+                        return [
+                            outlet
+                        ]
+                    ]]>
+                </Impl>
+            </Action>
+        </Actions>
+        <p:Content xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <path id="path" style="stroke-linejoin: round; fill: none;" />
+            </defs>
+            <use xlink:href="#path" stroke-width="10" stroke-opacity="0" stroke="#FF0000"/>
+            <use xlink:href="#path" id="outArrow1"/>
+            <text id="text">
+                <textPath xlink:href="#path" startOffset="50%" text-anchor="middle" alignment-baseline="middle">
+                    <tspan id="textSpan" dy="-5">Text along a curved path</tspan>
+                </textPath>
+            </text>
+            
+        </p:Content>
+    </Shape>
+    <Shape id="2pointline" displayName="Free Line" icon="Icons/free-line.png" system="true">
         <Properties>
                 <PropertyGroup>
                     <Property name="a" displayName="Inner Top" type="Handle" >0,0</Property>
