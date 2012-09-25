@@ -6,3 +6,6 @@ pstrokeeditor {
 pstrokeeditor textbox {
     margin-right: 2em;
 }
+pstrokeeditor > hbox {
+    -moz-box-align: center;
+}

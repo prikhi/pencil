@@ -278,9 +278,12 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
 #primaryToolbar .Section {
     padding: 0px 3px;
     margin: 0px 2px;
+}
+#primaryToolbar vbox.Visible ~ .Section {
     border-left: solid 2px !important;
     -moz-border-left-colors: rgba(0, 0, 0, .2) rgba(255, 255, 255, .5) !important;
 }
+
 #primaryToolbar .Section:first-child {
     border-left: none !important;
 }
@@ -327,11 +330,21 @@ tabpanels#mainViewPanel[p|resizing] > tabpanel > vbox {
     display: none;
 }
 
-#primaryToolbar #fontlist menuitem {
+#primaryToolbar menulist menuitem {
     font-size: 1em;
 }
 #primaryToolbar #textFormatToolbar menulist {
     width: 15m;
+}
+#primaryToolbar #strokeStyleEditor > hbox > label {
+    display: none;
+}
+#primaryToolbar #strokeStyleEditor > hbox > menulist {
+    width: 14em;
+}
+#primaryToolbar #strokeStyleEditor > hbox {
+    -moz-box-align: stretch !important;
+    box-align: stretch !important;
 }
 
 window.Fullscreen toolbox,
