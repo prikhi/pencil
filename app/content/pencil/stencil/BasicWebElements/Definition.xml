@@ -76,17 +76,10 @@
 
     <Shape id="pane" displayName="Pane" icon="Icons/pane.png">
         <Properties>
-            <PropertyGroup name="Style">
-                <Property name="box" type="Dimension">200,300</Property>
-                <Property name="cornerStyle" displayName="Corner Style" type="Enum" p:enumValues="['none|None', 'all|All rounded', 'top|Rounded top corners', 'bottom|Rounded bottom corners', 'left|Rounded left corners', 'right|Rounded right corners']">none</Property>
-                <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
-            </PropertyGroup>
-
             <PropertyGroup name="Handles">
                 <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w / 2" p:disabled="$cornerStyle.value == 'none'">10,0</Property>
                 <Property name="textPadding" displayName="Text Padding" type="Handle" p:lockX="true" p:minY="0" p:maxY="$box.w / 2">0,10</Property>
             </PropertyGroup>
-
             <PropertyGroup name="Background">
                 <Property name="fillColor" displayName="Background Color" type="Color">#eeeeeeff</Property>
             </PropertyGroup>
@@ -104,6 +97,11 @@
                 <Property name="textFont" displayName="Default Font" type="Font"><E>$$defaultTextFont</E></Property>
                 <Property name="textColor" displayName="Text Color" type="Color"><E>$$defaultTextColor</E></Property>
                 <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Style">
+                <Property name="box" type="Dimension">200,300</Property>
+                <Property name="cornerStyle" displayName="Corner Style" type="Enum" p:enumValues="['none|None', 'all|All rounded', 'top|Rounded top corners', 'bottom|Rounded bottom corners', 'left|Rounded left corners', 'right|Rounded right corners']">none</Property>
+                <Property name="customStyle" displayName="Additional Style" type="PlainText"><![CDATA[]]></Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
