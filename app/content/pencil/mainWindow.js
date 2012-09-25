@@ -188,9 +188,11 @@ function invalidateToolbars() {
         var info = registeredToolbars[i];
         var toolbar = document.getElementById(info.id + "Toolbar");
         if (isToolbarVisible(info.id)) {
+            Dom.addClass(toolbar, "Visible");
             Dom.removeClass(toolbar, "Hidden");
         } else {
             Dom.addClass(toolbar, "Hidden");
+            Dom.removeClass(toolbar, "Visible");
         }
     }
 };
@@ -222,3 +224,4 @@ registerToolbar({id: "geometry", name: "Geometry Toolbar"});
 registerToolbar({id: "alignment", name: "Alignment Toolbar"});
 registerToolbar({id: "sizeAndSpacing", name: "Size and Spacing Toolbar"});
 registerToolbar({id: "color", name: "Color Toolbar"});
+registerToolbar({id: "borderStyle", name: "Line Style Toolbar"});

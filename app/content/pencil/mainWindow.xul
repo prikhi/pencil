@@ -14,6 +14,7 @@
 
 <?xul-overlay href="chrome://pencil/content/textToolOverlay.xul"?>
 <?xul-overlay href="chrome://pencil/content/colorToolOverlay.xul"?>
+<?xul-overlay href="chrome://pencil/content/borderToolOverlay.xul"?>
 <!-- 
 <?xul-overlay href="chrome://pencil/content/androidSupportOverlay.xul"?>
  -->
@@ -108,6 +109,7 @@
     <script src="chrome://pencil/content/editor/sharedFontEditor.js"/>
     <script src="chrome://pencil/content/editor/sharedFillColorEditor.js"/>
     <script src="chrome://pencil/content/editor/sharedGeometryEditor.js"/>
+    <script src="chrome://pencil/content/editor/sharedBorderStyleEditor.js"/>
 
     <script src="chrome://pencil/content/xferHelper/shapeXferHelper.js"/>
     <script src="chrome://pencil/content/xferHelper/targetSetXferHelper.js"/>

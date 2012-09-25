@@ -82,7 +82,7 @@
             </method>
         </implementation>
         <content>
-            <hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" align="center">
+            <hbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1">
                 <label value="&label.width.value;"/>
                 <textbox type="number" min="0" max="30" size="2" aid="width" xbl:inherits="disabled"/>
                 <label value="&label.style.value;"/>
