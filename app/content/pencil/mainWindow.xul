@@ -356,6 +356,12 @@
                     <menuitem label="Export as Layout..." oncommand="Pencil.controller._exportAsLayout()"/>
                     -->
                     <menuseparator/>
+                    <menu label="Developer Tools">
+                        <menupopup id="devToolsMenu">
+                            <menuitem id="nPatchGenerator" label="N-Patch Script Generator..." oncommand="window.openDialog('chrome://pencil/content/n-patch/nPatchGeneratorDialog.xul', 'Nn-Patch Generator', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
+                        </menupopup>
+                    </menu>
+                    <menuseparator/>
                     <menuitem id="menu_preferences" class="menuitem-iconic options-menu" label="&menu.options.label;" oncommand="window.openDialog('chrome://pencil/content/settingDialog.xul', 'Pencil Settings', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
                 </menupopup>
             </menu>
