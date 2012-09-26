@@ -318,6 +318,7 @@
             <menu id="view-menu" label="&menu.view.label;" accesskey="&menu.view.accesskey;">
                 <menupopup id="view-popup">
                     <menuitem class="menuitem-iconic view-collection-pane-menu" label="&menu.collection.pane.label;" type="checkbox" checked="false" key="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
+                    <menuitem id="hideHeavyElementsMenuItem" label="&menu.hide.heavy.elements.label;" type="checkbox" checked="false" command="hideHeavyElementsCommand" key="hideHeavyElementsKey"/>
                 </menupopup>
             </menu>
             <menu id="shape-menu" label="&menu.shape.label;" accesskey="&menu.shape.accesskey;">
@@ -340,8 +341,6 @@
                     <menuitem class="menuitem-iconic align-top-menu" label="&menu.align.top.label;" command="alignTopCommand" key="alignTopKey"/>
                     <menuitem class="menuitem-iconic align-middle-menu" label="&menu.align.middle.label;" command="alignMiddleCommand" key="alignMiddleKey"/>
                     <menuitem class="menuitem-iconic align-bottom-menu" label="&menu.align.bottom.label;" command="alignBottomCommand" key="alignBottomKey"/>
-                    <menuseparator/>
-                    <menuitem id="hideHeavyElementsMenuItem" label="&menu.hide.heavy.elements.label;" type="checkbox" checked="false" command="hideHeavyElementsCommand" key="hideHeavyElementsKey"/>
                 </menupopup>
             </menu>
             <menu id="tools-menu" label="&menu.tools.label;" accesskey="&menu.tools.accesskey;">
