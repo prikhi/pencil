@@ -170,7 +170,7 @@
                     }
                     thiz.handleMouseMove(event);
                 }, false);
-                this.svg.ownerDocument.addEventListener("keypress", function (event) {
+                this.focusableBox.addEventListener("keypress", function (event) {
                     if (thiz.handleKeyPress) thiz.handleKeyPress(event);
                 }, false);
 
