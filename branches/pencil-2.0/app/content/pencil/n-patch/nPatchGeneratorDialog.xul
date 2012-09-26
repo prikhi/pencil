@@ -13,7 +13,7 @@
         xmlns:p="http://www.evolus.vn/Namespace/Pencil"
         buttons="cancel"
         buttonlabelcancel="&button.cancel.label.close;"
-        style="min-width: 80em; min-height: 40em;">
+        style="min-width: 960px; min-height: 650px;">
 
     <script src="chrome://pencil/content/common/util.js"/>
     <script src="chrome://pencil/content/common/io.js"/>

@@ -346,7 +346,6 @@
             </menu>
             <menu id="tools-menu" label="&menu.tools.label;" accesskey="&menu.tools.accesskey;">
                 <menupopup>
-                    <menuitem class="menuitem-iconic stencil-generator-menu" label="&menu.stencil.generator.label;" oncommand="window.openDialog('chrome://pencil/content/stencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen', Pencil);"/>
                     <menuitem class="menuitem-iconic clipart-browser-menu" label="&menu.clipart.browser.label;" oncommand="if (!Pencil._clipartShowing) { window.openDialog('chrome://pencil/content/clipartBrowser.xul', 'ClipartBrowser' + Util.getInstanceToken(), 'alwaysRaised,chrome,centerscreen,resizable', Pencil); }"/>
                     <menuseparator/>
                     <menuitem label="&menu.dom.inspector.label;" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
@@ -358,7 +357,11 @@
                     <menuseparator/>
                     <menu label="Developer Tools">
                         <menupopup id="devToolsMenu">
-                            <menuitem id="nPatchGenerator" label="N-Patch Script Generator..." oncommand="window.openDialog('chrome://pencil/content/n-patch/nPatchGeneratorDialog.xul', 'Nn-Patch Generator', 'chrome,titlebar,toolbar,centerscreen,modal', Pencil);"/>
+                            <menuitem class="menuitem-iconic stencil-generator-menu" label="&menu.stencil.generator.label;" oncommand="window.openDialog('chrome://pencil/content/stencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen', Pencil);"/>
+                            <menuitem id="nPatchGenerator" label="N-Patch Script Generator..." oncommand="window.openDialog('chrome://pencil/content/n-patch/nPatchGeneratorDialog.xul', 'Nn-Patch Generator', 'chrome,titlebar,toolbar,centerscreen,modal,resizable', Pencil);"/>
+                            <menuseparator/>
+                            <menuitem label="Load Developer Stencil Directory..." oncommand="Pencil.selectDeveloperStencilDir();"/>
+                            <menuitem label="Unload Developer Stencil..." oncommand="Pencil.unselectDeveloperStencilDir();"/>
                         </menupopup>
                     </menu>
                     <menuseparator/>
