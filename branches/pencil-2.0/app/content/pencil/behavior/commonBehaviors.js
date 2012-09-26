@@ -311,7 +311,7 @@ Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootEleme
             window.setTimeout(function () {
                     Dom.empty(thiz);
                     thiz.appendChild(thiz.ownerDocument.createTextNode(content));
-                }, 1)
+                }, 1);
         } else {
             var html = (text.constructor == RichText) ? text.html : text.value;
             var divHTML = "<div xmlns=\"" + PencilNamespaces.html + "\">" + html + "</div>";
@@ -330,6 +330,13 @@ Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootEleme
             }
         }
     }
+};
+Pencil.behaviors.PlainTextContent = function (text, bound, alignment) {
+    var domContent = F.buildTextWrapDomContent(F._target, text.value, bound.w, alignment);
+    Dom.empty(this);
+    this.appendChild(domContent);
+
+    Pencil.behaviors.BoxFit.apply(this, [bound, alignment]);
 };
 Pencil.behaviors.DomContent = function (xmlText) {
     Dom.empty(this);
@@ -462,6 +469,97 @@ Pencil.behaviors.MaintainGlobalDef = function (id, contentFragement) {
     } else {
         drawingLayer.appendChild(defs);
     }
+};
+
+/* n-Patch supports */
+
+function imageNodeForPatch(patch, x, y, w, h) {
+    return {
+        _name: "image",
+        _uri: PencilNamespaces.svg,
+        x: x,
+        y: y,
+        width: w,
+        height: h,
+        preserveAspectRatio: "none",
+        //transform: "translate(" + x + ", " + y + ") scale(" + (w / patch.w) + ", " + (h / patch.h) + ")",
+        "xlink:href": patch.url
+    };
+}
+
+/**
+ * Build the DOM fragment that can be used to render the n-Patch within the provided dimension
+ * @param np
+ * @param dim
+ * @returns the dom fragement
+ */
+function buildNPatchDomFragment(np, dim) {
+    var n = np.patches.length;
+    if (n == 0) return null;
+    var m = np.patches[0].length;
+    
+    var specs = [];
+    var totalFlexW = 0;
+    var totalFlexH = 0;
+    for (var j = 0; j < m; j ++) {
+        var p = np.patches[0][j];
+        if (p.scaleX) totalFlexW += p.w;
+    }
+    for (var i = 0; i < n; i ++) {
+        var p = np.patches[i][0];
+        if (p.scaleY) totalFlexH += p.h;
+    }
+    
+    var targetScaleX = dim.w - (np.w - totalFlexW);
+    var targetScaleY = dim.h - (np.h - totalFlexH);
+    var rX = targetScaleX / totalFlexW;
+    var rY = targetScaleY / totalFlexH;
+    
+    var x = 0;
+    var y = 0;
+    var accumulatedScaleW = 0;
+    var accumulatedScaleH = 0;
+    for (var i = 0; i < n; i ++) {
+        x = 0;
+        accumulatedScaleW = 0;
+        var lastH = 0;
+        var scaledY = false;
+        for (var j = 0; j < m; j ++) {
+            var p = np.patches[i][j];
+            
+            var w = p.w;
+            var h = p.h;
+            
+            if (p.scaleX) {
+                w = (j == np.lastScaleX) ? targetScaleX - accumulatedScaleW : Math.floor(p.w * rX);
+                accumulatedScaleW += w;
+            }
+            if (p.scaleY) {
+                h = (i == np.lastScaleY) ? targetScaleY - accumulatedScaleH : Math.floor(p.h * rY);
+                scaledY = true;
+            }
+            
+            specs.push(imageNodeForPatch(p, x, y, w, h));
+            
+            x += w;
+            lastH = h;
+        }
+        y += lastH;
+        if (scaledY) accumulatedScaleH += lastH;
+    }
+    
+    return Dom.newDOMFragment(specs);
+}
+
+function getNPatchBound(np, dim) {
+    return new Bound(np.p1.x, np.p1.y, dim.w - np.p1.x - (np.w - np.p2.x), dim.h - np.p1.y - (np.h - np.p2.y));
+}
+
+Util.importSandboxFunctions(buildNPatchDomFragment, imageNodeForPatch, getNPatchBound);
+
+Pencil.behaviors.NPatchDomContent = function (nPatch, dim) {
+    Dom.empty(this);
+    this.appendChild(buildNPatchDomFragment(nPatch, dim));
 };
 
 
