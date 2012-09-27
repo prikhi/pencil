@@ -85,17 +85,22 @@ fedorarpm()  {
     echo "--------------------------------------"
     rm -Rf ./Outputs/RPM/
     export TMP=./Outputs/RPM/tmp
-    export BUILDROOT=$TMP/pencil-$VERSION
+    export BUILDROOT=$TMP/pencil-$VERSION.$BUILD
 
     export OUTPUT=$BUILDROOT/usr/share/pencil
     mkdir -p $OUTPUT/
     cp -R ./Outputs/Pencil/* $OUTPUT/
+    rm -f $OUTPUT/license.txt
+    rm -f $OUTPUT/platform
+    find $OUTPUT -iname "*.ico" | xargs -i rm -Rf {}
+    
     cp ../app/defaults/preferences/personal.js.xulrunner $OUTPUT/defaults/preferences/xre.js
     
     ./replacer.sh $OUTPUT/application.ini
+    ./replacer.sh $OUTPUT/content/pencil/aboutDialog.js
 
     mkdir -p $OUTPUT/chrome/icons/default/
-    cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
+    #cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
     cp ./Outputs/Pencil/skin/classic/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
 
     cp -R ./Fedora-RPM/buildroot/* $BUILDROOT
@@ -113,7 +118,7 @@ fedorarpm()  {
     echo "Creating source tarball..."
     CURRENT_DIR=`pwd`
     cd $TMP
-    tar -pczf $HOME/rpmbuild/SOURCES/pencil-$VERSION.tar.gz pencil-$VERSION
+    tar -pczf $HOME/rpmbuild/SOURCES/pencil-$VERSION.$BUILD.tar.gz pencil-$VERSION.$BUILD
     cd $CURRENT_DIR
 
     cd $BUILDROOT
@@ -201,7 +206,7 @@ then
     fedorarpm
 fi
 
-cleanup
+#cleanup
 
 echo "Done!"
 

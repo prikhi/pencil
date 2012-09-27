@@ -151,7 +151,7 @@
             </vbox>
         </deck>
     </prefpane>
-
+<!-- 
     <prefpane id="pencil-documentExpoter" label="&caption.document.exporter.label;" flex="1"
             image="chrome://pencil/skin/images/pane-selector-export.png">
         <deck>
@@ -184,7 +184,7 @@
             </vbox>
         </deck>
     </prefpane>
-
+ -->
     <prefpane id="pencil-clipartBrowser" label="&prefpane.clipart.browser.label;" flex="1"
             image="chrome://pencil/skin/images/pane-selector-openclipart.png">
         <deck>
