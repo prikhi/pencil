@@ -145,7 +145,7 @@
                 this.idSeed = 1;
 
                 this.onScreenEditors = [];
-
+                
 
                 //register event handler
                 this.svg.addEventListener("click", function (event) {

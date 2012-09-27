@@ -1,5 +1,5 @@
 Name:           pencil
-Version:        2.0
+Version:        @VERSION@.@BUILD@
 Release:        1%{?dist}
 Summary:        A sketching and GUI prototyping tool
 

@@ -22,7 +22,7 @@ pref("pencil.config.export.oo.converter.jod.url", "/bin/sh");
 
 pref("pencil.config.export.selection.padding", 0);
 
-pref("pencil.config.external.editor.bitmap.path", "/usr/local/bin/gimp-2.7");
+pref("pencil.config.external.editor.bitmap.path", "/usr/bin/gimp");
 pref("pencil.config.external.editor.vector.path", "/usr/bin/inkscape");
 
 pref("pencil.config.gridcolorpicker.recentlyUsedColors", "#FFFFFFFF,#FFFFFFFF,#FFFFFFFF,#FFFFFFFF,#FFFFFFFF,#FFFFFFFF,#FFFFFFFF,#FFFFFFFF,#FFFFFFFF,#FFFFFFFF");

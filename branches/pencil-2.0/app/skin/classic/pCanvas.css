@@ -7,7 +7,14 @@ pcanvas {
     background-color: transparent;
     -moz-box-align: center;
     -moz-box-pack: center;
+    -moz-user-select: none;
+    user-select: none;
     padding: .7em;
+}
+pcanvas svg html|* {
+    -moz-user-select: none !important;
+    user-select: none !important;
+    color: red !important;
 }
 pcanvas svg {
 }
