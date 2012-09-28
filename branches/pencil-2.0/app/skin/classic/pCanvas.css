@@ -14,7 +14,6 @@ pcanvas {
 pcanvas svg html|* {
     -moz-user-select: none !important;
     user-select: none !important;
-    color: red !important;
 }
 pcanvas svg {
 }
