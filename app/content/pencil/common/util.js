@@ -1716,6 +1716,27 @@ function geo_vectorAngle (p1, p2, q1, q2) {
     return geo_pointAngle(q2.x - q1.x, q2.y - q1.y) - geo_pointAngle(p2.x - p1.x, p2.y - p1.y);
 };
 
+function geo_findIntersection(a1, b1, a2, b2) {
+	var x0 = a1.x;
+	var y0 = a1.y;
+	var a = b1.x - a1.x;
+	var b = b1.y - a1.y;
+	
+	var x1 = a2.x;
+	var y1 = a2.y;
+	var c = b2.x - a2.x;
+	var d = b2.y - a2.y;
+	
+	var u = d*a - c*b;
+	if (u == 0) return null;
+	
+	var t = (d*x1 - d*x0 - c*y1 + c*y0) / u;
+	return {
+		x: x0 + a*t,
+		y: y0 + b*t,
+	};
+}
+
 function geo_buildQuickSmoothCurve(points) {
 	debug("geo_buildQuickSmoothCurve: points = " + points.length);
 	if (points.length != 4) {
@@ -1764,4 +1785,4 @@ function geo_buildSmoothCurve (points) {
     return spec;
 };
 
-Util.importSandboxFunctions(geo_buildQuickSmoothCurve, geo_buildSmoothCurve, geo_getRotatedPoint, geo_pointAngle, geo_rotate, geo_translate, geo_vectorAngle, geo_vectorLength);
+Util.importSandboxFunctions(geo_buildQuickSmoothCurve, geo_buildSmoothCurve, geo_getRotatedPoint, geo_pointAngle, geo_rotate, geo_translate, geo_vectorAngle, geo_vectorLength, geo_findIntersection);
