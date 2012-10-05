@@ -33,6 +33,8 @@ Connector.invalidateInboundConnectionsForShapeTarget = function (target) {
         var defId = canvas.getType(node);
         
         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
+        if (!def) return;
+        
         var handleProps = [];
         for (var i = 0; i < def.propertyGroups.length; i ++) {
             for (var j = 0; j < def.propertyGroups[i].properties.length; j ++) {
@@ -337,7 +339,7 @@ function arrowTo(startPoints, handle, w, VIA_LENGTH, supportUnconnected,
     if (startPoints[0].x == handle.x &&
         startPoints[0].y == handle.y) return [];
 
-    var points = straight ? [startPoints[0], handle] : getSegmentsToHandle(startPoints, handle, VIA_LENGTH);
+    var points = getSegmentsToHandle(startPoints, handle, VIA_LENGTH);
     var len = points.length;
     
     if (typeof(detachedDelta) == "number" && detachedDelta != 0) {
@@ -365,7 +367,17 @@ function arrowTo(startPoints, handle, w, VIA_LENGTH, supportUnconnected,
     	points[len - 1] = p2;
     }
     
-    var spec = geo_buildQuickSmoothCurve(points);
+    var spec = null;
+    if (straight) {
+        var spec = [M(points[0].x, points[0].y)];
+        var len = points.length;
+        for (var i = 1; i < len; i ++) {
+            var p = points[i];
+            spec.push(L(p.x, p.y));
+        }
+    } else {
+    	spec = geo_buildQuickSmoothCurve(points);
+    }
     
     if (withStartArrow) {
         var a1 = geo_getRotatedPoint(

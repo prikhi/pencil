@@ -10,7 +10,7 @@ ExternalEditorSupports.getEditorPath = function (extension) {
     if (extension == "svg") return Config.get("external.editor.vector.path", "/usr/bin/inkscape");
     if (extension == "jpg"
         || extension == "gif"
-        || extension == "png") return Config.get("external.editor.bitmap.path", "/usr/local/bin/gimp-2.7");
+        || extension == "png") return Config.get("external.editor.bitmap.path", "/usr/bin/gimp");
 
     throw Util.getMessage("unsupported.type", extension);
 };

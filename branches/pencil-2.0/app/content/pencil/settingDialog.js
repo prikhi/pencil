@@ -42,7 +42,7 @@ handleOnLoad = function () {
     }
 
     var svgurl = Config.get("external.editor.vector.path", "/usr/bin/inkscape");
-    var bitmapurl = Config.get("external.editor.bitmap.path", "/usr/local/bin/gimp-2.7");
+    var bitmapurl = Config.get("external.editor.bitmap.path", "/usr/bin/gimp");
     document.getElementById("svgEditorUrl").value = svgurl;
     document.getElementById("bitmapEditorUrl").value = bitmapurl;
 

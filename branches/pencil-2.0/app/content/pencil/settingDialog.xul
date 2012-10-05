@@ -228,7 +228,7 @@
                             </row>
                             <row align="center" id="bitmapBox">
                                 <label value="&label.external.bitmap.editor.value;" id="labelBitmapEditorUrl" />
-                                <textbox id="bitmapEditorUrl" width="350" value="/usr/local/bin/gimp-2.7" preference="pencil-bitmapEditorUrl" />
+                                <textbox id="bitmapEditorUrl" width="350" value="/usr/bin/gimp" preference="pencil-bitmapEditorUrl" />
                             </row>
                         </rows>
                     </grid>

@@ -663,6 +663,38 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
 	                        break;
                     	}
                     }
+                    
+                    if (b.items[i].handler == Pencil.behaviors.PlainTextContent && b.items[i].args[0].literal.indexOf("properties." + name) != -1) {
+                        var obj = {properties: this.getProperties(), functions: Pencil.functions};
+                        var font = null;
+                        for (j in b.items) {
+                            if (b.items[j].handler == Pencil.behaviors.Font) {
+                                var fontArg = b.items[j].args[0];
+                                font = pEval("" + fontArg.literal, obj);
+                                break;
+                            }
+                        }
+                        var bound = null;
+                        var align = null;
+                        
+                        bound = pEval("" + b.items[i].args[1].literal, obj);
+                        align = pEval("" + b.items[i].args[2].literal, obj);
+                        
+                    	var targetObject = Dom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                    	
+                        info = {prop: prop,
+                                value: this.getProperty(name),
+                                targetName: target,
+                                type: PlainText,
+                                target: targetObject,
+                                bound: bound,
+                                align: align,
+                                readonly: prop.meta.readonly,
+                                font: font,
+                                multi: true};
+
+                        break;
+                    }
                 }
                 if (info) {
                     infos.push(info);
@@ -806,6 +838,7 @@ Shape.prototype.markAsMoving = function (moving) {
     Svg.optimizeSpeed(this.svg, moving);
 };
 Shape.prototype.performAction = function (id) {
+	//this.prepareExpressionEvaluation();
     var shapeAction = this.def.actionMap[id];
     if (!shapeAction) { return null; }
 
