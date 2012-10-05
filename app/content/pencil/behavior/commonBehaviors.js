@@ -219,8 +219,29 @@ Util.importSandboxFunctions(M, L, C, c, S, s, Q, q, T, a, A);
 const DEFAULT_SKETCHY_SEG_SIZE = 20;
 const DEFAULT_SKETCHY_OVERSHOOT = 3;
 const ROTATED_ANGLE = 10;
+const SKETCHY_ANGLE = 4;
 
 function sk(x1, y1, x2, y2, d, noMove) {
+	var result = [];
+    if (!noMove) result.push(M(x1, y1));
+    
+    var p1 = {x: x1, y: y1,};
+    var p2 = {x: x2, y: y2,};
+    var l = geo_vectorLength (p1, p2) / 3;
+	
+	var angle = Math.random() * SKETCHY_ANGLE - (SKETCHY_ANGLE / 2);
+	angle = Math.PI * angle / 180;
+	
+	var a = geo_getRotatedPoint(p2, p1, l, angle);
+	var b = geo_getRotatedPoint(p1, p2, l, 0 - angle);
+	result.push(C(a.x, a.y, b.x, b.y, x2, y2));
+	
+	Pencil.behaviors.D._setLastLocation(x2, y2);
+	
+	return result.join(" ");
+}
+
+function sk_old(x1, y1, x2, y2, d, noMove) {
 	var delta = (Math.random() - 1) * DEFAULT_SKETCHY_OVERSHOOT;
 	
 	var a = Math.PI * (180 - ROTATED_ANGLE + (Math.random() * ROTATED_ANGLE)) / 180;
