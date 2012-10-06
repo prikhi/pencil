@@ -1217,6 +1217,14 @@
                         this.run(function () {
                             //this.currentController.moveBy(dx, dy);
                             this.currentController.moveBy(dx, dy, false, true);
+                            
+                            if (this.currentController.invalidateOutboundConnections) {
+                                this.currentController.invalidateOutboundConnections();
+                            }
+                            if (this.currentController.invalidateInboundConnections) {
+                                this.currentController.invalidateInboundConnections();
+                            }
+                            
                         }, this, Util.getMessage("action.move.shape"));
 
                         if (this.currentController.constructor == TargetSet) {
