@@ -20,6 +20,7 @@ prep() {
     ./replacer.sh ./Outputs/Pencil/content/pencil/mainWindow.xul
     ./replacer.sh ./Outputs/Pencil/content/pencil/aboutDialog.xul
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/pencil.js
+    ./replacer.sh ./Outputs/Pencil/content/pencil/common/util.js
 
     rm ./Outputs/Pencil/defaults/preferences/personal.js
     rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
@@ -91,7 +92,7 @@ fedorarpm()  {
     mkdir -p $OUTPUT/
     cp -R ./Outputs/Pencil/* $OUTPUT/
     rm -f $OUTPUT/license.txt
-    rm -f $OUTPUT/platform
+    rm -rf $OUTPUT/platform
     find $OUTPUT -iname "*.ico" | xargs -i rm -Rf {}
     
     cp ../app/defaults/preferences/personal.js.xulrunner $OUTPUT/defaults/preferences/xre.js
@@ -120,6 +121,8 @@ fedorarpm()  {
     cd $TMP
     tar -pczf $HOME/rpmbuild/SOURCES/pencil-$VERSION.$BUILD.tar.gz pencil-$VERSION.$BUILD
     cd $CURRENT_DIR
+    mkdir -p ./Outputs/Linux
+    cp $HOME/rpmbuild/SOURCES/pencil-$VERSION.$BUILD.tar.gz ./Outputs
 
     cd $BUILDROOT
     BUILDROOTASB=`pwd`
@@ -127,6 +130,8 @@ fedorarpm()  {
     cd ..
     echo "Build RPM now..."
     rpmbuild -ba pencil.spec
+    cd $CURRENT_DIR
+    cp $HOME/rpmbuild/RPMS/noarch/pencil-$VERSION.$BUILD-*.noarch.rpm ./Outputs
 }
 
 win32() {
@@ -182,6 +187,8 @@ cleanup() {
     rm -Rf ./Outputs/Win32/
     rm -Rf ./Outputs/Pencil/
     rm -Rf ./Outputs/Mac/
+    rm -Rf ./Outputs/RPM/
+    rm -Rf ./Outputs/Linux/
 }
 
 prep
@@ -206,7 +213,15 @@ then
     fedorarpm
 fi
 
-#cleanup
+if [ "$1" = "all" ] 
+then
+    xpi
+    win32
+    fedorarpm
+    mac
+fi
+
+cleanup
 
 echo "Done!"
 
