@@ -2,7 +2,7 @@
 
 export NAME='Pencil'
 export VERSION='2.0'
-export BUILD='1'
+export BUILD='2'
 export AUTHOR='Duong Thanh An (an.duong@evolus.vn) and Contributors'
 export XPI_NAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
 export MIN_VERSION='1.9.8'
