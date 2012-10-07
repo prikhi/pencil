@@ -212,12 +212,20 @@ ExportWizard.browseTargetFile = function () {
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     if (currentDir) fp.displayDirectory = currentDir;
 
+    var defaultExt = null;
     if (isChoosingFile) {
         fp.init(window, Util.getMessage("select.output.file"), nsIFilePicker.modeSave);
         var exts = exporter.getOutputFileExtensions();
         if (exts) {
             for (i in exts) {
-                fp.appendFilter(exts[i].title, exts[i].ext);
+            	var ext = exts[i].ext;
+                fp.appendFilter(exts[i].title, ext);
+                if (defaultExt == null && ext != "*.*") {
+                	var index = ext.indexOf(".");
+                	if (index >= 0) {
+                    	defaultExt = ext.substring(index);
+                	}
+                }
             }
         }
 
@@ -228,8 +236,13 @@ ExportWizard.browseTargetFile = function () {
     fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() == nsIFilePicker.returnCancel) return;
-
-    ExportWizard.targetFilePathText.value = fp.file.path;
+    
+    var path = fp.file.path;
+    if (isChoosingFile && defaultExt && path.indexOf(".") < 0) {
+    	path = path + defaultExt;
+    }
+    
+    ExportWizard.targetFilePathText.value = path;
 };
 ExportWizard.validatePageSelection = function () {
     if (ExportWizard.pageSelectionGroup.value != "only") return true;

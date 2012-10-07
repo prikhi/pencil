@@ -3,9 +3,9 @@
         xmlns:svg="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         id="Evolus.AndroidICSHIFI"
-        displayName="Android ICS"
+        displayName="Mobile - Android ICS"
         description="Hi-Fi version of the Android ICS UI elements"
-        author="Duong Thanh An">
+        author="Evolus Pencil Team">
 	<Script comments="Scripts for creating nine-patches">
         <![CDATA[
             collection.ANDROID_ICS_STANDARD_SIZE = 48;

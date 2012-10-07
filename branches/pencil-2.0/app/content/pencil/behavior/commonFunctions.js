@@ -215,11 +215,12 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
             
             if (index > 0) {
                 line = s.substring(0, index);
-                s = s.substring(index + 1);
+                i --;
             } else {
                 line = s;
-                s = "";
+                lastBBoxWidth = box.width;
             }
+            s = "";
             
             tspans.push({
                 _name: "tspan",

@@ -13,8 +13,9 @@
 <!ENTITY label.evolus.pencil.value               "Evolus Pencil">
 <!ENTITY label.version.value                     "version">
 <!ENTITY label.build.value                       "build">
-<!ENTITY tab.authors.label                       "Authors">
-<!ENTITY tab.contributors.label                  "Contributors">
+<!ENTITY tab.credits.label                       "Credits">
+<!ENTITY tab.authors.label                       "Authors:">
+<!ENTITY tab.contributors.label                  "Contributors:">
 <!ENTITY tab.license.label                       "License">
 
 <!-- chrome://pencil/content/UI/CollectionPane.xbl -->

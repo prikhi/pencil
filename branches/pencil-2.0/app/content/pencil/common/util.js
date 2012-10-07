@@ -209,6 +209,11 @@ Dom._buildHiddenFrame = function () {
     Dom._hiddenFrame = iframe.contentWindow;
     Dom._hiddenFrame.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
 };
+//
+/*
+this is the disabled code
+// */
+
 Dom.toXhtml = function (html) {
     Dom._buildHiddenFrame();
 
@@ -1255,27 +1260,33 @@ if (typeof(console) == "undefined") {
 }
 
 function debug(value) {
+	//DEBUG_BEGIN
     if (true) {
         Components.classes['@mozilla.org/consoleservice;1']
 	            .getService(Components.interfaces.nsIConsoleService)
                 .logStringMessage(value);
     }
     console.info(value);
+    //DEBUG_END
 }
 function stackTrace() {
+	//DEBUG_BEGIN
 	var lines = [];
 	for (var frame = Components.stack; frame; frame = frame.caller) {
 		lines.push(frame.name + " (" + frame.filename + "@" + frame.lineNumber + ")");	
 	}
 	debug(lines.join("\n"));
+    //DEBUG_END
 }
 function warn(value) {
     //console.warn(value);
     debug(value);
 }
 function info(value) {
+	//DEBUG_BEGIN
     console.info(value);
     debug(value);
+    //DEBUG_END
 }
 function error(value) {
     console.error(value);
@@ -1283,6 +1294,7 @@ function error(value) {
 }
 var lastTick = (new Date()).getTime();
 function tick(value) {
+	//DEBUG_BEGIN
     return;
     var date = new Date();
     var newTick = date.getTime();
@@ -1291,6 +1303,7 @@ function tick(value) {
 
     var prefix = value ? (value + ": ").toUpperCase() : "TICK: ";
     dump(prefix + date.getSeconds() + "." + date.getMilliseconds() + " (" + delta + " ms)\n");
+	//DEBUG_END
 }
 
 var Net = {};
@@ -1737,8 +1750,8 @@ function geo_findIntersection(a1, b1, a2, b2) {
 	};
 }
 
-function geo_buildQuickSmoothCurve(points) {
-	debug("geo_buildQuickSmoothCurve: points = " + points.length);
+function geo_buildQuickSmoothCurve(points, inputControlLength) {
+	debug("geo_buildQuickSmoothCurve: points = " + points.length + ", controlLength: " + inputControlLength);
 	if (points.length != 4) {
 		return geo_buildSmoothCurve(points);
 		return;
@@ -1746,6 +1759,12 @@ function geo_buildQuickSmoothCurve(points) {
 	
     var spec = [M(points[0].x, points[0].y)];
     var controlLength = Math.min(geo_vectorLength(points[0], points[3]) / 2, 60);
+    
+    if (typeof(inputControlLength) != "undefined") {
+    	controlLength = Math.max(3 * inputControlLength, controlLength);
+    }
+    
+    debug("controlLength: " + controlLength);
     var p1 = geo_getRotatedPoint(points[1], points[0], controlLength, 0);
     var p2 = geo_getRotatedPoint(points[2], points[3], controlLength, 0);
     spec.push(C(p1.x, p1.y, p2.x, p2.y, points[3].x, points[3].y));

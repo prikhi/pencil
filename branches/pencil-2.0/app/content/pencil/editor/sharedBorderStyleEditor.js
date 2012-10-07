@@ -21,11 +21,6 @@ SharedBorderStyleEditor.prototype.setup = function () {
             event.stopPropagation();
         }
     }, false);
-
-    this.editor.ownerDocument.documentElement.addEventListener("p:ShapeGeometryModified", function (event) {
-        if (event.setter && event.setter == thiz) return;
-        thiz.invalidate();
-    }, false);
 };
 SharedBorderStyleEditor.prototype.handleCommandEvent = function () {
 	var thiz = this;
@@ -33,9 +28,8 @@ SharedBorderStyleEditor.prototype.handleCommandEvent = function () {
     	this.setProperty(SharedBorderStyleEditor.PROPERTY_NAME, thiz.editor.getValue());
         Pencil.activeCanvas.snappingHelper.updateSnappingGuide(this);
         thiz.invalidate();
+        Pencil.activeCanvas.invalidateEditors(thiz);
     }, this.target, "Change style");
-
-    Pencil.activeCanvas.invalidateEditors(this);
 };
 
 SharedBorderStyleEditor.prototype.isDisabled = function () {
@@ -44,7 +38,7 @@ SharedBorderStyleEditor.prototype.isDisabled = function () {
 
 SharedBorderStyleEditor.prototype.attach = function (target) {
     this.target = target;
-    var style = target.getProperty(SharedBorderStyleEditor.PROPERTY_NAME);
+    var style = target.getProperty(SharedBorderStyleEditor.PROPERTY_NAME, "any");
     if (!style)  {
         this.detach();
         return;

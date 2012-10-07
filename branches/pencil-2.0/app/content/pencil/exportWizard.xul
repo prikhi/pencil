@@ -48,7 +48,7 @@
                 </menupopup>
             </menulist>
             <html:div style="margin-left: 1em;margin-right: 1em;">
-                <html:a onclick="ExportWizard.callManageTemplateDialog();" href="#" style="color: -moz-hyperlinktext; text-decoration: underline; font-size: .9em;">&label.manage.template.value;</html:a>
+                <html:a onclick="ExportWizard.callManageTemplateDialog(); return false;" href="#" style="color: -moz-hyperlinktext; text-decoration: underline; font-size: .9em;">&label.manage.template.value;</html:a>
             </html:div>
         </hbox>
         <description id="templateDescription">

@@ -148,12 +148,16 @@ CollectionManager.loadStencils = function() {
         
     if (navigator.userAgent.indexOf("Firefox") < 0) {
         CollectionManager._loadUserDefinedStencilsIn(CollectionManager.getSpecialDirs("CurProcD", "content/pencil/stencil"),
-        "Common, Annotation, BasicWebElements, SketchyGUI, Gtk.GUI, WindowsXP-GUI, Native.GUI");
+        "Common, Annotation, BasicWebElements, SketchyGUI, Gtk.GUI, WindowsXP-GUI, Native.GUI", "isSystem");
     }
 
     //CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/iPhone/Definition.xml"));
 
     CollectionManager._loadUserDefinedStencilsIn(CollectionManager.getSpecialDirs("ProfD", "Pencil/Stencils"));
+    CollectionManager.shapeDefinition.collections = CollectionManager.shapeDefinition.collections.sort(function (a, b) {
+    	if (a.id == "Evolus.Common") return -1;
+    	return a.displayName > b.displayName ? 1 : (a.displayName < b.displayName ? -1 : 0);
+    });
     CollectionManager._loadDeveloperStencil();
     
     PrivateCollectionManager.loadPrivateCollections();
