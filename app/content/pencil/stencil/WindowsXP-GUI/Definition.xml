@@ -3,7 +3,7 @@
         xmlns:svg="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         id="Evolus.WindowsXP.Widgets"
-        displayName="Windows XP Widgets"
+        displayName="Desktop - Windows XP Widgets"
         description="Microsoft Windows XP GUI controls">
     <Properties>
         <PropertyGroup name="Text">

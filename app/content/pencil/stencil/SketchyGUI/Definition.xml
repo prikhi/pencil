@@ -1,4 +1,16 @@
-<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" id="Evolus.Sketchy.GUI" displayName="Sketchy GUI" description="Sketchy GUI elements for prototyping">
+<Shapes
+    xmlns="http://www.evolus.vn/Namespace/Pencil"
+    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cc="http://web.resource.org/cc/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    id="Evolus.Sketchy.GUI"
+    displayName="Desktop - Sketchy GUI"
+    description="Sketchy GUI elements for prototyping">
     <Properties>
         <PropertyGroup name="Colors">
             <Property name="fillColor" type="Color" displayName="Background Color">#FFFFFFFF</Property>

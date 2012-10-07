@@ -3,7 +3,7 @@
         xmlns:svg="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
    	    id="Evolus.GTK.Widgets"
-   	    displayName="GTK Widgets"
+   	    displayName="Desktop - GTK Widgets"
    	    description="A Nodoka-based GTK+ widget collection"
         author="Duong Thanh An (an.duong@evolus.vn)"
         url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/NodokaWidget.html">

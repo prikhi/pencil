@@ -307,7 +307,7 @@ function getSegmentsToHandle(startPoints, handle, VIA_LENGTH) {
     		via = startPoints[startPoints.length - 1];
     	}
     }
-    
+    debug("VIA_LENGTH: " + VIA_LENGTH);
     if (via != null) {
         var dx = via.x - end.x;
         var dy = via.y - end.y;
@@ -376,7 +376,7 @@ function arrowTo(startPoints, handle, w, VIA_LENGTH, supportUnconnected,
             spec.push(L(p.x, p.y));
         }
     } else {
-    	spec = geo_buildQuickSmoothCurve(points);
+    	spec = geo_buildQuickSmoothCurve(points, VIA_LENGTH);
     }
     
     if (withStartArrow) {

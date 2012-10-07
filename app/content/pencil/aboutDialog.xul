@@ -20,7 +20,7 @@
     <script src="chrome://pencil/content/aboutDialog.js"/>
 
     <vbox>
-        <hbox flex="1">
+        <hbox flex="1" style="padding: 1ex;">
             <vbox><image src="chrome://pencil/skin/images/pencil.png"/></vbox>
             <vbox flex="1">
                 <hbox class="Title"><label value="&label.evolus.pencil.value;"></label></hbox>
@@ -34,17 +34,37 @@
             <vbox flex="1">
                 <tabbox id="aboutBox">
                     <tabs id="aboutBoxTabs">
-                        <tab label="&tab.authors.label;"/>
-                        <tab label="&tab.contributors.label;"/>
+                        <tab label="&tab.credits.label;"/>
                         <tab label="&tab.license.label;"/>
                     </tabs>
                     <tabpanels flex="1" id="aboutBoxTabPanels">
                         <tabpanel>
                             <vbox flex="1">
-                                <hbox>
-                                    <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Dương Thành An&#13;Nguyễn Tiến Dũng&#13;Nguyễn Nữ Hải Anh"></textbox>
-                                </hbox>
-                                <hbox style="padding-top: 5px;">
+                                <vbox flex="1">
+                                    <label style="font-weight: bold;">&tab.authors.label;</label>
+                                    <description>
+                                        Dương Thành An
+                                        <html:br/>
+                                        Nguyễn Tiến Dũng
+                                        <html:br/>
+                                        Nguyễn Nữ Hải Anh
+                                    </description>
+                                    
+                                    <label style="font-weight: bold;padding-top: 20px;">&tab.contributors.label;</label>
+                                    <description>
+                                        Maxime Delorme
+                                        <html:br/>
+                                        Frederic Vandaele
+                                        <html:br/>
+                                        Brainiac Kalel
+                                        <html:br/>
+                                        Trương Xuân Tính
+                                        <html:br/>
+                                        Trương Anh Tuấn
+                                    </description>
+                                </vbox>
+                                <separator />
+                                <hbox style="padding-top: 20px;">
                                     <vbox flex="1" >
                                         <label width="250">&label.you.can.help.us.value;</label>
                                     </vbox>
@@ -53,9 +73,6 @@
                                     </vbox>
                                 </hbox>
                             </vbox>
-                        </tabpanel>
-                        <tabpanel>
-                            <textbox flex="1" multiline="true" readonly="true" rows="13" class="Readonly" value="Maxime Delorme&#13;Frederic Vandaele&#13;Brainiac Kalel&#13;Trương Xuân Tính&#13;Trương Anh Tuấn"/>
                         </tabpanel>
                         <tabpanel>
                             <textbox id="licenseText" flex="1" multiline="true" readonly="true" rows="13" class="Readonly"/>

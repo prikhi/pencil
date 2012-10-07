@@ -1,4 +1,18 @@
-<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil" xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" id="Evolus.Common" displayName="Common Shapes" description="Collection of general shapes" author="Duong Thanh An (an.duong@evolus.vn)" url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html">
+<Shapes
+    xmlns="http://www.evolus.vn/Namespace/Pencil"
+    xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cc="http://web.resource.org/cc/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    id="Evolus.Common"
+    displayName="Common Shapes"
+    description="Collection of general shapes"
+    author="Duong Thanh An (an.duong@evolus.vn)"
+    url="http://www.evolus.vn/Projects/FOSS/Pencil/Collections/CommonShapes.html">
     <Properties>
         <PropertyGroup name="Text">
             <Property name="defaultTextFont" type="Font" displayName="Default Font">"Liberation Sans",Arial,sans-serif|normal|normal|13px</Property>
@@ -681,6 +695,7 @@
                                 new Outlet("bottomRight", "Input", a * Math.cos(Math.PI / 4) + a, b * Math.sin(Math.PI / 4) + b),
                                 new Outlet("bottom", "Input", a * Math.cos(Math.PI / 2) + a, b * Math.sin(Math.PI / 2) + b),
                                 new Outlet("bottomLeft", "Input", a * Math.cos(3 * Math.PI / 4) + a, b * Math.sin(3 * Math.PI / 4) + b),
+                                new Outlet("middle", "Input", a, b),
                             ];
                         ]]>
                 </Impl>
@@ -972,8 +987,16 @@
             <For ref="path">
                 <D><![CDATA[
                     var startVia = null;
+                    var viaLength = collection.VIA_LENGTH;
+                    if ($startPin.meta && $endPin.meta
+                        && $startPin.meta.connectedShapeId
+                        && $startPin.meta.connectedShapeId == $endPin.meta.connectedShapeId) {
+                        viaLength = collection.VIA_LENGTH * 3;
+                    }
+                    stencilDebug("viaLength: " + viaLength);
                     if ($startPin.meta && $startPin.meta.viax && $startPin.meta.viay) {
                         startVia = {x: parseFloat($startPin.meta.viax), y: parseFloat($startPin.meta.viay)};
+                        startVia = geo_getRotatedPoint(startVia, $startPin, viaLength, 0);
                     } else {
                         if ($endPin.meta && $endPin.meta.viax && $endPin.meta.viay) {
                             endVia = {x: parseFloat($endPin.meta.viax), y: parseFloat($endPin.meta.viay)};
@@ -987,15 +1010,16 @@
                             } else {
                                 startVia.y = $startPin.y;
                             }
-                            startVia = geo_getRotatedPoint(startVia, $startPin, collection.VIA_LENGTH, 0);
+                            startVia = geo_getRotatedPoint(startVia, $startPin, viaLength, 0);
                         } else {
-                            startVia = geo_getRotatedPoint($endPin, $startPin, collection.VIA_LENGTH, 0);
+                            startVia = geo_getRotatedPoint($endPin, $startPin, viaLength, 0);
                         }
                     }
                     
                     var result = null;
                     if ($mode.value == 'multi-straight' && $endPin.meta && $endPin.meta.viax && $endPin.meta.viay) {
                         endVia = {x: parseFloat($endPin.meta.viax), y: parseFloat($endPin.meta.viay)};
+                        endVia = geo_getRotatedPoint(endVia, $endPin, viaLength, 0);
                         
                         stencilDebug("startPine: " + $startPin.toSource());
                         stencilDebug("endPin: " + $endPin.toSource());
@@ -1016,7 +1040,7 @@
                                         y: $endPin.y
                                     },
                                     $strokeStyle.w,
-                                    collection.VIA_LENGTH,
+                                    viaLength,
                                     "supportUnconnected",
                                     $withStartArrow.value,
                                     $withEndArrow.value,
@@ -1030,7 +1054,7 @@
                                         y: $endPin.y
                                     },
                                     $strokeStyle.w,
-                                    collection.VIA_LENGTH,
+                                    viaLength,
                                     "supportUnconnected",
                                     $withStartArrow.value,
                                     $withEndArrow.value,
@@ -1045,7 +1069,7 @@
                                 }
                                 ,
                                 $strokeStyle.w,
-                                collection.VIA_LENGTH,
+                                viaLength,
                                 "supportUnconnected",
                                 $withStartArrow.value,
                                 $withEndArrow.value,
@@ -1054,7 +1078,7 @@
                     } else {
                         result = arrowTo([{x: $startPin.x, y: $startPin.y}, startVia], $endPin,
                                 $strokeStyle.w,
-                                collection.VIA_LENGTH,
+                                viaLength,
                                 "supportUnconnected",
                                 $withStartArrow.value,
                                 $withEndArrow.value,

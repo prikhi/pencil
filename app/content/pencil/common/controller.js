@@ -182,10 +182,16 @@ Controller.prototype.newDocument = function () {
     //TODO: asking for params
     this.doc = new PencilDocument();
 
-    var size = this.parseSizeText(Pencil.getBestFitSize());
+    var size = null;
     var lastSize = Config.get("lastSize");
+    debug("lastSize: " + lastSize);
     if (lastSize) {
         size = this.parseSizeText(lastSize);
+    }
+    
+    debug("lastSize: " + Pencil.getBestFitSize());
+    if (size == null) {
+    	size = this.parseSizeText(Pencil.getBestFitSize());
     }
 
     this._addPage(Util.getMessage("untitled.page"), this._generateId(), size.width, size.height);
@@ -962,7 +968,7 @@ Controller.prototype.exportDocument = function (forcedExporterId) {
         }
 
         //take a shower, doit together!!!
-        Util.beginProgressJob(Util.getMessage("export.document.to.html"), starter);
+        Util.beginProgressJob(Util.getMessage("export.documents"), starter);
     } catch (e) {
         Console.dumpError(e, "stdout");
     }
