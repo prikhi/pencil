@@ -95,10 +95,9 @@ fedorarpm()  {
     rm -rf $OUTPUT/platform
     find $OUTPUT -iname "*.ico" | xargs -i rm -Rf {}
     
-    cp ../app/defaults/preferences/personal.js.xulrunner $OUTPUT/defaults/preferences/xre.js
-    
     ./replacer.sh $OUTPUT/application.ini
     ./replacer.sh $OUTPUT/content/pencil/aboutDialog.js
+    ./replacer.sh $OUTPUT/defaults/preferences/pencil.js
 
     mkdir -p $OUTPUT/chrome/icons/default/
     #cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico

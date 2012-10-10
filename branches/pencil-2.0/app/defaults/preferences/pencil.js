@@ -30,9 +30,9 @@ pref("pencil.config.gridcolorpicker.recentlyUsedColors", "#FFFFFFFF,#FFFFFFFF,#F
 pref("intl.locale.matchOS", true);
 
 pref("dom.allow_XUL_XBL_for_file", true);
-pref("network.protocol-handler.expose-all", false);
-pref("network.protocol-handler.warn-external.http", false);
 
 /*@XULRUNNER_XUL@/
 pref("toolkit.defaultChromeURI", "chrome://pencil/content/mainWindow.xul");
+pref("network.protocol-handler.expose-all", false);
+pref("network.protocol-handler.warn-external.http", false);
 //*/
