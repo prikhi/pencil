@@ -74,7 +74,7 @@
     </preferences>
 
     <prefpane id="pencil-mainpane" label="&prefpane.general.label;" flex="1"
-        minheight="300" minwidth="600"
+        minheight="400" minwidth="600"
             image="chrome://pencil/skin/images/pane-selector-general.png">
 
         <deck selectedIndex="0" id="pencil-statusdeck" >
@@ -151,7 +151,7 @@
             </vbox>
         </deck>
     </prefpane>
-<!-- 
+<!--
     <prefpane id="pencil-documentExpoter" label="&caption.document.exporter.label;" flex="1"
             image="chrome://pencil/skin/images/pane-selector-export.png">
         <deck>
