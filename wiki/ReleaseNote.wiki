@@ -1,5 +1,4 @@
 #summary What's new in version 1.2.
-#labels Featured
 = Version 1.2 =
 r147
  * *New Feature*: FormatPainter as in your preferred text editor
