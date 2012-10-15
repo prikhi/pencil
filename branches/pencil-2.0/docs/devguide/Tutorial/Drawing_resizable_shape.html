@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>Drawing resizable shape</title>
+    <meta name="order" content="04" />
+  </head>
+  <body>
+    <p> <b>4. Drawing resizable shape</b> </p>
+    <p> <br>
+    </p>
+    <p> Most Pencil shapes can be scaled. Pencil use Dimension property
+      type to set shape size through Box behaviour. Dimension property
+      type will provide a box can be resized width and height. The box
+      size change will apply to shape size. </p>
+    <p> The sample in this tutorial is a resize rectangle base on $box </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Shape id="RoundedRect" displayName="Rectangle"
+        icon="Icons/rectangle.png"&gt;</span> </p>
+    <p> <span> &lt;Properties&gt;</span> </p>
+    <p> <span> &lt;PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;Property name="box"
+        type="Dimension"&gt;200,80&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;PropertyGroup name="Background"&gt;</span> </p>
+    <p> <span> &lt;Property name="fillColor" displayName="Background
+        Color" type="Color"&gt;#4388CCff&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;PropertyGroup name="Border"&gt;</span> </p>
+    <p> <span> &lt;Property name="strokeColor" displayName="Line Color"
+        type="Color"&gt;#1B3280ff&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;Property name="strokeStyle" displayName="Line Style"
+        type="StrokeStyle"&gt;2|&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;/Properties&gt;</span> </p>
+    <p> <span> &lt;Behaviors&gt;</span> </p>
+    <p> <span> &lt;For ref="rrRect"&gt;</span> </p>
+    <p> <span> &lt;Box&gt;$box&lt;/Box&gt;</span> </p>
+    <p> <span> &lt;Fill&gt;$fillColor&lt;/Fill&gt;</span> </p>
+    <p> <span> &lt;StrokeColor&gt;$strokeColor&lt;/StrokeColor&gt;</span>
+    </p>
+    <p> <span> &lt;StrokeStyle&gt;$strokeStyle&lt;/StrokeStyle&gt;</span>
+    </p>
+    <p> <span> &lt;/For&gt;</span> </p>
+    <p> <span> &lt;/Behaviors&gt;</span> </p>
+    <p> <span> &lt;p:Content
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        xmlns="http://www.w3.org/2000/svg"&gt;</span> </p>
+    <p> <span> &lt;rect id="rrRect" x="0" y="0" /&gt;</span> </p>
+    <p> <span> &lt;/p:Content&gt;</span> </p>
+    <p> <span>&lt;/Shape&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> The rectangle have width and height properties. Set
+      &lt;Box&gt;$box&lt;/Box&gt;, the rectangle width &amp; height base
+      on $box width &amp; height. Moreover, the rectangle size can be
+      changed on canvas directly or on toolbar. </p>
+    <p> <br>
+    </p>
+    <p> <i><b>Add rounded corner:</b></i> </p>
+    <p> Retangle have rounded corner. Pencil also supports Radius
+      behaviour to make the resized rounded corner. </p>
+    <p> <span> &lt;PropertyGroup name="Handles"&gt;</span> </p>
+    <p> <span> &lt;Property name="radius" displayName="Corner Radius"
+        type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.w /
+        2"&gt;0,0&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> <span> &lt;Radius&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$radius.x&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$radius.x&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;/Radius&gt;</span> </p>
+    
+<p> In previous sample, Dimension type is used for drawing resizable
+      shapes. But Dimension type is assigned to Box behavior only in
+      case objects have width and height properties. So with other
+      objects do not have width and height properties, what should do.
+      Pencil also supports a Behavior that can be used for both kind of
+      objects. </p>
+    <p> <br>
+    </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Shape id="ms-oval" displayName="Oval"
+        icon="Icons/oval.png"&gt;</span> </p>
+    <p> <span> &lt;Properties&gt;</span> </p>
+    <p> <span> &lt;PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;Property name="box" displayName="Box"
+        type="Dimension"&gt;100,80&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;PropertyGroup name="Background"&gt;</span> </p>
+    <p> <span> &lt;Property name="fillColor" displayName="Background
+        Color" type="Color"&gt;#4388CCff&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;PropertyGroup name="Border"&gt;</span> </p>
+    <p> <span> &lt;Property name="strokeColor" displayName="Line Color"
+        type="Color"&gt;#1B3280ff&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;Property name="strokeStyle" displayName="Line Style"
+        type="StrokeStyle"&gt;2|&lt;/Property&gt;</span> </p>
+    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;/Properties&gt;</span> </p>
+    <p> <span> &lt;Behaviors&gt;</span> </p>
+    <p> <span> &lt;For ref="ellipse"&gt;</span> </p>
+    <p> <span> &lt;StrokeColor&gt;$strokeColor&lt;/StrokeColor&gt;</span>
+    </p>
+    <p> <span> &lt;StrokeStyle&gt;$strokeStyle&lt;/StrokeStyle&gt;</span>
+    </p>
+    <p> <span> &lt;Fill&gt;$fillColor&lt;/Fill&gt;</span> </p>
+    <p> <span> &lt;Attr&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;"cx"&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$box.w / 2&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;/Attr&gt;</span> </p>
+    <p> <span> &lt;Attr&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;"cy"&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$box.h / 2&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;/Attr&gt;</span> </p>
+    <p> <span> &lt;Attr&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;"rx"&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$box.w / 2&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;/Attr&gt;</span> </p>
+    <p> <span> &lt;Attr&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;"ry"&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$box.h / 2&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;/Attr&gt;</span> </p>
+    <p> <span> &lt;/For&gt;</span> </p>
+    <p> <span> &lt;/Behaviors&gt;</span> </p>
+    <p> <span> &lt;p:Content
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"</span> </p>
+    <p> <span> xmlns="http://www.w3.org/2000/svg"&gt;</span> </p>
+    <p> <span> &lt;ellipse id="ellipse"/&gt;</span> </p>
+    <p> <span> &lt;/p:Content&gt;</span> </p>
+    <p> <span>&lt;/Shape&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> &lt;Attr&gt;&lt;/Attr&gt; is used for assigning all object
+      properties value. </p>
+    <p> <i><span>&lt;Attr&gt;</span></i> </p>
+    <p> <i><span> &lt;Arg&gt;name&lt;/Arg&gt;</span></i> </p>
+    <p> <i><span> &lt;Arg&gt;value&lt;/Arg&gt; </span></i> </p>
+    <p> <i><span> &lt;Arg&gt;namespace&lt;/Arg&gt;</span></i> </p>
+    <p> <i><span>&lt;/Attr&gt;</span></i> </p>
+    <p> <i><span>name: property namespaces</span></i> </p>
+    <p> <i><span>value: property value</span></i> </p>
+    <p> This ellipse's cx, cy, rx, ry are assigned base on $box so the
+      ellipse size will base on the box size now. Furthermore,
+      &lt;Attr&gt;&lt;/Attr&gt; can be used for all object properties. </p>
+    <p> <br>
+    </p>
+    <p> In previous sample, Attr behavior can also be used instead of
+      &lt;Box&gt;$box&lt;/Box&gt; for rectangle. </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Attr&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;"width"&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$box.w&lt;/Arg&gt;</span> </p>
+    <p> <span>&lt;/Attr&gt;</span> </p>
+    <p> <span>&lt;Attr&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;"height"&lt;/Arg&gt;</span> </p>
+    <p> <span> &lt;Arg&gt;$box.h&lt;/Arg&gt;</span> </p>
+    <p> <span>&lt;/Attr&gt;</span> </p>
+  </body>
+</html>
