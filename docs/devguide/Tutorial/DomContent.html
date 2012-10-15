@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>DomContent</title>
+    <meta name="order" content="11" />
+  </head>
+  <body>
+    <p> <b>9. DomContent</b> </p>
+    <p> <br>
+    </p>
+    <p> Users may want to draw a complex mockup such as a table, a list,
+      &acirc;&#8364;&brvbar; Users may take time to combine each parts to a
+      table, a list. To be more convenient, Pencil supports creating
+      shape with dynamic content using DomContent behavior. </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Shape id="list" displayName="List"
+        icon="Icons/list.png"&gt;<br>
+        &lt;Properties&gt;<br>
+        &lt;PropertyGroup&gt;<br>
+        &lt;Property name="box" displayName="Box"
+        type="Dimension"&gt;191,235&lt;/Property&gt;<br>
+        &lt;/PropertyGroup&gt;<br>
+        &lt;PropertyGroup name="Item Text"&gt;</span> </p>
+    <p> <span> &lt;Property name="contentText" displayName="Text
+        Content" type="PlainText" p:editInfo="({targetName: 'content',
+        bound: Bound.fromBox($box, 0, 52), font: $itemFont, align: new
+        Alignment(0, 0), multi: true})"&gt;&lt;![CDATA[MenuItem<br>
+        MenuItem <br>
+        MenuItem]]&gt;&lt;/Property&gt;<br>
+        &lt;Property name="itemFont" displayName="Text Font"
+        type="Font"&gt;&lt;E&gt;$$defaultTextFont&lt;/E&gt;&lt;/Property&gt;<br>
+        &lt;Property name="itemColor" displayName="Text Color"
+        type="Color"&gt;#000000ff&lt;/Property&gt;<br>
+        &lt;/PropertyGroup&gt;<br>
+        &lt;/Properties&gt;<br>
+        &lt;Behaviors&gt; <br>
+        &lt;For ref="content"&gt;<br>
+        &lt;Bound&gt;Bound.fromBox($box, 0, 54)&lt;/Bound&gt;<br>
+        &lt;Font&gt;$itemFont&lt;/Font&gt;<br>
+        &lt;DomContent&gt;<br>
+        &lt;![CDATA[<br>
+        var items = $contentText.value.split(/[\r\n]+/);<br>
+        var specs = [];<br>
+        for (var i = 0; i &lt; items.length; i ++) {<br>
+        var css = new CSS(); <br>
+        <br>
+        var title = items[i];<br>
+        <br>
+        if(title.match(/\S/) != null)<br>
+        { <br>
+        var lineHeight = (i + 1) * (30 + $itemFont.getPixelHeight());<br>
+        <br>
+        var css = new CSS();<br>
+        css.set("font-size",$itemFont.size);<br>
+        css.set("font-family",$itemFont.family);<br>
+        css.set("font-style",$itemFont.style);<br>
+        css.set("font-weight",$itemFont.weight);<br>
+        css.set("font-decor",$itemFont.decor);<br>
+        css.set("fill", $itemColor.toRGBString());<br>
+        <br>
+        specs.push({<br>
+        _name: "text",<br>
+        _uri: "http://www.w3.org/2000/svg",<br>
+        x: 10,<br>
+        y: lineHeight, <br>
+        _text : title,<br>
+        style: css<br>
+        },{<br>
+        _name: "path", <br>
+        _uri: "http://www.w3.org/2000/svg",<br>
+        d: "m 10,"+ (lineHeight+10) + " "+($box.w - 20)+",0" ,<br>
+        style : "stroke-width:1;stroke:#c9c9c9"<br>
+        });<br>
+        }<br>
+        }<br>
+        Dom.newDOMFragment(specs);<br>
+        ]]&gt;<br>
+        &lt;/DomContent&gt;<br>
+        &lt;/For&gt; <br>
+        &lt;/Behaviors&gt;<br>
+        &lt;p:Content xmlns:p="<a
+          href="http://www.evolus.vn/Namespace/Pencil">http://www.evolus.vn/Namespace/Pencil</a>"
+        xmlns="http://www.w3.org/2000/svg" &gt;<br>
+        &lt;g id="content"/&gt;<br>
+        &lt;/p:Content&gt;<br>
+        &lt;/Shape&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> Users just give dynamic shapes a specific format content such as
+      this shape in this tutorial, the format content is many items that
+      are seperated by new lines. Then each item in the content is
+      transferred to each list item that is also separated by a new
+      line. Let's review the code in
+      &lt;DomContent&gt;&lt;/DomContent&gt;, the main task is pushing
+      objects to DomContent. </p>
+  </body>
+</html>

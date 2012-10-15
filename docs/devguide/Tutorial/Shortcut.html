@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>Shortcut</title>
+    <meta name="order" content="14" />
+  </head>
+  <body>
+    <p> <b>14. Shortcut</b> </p>
+    <p> A shape contains many properties. When the shape is draged in
+      canvas, each property have a default value. Sometimes the shape
+      may want to be used with other different properties default value,
+      so Pencil supports creating shortcuts from an original shape by
+      changing the properties default value. </p>
+    <p> <br>
+    </p>
+    <p> &lt;Shape id="label" displayName="Label"
+      icon="Icons/plain-text.png"&gt;<br>
+      &lt;Properties&gt;<br>
+      &lt;PropertyGroup name="Text"&gt;<br>
+      &lt;Property name="label" displayName="Label"
+      type="PlainText"&gt;Hello World&lt;/Property&gt;<br>
+      &lt;Property name="textColor" displayName="Color"
+      type="Color"&gt;#808080ff&lt;/Property&gt;<br>
+      &lt;Property name="shadowColor" displayName="Shadow Color"
+      type="Color"&gt;#008000ff&lt;/Property&gt;<br>
+      &lt;Property name="textFont" displayName="Font"
+      type="Font"&gt;Arial,sans-serif|normal|normal|13px&lt;/Property&gt;<br>
+      &lt;Property name="shadow" displayName="Width Shadow"
+      type="Bool"&gt;false&lt;/Property&gt;<br>
+      &lt;/PropertyGroup&gt;<br>
+      &lt;/Properties&gt;<br>
+      &lt;Behaviors&gt;<br>
+      &lt;For ref="text"&gt;<br>
+      &lt;TextContent&gt;$label&lt;/TextContent&gt;<br>
+      &lt;Fill&gt;$textColor&lt;/Fill&gt;<br>
+      &lt;Font&gt;$textFont&lt;/Font&gt;<br>
+      &lt;BoxFit&gt;<br>
+      &lt;Arg&gt;new Bound(0, 0, 100, 12)&lt;/Arg&gt;<br>
+      &lt;Arg&gt;new Alignment(0, 1)&lt;/Arg&gt;<br>
+      &lt;/BoxFit&gt;<br>
+      &lt;/For&gt;<br>
+      &lt;For ref="shadow"&gt;<br>
+      &lt;Visibility&gt;$shadow&lt;/Visibility&gt;<br>
+      &lt;TextContent&gt;$label&lt;/TextContent&gt;<br>
+      &lt;Fill&gt;$shadowColor&lt;/Fill&gt;<br>
+      &lt;Font&gt;$textFont&lt;/Font&gt;<br>
+      &lt;BoxFit&gt;<br>
+      &lt;Arg&gt;new Bound(1, 1, 100, 12)&lt;/Arg&gt;<br>
+      &lt;Arg&gt;new Alignment(0, 1)&lt;/Arg&gt;<br>
+      &lt;/BoxFit&gt;<br>
+      &lt;/For&gt;<br>
+      &lt;/Behaviors&gt;<br>
+      &lt;p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+      xmlns="http://www.w3.org/2000/svg"&gt;<br>
+      &lt;text id="shadow"/&gt; <br>
+      &lt;text id="text"/&gt;<br>
+      &lt;/p:Content&gt;<br>
+      &lt;/Shape&gt;<br>
+      <br>
+      <span> &lt;Shortcut displayName="Label with shadow"
+        icon="Icons/label-shadow.png" to="label"&gt;<br>
+      </span><span> &lt;PropertyValue
+        name="shadow"&gt;true&lt;/PropertyValue&gt;<br>
+        &lt;/Shortcut&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> From a normal text, by changing &acirc;&#8364;&#339;shadow&acirc;&#8364;&#157; default
+      property value, a new shape is created : the text with shadow. All
+      shape properties can be changed. &acirc;&#8364;&#339;to&acirc;&#8364;&#157; property
+      will refer to shape id. </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Shortcut displayName="Label with shadow"
+        icon="Icons/label-shadow.png" to="label"&gt;<br>
+        &lt;PropertyValue name="shadow"&gt;true&lt;/PropertyValue&gt;</span>
+    </p>
+    <p> <span> &lt;PropertyValue
+        name="shadowColor"&gt;#558000ff&lt;/PropertyValue&gt;</span> </p>
+    <p> <span> &acirc;&#8364;&brvbar;..<br>
+        &lt;/Shortcut&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> <span>A shortcut may be from other collection. In case,
+        &acirc;&#8364;&#339;to&acirc;&#8364;&#157; property have to refer from
+        collectionid:shapeId.</span> </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Shortcut displayName="name" icon=""
+        to="collectionId:shapeId"&gt;</span> </p>
+    <p> <span>&lt;/Shortcut&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> Note: the collection contains shortcuts from other collection,
+      have to be imported later. </p>
+  </body>
+</html>

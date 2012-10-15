@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Introduction
+    </title>
+    <meta name="order" content="1" />
+  </head>
+  <body>
+    <p>
+      <b>I. Introduction</b>
+    </p>
+    <h2>
+      Overview
+    </h2>
+    <p>
+      Pencil controls shapes in its document by mean of <i>stencils</i>.
+      Each stencil (Rectangle, for example) is indeed a template to generate
+      shapes. Each template defines:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <b>The look:</b> how the generated shape looks like by mean
+          of SVG elements.
+        </p>
+        <p>
+          <b>For example: </b>the Rectangle stencil defines a shape
+          formed by a single SVG <i>&lt;rect&gt;</i> element.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>The properties:</b> which properties the shape has plus
+          optional extra constraints on them.
+        </p>
+        <p>
+          <b>Fox example:</b> the Rectangle stencil has a <i>'box'</i>
+          property of type <i>Dimension</i>, a <i>'strokeStyle'</i>
+          property of type <i>StrokeStyle</i> and a <i>'fillColor'</i>
+          property of type <i>Color</i>.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>The behaviours:</b> how the shape's look is changed
+          according to changes made to its properties.
+        </p>
+        <p>
+          <b>For example:</b> the Rectangle <i>&lt;rect&gt;</i>
+          element has its <i>fill</i> and <i>fill-opacity</i>
+          change to the <i>'fillColor'</i> property of the shape.
+        </p>
+      </li>
+      <li>
+        <p>
+          <b>The actions: </b>which actions that external objects and
+          users can ask the shape to do.
+        </p>
+        <p>
+          <b>For example:</b> the Rectangle stencil define a <i>'Remove
+          border'</i> action to allow users setting the <i>'strokeStyle'</i>
+          width property to <i>0px</i> <i>and hence makes the &lt;rect&gt;
+          element's border disappeared.</i>
+        </p>
+      </li>
+    </ul>
+    <p>
+      Stencils are organized in collections. Each collection contains a set of
+      related stencils and can be installed into or uninstalled from Pencil
+      using the collection manager attached to the collection pane.
+    </p>
+    <h2>
+      The Process of Creating Shapes from Stencils
+    </h2>
+    <p>
+      After being installed into Pencil, a stencil can be used to create shapes
+      by dragging it into the drawing pane of a page. When a stencil is dropped
+      into a page, the following actions will be taken by Pencil to create a
+      shape for that stencil:
+    </p>
+    <ol>
+      <li>
+        <p>
+          Creating a shape as an SVG element containing all SVG elements defined
+          in the <i>content</i> section of the stencil definition.
+        </p>
+      </li>
+      <li>
+        <p>
+          Putting the create shape into the page content.
+        </p>
+      </li>
+      <li>
+        <p>
+          Setting initial values for all properties in the shape to the default
+          values as defined in the stencil.
+        </p>
+      </li>
+      <li>
+        <p>
+          Applying all behaviors defined in the stencil to make the shape looks
+          changed according to these initial property values.
+        </p>
+      </li>
+    </ol>
+    <h2>
+      Manipulating Shapes in the Drawing Page
+    </h2>
+    <p>
+      After being successfully inserted into a page, a shape begins its life in
+      that page. During the life, a shape may have its properties changed to the
+      desired value of the user. Depending on the type, a property value can be
+      changed in a specific way that is easiest to the user. In the current
+      implementation of Pencil, property manipulation is detailed in the
+      following table:
+    </p>
+    <p>
+      <i><b>Note:</b> Pencil reserves the use of some special
+      property names for pre-defined purposes. Please refer the XXX document to
+      have detailed information on how these property names can be used in your
+      stencil.</i>
+    </p>
+    <p>
+      <br /> <br />
+    </p>
+    <p>
+      <i>An example of this is that the <b>'box'</b> property of
+      type <b>'Dimension'</b> should always be used to determined the
+      dimension of the outmost box surrounding the shape.</i>
+    </p>
+  </body>
+</html>

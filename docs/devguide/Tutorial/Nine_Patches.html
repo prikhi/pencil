@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>Nine Patches</title>
+    <meta name="order" content="13" />
+  </head>
+  <body>
+    <p> <b>11. Nine Patches</b> </p>
+    <p> <br>
+    </p>
+    <p> Nines Patches is a very popular technique in graphic design.
+      Android also use this technique to create their OS - <a
+href="http://developer.android.com/guide/topics/graphics/2d-graphics.html#nine-patch">http://developer.android.com/guide/topics/graphics/2d-graphics.html#nine-patch</a>
+      &acirc;&#8364;&#8220; It is very simple and flexibility to make an
+      apart-resizable shape. So Pencil also provides this technique for
+      developers to create their awesome collections. There are already
+      many collections using this technique in Pencil repository such as
+      iOS UI Stencils. </p>
+    <p> <br>
+    </p>
+    <p> Assume that there is a original rounded Corner Rectangle image.
+    </p>
+    <p> <img
+src="../images/Main_html_2b605a48.png"
+        name="graphics10" alt="" border="0" height="107" width="107"><br
+        clear="left">
+      Adding 4 black lines to the image. Note: all lines stroke width
+      must be <b>1px</b>. </p>
+    <p> <img
+src="../images/Main_html_m2af8dc4a.png"
+        name="graphics9" alt="" border="0" height="113" width="113"><br
+        clear="left">
+      Top and Left line: is used to divide the rectangle to nine pieces.
+    </p>
+    <p> Bottom and Right line: is used to set Text bound. </p>
+    <p> <br>
+    </p>
+    <p> Then using <b>Tools &acirc;&#8224;&#8217; Developer Tools &acirc;&#8224;&#8217; N-Path
+        Script Generator...</b> to parse the image to Pencil nPatch code
+      that is used later. Now you have 9 pieces: </p>
+    <p> <img
+src="../images/Main_html_1d59ad4c.png"
+        name="graphics12" alt="" border="0" height="113" width="113"><br
+        clear="left">
+      These pieces are dividen based on the top and left line: </p>
+    <p> - The 1, 3, 7, 9 piece will be the same when scaling box. </p>
+    <p> - The width of 2, 5, 8 piece will be scale based on the ratio
+      between old width and new width. </p>
+    <p> - The height of 4, 5, 6 piece will be scale based on the ratio
+      between old height and new height. </p>
+    <p> <br>
+    </p>
+    <p> Put Pencil nPatch code into collection.nPathes object. </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Script comments="N Patches"&gt;</span> </p>
+    <p> <span> &lt;![CDATA[</span> </p>
+    <p> <span> collection.nPatches = {</span> </p>
+    <p> <span> sample:
+{"w":35,"h":35,"p1":{"x":15,"y":16},"p2":{"x":20,"y":22},"patches":[[{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAr0lEQVQ4jaXTMQ6DMAwF0L+ycQPOwMbJOEA5CHuWKEYZEQsqdpE69ATdUJeuHemAxAIkgVjK+J8sOwbOlhlzNPcbiC2MPEEyhQXrLoUeKhC/QTJvnrOUSqClBPF3N+xFbJuhebycYSdCfQHDnyBgF6G+APEvGNggts1OdbBBlEqCZ3CIaCkvAStSd6l3jV5ED9VlYEWOfmIwYsY8CiCZsRxTLEJs45HlnGM7kSkW+QMkMjoMrMdPRgAAAABJRU5ErkJggg==","w":17,"h":17,"scaleX":false,"scaleY":false},{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAARCAYAAAAcw8YSAAAAFUlEQVQImWNg2HjyJwPDppP/qUgAAOGdKhRyz8aoAAAAAElFTkSuQmCC","w":1,"h":17,"scaleX":true,"scaleY":false},{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAApUlEQVQ4ja3TsQ3CQAwF0N/SsQEz0DFZBkgGoU9zOp+uRDQosUFKwQTpIpq0lKZIAKHQXHyW3D75WzZAMsBLB+KI0JTwtz2Si0SXzT1cW+F43hqQDzbCSYG63hiQucP1jnja2RAShecH6HKwIVO8538oCZknWkRLRd47+ln2GoRE4aSwI8Tj945WI6JwbWVHiPsMiOj0a1YkNKUdIY4Z4kiXYRIZXuZVOgx3G7yrAAAAAElFTkSuQmCC","w":17,"h":17,"scaleX":false,"scaleY":false}],[{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAABCAYAAAA4u0VhAAAAE0lEQVQImWNg2HjyJ8Omk/8pwQCRHioUjQN2IAAAAABJRU5ErkJggg==","w":17,"h":1,"scaleX":false,"scaleY":true},{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNg2HTyPwAErAJ72rrK9QAAAABJRU5ErkJggg==","w":1,"h":1,"scaleX":true,"scaleY":true},{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAABCAYAAAA4u0VhAAAAEklEQVQImWNg2HTyP0V448mfAJLeKhTUgefAAAAAAElFTkSuQmCC","w":17,"h":1,"scaleX":false,"scaleY":true}],[{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAnUlEQVQ4ja3UMQ6CQBCF4b+l4wacgc6TeQA9CP02ZIdsSWgMzkpi4QnsiI0tpRarJQIZXzLtl92dmQWJIxJfpsLHqx0RDXak6Q9/uM5Q2hEA0bsdqc9HO1J1OaJPGwJQx70dcS6judxsCEBoC7w+bAiAnHaITjbkC2050WxCW6x+o59xLktdW2j/qlRdngZyZrI3xw9lWloNn29kfAN5zToMs/CBPQAAAABJRU5ErkJggg==","w":17,"h":17,"scaleX":false,"scaleY":false},{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAARCAYAAAAcw8YSAAAAFElEQVQImWNg2HTyPwM1iY0nfwIA480qFPtI62wAAAAASUVORK5CYII=","w":1,"h":17,"scaleX":true,"scaleY":false},{"url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAn0lEQVQ4ja3TPQqDQBAF4Nemyw1yhnSezAPoQextlp1lS0kTdEbBwhPYSRrblEkRMIiB7Do+2PZj5w8geSnfBDVipdcjxF6PuDo7oJzuqkR4BAAdYppcifCM4nbWIUZSLNk1kXZAWZ72I5Yf8NUFq8T14Qm6J9gk5gc/gVDEtcO2hGCEZxhJ100MRniEafLvHvwLyQQrPYg9XJ19biEubzv/OgxaZ8VBAAAAAElFTkSuQmCC","w":17,"h":17,"scaleX":false,"scaleY":false}]],"lastScaleX":1,"lastScaleY":1}</span>
+    </p>
+    <p> <span> }</span> </p>
+    <p> <span> ]]&gt;</span> </p>
+    <p> <span>&lt;/Script&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> <span>&lt;Shape id="sample" displayName="NPathSampe"
+        icon="Icons/sample.png"&gt;<br>
+        &lt;Properties&gt;<br>
+        &lt;PropertyGroup&gt;<br>
+        &lt;Property name="box"
+        type="Dimension"&gt;320,44&lt;/Property&gt;<br>
+        &lt;/PropertyGroup&gt;</span> </p>
+    <p> <span> &lt;PropertyGroup name="Text"&gt;<br>
+        &lt;Property name="text" displayName="Text"
+        type="PlainText"&gt;&lt;![CDATA[Content]]&gt;&lt;/Property&gt;<br>
+        &lt;Property name="textFont" displayName="Default Font"
+        type="Font"&gt;Helvetica|bold|normal|20px&lt;/Property&gt;<br>
+        &lt;/PropertyGroup&gt;<br>
+        &lt;/Properties&gt;<br>
+        &lt;Behaviors&gt;<br>
+        &lt;For ref="bg"&gt;<br>
+        &lt;NPatchDomContent&gt;<br>
+        collection.nPatchDom("sample", $box)<br>
+        &lt;/NPatchDomContent&gt;<br>
+        &lt;/For&gt;</span> </p>
+    <p> <span> &lt;For ref="text"&gt;<br>
+        &lt;TextContent&gt;$text&lt;/TextContent&gt;<br>
+        &lt;Font&gt;$textFont&lt;/Font&gt;<br>
+        &lt;Fill&gt;Color.fromString('#ffffffff')&lt;/Fill&gt;<br>
+        &lt;BoxFit&gt;<br>
+        &lt;Arg&gt;collection.nPatchBound("sample&acirc;&#8364;&#157;,
+        $box)&lt;/Arg&gt;<br>
+        &lt;Arg&gt;new Alignment(1, 1)&lt;/Arg&gt;<br>
+        &lt;/BoxFit&gt;<br>
+        &lt;/For&gt;<br>
+        &lt;/Behaviors&gt;<br>
+        &lt;p:Content xmlns="http://www.w3.org/2000/svg"&gt;<br>
+        &lt;g id="bg"&gt;&lt;/g&gt;</span> </p>
+    <p> <span> &lt;text id="text"/&gt;<br>
+        &lt;/p:Content&gt;<br>
+        &lt;/Shape&gt;</span> </p>
+    <p> <br>
+    </p>
+    <p> <span>Pencil will use collection.nPatchDom to excute Pencil
+        nPatch code contained in collection.nPatches and then put into
+        &lt;NpatchDomContent&gt;&lt;/NPatchDomContent&gt; behavior. Now
+        the retangle is kept the fixed rounded corner with any size.</span>
+    </p>
+    <p> <span>Pencil also use the Pencil nPatch code to set text Bound
+        through collection.nPatchBound. The text bound is set based on
+        the left and bottom lines.</span> </p>
+    <p> <br>
+    </p>
+    <p> <img
+src="../images/Main_html_m1c0fecf0.png"
+        name="graphics14" alt="" border="0" height="113" width="113"><br
+        clear="left">
+      <span>In text bound area, if there is any part area belong to
+        scale area, text bound will be scaled, too.</span> </p>
+    <p> <img
+src="../images/Main_html_m25fc3700.png"
+        name="graphics13" alt="" border="0" height="113" width="113"><br
+        clear="left">
+      <br>
+    </p>
+    <p> <span>Sometimes, there are one more seperated sections of an
+        image need to be scaled apart such as the image below.</span> </p>
+    <p> <img
+src="../images/Main_html_2c628959.png"
+        name="graphics11" alt="" border="0" height="128" width="85"><br
+        clear="left">
+      <br>
+    </p>
+    <p> In this image, only Red and Dark Blue sections want to be scaled
+      through vertical direction. Adding lines to the image. </p>
+    <p> <img
+src="../images/Main_html_51cb6c4a.png"
+        name="graphics15" alt="" border="0" height="125" width="89"><br
+        clear="left">
+      <br>
+    </p>
+    <p> The scale setting can be through only one direction, the another
+      direction will be scaled all its size. With this sample, the
+      horizontal scaled area will be all the width and look like the
+      image </p>
+    <p> <img
+src="../images/Main_html_m58ebc780.png"
+        name="graphics16" alt="" border="0" height="128" width="89"><br
+        clear="left">
+      <span>If we do not add right and bottom lines,
+        collection.nPatchBound behavior will set text bound is all the
+        image.</span> </p>
+  </body>
+</html>

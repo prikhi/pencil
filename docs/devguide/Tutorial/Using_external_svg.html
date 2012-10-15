@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>Using external svg</title>
+    <meta name="order" content="07" />
+  </head>
+  <body>
+    <p> <b>8. Using external svg </b> </p>
+    <p> <br>
+    </p>
+    <p> A shape may be so complex that cannot be drawn with D behavior,
+      or cannot be created from an image because of pixel broken
+      scaling. In case, should use svg making tools (such as Inkscape)
+      to create this shape and transfer to Pencil shape. </p>
+    <p> Assume that there is a hand svg file below: </p>
+    <p> <img
+src="../images/Main_html_m6eadbed1.png"
+        name="graphics17" alt="" border="0" height="48" width="38"><br
+        clear="left">
+      <br>
+    </p>
+    <p> &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;<br>
+      &lt;svg<br>
+      xmlns:dc="http://purl.org/dc/elements/1.1/"<br>
+      xmlns:cc="http://creativecommons.org/ns#"<br>
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"<br>
+      xmlns:svg="http://www.w3.org/2000/svg"<br>
+      xmlns="http://www.w3.org/2000/svg"<br>
+xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"<br>
+      xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"<br>
+      width="64"<br>
+      height="64"<br>
+      id="svg2"<br>
+      version="1.1"<br>
+      inkscape:version="0.48.1 "<br>
+      &gt;<br>
+      &lt;g<br>
+      id="group"&gt;<br>
+      &lt;path<br>
+      d="m 32.3,53.9 c -7.8,0 -15.3,0 -15.3,-21 0,-19 3.5,-15.3
+      5.1,-13.8 v -3.3 c 0.2,-2.4 6,-2.2 6,-0.3 v -3 c 0,-3.2 6.7,-2.9
+      6.7,-0.8 v 4.1 c 0.2,-2.3 5.4,-3.2 5.6,1.3 0,7 -0.1,14.6 -0.2,16.8
+      2.7,3 5.7,-11.6 10.9,-9 2.4,2.5 -6.7,19.7 -7.7,21.5 -1,1.7
+      -5.2,7.5 -11.1,7.5 z"<br>
+      id="path8"<br>
+      inkscape:connector-curvature="0"<br>
+      style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+
+      /&gt;<br>
+      &lt;path<br>
+      sodipodi:nodetypes="cccccccccc"<br>
+      style="fill:none;stroke:#000000"<br>
+      inkscape:connector-curvature="0"<br>
+      id="path10"<br>
+      d="M 22.025873,18.820772 22.948882,32.71885 M 28.060203,14.888365
+      29,31 M 34.808683,14.331201 35,32 m 3,5 c 0,0 -5,1 -7,11 M 20,35 c
+      4,-5 12,-4 17,-3" /&gt;<br>
+      &lt;/g&gt;<br>
+      &lt;/svg&gt; </p>
+    <p> <br>
+    </p>
+    <p> Then transferring to a Pencil shape. </p>
+    <p> <br>
+    </p>
+    <p> &lt;Shape id="hand" displayName="Hand" icon="Icons/hand.png"&gt;<br>
+      &lt;Properties&gt;<br>
+      &lt;PropertyGroup&gt;<br>
+      &lt;Property name="box" type="Dimension"
+      p:lockRatio="true"&gt;72,90&lt;/Property&gt; </p>
+    <p> &lt;Property name="fillColor" type="Color"
+      displayName="Background Color"&gt;#f3f8c5ff&lt;/Property&gt;<br>
+      &lt;/PropertyGroup&gt;<br>
+      &lt;PropertyGroup name="Border"&gt;<br>
+      &lt;Property name="strokeColor" displayName="Line Color"
+      type="Color"&gt;&lt;E&gt;$$strokeColor&lt;/E&gt;&lt;/Property&gt;<br>
+      &lt;Property name="strokeStyle" displayName="Line Style"
+      type="StrokeStyle"&gt;&lt;E&gt;$$strokeStyle&lt;/E&gt;&lt;/Property&gt;<br>
+      &lt;/PropertyGroup&gt; </p>
+    <p> <span>&lt;PropertyGroup name="Text"&gt;<br>
+        &lt;Property name="name" displayName="Name"
+        type="PlainText"&gt;Hello World&lt;/Property&gt;<br>
+        &lt;Property name="textColor" displayName="Color"
+        type="Color"&gt;#000000ff&lt;/Property&gt;<br>
+        &lt;Property name="textFont" displayName="Font"
+        type="Font"&gt;Arial,sans-serif|normal|normal|13px&lt;/Property&gt;<br>
+        &lt;/PropertyGroup&gt;</span><br>
+      &lt;/Properties&gt;<br>
+      &lt;Behaviors&gt;<br>
+      &lt;For ref="group"&gt;<br>
+      &lt;Transform&gt;[scale($box.w/36, $box.h/45)]&lt;/Transform&gt;<br>
+      &lt;StrokeColor&gt;$strokeColor&lt;/StrokeColor&gt;<br>
+      &lt;StrokeStyle&gt;<br>
+      new StrokeStyle($strokeStyle.w / (Math.max($box.w / 36, $box.h /
+      45)), $strokeStyle.array);<br>
+      &lt;/StrokeStyle&gt;<br>
+      &lt;Fill&gt;Color.fromString("#00000000")&lt;/Fill&gt;<br>
+      &lt;/For&gt; </p>
+    <p> &lt;For ref="hand"&gt;<br>
+      &lt;Fill&gt;$fillColor&lt;/Fill&gt;<br>
+      &lt;/For&gt; </p>
+    <p> <span>&lt;For ref="name"&gt;<br>
+        &lt;TextContent&gt;$name&lt;/TextContent&gt;<br>
+      </span><span> &lt;Fill&gt;$textColor&lt;/Fill&gt;<br>
+      </span><span> &lt;Font&gt;$textFont&lt;/Font&gt;<br>
+        &lt;BoxFit&gt;<br>
+        &lt;Arg&gt;new Bound(0, $box.h + 13, $box.w, 13)&lt;/Arg&gt;<br>
+        &lt;Arg&gt;new Alignment(1, 1)&lt;/Arg&gt;<br>
+        &lt;/BoxFit&gt;<br>
+        &lt;/For&gt;</span><br>
+      &lt;/Behaviors&gt;<br>
+      &lt;p:Content xmlns="http://www.w3.org/2000/svg"&gt;<br>
+      &lt;g id="group"&gt;<br>
+      &lt;path id=&acirc;&#8364;&#157;hand&acirc;&#8364;&#157; d="m 15.8,44.291041 c -7.8,0
+      -15.3,0 -15.3,-21 C 0.5,4.2910408 4,7.9910408 5.6,9.4910408 v -3.3
+      c 0.2,-2.4 6,-2.2 6,-0.3 v -3 c 0,-3.2 6.7,-2.9 6.7,-0.8 v 4.1 c
+      0.2,-2.3 5.4,-3.2 5.6,1.3 0,7.0000002 -0.1,14.6000002
+      -0.2,16.8000002 2.7,3 5.7,-11.6 10.9,-9 2.4,2.5 -6.7,19.7
+      -7.7,21.5 -1,1.7 -5.2,7.5 -11.1,7.5 z" /&gt;<br>
+      &lt;path d="M 5.525873,9.2118128 6.448882,23.109891 M
+      11.560203,5.2794058 12.5,21.391041 M 18.308683,4.7222418
+      18.5,22.391041 m 3,5 c 0,0 -5,1 -7,11 m -11,-13 c 4,-5 12,-4
+      17,-3" /&gt;<br>
+      &lt;/g&gt; </p>
+    <p> <span>&lt;text id="name" /&gt;</span><br>
+      &lt;/p:Content&gt;<br>
+      &lt;/Shape&gt; </p>
+    <p> <br>
+    </p>
+    <p> Pencil shape will content only the svg content. This hand can be
+      scaled with a fixed ratio and a fixed stroke-width now. </p>
+    <p> <br>
+    </p>
+    <p> The value is assigned to &lt;StrokeStyle&gt;&lt;/StrokeStyle&gt;
+      is complex because if just using
+      &lt;StrokeStyle&gt;$strokeStyle&lt;/StrokeStyle&gt;, the hand
+      stroke size will be increased or decreased base on not only
+      $strokeStyle but also $box. </p>
+    <p> <br>
+    </p>
+    <p> All the paths should be grouped so that the group's common
+      behaviors value can be assigned only one time. This hand will be
+      scaled base on the $box <i>&lt;Transform&gt;[scale($box.w/36,
+        $box.h/45)]&lt;/Transform&gt;</i><i>.</i> The box ratio is fixed
+      so the hand ratio is fixed, too. </p>
+    <p> <br>
+    </p>
+    <p> In case one or more children need to be assigned some different
+      properties value, children behaviors can be set apart. In this
+      sample &acirc;&#8364;&#339;hand&acirc;&#8364;&#157; path's &acirc;&#8364;&#339;Fill&acirc;&#8364;&#157;
+      behavior have different value. </p>
+    <p> <br>
+    </p>
+    <p> &lt;For ref="hand"&gt;<br>
+      &lt;Fill&gt;$fillColor&lt;/Fill&gt;<br>
+      &lt;/For&gt; </p>
+  </body>
+</html>

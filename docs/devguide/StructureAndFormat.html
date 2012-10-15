@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>Stencil Collection Structure and File Format</title>
+    <meta name="order" content="2" />
+  </head>
+  <body>
+    <p> <b>II. Stencil Collection Structure and File Format</b> </p>
+    <h2> <a name="mozTocId168369"></a>Stencil Collection Structure </h2>
+    <p> A stencil collection is usually distributed as a single ZIP
+      archive containing all related files for that collection. </p>
+    <p> This collection ZIP archive has one main XML file named
+      (exactly) <i>Definition.xml</i> and other optional files or
+      sub-directories containing supporting files for the main XML
+      (mainly for icon files). </p>
+    <p> The <i>Definition.xml</i> file name is <i>case-sensitive</i>
+      and is the only required file for a collection. All other files
+      can be omitted when not needed. </p>
+    <h2> <a name="mozTocId130810"></a>Format of the <i>Definition.xml</i>
+    </h2>
+    <p> Each <i>Definition.xml</i> file defines a collection of
+      stencils by providing collection information and all stencil
+      definitions. This is just a standard XML file that can be created
+      by virtually any text editor you have in your system. </p>
+    <h3> <a name="mozTocId27407"></a>General Structure </h3>
+    <p> The <i>Definition.xml</i> file has the following structure: </p>
+    <p> <img
+src="images/Main_html_m1ce479a1.png"
+        name="graphics18" alt="" border="0" height="255" width="550"><br
+        clear="left">
+      <br>
+    </p>
+    <p> The following list summarizes the format: </p>
+    <ul>
+      <li>
+        <p> The out-most tag is <i><b>&lt;Shapes&gt;</b></i> with the
+          namespace URI is <i>http://www.evolus.vn/Namespace/Pencil</i>
+        </p>
+      </li>
+      <li>
+        <p> Properties of the collection are specified by the <i><b>&lt;Shapes&gt;</b></i>
+          node's attributes: <i>id, displayName, description, author </i>and
+          <i>url</i> </p>
+      </li>
+      <li>
+        <p> Each shape in the collection is defined in a separate <i><b>&lt;Shape&gt;</b></i>
+          tag placed right under the root <i><b>&lt;Shapes&gt;</b></i>
+          tag. Please refer the next section for details on definition
+          structure for a shape. </p>
+      </li>
+    </ul>
+    <h3> <a name="mozTocId964819"></a>Defining a shape using the <i>&lt;Shape&gt;</i>
+      tag </h3>
+    <p> Each shape in a collection is defined in a <i><b>&lt;Shape&gt;</b></i>
+      tag with the following structure: </p>
+    <img
+src="images/Main_html_m6eb23fea.png"
+      name="graphics19" alt="" border="0" height="670" width="570">
+  </body>
+</html>
