@@ -7,77 +7,58 @@
     <meta name="order" content="05" />
   </head>
   <body>
-    <p> <b>6. Drawing image</b> </p>
-    <p> <br>
-    </p>
+    <h2>Drawing image</h2>
     <p> <span>A Pencil shape sometimes have to contain svg images. This
         tutorial will show how to put an image to a shape. </span> </p>
-    <p> <br>
-    </p>
     <p> <span>Assume that having a hand image </span> </p>
     <p> <img
 src="../images/Main_html_m6eadbed1.png"
-        name="graphics20" alt="" border="0" height="48" width="38"><br
-        clear="left">
+        name="graphics20" alt="" border="0" height="48" width="38">
+        <br/>
       <span>An image will be parsed to base64 binary and embebed into a
         Pencil shape.There are many tools to parse images to base64
         binary. Pencil also supports an image parser. Go Tools &acirc;&#8224;&#8217;
         Developer Tools &acirc;&#8224;&#8217; </span> </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;Shape id="image" displayName="Image"
-        icon="Icons/image.png"&gt;<br>
-        &lt;Properties&gt;<br>
-        &lt;PropertyGroup&gt;<br>
-        &lt;Property name="box" type="Dimension"
-        p:lockRatio="true"&gt;36,45&lt;/Property&gt;<br>
-        &lt;/PropertyGroup&gt;<br>
-        &lt;PropertyGroup name="Text"&gt;<br>
-        &lt;Property name="name" displayName="Name"
-        type="PlainText"&gt;Hello World&lt;/Property&gt;<br>
-        &lt;Property name="textColor" displayName="Color"
-        type="Color"&gt;#000000ff&lt;/Property&gt;<br>
-        &lt;Property name="textFont" displayName="Font"
-        type="Font"&gt;Arial,sans-serif|normal|normal|13px&lt;/Property&gt;<br>
-        &lt;/PropertyGroup&gt;<br>
-        &lt;/Properties&gt;<br>
-        &lt;Behaviors&gt;<br>
-        &lt;For ref="image"&gt;<br>
-        &lt;Box&gt;$box&lt;/Box&gt;<br>
-        &lt;/For&gt;<br>
-        &lt;For ref="name"&gt;<br>
-        &lt;TextContent&gt;$name&lt;/TextContent&gt;<br>
-        &lt;Fill&gt;$textColor&lt;/Fill&gt;<br>
-        &lt;Font&gt;$textFont&lt;/Font&gt;<br>
-        &lt;BoxFit&gt;<br>
-        &lt;Arg&gt;new Bound(0, $box.h + 13, $box.w, 13)&lt;/Arg&gt;<br>
-        &lt;Arg&gt;new Alignment(1, 1)&lt;/Arg&gt;<br>
-        &lt;/BoxFit&gt;<br>
-        &lt;/For&gt;<br>
-        &lt;/Behaviors&gt;<br>
-        &lt;p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-        xmlns="<a href="http://www.w3.org/2000/svg">http://www.w3.org/2000/svg</a>"
-        xmlns:xlink="http://www.w3.org/1999/xlink"&gt;<br>
-        &lt;image id="image" x="0" y="0"
-xlink:href="data:image/png;base64,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"/&gt;<br>
-        &lt;text id="name" /&gt; <br>
-        &lt;/p:Content&gt;<br>
-        &lt;/Shape&gt;</span> </p>
-    <p> <br>
-    </p>
+<pre name="code" class="xml"><![CDATA[
+<Shape id="image" displayName="Image" icon="Icons/image.png">
+  <Properties>
+    <PropertyGroup>
+      <Property name="box" type="Dimension" p:lockRatio="true">36,45</Property>
+    </PropertyGroup>
+    <PropertyGroup name="Text">
+      <Property name="name" displayName="Name"
+                type="PlainText">Hello World</Property>
+      <Property name="textColor" displayName="Color"
+                type="Color">#000000ff</Property>
+      <Property name="textFont" displayName="Font"
+                type="Font">Arial|normal|normal|13px</Property>
+    </PropertyGroup>
+  </Properties>
+  <Behaviors>
+    <For ref="image">
+      <Box>$box</Box>
+    </For>
+    <For ref="name">
+      <TextContent>$name</TextContent>
+      <Fill>$textColor</Fill>
+      <Font>$textFont</Font>
+      <BoxFit>
+        <Arg>new Bound(0, $box.h + 13, $box.w, 13)</Arg>
+        <Arg>new Alignment(1, 1)</Arg>
+      </BoxFit>
+    </For>
+  </Behaviors>
+  <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <image id="image" x="0" y="0"
+      xlink:href="data:image/png;base64,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" />
+    <text id="name" />
+  </p:Content>
+</Shape>
+]]></pre>
+
     <p> This sample is an image with text caption.The image can be
       scaled based on box size. </p>
-    <p> <br>
-    </p>
     <p> In case an image is just used a couple of time, just drag and
       drop this image into Pencil canvas. </p>
-    <p> <br>
-    </p>
-    <p> <i><b>Using absolute path:</b></i> </p>
-    <p> With an heavy image, Pencil will take much resource to load. To
-      avoid this problem, use absolute path to refer images. </p>
-    <p> <span>&lt;image id="image" x="0" y="0" xlink:href="<a
-          href="file:///C:/Users/AndroidTeam/Desktop/g2986.png">file:///C:/Users/AndroidTeam/Desktop/g2986.png</a>"
-        /&gt;</span> </p>
   </body>
 </html>
