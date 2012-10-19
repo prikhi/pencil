@@ -1,81 +1,57 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <meta content="text/html; charset=ISO-8859-1"
       http-equiv="Content-Type">
-    <title>Your first shape</title>
-    <meta name="order" content="01" />
+    <title>Your First Shape</title>
+    <meta name="order" content="01">
   </head>
   <body>
-    <p> <span><span><span><b>1.Your first shape</b></span></span></span><br>
+    <h2>Your First Shape</h2>
+        <p>
       Let's begin with a collection contains a simple shape that provide
       a text Hello World. This shape contains Properties definition,
       properties to Behaviours value assigning and elements definition
       in Content. These properties will be used for assigning the
       elements properties through the behaviours. </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;Shapes xmlns="http://www.evolus.vn/Namespace/Pencil"</span>
-    </p>
-    <p> <span> xmlns:p="http://www.evolus.vn/Namespace/Pencil"</span> </p>
-    <p> <span> xmlns:svg="http://www.w3.org/2000/svg"</span> </p>
-    <p> <span>
-        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"</span>
-    </p>
-    <p> <span>
-        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" </span>
-    </p>
-    <p> <span> id="collection" displayName="My Collection"</span> </p>
-    <p> <span> description="My First Collection"</span> </p>
-    <p> <span> author="author"&gt;</span> </p>
-    <p> <span> </span> </p>
-    <p> <span> &lt;Shape id="helloworld" displayName="Hello World"
-        icon="Icons/plain-text.png"&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> <span> &lt;Properties&gt;</span> </p>
-    <p> <span> &lt;PropertyGroup name="Text"&gt;</span> </p>
-    <p> <span> &lt;Property name="label" displayName="Label"
-        type="PlainText"&gt;Hello World&lt;/Property&gt;</span> </p>
-    <p> <span> &lt;Property name="textColor" displayName="Color"
-        type="Color"&gt;#000000ff&lt;/Property&gt;</span> </p>
-    <p> <span> &lt;Property name="textFont" displayName="Font"
-        type="Font"&gt;Arial,sans-serif|normal|normal|13px&lt;/Property&gt;</span>
-    </p>
-    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
-    <p> <span> &lt;/Properties&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> <span> &lt;Behaviors&gt;</span> </p>
-    <p> <span> &lt;For ref="text"&gt;</span> </p>
-    <p> <span> &lt;TextContent&gt;$label&lt;/TextContent&gt;</span> </p>
-    <p> <span> &lt;Fill&gt;$textColor&lt;/Fill&gt;</span> </p>
-    <p> <span> &lt;Font&gt;$textFont&lt;/Font&gt;</span> </p>
-    <p> <span> &lt;BoxFit&gt;</span> </p>
-    <p> <span> &lt;Arg&gt;new Bound(0, 0, 100, 12)&lt;/Arg&gt;</span> </p>
-    <p> <span> &lt;Arg&gt;new Alignment(0, 1)&lt;/Arg&gt;</span> </p>
-    <p> <span> &lt;/BoxFit&gt;</span> </p>
-    <p> <span> &lt;/For&gt;</span> </p>
-    <p> <span> &lt;/Behaviors&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> <span> &lt;p:Content
-        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-        xmlns="http://www.w3.org/2000/svg"&gt;</span> </p>
-    <p> <span> &lt;text id="text"/&gt;</span> </p>
-    <p> <span> &lt;/p:Content&gt;</span> </p>
-    <p> <span> &lt;/Shape&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;/Shapes&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> <br>
-    </p>
-    <p> Each child node in &lt;For&lt;/For&gt; is an object's behavior.
+    <pre name="code" class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;Shapes xmlns="http://www.evolus.vn/Namespace/Pencil"
+            xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+            xmlns:svg="http://www.w3.org/2000/svg"
+            id="collection" displayName="My Collection"
+            description="My First Collection" author="author"&gt;
+      &lt;Shape id="helloworld" displayName="Hello World"
+             icon="Icons/plain-text.png"&gt;
+        &lt;Properties&gt;
+          &lt;PropertyGroup name="Text"&gt;
+            &lt;Property name="label" displayName="Label"
+                      type="PlainText"&gt;Hello World&lt;/Property&gt;
+            &lt;Property name="textColor" displayName="Color"
+                      type="Color"&gt;#000000ff&lt;/Property&gt;
+            &lt;Property name="textFont"
+                      displayName="Font"
+                      type="Font"&gt;Arial|normal|normal|13px&lt;/Property&gt;
+          &lt;/PropertyGroup&gt;
+        &lt;/Properties&gt;
+        &lt;Behaviors&gt;
+          &lt;For ref="text"&gt;
+            &lt;TextContent&gt;$label&lt;/TextContent&gt;
+            &lt;Fill&gt;$textColor&lt;/Fill&gt;
+            &lt;Font&gt;$textFont&lt;/Font&gt;
+            &lt;BoxFit&gt;
+              &lt;Arg&gt;new Bound(0, 0, 100, 12)&lt;/Arg&gt;
+              &lt;Arg&gt;new Alignment(0, 1)&lt;/Arg&gt;
+            &lt;/BoxFit&gt;
+          &lt;/For&gt;
+        &lt;/Behaviors&gt;
+        &lt;p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                   xmlns="http://www.w3.org/2000/svg"&gt;
+          &lt;text id="text" /&gt;
+        &lt;/p:Content&gt;
+      &lt;/Shape&gt;
+    &lt;/Shapes&gt;</pre>
+    <p> Each child node in <code>&lt;For&gt;&lt;/For&gt;</code> is an object's behavior.
       View <u>Behavior preference</u> to know more. </p>
-    <p> <br>
-    </p>
     <p> Put variable $label to &lt;TextContent&gt;&lt;/TextContent&gt;
       behavior, text content can be edited on canvas directly or on
       Properties dialogbox (Mouse left &acirc;&#8224;&#8217; Properties). It is the

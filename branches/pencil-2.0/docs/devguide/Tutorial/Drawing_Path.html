@@ -7,107 +7,97 @@
     <meta name="order" content="03" />
   </head>
   <body>
-    <p> <b>3. Drawing Path</b> </p>
-    <p> <br>
+    <h2>Drawing Path</h2>
+    <p>Pencil shape is usually created by
+              paths that base on SVG path
+      specification.
+      Pencil simply supports
+              drawing shapes by the D behaviour. This behaviour generates the "d" attribute for the <code>&lt;path&gt;</code> SVG element as defined in the <a href="http://www.w3.org/TR/SVG/paths.html#PathData">SVG Path data specification</a>. The value used in D is
+              an array in which each item is a drawing command.
     </p>
-    <p> <span><span><span><span>Pencil shape is usually created by
-              paths that </span></span></span></span>base on SVG path
-      specification<span><span><span><span>. Pencil supports simply
-              drawing shapes by D behaviour. The value is used in D is
-              an array that each item is a drawing direction.</span></span></span></span>
-    </p>
-    <p> <br>
-    </p>
-    <p> The shape in this tutorial is a triangle drawed from 3 points
-      that are defined by handle property. </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;Shape id="triangle" displayName="Triangle"
-        icon="Icons/triangle .png"&gt;<br>
-        &lt;Properties&gt;<br>
-        &lt;PropertyGroup&gt;<br>
-        &lt;Property name="a" displayName="Point" type="Handle"
-        &gt;0,0&lt;/Property&gt;<br>
-        &lt;Property name="b" displayName="Point" type="Handle"
-        &gt;90,0&lt;/Property&gt;</span> </p>
-    <p> <span> &lt;Property name="c" displayName="Point" type="Handle"
-        &gt;45,60&lt;/Property&gt; <br>
-        &lt;/PropertyGroup&gt;<br>
-        &lt;PropertyGroup name="Border"&gt;<br>
-        &lt;Property name="strokeColor" displayName="Line Color"
-        type="Color"&gt;#1B3280ff&lt;/Property&gt;</span> </p>
-    <p> <span> &lt;Property name="strokeStyle" displayName="Line Style"
-        type="StrokeStyle"&gt;2|&lt;/Property&gt; &lt;/PropertyGroup&gt;</span>
-    </p>
-    <p> <span> &lt;/Properties&gt;<br>
-        &lt;Behaviors&gt;<br>
-        &lt;For ref="path"&gt;<br>
-        &lt;StrokeColor&gt;$strokeColor&lt;/StrokeColor&gt;<br>
-        &lt;StrokeStyle&gt;$strokeStyle&lt;/StrokeStyle&gt;<br>
-        &lt;D&gt;[M($a.x, $a.y), L($b.x, $b.y), L($c.x, $c.y),
-        z]&lt;/D&gt;<br>
-        &lt;/For&gt; <br>
-        &lt;/Behaviors&gt;<br>
-        &lt;p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"<br>
-        xmlns="http://www.w3.org/2000/svg"&gt; <br>
-        &lt;path id="path" fill="none" style="stroke-linejoin:
-        round;"/&gt;<br>
-        &lt;/p:Content&gt;<br>
-        &lt;/Shape&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> Handle property provides points that can be draged moved on
-      canvas. Then, the handle ordinate will be changed. </p>
-    <p> <br>
-    </p>
-    <p> There are many ways to create a triangle as long as having 3
-      points ordinate: </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;Shape id="triangle" displayName="Triangle"
-        icon="Icons/triangle .png"&gt;<br>
-        &lt;Properties&gt;<br>
-        &lt;PropertyGroup&gt;<br>
-        &lt;Property name="box"
-        type="Dimension"&gt;200,80&lt;/Property&gt;<br>
-        &lt;PropertyGroup name="Border"&gt;<br>
-        &lt;Property name="strokeColor" displayName="Line Color"
-        type="Color"&gt;#1B3280ff&lt;/Property&gt;</span> </p>
-    <p> <span> &lt;Property name="strokeStyle" displayName="Line Style"
-        type="StrokeStyle"&gt;2|&lt;/Property&gt;<br>
-        &lt;/PropertyGroup&gt;<br>
-        &lt;/Properties&gt;<br>
-        &lt;Behaviors&gt;<br>
-        &lt;For ref="path"&gt;<br>
-        &lt;StrokeColor&gt;$strokeColor&lt;/StrokeColor&gt;<br>
-        &lt;StrokeStyle&gt;$strokeStyle&lt;/StrokeStyle&gt;<br>
-        &lt;D&gt;[M(0, 0), L($box.w, 0), L($box.w/2, $box.h),
-        z]&lt;/D&gt;<br>
-        &lt;/For&gt;<br>
-        &lt;/Behaviors&gt;<br>
-        &lt;p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"<br>
-        xmlns="http://www.w3.org/2000/svg"&gt;<br>
-        &lt;path id="path" fill="none" style="stroke-linejoin:
-        round;"/&gt;<br>
-        &lt;/p:Content&gt;<br>
-        &lt;/Shape&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> It is very convenient to create shape with specific points based
-      on handles and box. </p>
-    <p> <br>
-    </p>
-    <p> <i><b>Add transparent background:</b></i> </p>
-    <p> The 2 samples above are the no filled triangle so it is very
-      difficult to drag and move. To avoid the confusion, create a
-      transparent background below the triangle with big stroke. </p>
-    <p> <span>&lt;path id="bgpath" fill="none" style="stroke: rgba(0,
-        0, 0, 0); stroke-width: 10px;"/&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;For ref="bgpath"&gt;<br>
-        &lt;D&gt;[M($a.x, $a.y), L($b.x, $b.y), L($c.x, $c.y),
-        z]&lt;/D&gt;<br>
-        &lt;/For&gt;</span> </p>
+    <p>The shape in this tutorial is a triangle drawn from 3 points
+      that are defined by properties of type <code>Handle</code>. </p>
+    <pre name="code" class="xml"><![CDATA[<Shape id="triangle" displayName="Triangle" icon="Icons/triangle.png">
+  <Properties>
+    <PropertyGroup>
+      <Property name="a" displayName="Point" type="Handle">0,0</Property>
+      <Property name="b" displayName="Point" type="Handle">90,0</Property>
+      <Property name="c" displayName="Point" type="Handle">45,60</Property>
+    </PropertyGroup>
+    <PropertyGroup name="Border">
+      <Property name="strokeColor" displayName="Line Color"
+                type="Color">#1B3280ff</Property>
+      <Property name="strokeStyle" displayName="Line Style"
+                type="StrokeStyle">2|</Property>
+    </PropertyGroup>
+  </Properties>
+  <Behaviors>
+    <For ref="path">
+      <StrokeColor>$strokeColor</StrokeColor>
+      <StrokeStyle>$strokeStyle</StrokeStyle>
+      <D>[M($a.x, $a.y), L($b.x, $b.y), L($c.x, $c.y), z]</D>
+    </For>
+  </Behaviors>
+  <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+             xmlns="http://www.w3.org/2000/svg">
+    <path id="path" fill="none" style="stroke-linejoin: round;" />
+  </p:Content>
+</Shape>
+]]></pre>
+
+    <p>In the above example, Handle properties provide points that can be moved on
+      the drawing canvas. Their values are changed upon the move and the behavior code will be executed to re-generate the path's "D" value.</p>
+    <p>You can notice that various commands are used in this example. Pencil supports to following SVG Path commands: M, L, l, C, c, S, s, Q, q, T, A and a.</p>
+    <p>In many other situations, paths may not rely soly on position of handles. For example, a triangle can also be drawn
+    basing on a bounding box in the following example:</p>
+
+<pre name="code" class="xml"><![CDATA[<Shape id="triangle" displayName="Triangle" icon="Icons/triangle .png">
+  <Properties>
+    <PropertyGroup>
+      <Property name="box" type="Dimension">200,80</Property>
+      <Property name="strokeColor" displayName="Line Color"
+                type="Color">#1B3280ff</Property>
+      <Property name="strokeStyle" displayName="Line Style"
+                type="StrokeStyle">2|</Property>
+    </PropertyGroup>
+  </Properties>
+  <Behaviors>
+    <For ref="path">
+      <StrokeColor>$strokeColor</StrokeColor>
+      <StrokeStyle>$strokeStyle</StrokeStyle>
+      <D>[M(0, 0), L($box.w, 0), L($box.w/2, $box.h), z]</D>
+    </For>
+  </Behaviors>
+  <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+             xmlns="http://www.w3.org/2000/svg">
+    <path id="path" fill="none" style="stroke-linejoin: round;" />
+  </p:Content>
+</Shape>
+]]></pre>
+
+    <p>It is very convenient to create shape with specific points based
+      on handles and box. The "D" behaviour is used heavily in the <a href="http://code.google.com/p/evoluspencil/source/browse/branches/pencil-2.0/app/content/pencil/stencil/Flowchart/Definition.xml">built-in Flowchart stencil collection</a>.</p>
+    <h4>Add transparent background:</h4>
+    <p> The 2 samples above generates no-filled triangles so it is very
+      difficult for users to drag and move the objects on the drawing canvas. To avoid this, the suggested way is to create a
+      transparent path as the background below the triangle with big stroke. The background path should be thicker than the original.</p>
+<pre name="code" class="xml"><![CDATA[
+<Shape ...>
+    ....
+  <Behaviors>
+    <For ref="bgpath">
+      <D>[M($a.x, $a.y), L($b.x, $b.y), L($c.x, $c.y), z]</D>
+    </For>
+    <For ref="path">
+        ...
+    </For>
+  </Behaviors>
+  <p:Content ...>
+    <path id="bgpath" fill="none"
+          style="stroke: rgba(0, 0, 0, 0); stroke-width: 10px;"/>
+    <path id="path" fill="none" style="stroke-linejoin: round;" />
+  </p:Content>
+</Shape>
+]]></pre>
   </body>
 </html>

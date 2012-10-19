@@ -1,81 +1,61 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <meta content="text/html; charset=ISO-8859-1"
-      http-equiv="Content-Type">
-    <title>Collection properties</title>
+    <title>Collection Properties</title>
     <meta name="order" content="02" />
   </head>
   <body>
-    <p> <b>2. Collection properties</b> </p>
-    <p> <br>
-    </p>
+    <h2>Collection Properties</h2>
     <p> Shapes in a collection tend to have the same style such as same
-      font, color, stroke style, &acirc;&#8364;&brvbar; To be convenient to
-      Pencil Users in using other style, Pencil supports grouping all
+      font, color, stroke style... To be convenient to
+      stencil authors in this situation, Pencil supports grouping all
       shapes common style to collection style. Then if collection style
-      is changed, all shapes refer to collection style will be changed,
-      too. </p>
-    <p> <br>
-    </p>
+      is changed, all shapes refer to collection style will be changed accordingly,
+      too.</p>
     <p> Have a look at this sample. Collection properties are defined
       and then used in shape properties. </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;Shapes xmlns="http://www.evolus.vn/Namespace/Pencil"</span>
-    </p>
-    <p> <span> xmlns:p="http://www.evolus.vn/Namespace/Pencil"</span> </p>
-    <p> <span> xmlns:svg="http://www.w3.org/2000/svg"</span> </p>
-    <p> <span>
-        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"</span>
-    </p>
-    <p> <span>
-        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" </span>
-    </p>
-    <p> <span> id="collection" displayName="My Collection"</span> </p>
-    <p> <span> description="My First Collection"</span> </p>
-    <p> <span> author="author"&gt;</span> </p>
-    <p> <span> <b>&lt;Properties&gt;</b></span> </p>
-    <p> <span> <b>&lt;PropertyGroup name="Text"&gt;</b></span> </p>
-    <p> <span> <b>&lt;Property name="defaultTextFont" type="Font"
-          displayName="Default
-          Font"&gt;Arial,sans-serif|normal|normal|13px&lt;/Property&gt;</b></span>
-    </p>
-    <p> <span> <b>&lt;Property name="defaultTextColor" type="Color"
-          displayName="Default Text Color"&gt;#000000ff&lt;/Property&gt;</b></span>
-    </p>
-    <p> <span> <b>&lt;/PropertyGroup&gt;</b></span> </p>
-    <p> <span> <b>&lt;/Properties&gt;</b></span> </p>
-    <p> <span> </span> </p>
-    <p> <span> &lt;Shape id="helloworld" displayName="Hello World"
-        icon="Icons/plain-text.png"&gt;</span> </p>
-    <p> <span> &lt;Properties&gt;</span> </p>
-    <p> <span> &lt;PropertyGroup name="Text"&gt;</span> </p>
-    <p> <span> &lt;Property name="label" displayName="Label"
-        type="PlainText"&gt;Hello World&lt;/Property&gt;</span> </p>
-    <p> <span> &lt;Property name="textColor" displayName="Color"
-        type="Color"&gt;<b>&lt;E&gt;$$defaultTextColor&lt;/E&gt;</b>&lt;/Property&gt;</span>
-    </p>
-    <p> <span> &lt;Property name="textFont" displayName="Font"
-        type="Font"&gt;<b>&lt;E&gt;$$defaultTextFont&lt;/E&gt;</b>&lt;/Property&gt;</span>
-    </p>
-    <p> <span> &lt;/PropertyGroup&gt;</span> </p>
-    <p> <span> &lt;/Properties&gt;</span> </p>
-    <p> <span> &lt;Behaviors&gt;</span> </p>
-    <p> <span> ...</span> </p>
-    <p> <span> &lt;/Behaviors&gt;</span> </p>
-    <p> <span> &lt;p:Content
-        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-        xmlns="http://www.w3.org/2000/svg"&gt;</span> </p>
-    <p> <span> &lt;text id="text"/&gt;</span> </p>
-    <p> <span> &lt;/p:Content&gt;</span> </p>
-    <p> <span> &lt;/Shape&gt;</span> </p>
-    <p> <span>&lt;/Shapes&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> A value is assign to each property is default a string. To get
-      collection properties value for shapes properties, the collection
-      properties value must be put into &lt;E&gt;&lt;/E&gt; because this
-      value is an expression. </p>
+    <pre name="code" language="xml">
+<![CDATA[
+<Shapes ...>
+  <Properties>
+    <PropertyGroup name="Text">
+      <Property name="defaultTextFont"
+                type="Font"
+                displayName="Default Font">Arial|normal|normal|13px</Property>
+      <Property name="defaultTextColor"
+                type="Color"
+                displayName="Default Text Color">#000000ff</Property>
+    </PropertyGroup>
+  </Properties>
+  <Shape id="helloworld" displayName="Hello World" icon="Icons/plain-text.png">
+    <Properties>
+      <PropertyGroup name="Text">
+        <Property name="label"
+                  displayName="Label"
+                  type="PlainText">Hello World</Property>
+        <Property name="textColor"
+                  displayName="Color"
+                  type="Color"><E>$$defaultTextColor</E></Property>
+        <Property name="textFont"
+                  displayName="Font"
+                  type="Font"><E>$$defaultTextFont</E></Property>
+      </PropertyGroup>
+    </Properties>
+
+    <Behaviors>
+      ...
+    </Behaviors>
+
+    <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+      <text id="text" />
+    </p:Content>
+  </Shape>
+</Shapes>
+]]>
+    </pre>
+    <p>Text content inside the <code>&lt;Property&gt;</code> tag is a shape is the literal presentation of the initial value for that property.
+    In this example you can notice that the content inside that tag is a <code>&lt;E&gt;&lt;/E&gt;</code> instead. This is the notation to imply that
+    the initial value should be obtained by evaluation the 'expression' inside the <code>&lt;E&gt;</code> tag. To reference a specific collection property
+    in side this expression, the <code>$$</code> syntax is used.</p>
   </body>
 </html>
