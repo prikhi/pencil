@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Preparing the Development Environment
+    </title>
+    <meta name="order" content="2b" />
+  </head>
+  <body>
+    <h2>Preparing the Development Environment</h2>
+    <p>
+        This document gives you a quick overview of how the development environment can be set up for developers to
+        start creating stencils.
+    </p>
+    <h3>Creating the skeleton structure</h3>
+    <p>
+        To start a new stencil collection, you need to have a dedicated directory in your local file-system to store all files
+        related to that collection. A minimal collection requires only the Definition.xml file while more complex collection
+        requires extra files/directories to store icons.
+    </p>
+    <p>
+        A typical collection structure should be created as in the following diagram:
+    </p>
+<pre>
+... [dir] CollectionName
+      |
+      |___[dir] icons       #optional
+      |     |
+      |     |___shape1.png
+      |
+      |___ Definition.xml     
+</pre>
+    <p>
+        The <code>Definition.xml</code> file should contains the following skeleton code:
+    </p>
+<pre name="code" class="xml"><![CDATA[
+<Shapes xmlns="http://www.evolus.vn/Namespace/Pencil"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+
+        id="your_collection_id"
+        displayName="Display name of your collection"
+        description="More description about this collection"
+        author="Names of the authors"
+        url="Optional URL to its web page">
+        
+        <!-- Your shapes go here -->
+        
+</Shapes>
+]]>
+</pre>
+    <h3>Development tools</h3>
+    <p>
+        Developing Pencil stencil collections requires no special tools. What you need is just a text editor and for
+        distribution, you need just a compatible archiving tool that can create ZIP files.
+    </p>
+    <p>
+        Although special tools are not requires, the following set of software programs are recommended since they
+        will help you get your job done much easier.
+    </p>
+    <ul>
+        <li>
+            <strong>Text editor:</strong> for GNU/Linux users, <a href="http://projects.gnome.org/gedit/">gedit</a> is recommended.
+            It should be installed by default in many Gnome-based distributions. For Windows users,
+            <a href="http://notepad-plus-plus.org/">Notepad ++</a> is an awesome selection. For Mac users, I strongly recommend
+            <a href="https://github.com/textmate/textmate/downloads">Textmate</a> which is now opensource software.
+            <br/><br/>
+        </li>
+        <li>
+            <strong>SVG editor:</strong> it's for sure that I will recommend only <a href="http://inkscape.org/">Inkscape</a> which is, to me, the most
+            standard-compliant SVG editor. You will need it any SVG-related work when creating your stencils.
+            <br/><br/>            
+        </li>
+        <li>
+            <strong>Bitmap editor:</strong> you may need a bitmap editor sometimes for either creating stencil icons or
+            editing bitmap used in the stencil code. I recommend <a href="http://www.gimp.org/">Gimp</a> for all your needs, including all
+            everyday bitmap editing needs, not just for developing stencils.
+            <br/><br/>
+        </li>
+    </ul>
+    <h3>Installing into Pencil as a developer collection</h3>
+    <p>
+        Pencil provides a convenient way to load and reload stencil collection that is under development as it is installed
+        like the others for the testing purpose.
+    </p>
+    <p>
+        To load your collection, go to <strong>Tools &#187; Developer Tools &#187; Load Developer Stencil Directory...</strong>
+        and select <em>the directory that contains</em> your <code>Definition.xml</code> file. To reload your stencil collection
+        after making changes, simply hit the "F5" key. 
+    </p>
+    <h3>Debugging in stencil development</h3>
+    <p>
+        There may be cases that you encounter issues in your stencil JavaScript code and would like to debug it. There is 
+        no supported way to setup interactive debugging session for your stencil code like what you may have with an IDE.
+        The only way to debug your code is to add debugging trace messages. Since stencil JavaScript code is executed in
+        a sandboxed environment, using of <code>alert</code> or file writing is not possible. 
+    </p>
+    <p>
+        For the purpose of debugging, Pencil provides a utility function named <code>stencilDebug</code> for logging a message to the console.
+    </p>
+<pre name="code" class="js:nocontrols">
+stencilDebug("Value of x: " + x);
+</pre>
+    <p>
+        This statement will log the message to the Error Console that can be enabled by changing the launching of Pencil to:
+    </p>
+<pre name="code" class="js:nocontrols">
+xulrunner -app "path_to_pencil_application.ini" -jconsole
+</pre>
+
+    <h3>Packaging for distribution</h3>
+    <p>
+        When you feel ready with your collection and would like to distribute it to other users, you need to create
+        a package by compress all files in the stencil directory in a single ZIP package and make sure that the
+        <code>Definition.xml</code> file is located at the root level in your ZIP package.
+    </p>
+  </body>
+</html>

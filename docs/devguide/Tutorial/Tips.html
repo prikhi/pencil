@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <title>Tips and Tricks</title>
+    <meta name="order" content="15" />
+  </head>
+  <body>
+    <h2>Tips and Tricks</h2>
+    <h3>1. Visibility and Transform</h3>
+    <p>There are two universal behaviors in Pencil that can be applied to any type of objects:</p>
+<pre name="code" class="xml"><![CDATA[
+<Visibility>...</Visibility>
+<Transform>...</Transform>
+]]>
+</pre>
+    <h3>2. Forced dependencies</h3>
+    <p>Upon changes of a specific property, all elements that has at least one behavior refers to that property will be
+    invalidated and the behavior code will be executed. In some special case, you may want a specific behavior to be executed when a specific property changes even
+    when that property is not explicitly referenced. In this case, adding a comment in the syntax of <code>//depends $propertyName</code> will help.</p>
+<pre name="code" class="xml"><![CDATA[
+<For ref="text">
+  <TextContent>new PlainText("Hello World")</TextContent>
+  <Fill>Color.fromString("#000000ff")</Fill>
+  <Font>new Font()</Font>
+  <BoxFit>
+    <Arg>new Bound(0, 0, 100, 12) //depends $textColor</Arg>
+    <Arg>new Alignment(0, 1)</Arg>
+  </BoxFit>
+</For>
+]]>
+</pre>
+  </body>
+</html>
