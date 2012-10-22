@@ -7,167 +7,147 @@
     <meta name="order" content="10" />
   </head>
   <body>
-    <p> <span><span><span><b>8. </b></span></span></span><strong>Object
-        Snapping</strong> </p>
-    <p> <br>
-    </p>
-    <p> All Pencil user know Pencil have already provided the default
-      snapping between objects. It is very useful for aligning. There
-      are 6 default snapping in Pencil: </p>
-    <p> <br>
-    </p>
-    <p> Top-to-Top </p>
-    <p> Bottom-to-Bottom </p>
-    <p> Center-to-Center </p>
-    <p> Left-to-Left </p>
-    <p> Right-to-Right </p>
-    <p> Midle-to-Midle </p>
-    <p> <img
+    <h2>Object Snapping</h2>
+    <p>Pencil users know that Pencil have already provided the default
+      snapping between objects. Object snapping is very useful for aligning objects so that drawing operations can be done quickly. There
+      are 6 default snappings in Pencil:</p>
+    <ul>
+      <li>
+        Top-to-Top<br />
+        <img
 src="../images/Main_html_1a7041.png"
-        name="graphics1" alt="" border="0" height="102" width="214"><br
-        clear="left">
-      <img
+        name="graphics1" alt="" border="0" height="102" width="214"><br /><br />
+      </li>
+      <li>Bottom-to-Bottom<br /><img
 src="../images/Main_html_7e0c8180.png"
-        name="graphics3" alt="" border="0" height="102" width="214"><br
-        clear="left">
-      <img
-src="../images/Main_html_m5ba0c02d.png"
-        name="graphics2" alt="" border="0" height="214" width="107"><br
-        clear="left">
-      <img
-src="../images/Main_html_m6a190f38.png"
-        name="graphics4" alt="" border="0" height="214" width="107"><br
-        clear="left">
-      <img
-src="../images/Main_html_7dd2ebdf.png"
-        name="graphics7" alt="" border="0" height="91" width="216"><br
-        clear="left">
-      <img
+        name="graphics3" alt="" border="0" height="102" width="214"><br /><br /></li>
+      <li>Center-to-Center (horizontal)<br /><img
 src="../images/Main_html_m38479759.png"
-        name="graphics8" alt="" border="0" height="216" width="92"><br
-        clear="left">
-      <span>A have the &acirc;&#8364;&#339;Top&acirc;&#8364;&#157; snapping, so every object
-        have the &acirc;&#8364;&#339;Top&acirc;&#8364;&#157; snapping can snap to the top of
-        A. B is the same. So they snap each other at their top position.</span>
+        name="graphics8" alt="" border="0" height="216" width="92"><br /><br /></li>
+      <li>Left-to-Left<br /><img
+src="../images/Main_html_m5ba0c02d.png"
+        name="graphics2" alt="" border="0" height="214" width="107"><br /><br /></li>
+      <li>Right-to-Right<br /><img
+src="../images/Main_html_m6a190f38.png"
+        name="graphics4" alt="" border="0" height="214" width="107"><br /><br /></li>
+      <li>Midle-to-Midle (vertical)<br /><img
+src="../images/Main_html_7dd2ebdf.png"
+        name="graphics7" alt="" border="0" height="91" width="216"><br /><br /></li>
+    </ul>
+    <p><span>Sometimes the snapping needs to be customized for
+        specific purpose. This tutorial will show how to create new custom
+        snappings. These definitions are also put into an
+        <code>&lt;Action&gt;&lt;/Action&gt;</code> and must have the exact id of
+        <code><strong>getSnappingGuide</strong></code>.</span></p>
+        
+<pre name="code" class="xml"><![CDATA[
+<Shape id="RoundedRect" displayName="Rectangle" icon="Icons/rectangle.png">
+  <Properties>
+    ...
+  </Properties>
+  <Behaviors>
+    ...
+  </Behaviors>
+  <Actions>
+    <Action id="getSnappingGuide">
+      <Impl>
+        var b = this.getBounding();
+        return [
+          new SnappingData("FrameTop", b.y + b.height/2, "TabBottom", false, this.id),
+          new SnappingData("Top", b.y + b.height, "Top", false, this.id),
+          new SnappingData("Bottom", b.y, "Bottom", false, this.id),
+          new SnappingData("Left", b.x + b.width, "Left", true, this.id),
+          new SnappingData("Right", b.x, "Right", true, this.id)
+        ];
+      </Impl>
+    </Action>
+  </Actions>
+  <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+             xmlns="http://www.w3.org/2000/svg">
+    <rect id="rrRect" x="0" y="0" />
+  </p:Content>
+</Shape>
+]]></pre>
+    <p>The <code><strong>getSnappingGuide</strong></code> action is expected to return an array of snapping hints. Each snapping hint is
+    composed in an object of type SnappingData:</p>
+<pre name="code" class="js:nocontrols">
+new SnappingData(SnappingName, position,
+          ToSnappingName, isHorizontalSnapping, this.id)
+</pre>
+    <p>
+      Where:
     </p>
-    <p> <br>
-    </p>
-    <p> <span>Sometimes the snapping is wanted to customize for
-        specific purpose. This tutorial will show how to create new
-        snappings. These definitions are also put into
-        &lt;Action&gt;&lt;/Action&gt; and must have id
-        &acirc;&#8364;&#339;getSnappingGuide&acirc;&#8364;&#157;.</span> </p>
-    <p> <br>
-    </p>
-    <p> <span>&lt;Shape id="RoundedRect" displayName="Rectangle"
-        icon="Icons/rectangle.png"&gt;</span> </p>
-    <p> <span> &lt;Properties&gt;</span> </p>
-    <p> <span> ...</span> </p>
-    <p> <span> &lt;/Properties&gt;</span> </p>
-    <p> <span> &lt;Behaviors&gt;</span> </p>
-    <p> <span> ...</span> </p>
-    <p> <span> &lt;/Behaviors&gt;</span> </p>
-    <p> <span> &lt;Actions&gt;</span> </p>
-    <p> <span> &lt;Action id="getSnappingGuide"&gt;</span> </p>
-    <p> <span> &lt;Impl&gt;</span> </p>
-    <p> <span> &lt;![CDATA[</span> </p>
-    <p> <span> var b = this.getBounding();</span> </p>
-    <p> <span> return [</span> </p>
-    <p> <span> new SnappingData("FrameTop", b.y + b.height/2,
-        "TabBottom", false, this.id),</span> </p>
-    <p> <span> new SnappingData("Top", b.y + b.height, "Top", false,
-        this.id),</span> </p>
-    <p> <span> new SnappingData("Bottom", b.y, "Bottom", false,
-        this.id),</span> </p>
-    <p> <span> new SnappingData("Left", b.x + b.width, "Left", true,
-        this.id),</span> </p>
-    <p> <span> new SnappingData("Right", b.x, "Right", true, this.id)</span>
-    </p>
-    <p> <span> ]</span> </p>
-    <p> <span> ]]&gt;</span> </p>
-    <p> <span> &lt;/Impl&gt;</span> </p>
-    <p> <span> &lt;/Action&gt;</span> </p>
-    <p> <span> &lt;/Actions&gt;</span> </p>
-    <p> <span> &lt;p:Content
-        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-        xmlns="http://www.w3.org/2000/svg"&gt;</span> </p>
-    <p> <span> &lt;rect id="rrRect" x="0" y="0" /&gt;</span> </p>
-    <p> <span> &lt;/p:Content&gt;</span> </p>
-    <p> <span>&lt;/Shape&gt;</span> </p>
-    <p> <br>
-    </p>
-    <p> <br>
-    </p>
-    <p> <span>The general snapping formula:</span> </p>
-    <p> <i><span>new SnappingData(SnappingName, position,
-          ToSnappingName, isHorizontalSnapping, this.id)</span></i> </p>
-    <p> <br>
-    </p>
-    <p> <span>isHorizontalSnapping: if true, the snapping will be
-        through Horizontal direction.</span> </p>
-    <p> <span>SnappingName: is the Snapping name of this object
-        contains this snapping definition.</span> </p>
-    <p> <span>ToSnappingName: is the Snapping name of other object that
-        can be snapped to this object.</span> </p>
-    <p> <span>Position: is this object's position snapping (vertical or
-        horizontal). </span> </p>
-    <p> <br>
-    </p>
-    <p> <b><span>Before modifying, the rectangle have already 6
-          snappings: </span></b> </p>
-    <p> <span>new SnappingData("Top", b.y, "Top", false, this.id),</span>
-    </p>
-    <p> <span>new SnappingData("Bottom", b.y + b.height, "Bottom",
-        false, this.id),</span> </p>
-    <p> <span>new SnappingData("HCenter", b.y + b.height / 2,
-        "HCenter", false, this.id),</span> </p>
-    <p> <span>new SnappingData("Left", b.x, "Left", true, this.id),</span>
-    </p>
-    <p> <span>new SnappingData("Right", b.x + b.width, "Right", true,
-        this.id),</span> </p>
-    <p> <span>new SnappingData("VCenter", b.x + 192, "VCenter", true,
-        this.id),</span> </p>
-    <p> <br>
-    </p>
-    <p> <span>b is the object bounding, b.y is the object's top
+    <ul>
+      <li>
+        <em>isHorizontalSnapping</em>
+        : if true, the snapping will be
+        through Horizontal direction.
+      </li>
+      <li>
+        <em>SnappingName</em>
+        : is the Snapping name of this object
+        contains this snapping definition.
+      </li>
+      <li>
+        <em>ToSnappingName</em>
+        : is the Snapping name of other object that
+        can be snapped to this object.
+      </li>
+      <li>
+        <em>Position</em>
+        : is the position in this shape when the snapping is defined (vertical or
+        horizontal).
+      </li>
+    </ul>
+    <p><strong>Built-in snapping data:</strong> by default, even if you don't provide snapping definitions, Pencil has the following snapping data defined for all objects:</p>
+<pre name="code" class="js">
+  new SnappingData("Top", b.y, "Top", false, this.id),
+  new SnappingData("Bottom", b.y + b.height, "Bottom", false, this.id),
+  new SnappingData("HCenter", b.y + b.height / 2, "HCenter", false, this.id),
+  new SnappingData("Left", b.x, "Left", true, this.id),
+  new SnappingData("Right", b.x + b.width, "Right", true, this.id),
+  new SnappingData("VCenter", b.x + b.width / 2, "VCenter", true, this.id),
+</pre>
+    <p><span>where b is the object bounding, b.y is the object's top
         position, b.x is the object's left position, b.height is the
         object bound height, b.width is the object bound with.</span> </p>
-    <p> <br>
-    </p>
-    <p> <span>In this sampe, 4 default snappings are modified and a new
+    <p><span>In the above example of Rectangle, 4 default snappings are modified and a new
         snapping is created.</span> </p>
-    <p> <img
+    <p><img
 src="../images/Main_html_maea559c.png"
         name="graphics5" alt="" border="0" height="171" width="214"><br
         clear="left">
-      <span>With <i>new SnappingData("Top", b.y + b.height, "Top",
-          false, this.id),</i> the A's Top snapping is overridden. So
-        other object have Top snapping.The Bottom, Left, Right snappings
-        are the same.</span> </p>
-    <p> <img
+      <span>In the above example, A's Top snapping was modified by <code>new SnappingData("Top", b.y + b.height, "Top",
+          false, this.id),</code>. So
+        other object have Top snapping will be possible to snap to A's new Top. The logic for Bottom, Left, Right snappings
+        are the same.</span></p>
+    <p><img
 src="../images/Main_html_669d32d5.png"
         name="graphics6" alt="" border="0" height="125" width="216"><br
         clear="left">
       <br>
     </p>
-    <p> <span>A: new SnappingData("FrameTop", b.y + b.height/2,
-        "TabBottom", false, this.id)</span> </p>
-    <p> <span>B: new SnappingData("TabBottom", b.y, "FrameTop", false,
-        this.id)</span> </p>
-    <p> <span>A have a new snapping &acirc;&#8364;&#339;TabBottom&acirc;&#8364;&#157;. Assume
-        that B have a new snapping &acirc;&#8364;&#339;TabBottom&acirc;&#8364;&#157;. In this
-        case, only B can snap to A at the defined position. </span> </p>
-    <p> <br>
+    <p>Also in this example, a custom, new snapping data is introduced to defined a new snapping that are not standard
+    to the general logic. This is good for special stencils that we would like to have very specific snappings defined.
     </p>
-    <p> <span>If other objects want to snap to A at FrameTop, defining
-        a snapping have &acirc;&#8364;&#339;TabBottom&acirc;&#8364;&#157; name like B. </span>
+<pre name="code" class="js:nocontrols">
+new SnappingData("FrameTop", b.y + b.height/2, "TabBottom", false, this.id)
+</pre>
+    <p>Suppose that we have another stencil named B with the following custom snapping defined:</p>
+<pre name="code" class="js:nocontrols">
+new SnappingData("TabBottom", b.y, "FrameTop", false, this.id)
+</pre>
+    <p><span>So, A have a new snapping <code>FrameTop</code> which allows other snapping of type <code>TabBottom</code> to be snapped to. Since 
+    B has that specific <code>TabBottom</code> snapping defined, it will be possible for B to snap to A at the expected position.</span> </p>
+    <p>If other objects want to snap to A at <code>FrameTop</code>, it just needs to define
+        a snapping with the name of <code>TabBottom</code> name like B.</span>
     </p>
-    <p> <span>To force all object can default snap to A FrameTop,
-        editting the A ToSnappingName to default name: new
-        SnappingData("FrameTop", b.y + b.height/2, "Top", false,
-        this.id)</span> </p>
-    <p> <span>Can use &acirc;&#8364;&#339;Bottom&acirc;&#8364;&#157;,
-        &acirc;&#8364;&#339;Hcenter&acirc;&#8364;&#157; instead of &acirc;&#8364;&#339;Top&acirc;&#8364;&#157;</span>
+    <p>
+        As noted above, all objects in Pencil has a <code>Top</code> snapping data defined by default to its top position, so to have all objects to be 
+        able to snap to our A's special <code>FrameTop</code> snapping point, just modify the SnappingData definition to the following:
     </p>
+<pre name="code" class="js:nocontrols">
+new SnappingData("FrameTop", b.y + b.height/2, "Top", false, this.id)
+</pre>
   </body>
 </html>

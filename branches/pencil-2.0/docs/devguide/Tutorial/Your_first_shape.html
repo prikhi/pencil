@@ -11,9 +11,7 @@
         <p>
       Let's begin with a collection contains a simple shape that provide
       a text Hello World. This shape contains Properties definition,
-      properties to Behaviours value assigning and elements definition
-      in Content. These properties will be used for assigning the
-      elements properties through the behaviours. </p>
+      elements definition in the Content section and the behaviors that make content changed to property values.</p>
     <pre name="code" class="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
     &lt;Shapes xmlns="http://www.evolus.vn/Namespace/Pencil"
             xmlns:p="http://www.evolus.vn/Namespace/Pencil"
@@ -50,12 +48,9 @@
         &lt;/p:Content&gt;
       &lt;/Shape&gt;
     &lt;/Shapes&gt;</pre>
-    <p> Each child node in <code>&lt;For&gt;&lt;/For&gt;</code> is an object's behavior.
-      View <u>Behavior preference</u> to know more. </p>
-    <p> Put variable $label to &lt;TextContent&gt;&lt;/TextContent&gt;
-      behavior, text content can be edited on canvas directly or on
-      Properties dialogbox (Mouse left &acirc;&#8224;&#8217; Properties). It is the
-      same for Color and Font. To know how to set up a shape's variables
-      &lt;Property&gt;&lt;/Property&gt;, see more PropertyType.doc </p>
+    <p>Each child node in <code>&lt;For&gt;&lt;/For&gt;</code> is an behavior that defines how content should be changed
+    according to the properties. More details about can be found at the <a href="~/wiki/ref/Behaviors.html">Behavior Reference</u>.</p>
+    <p>The <code>$label</code> variable is used in the <code>TextContent</code> behavior in this example shows you the
+    way properties can be referenced in the input arguments for behaviors.</p>
   </body>
 </html>

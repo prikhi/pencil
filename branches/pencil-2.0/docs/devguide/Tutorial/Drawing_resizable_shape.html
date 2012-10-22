@@ -3,16 +3,16 @@
   <head>
     <meta content="text/html; charset=ISO-8859-1"
       http-equiv="Content-Type">
-    <title>Drawing resizable shape</title>
+    <title>Drawing Resizable Shapes</title>
     <meta name="order" content="04" />
   </head>
   <body>
-    <h2>Drawing resizable shape</h2>
-    <p> Most Pencil shapes can be scaled. Pencil use Dimension property
+    <h2>Drawing Resizable Shapes</h2>
+    <p>In most of the cases, shapes are expected to be scalable. Pencil uses <code><a href="~/wiki/ref/Data_Types.html#dimension">Dimension</a></code> property
       type to set shape size through Box behaviour. Dimension property
-      type will provide a box can be resized width and height. The box
-      size change will apply to shape size. </p>
-    <p> The sample in this tutorial is a resize rectangle base on $box </p>
+      named <code>box</code> can be modified by the on-screen geometry editor. The box
+      size changes will be applied to shape size.</p>
+    <p>The example in this tutorial is a resizable rectangle base on a $box property.</p>
 <pre name="code" class="xml"><![CDATA[
 <Shape id="RoundedRect" displayName="Rectangle" icon="...">
   <Properties>
@@ -44,13 +44,13 @@
   </p:Content>
 </Shape>
 ]]></pre>
-    <p> The rectangle have width and height properties. Set
-      &lt;Box&gt;$box&lt;/Box&gt;, the rectangle width &amp; height base
-      on $box width &amp; height. Moreover, the rectangle size can be
-      changed on canvas directly or on toolbar. </p>
+    <p>The SVG rectangle has width and height attributes. The <code>Box</code> behavior will use
+    the input Dimension value to change those width and height attributes. When the shape's property is changed when user
+    doing scaling via the geometry editor, the behavior will reflect that change into the SVG element.</p>
     <h3>Add rounded corner:</h3>
-    <p> Retangle have rounded corner. Pencil also supports Radius
-      behaviour to make the resized rounded corner. </p>
+    <p>SVG rectangle may have rounded corners. Pencil also supports Radius
+      behaviour to simplify this. In this example we add a <code>Handle</code> property into the shape and
+      use its value in the <code>Radius</code> behavior.</p>
 <pre name="code" class="xml"><![CDATA[
 <PropertyGroup name="Handles">
   <Property name="radius"
@@ -69,13 +69,10 @@
 </Behaviors>
 ]]></pre>
     
-<p> In previous sample, Dimension type is used for drawing resizable
-      shapes. But Dimension type is assigned to Box behavior only in
-      case objects have width and height properties. So with other
-      objects do not have width and height properties, what should do.
-      Pencil also supports a Behavior that can be used for both kind of
-      objects. </p>
-      
+<p>In previous examples, Dimension property type is used for drawing resizable
+      shapes via the <code>Box</code> behavior. However the <code>Box</code> behavior can be used only in
+      case objects have width and height attributes. For other cases that we want to apply the Dimension value to
+      an arbitrary attribute we can use the <code>Attr</code> behavior. This approach can be used for all other cases, not limitted to property of type Dimension.</p>
 <pre name="code" class="xml"><![CDATA[
 <Shape id="ms-oval" displayName="Oval" icon="Icons/oval.png">
   <Properties>
@@ -123,24 +120,9 @@
 </Shape>
 ]]></pre>
 
-    <p> &lt;Attr&gt;&lt;/Attr&gt; is used for assigning all object
-      properties value. </p>
-<pre name="code" class="xml"><![CDATA[
-<Attr>
-  <Arg>name</Arg>
-  <Arg>value</Arg>
-  <Arg>namespace</Arg>
-</Attr>
-]]></pre>
-    <p> <i><span>name: property namespaces</span></i> </p>
-    <p> <i><span>value: property value</span></i> </p>
-    <p> This ellipse's cx, cy, rx, ry are assigned base on $box so the
-      ellipse size will base on the box size now. Furthermore,
-      &lt;Attr&gt;&lt;/Attr&gt; can be used for all object properties. </p>
-    <p> <br>
-    </p>
-    <p> In previous sample, Attr behavior can also be used instead of
-      &lt;Box&gt;$box&lt;/Box&gt; for rectangle. </p>
+    <p><code>&lt;Attr&gt;&lt;/Attr&gt;</code> behavior can be used for assigning all object
+      properties value. In previous example, Attr behavior can also be used instead of
+      &lt;Box&gt;$box&lt;/Box&gt; for rectangle:</p>
     
 <pre name="code" class="xml"><![CDATA[
 <Attr>

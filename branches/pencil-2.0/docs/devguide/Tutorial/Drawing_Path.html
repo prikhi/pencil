@@ -12,11 +12,11 @@
               paths that base on SVG path
       specification.
       Pencil simply supports
-              drawing shapes by the D behaviour. This behaviour generates the "d" attribute for the <code>&lt;path&gt;</code> SVG element as defined in the <a href="http://www.w3.org/TR/SVG/paths.html#PathData">SVG Path data specification</a>. The value used in D is
+              drawing shapes by the D behavior. This behavior generates the "d" attribute for the <code>&lt;path&gt;</code> SVG element as defined in the <a href="http://www.w3.org/TR/SVG/paths.html#PathData">SVG Path data specification</a>. The value used in D is
               an array in which each item is a drawing command.
     </p>
     <p>The shape in this tutorial is a triangle drawn from 3 points
-      that are defined by properties of type <code>Handle</code>. </p>
+      that are defined by properties of type <code><a href="~/wiki/ref/Data_Types.html#handle">Handle</a></code>. </p>
     <pre name="code" class="xml"><![CDATA[<Shape id="triangle" displayName="Triangle" icon="Icons/triangle.png">
   <Properties>
     <PropertyGroup>
@@ -78,9 +78,9 @@
     <p>It is very convenient to create shape with specific points based
       on handles and box. The "D" behaviour is used heavily in the <a href="http://code.google.com/p/evoluspencil/source/browse/branches/pencil-2.0/app/content/pencil/stencil/Flowchart/Definition.xml">built-in Flowchart stencil collection</a>.</p>
     <h4>Add transparent background:</h4>
-    <p> The 2 samples above generates no-filled triangles so it is very
+    <p> The 2 examples above generate no-filled triangles so it is very
       difficult for users to drag and move the objects on the drawing canvas. To avoid this, the suggested way is to create a
-      transparent path as the background below the triangle with big stroke. The background path should be thicker than the original.</p>
+      transparent path as the background below the triangle with thicker stroke.</p>
 <pre name="code" class="xml"><![CDATA[
 <Shape ...>
     ....
