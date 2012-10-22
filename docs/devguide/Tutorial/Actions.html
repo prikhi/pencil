@@ -7,43 +7,38 @@
     <meta name="order" content="09" />
   </head>
   <body>
-    <p> <b>7. Actions</b> </p>
-    <p> <br>
-    </p>
-    <p> To modify shape properties values, there are many steps: mouse
+    <h2>Actions</h2>
+    <p>To modify shape properties values, there are many steps: mouse
       click, open the properties dialog, change each property
       &acirc;&#8364;&brvbar; for specific purposes. User may want shapes can
       be changed immediately without through many steps. Pencil supports
       Actions for quickly modifying shapes. In this tutorial, an Action
       will be put to the previous rectangle. </p>
-    <p> </p>
-    <p> &lt;Shape id="RoundedRect" displayName="Rectangle"
-      icon="Icons/rectangle.png"&gt;<br>
-      &lt;Properties&gt;<br>
-      ...<br>
-      &lt;/Properties&gt;<br>
-      &lt;Behaviors&gt;<br>
-      ...<br>
-      &lt;/Behaviors&gt;<br>
-      <span> &lt;Actions&gt;<br>
-        &lt;Action id="makeSquares" displayName="Make Squared"&gt;<br>
-        &lt;Impl&gt;<br>
-        &lt;![CDATA[<br>
-        var box = this.getProperty("box");<br>
-        box.w = Math.max(box.w, box.h);<br>
-        box.h = box.w;<br>
-        this.setProperty("box", box);<br>
-        ]]&gt;<br>
-        &lt;/Impl&gt;<br>
-      </span><span> &lt;/Action&gt;<br>
-        &lt;/Actions&gt;</span><br>
-      &lt;p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
-      xmlns="http://www.w3.org/2000/svg"&gt;<br>
-      &lt;rect id="rrRect" x="0" y="0" /&gt;<br>
-      &lt;/p:Content&gt;<br>
-      &lt;/Shape&gt; </p>
-    <p> <br>
-    </p>
+      
+<pre name="code" class="xml"><![CDATA[
+<Shape id="RoundedRect" displayName="Rectangle" icon="...">
+  <Properties>
+    ...
+  </Properties>
+  <Behaviors>
+    ...
+  </Behaviors>
+  <Actions>
+    <Action id="makeSquares" displayName="Make Squared">
+      <Impl>
+          var box = this.getProperty("box");
+          box.w = Math.max(box.w, box.h);
+          box.h = box.w;
+          this.setProperty("box", box);
+      </Impl>
+    </Action>
+  </Actions>
+  <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+             xmlns="http://www.w3.org/2000/svg">
+    <rect id="rrRect" x="0" y="0" />
+  </p:Content>
+</Shape>
+]]></pre>
     <p> In Action, the shape properties are modified and will be applied
       immediately to objects refer to these properties. This above code
       is simple, $box.h is forced to equal to $box.w and then the

@@ -9,10 +9,10 @@
     <p> Shapes in a collection tend to have the same style such as same
       font, color, stroke style... To be convenient to
       stencil authors in this situation, Pencil supports grouping all
-      shapes common style to collection style. Then if collection style
-      is changed, all shapes refer to collection style will be changed accordingly,
-      too.</p>
-    <p> Have a look at this sample. Collection properties are defined
+      shapes common style to collection style. These collection properties can be used as the default
+      value for stencil properties. Then if collection style
+      is changed, default property values for shapes will be changed accordingly.</p>
+    <p>Have a look at this example. Collection properties are defined
       and then used in shape properties. </p>
     <pre name="code" language="xml">
 <![CDATA[
@@ -53,7 +53,7 @@
 </Shapes>
 ]]>
     </pre>
-    <p>Text content inside the <code>&lt;Property&gt;</code> tag is a shape is the literal presentation of the initial value for that property.
+    <p>Text content inside the <code>&lt;Property&gt;</code> tag of a stencil is the literal presentation of the initial value for that property.
     In this example you can notice that the content inside that tag is a <code>&lt;E&gt;&lt;/E&gt;</code> instead. This is the notation to imply that
     the initial value should be obtained by evaluation the 'expression' inside the <code>&lt;E&gt;</code> tag. To reference a specific collection property
     in side this expression, the <code>$$</code> syntax is used.</p>
