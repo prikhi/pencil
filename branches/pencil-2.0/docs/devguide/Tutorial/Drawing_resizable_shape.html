@@ -7,12 +7,12 @@
     <meta name="order" content="04" />
   </head>
   <body>
-    <h2>Drawing Resizable Shapes</h2>
+    <h2>Drawing Resizable Shapes - The <code>box</code> Property</h2>
     <p>In most of the cases, shapes are expected to be scalable. Pencil uses <code><a href="~/wiki/ref/Data_Types.html#dimension">Dimension</a></code> property
       type to set shape size through Box behaviour. Dimension property
       named <code>box</code> can be modified by the on-screen geometry editor. The box
       size changes will be applied to shape size.</p>
-    <p>The example in this tutorial is a resizable rectangle base on a $box property.</p>
+    <p>The example in this tutorial is a resizable rectangle base on a <code>$box</code> property.</p>
 <pre name="code" class="xml"><![CDATA[
 <Shape id="RoundedRect" displayName="Rectangle" icon="...">
   <Properties>
@@ -47,7 +47,7 @@
     <p>The SVG rectangle has width and height attributes. The <code>Box</code> behavior will use
     the input Dimension value to change those width and height attributes. When the shape's property is changed when user
     doing scaling via the geometry editor, the behavior will reflect that change into the SVG element.</p>
-    <h3>Add rounded corner:</h3>
+    <h3>Add Rounded Corner</h3>
     <p>SVG rectangle may have rounded corners. Pencil also supports Radius
       behaviour to simplify this. In this example we add a <code>Handle</code> property into the shape and
       use its value in the <code>Radius</code> behavior.</p>
@@ -69,10 +69,10 @@
 </Behaviors>
 ]]></pre>
     
-<p>In previous examples, Dimension property type is used for drawing resizable
+<p>In previous examples, <code>Dimension</code> property type is used for drawing resizable
       shapes via the <code>Box</code> behavior. However the <code>Box</code> behavior can be used only in
-      case objects have width and height attributes. For other cases that we want to apply the Dimension value to
-      an arbitrary attribute we can use the <code>Attr</code> behavior. This approach can be used for all other cases, not limitted to property of type Dimension.</p>
+      case objects have width and height attributes. For other cases that we want to apply the <code>Dimension</code> value to
+      an arbitrary attribute we can use the <code>Attr</code> behavior. This approach can be used for all other cases, not limitted to property of type <code>Dimension</code>.</p>
 <pre name="code" class="xml"><![CDATA[
 <Shape id="ms-oval" displayName="Oval" icon="Icons/oval.png">
   <Properties>
@@ -122,7 +122,7 @@
 
     <p><code>&lt;Attr&gt;&lt;/Attr&gt;</code> behavior can be used for assigning all object
       properties value. In previous example, Attr behavior can also be used instead of
-      &lt;Box&gt;$box&lt;/Box&gt; for rectangle:</p>
+      <code>&lt;Box&gt;$box&lt;/Box&gt;</code> for rectangle:</p>
     
 <pre name="code" class="xml"><![CDATA[
 <Attr>
