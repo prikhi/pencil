@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Special Property Names</title>
+    <meta name="order" content="3" />
+  </head>
+  <body>
+    <h2>Special Property Names</h2>
+    <p>There is no actual limitation on the way shape properties can be named. Stencil developers can choose the names
+    that best describe the purposes. There are however a list of special names that Pencil will provide special supports.
+    The following list summarizes those special names together with how they are handled in Pencil.</p>
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>Property Name</th>
+                <th>Type</th>
+                <th>Pencil Supports</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>box</td>
+                <td><a href="Data_Types.html#dimension">Dimension</a></td>
+                <td>Shape with this special property is supposed to be resizable. Pencil will support resizing
+                the shape by showing scaling handles when it is focused on the drawing canvas. Moving those handles will
+                change the <code>box</code> property value. The way the shape is scaled upon changes of this property is
+                defined by the stencil developer via the behavior definition.</td>
+            </tr>
+            <tr>
+                <td>textFont</td>
+                <td><a href="Data_Types.html#font">Font</a></td>
+                <td>Value of this property can be changed using the Font toolbar</td>
+            </tr>
+            <tr>
+                <td>textColor</td>
+                <td><a href="Data_Types.html#color">Color</a></td>
+                <td>Value of this property can be changed using the Text color toolbar button</td>
+            </tr>
+            <tr>
+                <td>fillColor</td>
+                <td><a href="Data_Types.html#color">Color</a></td>
+                <td>Value of this property can be changed using the Background color toolbar button</td>
+            </tr>
+            <tr>
+                <td>strokeColor</td>
+                <td><a href="Data_Types.html#color">Color</a></td>
+                <td>Value of this property can be changed using the Line color toolbar button</td>
+            </tr>
+            <tr>
+                <td>strokeStyle</td>
+                <td><a href="Data_Types.html#strokestyle">StrokeStyle</a></td>
+                <td>Value of this property can be changed using the Line style toolbar</td>
+            </tr>
+        </tbody>
+    </table>
+  </body>
+</html>

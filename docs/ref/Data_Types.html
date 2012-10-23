@@ -1,0 +1,911 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <meta name="order" content="2" />
+    <meta name="toc" content="true" />
+    <meta name="toc-max" content="2" />
+
+    <title>Data Types</title>
+  </head>
+  <body>
+    <h1>Pencil Data Types</h1>
+    <p>Pencil supports various data types for shape properties. Some of
+      them are equivalent to data types in popular programming languages
+      while the others are for convenience. </p>
+    <p>
+        This document lists all supported data types in Pencil, each with both JavaScript syntax and
+        XML syntax for use in stencil coding. Most of the supported data types have at least one way end-user
+        can modify the value.
+    </p>
+    <hr />
+    <h2>Alignment</h2>
+    <p>Data structure for storing two-dimension alignment.</p>
+    <b>Construction:</b><br>
+    <pre name="code" class="js:nocontrols:nogutter">new Alignment(h, v);</pre>
+    <b>XML syntax:</b><br>
+    <pre name="code" class="xml:nocontrols:nogutter">&lt;Property name="test" displayName="Test" type="Alignment"&gt;h,v&lt;/Property&gt;</pre>
+    <ul>
+      <li>h (number): horizotal alignment. 0: left, 1: center, 2:
+        right</li>
+      <li>v (number): vertical alignment. 0: top, 1: middle, 2:
+        bottom</li>
+    </ul>
+    <p><b>Members:</b><br>
+    </p>
+    <div dir="ltr">
+      <table width="100%">
+        <tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type </th>
+            <th>Description </th>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>Alignment</td>
+            <td>Builds the Alignment object from its string presentation.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var align = Alignment.fromString("10,10");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>
+<pre name="code" class="js:nocontrols:nogutter">
+var s = align.toString(); // return "10,10"
+</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>Property page:</strong><br/>
+    <img src="images/alignment-prop-editor.png" class="EditorInfo"/>
+    <p>Properties of type <code>Alignment</code> can be edited in the shape property page.</code></p>
+    <hr style="clear: right;">
+    <h2>Bool</h2>
+    <p>Data type for storing boolean values.</p>
+    <b>
+      Construction:</b><br>
+    <pre name="code" class="js:nocontrols:nogutter">
+new Bool(value); </pre>
+    <b>XML syntax:</b><br>
+    <pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="sample" displayName="Sample" type="Bool"&gt;value&lt;/Property&gt;</pre>
+    where value is either <i>true</i> or <i>false</i><br>
+    <br>
+    <p><b>Members:</b></p>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="139"><col width="129"><col width="397"></colgroup><tbody>
+          <tr>
+            <th>Name</th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>Bool</td>
+            <td>Builds the Bool object from its string presentation.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var b = Bool.fromString("true");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Return the string presentation of the boolean value.<br>
+            </td>
+          </tr>
+          <tr>
+            <td>negative()</td>
+            <td>Bool</td>
+            <td>Return the Bool object with negative value.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>Context menu:</strong><br/>
+    <img src="images/bool-menu-editor.png" class="EditorInfo" style="width: 231px;"/>
+    <p>Properties of type <code>Bool</code> can be edited in the context menu of the shape using a checkbox item.</code></p>
+    <hr style="clear: right;">
+    <h2>Dimension</h2>
+    <p>Data structure for storing object size, a pair of width and
+      height values</p>
+    <b>Construction:</b><br>
+    <pre name="code" class="js:nocontrols:nogutter">new Dimension(width, height); </pre>
+    <b>
+      XML syntax:</b><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="box" displayName="Box" type="Dimension"
+          p:lockRatio="true"&gt;width,height&lt;/Property&gt;</pre>
+    <p><b>
+        Members:</b></p>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="137"><col width="131"><col width="397"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>Dimension</td>
+            <td>Build a Dimension object from its string presentation.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var box = Dimension.fromString("10,10");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>
+<pre name="code" class="js:nocontrols:nogutter">
+var s = box.toString(); // return "10,10"
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>narrowed(paddingX[, paddingY])</td>
+            <td>Dimension</td>
+            <td>Return a new Dimension object with is created by narrowing
+              the callee by the provided paddings. If paddingY is
+              omitted, paddingX will be used for both directions.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var box1 = box.narrowed(5);
+var box2 = box.narrowed(5, 10);
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>p:lockRatio</td>
+            <td><br>
+            </td>
+            <td>Meta constraint used in XML syntax to hint that the
+              ratio of this object need to be maintained when its width
+              and height are changed.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>On-canvas editor:</strong><br/>
+    <img src="images/box-onscreen-editor.png" class="EditorInfo" style="width: 223px;"/>
+    <p>A <code>Dimension</code> property with the special name of <code><strong>box</strong></code> can be edited using the
+    on-canvas geometry editor.</p>
+    <strong style="clear: right; display: block;">Toolbar editor:</strong><br/>
+    <img src="images/box-toolbar-editor.png" class="EditorInfo" style="width: 329px;"/>
+    <p>And also via the geometry toolbar located on the top of the Pencil application window.</p>
+    <hr style="clear: right;">
+    <h2>Bound</h2>
+    <p>Data structure for storing a bounding box which is a composite of a location and a size.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+new Bound(left, top, width, height);
+</pre>
+    <strong>Example:</strong>
+<pre name="code" class="js:nocontrols:nogutter">
+var testBound = new Bound(10, 10, 10, 10);
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="127"><col width="397"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromBox(box, paddingX, paddingY)</td>
+            <td>Bound</td>
+            <td>Generating a new Bound object from a Dimension object narrowed down on each sides using the
+                provided paddings<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var b = Bound.fromBox(box, x, y);
+
+//equals to:
+var b = new Bound(x, y, box.w - 2 * x, box.h - 2 * y)
+</pre></td>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>Bound</td>
+            <td>Build a Bound object from its string presentation<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var bound = Bound.fromString("10, 10, 10, 10");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Returns the string presentation of the callee.</td>
+          </tr>
+          <tr>
+            <td>narrowed(paddingX, paddingY)</td>
+            <td>Bound</td>
+            <td>Create a new Bound object by using the callee and narrowing down each sides by the provided paddings<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var bound2 = bound.narrowed(5, 8);
+</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+    <h2>Color</h2>
+    <p>Data structure for storing object color with alpha blending</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+var color = new Color(); // create an opaque black color
+</pre>
+    <strong>XML syntax:</strong><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="color" displayName="My Color" type="Color"&gt;#000000ff&lt;/Property&gt;
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>Color</td>
+            <td>Build a color object from string presentation in CSS numerical color syntax.<br>
+                <pre name="code" class="js:nocontrols:nogutter">
+Examples:
+Color.fromString("#ffffffff"); // solid white
+Color.fromString("#ffffff"); // also solid white
+Color.fromString("rgb(255, 0, 0)"); // solid red
+
+// semi-transparent blue:
+Color.fromString("rgba(0, 0, 255, 0.5)");
+
+Color.fromString("transparent"); //transparent
+
+//semi-transparent black:
+Color.fromString("#00000033");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Returns the extended hexa string presentation of the color: #RRGGBBAA</td>
+          </tr>
+          <tr>
+            <td>toRGBString()</td>
+            <td>String</td>
+            <td>
+                Return the CSS color in the format of "rgb(red, green, blue)"<br/>
+                <pre name="code" class="js:nocontrols:nogutter">
+var color = Color.fromString("#FFFFFFFF");
+color.toRGBString(); // rgb(255, 255, 255)</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toRGBAString()</td>
+            <td>String</td>
+            <td>
+                Return the CSS color in the format of "rgba(red, green, blue, alpha)"<br/>
+                <pre name="code" class="js:nocontrols:nogutter">
+var color = Color.fromString("#FFFF0077");
+color.toRGBAString(); // rgba(255, 255, 0, 0.5)</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>shaded(percent)</td>
+            <td>Color</td>
+            <td>
+                Creates a darker version of a color using the provided percent.
+<pre name="code" class="js:nocontrols:nogutter">
+color.shaded(0.1); // returns a 10% darker color
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>hollowed(percent)</td>
+            <td>Color</td>
+            <td>Creates a more transparent version of a color by the provided percent.
+<pre name="code" class="js:nocontrols:nogutter">
+color.hollowed(0.1);
+    // returns a 10% more transparent color
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>inverse()</td>
+            <td>Color</td>
+            <td>Returns the inversed version of a color</td>
+          </tr>
+          <tr>
+            <td>transparent()</td>
+            <td>Color</td>
+            <td>Creates a fully transparent version of a color</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>Property page:</strong><br/>
+    <img src="images/color-prop-editor.png" class="EditorInfo"/>
+    <p>Properties of type <code>Color</code> can be edited in the property dialog with a color chooser that supports both
+    simple and advanced mode.</p>
+    <p><code>Color</code> properties with the following special names can be also edited with the Color toolbar: <code>textColor</code>, <code>fillColor</code> and <code>strokeColor</code>.</p>
+    <hr style="clear: right;" />
+    <h2>CSS</h2>
+    <p>Provides a data object for styling SVG elements and HTML elements.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+var css = new CSS();
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>set(name, value)</td>
+            <td>CSS</td>
+            <td>Sets a CSS property value, overriding existing one if any and returns the object itself.<br>
+              <pre name="code" class="js:nocontrols:nogutter">css.set("font-size", "12px");</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Return a string containing all specified properties.
+              <br>
+              <pre name="code" class="js:nocontrols:nogutter">
+var css = new CSS();
+css.set("font-size", "12px");
+css.set("font-weight", "bold");
+
+var s = css.toString();
+// returns "font-size: 12px; font-weight: bold;"</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>clear()</td>
+            <td>CSS</td>
+            <td>Removes all properties contrained in a CSS object and returns the object itself.
+            </td>
+          </tr>
+          <tr>
+            <td>unset(name)</td>
+            <td>CSS</td>
+            <td>Removes a specific property from a CSS object if any and returns the object itself.</td>
+          </tr>
+          <tr>
+            <td>get(name)</td>
+            <td>String</td>
+            <td>Get the property&#8217;s value.</td>
+          </tr>
+          <tr>
+            <td>contains(name)</td>
+            <td>Bool</td>
+            <td>Check whether a CSS object contains the property.
+<pre name="code" class="js:nocontrols:nogutter">
+css.contains("font-size");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>setIfNot(name, value)</td>
+            <td>CSS</td>
+            <td>Sets value to a property if it was not set, returns the object itself<br>
+              Ex:css.setIfNot("font-size", "12px")</td>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(literal)</td>
+            <td>CSS</td>
+            <td>Parses the CSS string and creates a CSS object containing all parsed property/value pairs.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+CSS.fromString("font-size: 12px; font-weight: bold");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>importRaw(literal)</td>
+            <td>void<br>
+            </td>
+            <td>Parses the CSS string and add all parsed property/value pairs to the calle overriding any existing properties.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var css = new CSS();
+css.set("color", "#FF0000");
+
+css.importRaw("font-size: 12px; font-weight: bold");
+</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr />
+    <h2>Enum</h2>
+    <p>Data structure to store option with the possibility to specify available options via XML metadata.</p>
+    <strong>XML syntax</strong>:<br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="type" displayName="Type" type="Enum"
+                      p:enumValues="['one|One', 'two|Two']"&gt;two&lt;/Property&gt;
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="106"><col width="114"><col width="445"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>String</td>
+            <td>Member field storing the selected value.</td>
+          </tr>
+          <tr>
+            <td>p:enumValues</td>
+            <td>String</td>
+            <td>An array literal containing all possible options. Each option is in the syntax of <code>'id|Display Name'</code>.
+<pre name="code" class="xml:nocontrols:nogutter">
+    ... p:enumValues="['linux|GNU Linux', 'win32|Win 32']"
+</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>Context menu:</strong><br/>
+    <img src="images/enum-menu-editor.png" class="EditorInfo" style="width: 304px;"/>
+    <p>Properties of type <code>Enum</code> can be edited in the context menu of the shape.</p>
+    <hr style="clear: right;" />
+    <h2>Font</h2>
+    <p>Data structure for manipulating font info.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+var font = new Font();
+</pre>
+    <strong>XML syntaxt:</strong><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="textFont" displayName="Text Font"
+          type="Font"&gt;{families}|{weight}|{style}|{size}[|{decor}]&lt;/Property&gt;
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>Font</td>
+            <td>Build a Font object from its string presentation.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var f = Font.fromString("Arial|bold|italic|12px");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>getPixelHeight()</td>
+            <td>Number</td>
+            <td>
+              Return the font height in pixels;
+<pre name="code" class="js:nocontrols:nogutter">
+var f = Font.fromString("Arial|bold|italic|12px");
+
+var height = f.getPixelHeight(); // 12
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Return a string representing the font object.</td>
+          </tr>
+          <tr>
+            <td>toCSSFontString()</td>
+            <td>String</td>
+            <td>Return the string presentation of the font object in CSS syntax. <br>
+<pre name="code" class="js:nocontrols:nogutter">
+var f = Font.fromString("Arial|bold|italic|12px");
+
+var css = f.toCSSFontString();
+// "Arial bold italic 12px"
+</pre>
+              </td>
+          </tr>
+          <tr>
+            <td>getFamilies()</td>
+            <td>String</td>
+            <td>Returns the families field of the font.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>Property page:</strong><br/>
+    <img src="images/font-prop-editor.png" class="EditorInfo"/>
+    <p>Properties of type <code>Font</code> can be edited in the property dialog.</p>
+    <p><code>Font</code> property with the special name <code>textFont</code> is editable with the Font style toolbar.</p>
+    <hr style="clear: right;" />
+    <h2>Handle</h2>
+    <p>Provides a special data object representing a point in 2D coordinate and can be modified on the drawing canvas
+    by user operations.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="a" displayName="Start Point" type="Handle"&gt;x,y&lt;/Property&gt;
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Input value</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>x</td>
+            <td>number</td>
+            <td>Distance to the left border of the shape</td>
+          </tr>
+          <tr>
+            <td>y</td>
+            <td>number</td>
+            <td>Distance to the top border of the shape</td>
+          </tr>
+          <tr>
+            <td>p:lockX</td>
+            <td>boolean expr.</td>
+            <td>The 'x' value should not be changed, horizontal movement is disabled. Default
+              value: false
+<pre name="code" class="xml:nocontrols:nogutter">
+Example:
+    .... p:lockX="$fixedWidth.value == true"
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>p:lockY</td>
+            <td>boolean expr.</td>
+            <td>The 'y' value should not be changed, vertical movement is disabled. Default
+              value: false
+<pre name="code" class="xml:nocontrols:nogutter">
+Example:
+    .... p:lockY="$fixedHeight.value == true"
+</pre>
+              </td>
+          </tr>
+          <tr>
+            <td>p:minX</td>
+            <td>number expr.</td>
+            <td>Minimum value of 'x'. Movement of the handle should not pass this lower limit.<br>
+<pre name="code" class="xml:nocontrols:nogutter">
+Example:
+    .... p:minX="15"
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>p:maxX</td>
+            <td>number expr.</td>
+            <td>Maximum value of 'x'. Movement of the handle should not pass this upper limit.<br>
+<pre name="code" class="xml:nocontrols:nogutter">
+Example:
+    .... p:maxX="$box.w / 2"
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>p:minY</td>
+            <td>number expr.</td>
+            <td>Minimum value of 't'. Movement of the handle should not pass this lower limit.<br>
+<pre name="code" class="xml:nocontrols:nogutter">
+Example:
+    .... p:minY="$box.h / 3 + 10"
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>p:maxY</td>
+            <td>number expr.</td>
+            <td>Maximum value of 'y'. Movement of the handle should not pass this upper limit.<br>
+<pre name="code" class="xml:nocontrols:nogutter">
+Example:
+    .... p:minY="$box.h - 10"
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>p:noScale</td>
+            <td>true | false</td>
+            <td>Disable auto-scaling of Handle value when the object 'box' property is changed. Default value: false</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>On-canvas editor:</strong><br/>
+    <img src="images/handle-onscreen-editor.png" class="EditorInfo" style="width: 196px;"/>
+    <p>Each property of type <code>Handle</code> is shown as a yellow bullet when the shape is focused. The property
+    can be edited by moving that bullet.</p>
+    <hr style="clear: right;" />
+    <h2>ImageData</h2>
+    <p>Data structure that store a binary bitmap image.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+new ImageData(w, h, dataUrl);
+</pre>
+    <strong>XML syntax:</strong><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="image" displayName="Image"
+          type="ImageData"&gt;&lt;![CDATA[w,h,url]]&gt;&lt;/Property&gt;
+</pre>
+    <strong>Example:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+var image = new ImageData(10, 15, "data:image/png;base64,iVBORw0KQmCC...");
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>w</td>
+            <td>number</td>
+            <td>The image width</td>
+          </tr>
+          <tr>
+            <td>h</td>
+            <td>number</td>
+            <td>The image height</td>
+          </tr>
+          <tr>
+            <td>data</td>
+            <td>string</td>
+            <td>The data url of the image.</td>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>ImageData</td>
+            <td>Builds an ImageData object from its string presentation.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var i = ImageData.fromString("57,57, data:image/png;base64,iVBORw0KQmCC");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Returns the string presentation of the callee.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr>
+    <h2>PlainText</h2>
+    <p>Data object that represents a piece of plain texts.</p>
+    <strong>Construction:</strong><br />
+<pre name="code" class="js:nocontrols:nogutter">
+var text = new PlainText("Pugnabant totidemque vos nam");
+</pre>
+    <strong>XML syntax:</strong><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="text" displayName="Text"
+          type="PlainText"&gt;&lt;![CDATA[Pugnabant totidemque vos nam]]&gt;&lt;/Property&gt;
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>String</td>
+            <td>Data field containing the text.</td>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>PlainText</td>
+            <td>Builds a PlainText object from the provided JS string</td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Returns the contained text.</td>
+          </tr>
+          <tr>
+            <td>toUpper()</td>
+            <td>PlainText</td>
+            <td>Returns a uppercase version of the callee.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <strong>On-canvas editor:</strong><br/>
+    <img src="images/plaintext-onscreen-editor.png" class="EditorInfo" style="width: 410px;"/>
+    <p><code>PlainText</code> properties can be edited right on the canvas using a simple text input.</p>
+    <hr style="clear: right;" />
+    <h2>RichText</h2>
+    <p>Data structure for storing rich-text content in HTML format.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+var text = new RichText("A &lt;b&gt;rich&lt;/b&gt; text string");
+</pre>
+    <strong>XML syntax:</strong>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="text" displayName="Text"
+          type="RichText"&gt;&lt;![CDATA[A &lt;b&gt;rich&lt;/b&gt; text string]]&gt;&lt;/Property&gt;
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>String</td>
+            <td>Data field containing the HTML text.</td>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>RichText</td>
+            <td>Builds a RichText object from the provided JS string</td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Returns the contained HTML text.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <img src="images/richtext-onscreen-editor.png" class="EditorInfo" style="width: 350px;"/>
+    <h3>Editor supports:</h3>
+    <strong>On-canvas editor:</strong><br/>
+    <p><code>RichText</code> properties can be edited right on the canvas using a rich-text input.</p>
+    <hr style="clear: right;" />
+    <h2>StrokeStyle</h2>
+    <p>Data structure storing stroke styling information.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+new StrokeStyle(width, dasharray);
+</pre>
+    <p>The <code>dasharray</code> value is specified as a JavaScript array containing lengths of dashes and spaces. More 
+    information can be found in the <a href="http://www.w3.org/TR/SVG/painting.html#StrokeDasharrayProperty">SVG Specification for Stroke dash array</a>.</p>
+    <strong>XML syntax:</strong><br/>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="stroke" type="StrokeStyle"
+          displayName="Border Style"&gt;w|dasharray&lt;/Property&gt;
+</pre>
+    <p>When the <code>dasharray</code> is omitted, the stroke is considered solid.</p>
+    <strong>Example:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+var stroke = new StrokeStyle("1,[4,2,1,2]");
+// construct a 'dash-space-dot-space' stroke at 1px width
+</pre>
+    <strong>Or in xml format:</strong><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="stroke" type="StrokeStyle"
+          displayName="Border Style"&gt;1|[4,2,1,2]&lt;/Property&gt;
+</pre>
+    <br>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <th>Name </th>
+            <th>Return Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>StrokeStyle</td>
+            <td>Build a StrokeStyle object from its string presentation.<br>
+<pre name="code" class="js:nocontrols:nogutter">
+var ss = StrokeStyle.fromString("1|[1,1]");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Returns the string presentation of the callee.</td>
+          </tr>
+          <tr>
+            <td>condensed(ratio)</td>
+            <td>StrokeStyle</td>
+            <td>Returns a new version of the callee by condensing the width by the provided ration.
+<pre name="code" class="js:nocontrols:nogutter">
+var stroke2 = stroke.condensed(-0.1);
+</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <img src="images/strokestyle-prop-editor.png" class="EditorInfo"/>
+    <strong>Property page editor:</strong><br/>
+    <p><code>StrokeStyle</code> properties can be edited in the property page of the shape.</p>
+    <hr style="clear: right;" />
+    <h2>ShadowStyle</h2>
+    <p>Data structure that stores shadow style information.</p>
+    <strong>Construction:</strong><br>
+<pre name="code" class="js:nocontrols:nogutter">
+var shadow = new ShadowStyle(dx, dy, size);
+</pre>
+    <strong>XML syntax:</strong><br>
+<pre name="code" class="xml:nocontrols:nogutter">
+&lt;Property name="shadow" type="ShadowStyle"
+          displayName="Box Shadow"&gt;dx|dy|size&lt;/Property&gt;
+</pre>
+    <div dir="ltr">
+      <table>
+        <colgroup><col width="141"><col width="108"><col width="416"></colgroup><tbody>
+          <tr>
+            <td>Name </td>
+            <td>Return Type</td>
+            <td>Description</td>
+          </tr>
+          <tr>
+            <td><em class="Keyword">static</em> fromString(String)</td>
+            <td>ShadowStyle</td>
+            <td>Builds a ShadowStyle object from its string presentation.
+<pre name="code" class="js:nocontrols:nogutter">
+var style = ShadowStyle.fromString("3|3|10");
+</pre>
+            </td>
+          </tr>
+          <tr>
+            <td>toString()</td>
+            <td>String</td>
+            <td>Returns the string presentation of the callee.</td>
+          </tr>
+          <tr>
+            <td>toCSSString()</td>
+            <td>String</td>
+            <td>Return the string presentation of the callee in CSS syntax.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Editor supports:</h3>
+    <img src="images/shadowstyle-prop-editor.png" class="EditorInfo"/>
+    <strong>Property page editor:</strong><br/>
+    <p><code>ShadowStyle</code> properties can be edited in the property page of the shape.</p>
+    <hr style="clear: right;" />
+    <br>
+    <br>
+    <br>
+  </body>
+</html>

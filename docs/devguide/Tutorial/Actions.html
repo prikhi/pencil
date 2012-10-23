@@ -8,12 +8,18 @@
   </head>
   <body>
     <h2>Actions</h2>
-    <p>To modify shape properties values, there are many steps: mouse
-      click, open the properties dialog, change each property
-      &acirc;&#8364;&brvbar; for specific purposes. User may want shapes can
-      be changed immediately without through many steps. Pencil supports
-      Actions for quickly modifying shapes. In this tutorial, an Action
-      will be put to the previous rectangle. </p>
+    <p>There are cases that you may want your shape has a way user can quickly change its properties to a specific condition.
+    For example changing the width and height of a rectangle to the same value, changing the border color of a shape to a color
+    with the same HUE of the background but darker... The traditional way users must do is to do the calculation themselves and
+    change each of the properties to desired value.
+    </p>
+    <p>
+        Pencil introduces the concept of Action in which stencil developers can define a routine to perform calculation
+        and make changes to properties in a batch. 
+    </p>
+    <p>
+        The following example show how an Action is define to allow users quickly change the rectangle to a square:
+    </p>
       
 <pre name="code" class="xml"><![CDATA[
 <Shape id="RoundedRect" displayName="Rectangle" icon="...">
@@ -39,9 +45,10 @@
   </p:Content>
 </Shape>
 ]]></pre>
-    <p> In Action, the shape properties are modified and will be applied
+    <p>In Action, the shape properties are modified and will be applied
       immediately to objects refer to these properties. This above code
-      is simple, $box.h is forced to equal to $box.w and then the
-      rectangle width is also equal to height. </p>
+      is simple, <code>box.h</code> is forced to equal to <code>box.w</code> and then the
+      rectangle becomes a square. Please note also that in the context of action execution, the keyword <code>this</code>
+      is bound to the shape itself so that you can retrieve an set the property values via it.</p>
   </body>
 </html>
