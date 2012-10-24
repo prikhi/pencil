@@ -10,29 +10,34 @@
   <body dir="ltr">
     <h1>Behavior Reference</h1>    
     <p>
-	To help Stencils developersdefine how the content in shapes is changed based on attributes, Pencil provides Behavior concept.
-      With a Behavior, one or more attributes of an target object can be changed based on Behavior input value.The target object can be a
-      SVG object or HTML object based on the attributes that target object includes.
+	To help Stencils developers define how the content in shapes is changed based shape's properties,
+    Pencil provides the Behavior concept.
+      With behaviors, attributes or content of the target object can be changed based on Behavior's input value. The target object can be an
+      SVG object or an HTML object in the content of the shape.
 	  </p>
-    <p>This document lists all supported Behavior in Pencil, each with both JavaScript syntax and XML syntax for use in stencil coding.</p>
-    <p>Each target object is set behaviors by a general syntax:</p>    
+    <p>This document lists all supported behaviors in Pencil, each with both JavaScript syntax and XML syntax for use in stencil coding.</p>
+    <p>Behaviors applied to an object within the shape is defined as below:</p>
+    <div style="width: 60%;">
     <pre name="code" class="xml">
-    &lt;For ref="target object"&gt;
+    &lt;For ref="target_object_id"&gt;
       &lt;Behavior_1&gt;....&lt;/Behavior_1&gt;
       &lt;Behavior_2&gt;....&lt;/Behavior_2&gt;
       .......
       &lt;Behavior_n&gt;....&lt;/Behavior_n&gt;
     &lt;/For&gt;</pre>
-    <p>Suppose there is a Dimension property type variable is used in the whole this document:</p>
+    <p>For the easy of understanding the examples used in this document, let's assume that we have a <code>box</code>
+    property of type <code>Dimension</code> defined for the shape:</p>
     <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;Property name="box" type="Dimension"&gt;150,150&lt;/Property&gt;
+    &lt;Property name="box"
+              type="Dimension"&gt;150,150&lt;/Property&gt;
     </pre>
+    </div>
 	<hr/>
 	
 	
     <h2>CustomStyle</h2>
     <p>
-	This behavior is used to assign value to a specific XML attribute of the target object. Value and name
+	This behavior is used to assign value to a specific CSS attribute of the target object. Value and name
     are specified in the input arguments of the behavior.
 	</p>
     <h3>Target object:</h3>
@@ -47,12 +52,12 @@
     <p>propertyName: name of property.</p>
     <p>value: value is assigned to propertyName.</p>
     <h3>Result:</h3>
-    <p>The "propertyName" attribute of the target object is assigned value.</p>
+    <p>The the CSS property "propertyName" of the target object is assigned with the provided value.</p>
     <h3>Example:</h3>
 	<pre name="code" class="xml">
     &lt;CustomStyle&gt;
       &lt;Arg&gt;"width"&lt;/Arg&gt;
-      &lt;Arg&gt;$box.w&lt;/Arg&gt;
+      &lt;Arg&gt;$box.w + "px"&lt;/Arg&gt;
     &lt;/CustomStyle&gt;</pre>
     <hr/>
 	
@@ -60,24 +65,23 @@
     <h2>Attr</h2>
     <p>
       This behavior is used to assign value to a specific XML attribute of the target object. Value and name (and
-      optional namespace URI) are specified in the input arguments of the behavior. CustomStyle and Attr behavior are
-      used the same. But with Attr, an attribute can be derived from a namespace.
+      optional namespace URI) are specified in the input arguments of the behavior.
     </p>
     <h3>Target object:</h3>
     <p>All kind of objects.</p>
     <h3>XML Syntax:</h3>
 	<pre name="code" class="xml">
     &lt;Attr&gt;
-      &lt;Arg&gt;propertyName&lt;/Arg&gt;
+      &lt;Arg&gt;attributeName&lt;/Arg&gt;
       &lt;Arg&gt;value&lt;/Arg&gt;
       &lt;Arg&gt;namespace&lt;/Arg&gt;
     &lt;/Attr&gt;</pre>
     <h3>Input value:</h3>
-    <p>propertyName: name of property.</p>
+    <p>attributeName: name of attribute.</p>
     <p>value: value is assigned to propertyName.</p>
-    <p>namespace: namespace that property is derived from. If a property have no namespace, the namespace argument can be omited.</p>
+    <p>namespace: namespace URI that this attribute is in. If the attribute has no namespace, the namespace argument can be omitted.</p>
     <h3>Result:</h3>
-    <p>The "propertyName" attribute of the target object is assigned value.</p>
+    <p>The "attributeName" attribute of the target object is assigned with the provided value.</p>
     <h3>Example:</b>
     <pre name="code" class="xml">
     &lt;Attr&gt;
@@ -86,9 +90,9 @@
     &lt;/Attr&gt;</pre>
     <pre name="code" class="xml">
     &lt;Attr&gt;
-    &lt;Arg&gt;"xlink:href"&lt;/Arg&gt;
-    &lt;Arg&gt;value&lt;/Arg&gt;
-    &lt;Arg&gt;PencilNamespaces.xlink&lt;/Arg&gt;
+      &lt;Arg&gt;"xlink:href"&lt;/Arg&gt;
+      &lt;Arg&gt;value&lt;/Arg&gt;
+      &lt;Arg&gt;PencilNamespaces.xlink&lt;/Arg&gt;
     &lt;/Attr&gt;</pre>
     <p>If the namespace was defined in parent node, namespace argument could also be omited.</p>
     <pre name="code" class="xml">
@@ -102,50 +106,51 @@
     <h2>Box</h2>
     <p>This behavior is used to assign value to width and height attributes of the target object.</p>
     <h3>Target object:</h3>
-    <p>All objects have width and height properties.</p>
+    <p>All objects have width and height attributes.</p>
     <h3>XML syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;Box&gt;DimensionValue&lt;/Box&gt;</pre>
+    &lt;Box&gt;dimensionValue&lt;/Box&gt;</pre>
     <h3>Input value:</h3>
-    <p>DimensionValue: the value is dimension Type.</p>
+    <p>dimensionValue: an expression that returns the value of type <code><a href="Data_Types.html#dimension">Dimension</a></code>.</p>
     <h3>Result:</h3>
-    <p>The width and height attributes of the target object is set value based on DimensionValue object.</p>
+    <p>The width and height attributes of the target object is set to the dimensionValue object.</p>
     <h3>Example:</h3>
-    <p>Define a Dimension type variable:</p>
-    <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;Property name="box" displayName="Box" type="Dimension"&gt;50,50&lt;/Property&gt;</pre>
-    <p>then put to Box bevavior:</p>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;Box&gt;$box&lt;/Box&gt;</pre>    
-    <p>Can also put a Dimension instance is created in behavior directly:</p>
+    <p>Or directly:</p>
     <pre name="code" class="xml:nocontrols:nogutter" >
       &lt;Box&gt;new Dimension(50,50)&lt;/Box&gt;</pre> 
     <hr/>
-    
-    
     <h2>Bound</h2>
     <p>This behavior is used to assign value to width and height atributes and set position of the target object.</p>
     <h3>Target object:</h3>
     <p>All objects have width and height properties.</p>
     <h3>XML syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
+      &lt;Bound&gt;bound&lt;/Bound&gt;</pre>
+    <h3>Input value:</h3>
+    <p>bound: an object of type <code><a href="Data_Types.html#bound">Bound</a></code></p>
+    <h3>Example:</h3>
+    <pre name="code" class="xml:nocontrols:nogutter" >
       a) &lt;Bound&gt;new Bound(x, y, width, height)&lt;/Bound&gt;</pre>
       <blockquote>
-        <h3>Input value &amp; Result:</h3>
+        <h4>Input value &amp; Result:</h4>
         <img src="images/Behaviors_html_3c35ed33.png" name="graphics1" width="207" height="168" border="0" />
       </blockquote>
     <pre name="code" class="xml:nocontrols:nogutter" >
       b) &lt;Bound&gt;Bound.fromBox(Box, paddingX, paddingY)&lt;/Bound&gt;</pre>
       <blockquote>
-        <h3>Input value &amp; Result:</h3>
+        <h4>Input value &amp; Result:</h4>
         <img src="images/Behaviors_html_m1f1bf638.png" name="graphics3" width="190" height="130" border="0" />
       </blockquote>
     <pre name="code" class="xml:nocontrols:nogutter" >
       c) &lt;Bound&gt;Bound.fromBox(new Dimension(width, height), paddingX, paddingY)&lt;/Bound&gt;</pre>
       <blockquote>
-        <h3>Input value &amp; Result:</h3>
+        <h4>Input value &amp; Result:</h4>
         <img src="images/Behaviors_html_m42afb0a2.png" name="graphics2" width="207" height="168" border="0" />
       </blockquote>
+
+
       <hr/>
       
       
@@ -168,28 +173,29 @@
     <h3>Example:</h3>
     <pre name="code" class="xml" >
     &lt;Radius&gt;
-    &lt;Arg&gt;5&lt;/Arg&gt;
-    &lt;Arg&gt;5&lt;/Arg&gt;
+      &lt;Arg&gt;5&lt;/Arg&gt;
+      &lt;Arg&gt;5&lt;/Arg&gt;
     &lt;/Radius&gt;</pre>
     <hr/>
     
     
     <h2>Fill</h2>
     <p>This behavior sets the "fill" and "fill-opacity" attribute of the target SVG objects that can be
-      filled color.</p>
+      filled with color.</p>
     <h3>Target object:</h3>
-    <p>SVG objects that can be filled color.</p>
+    <p>SVG objects that can be filled with color.</p>
     <h3>XML syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;Fill&gt;color&lt;/Fill&gt;</pre>
     <h3>Input value:</h3>
-    <p>color: a color Property type object.</p>
+    <p>color: a object of type <code><a href="Data_Types.html#color">Color</a></code>.</p>
     <h3>Result:</h3>
     <p>The target object color and opacity are set.</p>
     <h3>Example:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;Fill&gt;Color.fromString("#ffffffff")&lt;/Fill&gt;</pre>    
-    <pre name="code" class="xml:" >
+    &lt;Fill&gt;Color.fromString("#ffffffff")&lt;/Fill&gt;</pre>
+    <p>Or:</p>
+    <pre name="code" class="xml:nocontrols:nogutter" >
       &lt;Property name="color" displayName="fColor" type="Color"&gt;#000000ff&lt;/Property&gt;     
       ....
       &lt;Fill&gt;$color&lt;/Fill&gt;</pre>    
@@ -197,20 +203,21 @@
       
       
     <h2>Color</h2>
-    <p>This behavior sets the "color" and "opacity" attribute of the target HTML objects that can be filled color.</p>
+    <p>This behavior sets the "color" and "opacity" attribute of the target HTML objects.</p>
     <h3>Target object:</h3>
-    <p>HTML objects that can be filled color.</p>
+    <p>HTML objects.</p>
     <h3>XML syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;Color&gt;color&lt;/Color&gt;</pre>  
     <h3>Input value:</h3>
-    <p>color: a color Property type object.</p>
+    <p>color: a object of type <code><a href="Data_Types.html#color">Color</a></code>.</p>
     <h3>Result:</h3>
     <p>The target object color and opacity are set.</p>
     <h3>Example:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;Color&gt;Color.fromString("#ffffffff")&lt;/Color&gt;</pre>     
-    <pre name="code" class="xml" >
+    &lt;Color&gt;Color.fromString("#ffffffff")&lt;/Color&gt;</pre>
+    <p>Or:</p>
+    <pre name="code" class="xml:nocontrols:nogutter" >
       &lt;Property name="color" displayName="fColor" type="Color"&gt;#000000ff&lt;/Property&gt;
       ....
       &lt;Color&gt;$color&lt;/Color&gt;
@@ -221,39 +228,43 @@
     <h2>StrokeColor</h2>
     <p>This behavior sets the "stroke" and "stroke-opacity" attribute of the SVG target objects that have stroke.</p>
     <h3>Target object:</h3>
-    <p>Objects that can be filled color.</p>
+    <p>Objects that can be stroked.</p>
     <h3>XML syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;StrokeColor&gt;color&lt;/StrokeColor&gt;</pre> 
     <h3>Input value:</h3>
-    <p>color: a color Property type object.</p>
+    <p>color: a object of type <code><a href="Data_Types.html#color">Color</a></code>.</p>
     <h3>Result:</h3>
     <p>The target object stroke color and stroke opacity are set.</p>
     <h3>Example:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;StrokeColor&gt;Color.fromString("#ffffffff")&lt;/StrokeColor&gt;</pre> 
+    &lt;StrokeColor&gt;Color.fromString("#ffffffff")&lt;/StrokeColor&gt;</pre>
+    <p>Or:</p>
     <pre name="code" class="xml:nocontrols:nogutter" >
       &lt;Property name="color" displayName="fColor" type="Color"&gt;#000000ff&lt;/Property&gt;
+      ...
       &lt;StrokeColor&gt;$color&lt;/StrokeColor&gt;</pre> 
     <hr/>
 
     
     <h2>StrokeStyle</h2>
-    <p>this behavior is used to set "stroke" and "stroke-opacity" attribute of the target object</p>
+    <p>this behavior is used to set "stroke-width" and "stroke-dasharray" attribute of the target object</p>
     <h3>Target object:</h3>
     <p>Objects that have stroke</p>
     <h3>XML syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;StrokeStyle&gt;strokeStyle&lt;/StrokeStyle&gt;</pre> 
     <h3>Input value:</h3>
-    <p>strokeStyle: a StrokeStyle Property Type object</p>
+    <p>strokeStyle: an object of type <code><a href="Data_Types.html#strokestyle">StrokeStyle</a></code>.</p>
     <h3>Result:</h3>
     <p>The stroke of the target object is assigned value</p>
     <h3>Example:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;StrokeStyle&gt;StrokeStyle.fromString("1|[1,3]")&lt;/StrokeStyle&gt;</pre>     
+    &lt;StrokeStyle&gt;StrokeStyle.fromString("1|[1,3]")&lt;/StrokeStyle&gt;</pre>
+    <p>Or:</p>
     <pre name="code" class="xml" >
-    &lt;Property name="strokeStyle" type="StrokeStyle" displayName="Border Style"&gt;1|&lt;/Property&gt;
+    &lt;Property name="strokeStyle"
+              type="StrokeStyle" displayName="Border Style"&gt;1|[2,1,2,4]&lt;/Property&gt;
     ...
     &lt;StrokeStyle&gt;$strokeStyle&lt;/StrokeStyle&gt;
     </pre> 
@@ -261,19 +272,20 @@
     
     
     <h2>Visibility</h2>
-    <p>This behavior is used to assign value to "visibility" or "display" attribute of the target object</p>
+    <p>This behavior is used to assign value to "visibility" and "display" attribute of the target object</p>
     <h3>Target object:</h3>
     <p>All kind of objects.</p>
     <h3>XML Syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;Visibility&gt;value&lt;/Visibility&gt;</pre>  
     <h3>Input value:</h3>
-    <p>value: boolean value. True | false or a number.</p>
+    <p>value: either Pencil's <code><a href="Data_Types.html#bool">Bool</a></code> data type or a JavaScript boolean value.</p>
     <h3>Result:</h3>
-    <p>"visibility" or "display" attribute of target object is assigned value.</p>
+    <p>"visibility" and "display" attribute of target object is assigned value.</p>
     <h3>Example:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
-    &lt;Visibility&gt;Bool.fromString("true")&lt;/Visibility&gt;</pre> 
+    &lt;Visibility&gt;Bool.fromString("true")&lt;/Visibility&gt;</pre>
+    <p>Or:</p>
     <pre name="code" class="xml">
       &lt;Property name="value" displayName="Value" type="Bool"&gt;true&lt;/Property&gt;
       ...
@@ -292,10 +304,10 @@
       &lt;Arg&gt;alignment&lt;/Arg&gt;
     &lt;/BoxFit&gt;</pre>
     <h3>Input value:</h3>
-    <p>bound: a Bound Property type object.</p>
-    <p>alignment: an Alignment Property type object.</p>
+    <p>bound: an object of type <code><a href="Data_Types.html#bound">Bound</a></code></p>
+    <p>alignment: an object of type <code><a href="Data_Types.html#alignment">Alignment</a></code>.</p>
     <h3>Result:</h3>
-    <p>The text bound is created and is aligned on horizontal &amp; vertical in this bound.</p>
+    <p>Text content of the elment are changed to fit the provided bound and in the provided alignment.</p>
     <h3>Example:</h3>
     <pre name="code" class="xml">
     &lt;BoxFit&gt;
@@ -303,7 +315,8 @@
       &lt;Arg&gt;new Alignment(1,1)&lt;/Arg&gt;
     &lt;/BoxFit&gt;</pre>    
     <pre name="code" class="xml">
-    &lt;Property name="textAlign" displayName="Text Alignment" type="Alignment"&gt;1,1&lt;/Property&gt;
+    &lt;Property name="textAlign"
+              displayName="Text Alignment" type="Alignment"&gt;1,1&lt;/Property&gt;
     ...
     &lt;BoxFit&gt;
       &lt;Arg&gt;Bound.fromBox($box)&lt;/Arg&gt;
@@ -313,19 +326,18 @@
     
     
     <h2>Font</h2>
-    <p>This behavior is used to set font of the target object. With this behavior, many attributes of the target
-      object help to display text are assigned value.</p>
+    <p>This behavior is used to set the target object text font. With this behavior, a set of font-related attributes are changed.</p>
     <h3>Target object:</h3>
     <p>SVG Text object and HTML objects.</p>
     <h3>XML Syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;Font&gt;font&lt;/Font&gt;</pre>
     <h3>Input value:</h3>
-    <p>font: a Font Property type object.</p>
+    <p>font: an object of type <code><a href="Data_Types.html#font">Font</a></code>.</p>
     <h3>Result:</h3>
     <p>"font-family", "font-size", "font-weight", "font-style" and "text-decoration" attribute of text object are
       assigned value.</p>
-    <p>Note that "text-decoration" attribute is only belonged to HTML objects. So it is impossible to set
+    <p>Note that "text-decoration" attribute is only supported for HTML objects. So it is impossible to set
       "text-decoration" to SVG Text object.</p>
     <h3>Example:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
@@ -338,7 +350,7 @@
     
     
     <h2>D</h2>
-    <p>This behavior is used to set "d" attribute of SVG path object. The
+    <p>This behavior is used to set "d" attribute of an SVG path object. The
       values are put into D behavior will be listed in input value.</p>
     <h3>Target object:</h3>
     <p>Only path object.</p>
@@ -346,7 +358,7 @@
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;D&gt;[...]&lt;/D&gt;</pre>
     <h3>Input value:</h3>
-    <p>[...] : an array of direction instruction functions. The functions includes:</p>    
+    <p>[...] : an array of drawing instruction functions. The functions includes:</p>    
     <p>M(x,y) : set point.</p>
     <p>L(x,y) : draw a line from a point to x,y.</p>
       <pre name="code" class="xml:nocontrols:nogutter" >
@@ -359,8 +371,8 @@
     <p>q(x1, y1, x, y): the same as q in SVG.</p>
     <p>z: the same as z in SVG.</p>
     <h3>Result:</h3>
-    <p>"d" attribute of path object is assigned value. The array of direction
-      instruction functions and then is transfer to SVG direction instruction.</p>
+    <p>"d" attribute of the path object is assigned value. The array of drawing
+      instruction functions and then is transfer to SVG drawing instructions.</p>
     <h3>Example:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
       &lt;D&gt;[M(0, 0), L($box.w, 0), L($box.w, $box.h), L(0, $box.h), z]&lt;/D&gt;</pre>
@@ -443,10 +455,6 @@
     <h3>XML Syntax:</h3>
     <pre name="code" class="xml:nocontrols:nogutter" >
     &lt;DomContent&gt;&lt;/DomContent&gt;</pre> 
-    <hr/>
-    
-    
-    <h2>AttachmentContent</h2>
     <hr/>
     
     
