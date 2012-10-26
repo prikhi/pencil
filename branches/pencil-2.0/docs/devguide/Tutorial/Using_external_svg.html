@@ -97,15 +97,15 @@ src="../images/Main_html_m6eadbed1.png"
   </p:Content>
 </Shape>
 ]]></pre>
-    
+     
     <p>The stencil will contain only the SVG content copied from the original hand image. This hand can be
       scaled with a fixed ratio and a fixed stroke-width now.</p>
     <h3>Maintaining a Fixed Stroke Width</h3>
-    <p>Please note that without any special handling, when and SVG element is scaled with <code>Transform</code>
+    <p>Please note that without any special handling, when and SVG element is scaled with <code><a href="~/wiki/ref/Behaviors.html#transform">Transform</a></code>
     behavior, the stroke width will be also scaled accordingly. If we would like to have the hand scaled while
-    the stroke width is unchanged, the way to do it is as in the above example: recalculating the width using the scale
+    the stroke width is unchanged, the way to do it is as in the above example: recalculating the width using the scale 
     ratio.</p>
-<pre name="code" class="xml:nocontrols"><![CDATA[
+<pre name="code" class="xml:nocontrols"><![CDATA[ 
       <StrokeStyle>
         new StrokeStyle($strokeStyle.w / (Math.max($box.w / 36, $box.h / 45)),
             $strokeStyle.array);
@@ -114,7 +114,7 @@ src="../images/Main_html_m6eadbed1.png"
     <h3>Grouping SVG elements</h3>
     <p>Many of the SVG attributes are inherited from parent node to children. In this example, the two <code>&lt;path&gt;</code>
     elements are grouped in to a <code>&lt;g&gt;</code> parent node so that common behaviors can be applied to just this parent node.
-    By grouping, all the <code>Fill</code>, <code>StrokeStyle</code>, <code>StroleColor</code> and <code>Transform</code>
+    By grouping, all the <code><a href="~/wiki/ref/Behaviors.html#fill">Fill</a></code>, <code><a href="~/wiki/ref/Behaviors.html#strokestyle">StrokeStyle</a></code>, <code><a href="~/wiki/ref/Behaviors.html#strokecolor">StroleColor</a></code> and <code><a href="~/wiki/ref/Behaviors.html#transform">Transform</a></code>
     behaviors will be applied to the paths.</p>
     
     <p>In case one or more children need to have special treatments, you can always asign it an id and declear

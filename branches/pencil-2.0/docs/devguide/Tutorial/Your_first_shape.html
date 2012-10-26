@@ -22,7 +22,7 @@
              icon="Icons/plain-text.png"&gt;
         &lt;Properties&gt;
           &lt;PropertyGroup name="Text"&gt;
-            &lt;Property name="label" displayName="Label"
+            &lt;Property name="label" displayName="Label" 
                       type="PlainText"&gt;Hello World&lt;/Property&gt;
             &lt;Property name="textColor" displayName="Color"
                       type="Color"&gt;#000000ff&lt;/Property&gt;
@@ -36,7 +36,7 @@
             &lt;TextContent&gt;$label&lt;/TextContent&gt;
             &lt;Fill&gt;$textColor&lt;/Fill&gt;
             &lt;Font&gt;$textFont&lt;/Font&gt;
-            &lt;BoxFit&gt;
+            &lt;BoxFit&gt; 
               &lt;Arg&gt;new Bound(0, 0, 100, 12)&lt;/Arg&gt;
               &lt;Arg&gt;new Alignment(0, 1)&lt;/Arg&gt;
             &lt;/BoxFit&gt;
@@ -50,7 +50,7 @@
     &lt;/Shapes&gt;</pre>
     <p>Each child node in <code>&lt;For&gt;&lt;/For&gt;</code> is an behavior that defines how content should be changed
     according to the properties. More details about can be found at the <a href="~/wiki/ref/Behaviors.html">Behavior Reference</u>.</p>
-    <p>The <code>$label</code> variable is used in the <code>TextContent</code> behavior in this example shows you the
+    <p>The <code>$label</code> variable is used in the <code><a href="~/wiki/ref/Behaviors.html#textcontent">TextContent</a></code> behavior in this example shows you the
     way properties can be referenced in the input arguments for behaviors.</p>
   </body>
 </html>

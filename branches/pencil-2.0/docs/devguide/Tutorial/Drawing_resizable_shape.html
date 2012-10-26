@@ -49,8 +49,8 @@
     doing scaling via the geometry editor, the behavior will reflect that change into the SVG element.</p>
     <h3>Add Rounded Corner</h3>
     <p>SVG rectangle may have rounded corners. Pencil also supports Radius
-      behaviour to simplify this. In this example we add a <code>Handle</code> property into the shape and
-      use its value in the <code>Radius</code> behavior.</p>
+      behaviour to simplify this. In this example we add a <code><a href="~/wiki/ref/Data_Types.html#handle">Handle</a></code> property into the shape and 
+      use its value in the <code><a href="~/wiki/ref/Behaviors.html#radius">Radius</a></code> behavior.</p>
 <pre name="code" class="xml"><![CDATA[
 <PropertyGroup name="Handles">
   <Property name="radius"
@@ -69,10 +69,10 @@
 </Behaviors>
 ]]></pre>
     
-<p>In previous examples, <code>Dimension</code> property type is used for drawing resizable
+<p>In previous examples, <code><a href="~/wiki/ref/Data_Types.html#dimension">Dimension</a></code> property type is used for drawing resizable
       shapes via the <code>Box</code> behavior. However the <code>Box</code> behavior can be used only in
-      case objects have width and height attributes. For other cases that we want to apply the <code>Dimension</code> value to
-      an arbitrary attribute we can use the <code>Attr</code> behavior. This approach can be used for all other cases, not limitted to property of type <code>Dimension</code>.</p>
+      case objects have width and height attributes. For other cases that we want to apply the <code><a href="~/wiki/ref/Data_Types.html#dimension">Dimension</a></code> value to
+      an arbitrary attribute we can use the <code><a href="~/wiki/ref/Behaviors.html#attr">Attr</a></code> behavior. This approach can be used for all other cases, not limitted to property of type <code><a href="~/wiki/ref/Data_Types.html#dimension">Dimension</a></code>.</p>
 <pre name="code" class="xml"><![CDATA[
 <Shape id="ms-oval" displayName="Oval" icon="Icons/oval.png">
   <Properties>
