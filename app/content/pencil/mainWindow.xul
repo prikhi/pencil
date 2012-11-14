@@ -198,6 +198,8 @@
 
         <command id="toggleCollectionPaneCommand1" oncommand="Pencil.toggleCollectionPane(true);"/>
         <command id="toggleFullscreenCommand" oncommand="Pencil.toggleFullscreen();"/>
+
+        <command id="openErrorConsoleCommand" oncommand="window.open('chrome://global/content/console.xul', 'global:console', 'chrome, centerscreen, resizable=yes, dialog=no, modal=no, dependent=yes,extrachrome,scrollbars,status,toolbar')"/>
     </commandset>
     <keyset>
         <key id="newDocumentKey" command="newDocumentCommand" modifiers="accel" key="N"/>
@@ -319,6 +321,7 @@
                 <menupopup id="view-popup">
                     <menuitem class="menuitem-iconic view-collection-pane-menu" label="&menu.collection.pane.label;" type="checkbox" checked="false" key="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
                     <menuitem id="hideHeavyElementsMenuItem" label="&menu.hide.heavy.elements.label;" type="checkbox" checked="false" command="hideHeavyElementsCommand" key="hideHeavyElementsKey"/>
+                    <menuitem label="Fullscreen" key="toggleFullscreenKey" command="toggleFullscreenCommand" />
                 </menupopup>
             </menu>
             <menu id="shape-menu" label="&menu.shape.label;" accesskey="&menu.shape.accesskey;">
@@ -361,6 +364,8 @@
                             <menuseparator/>
                             <menuitem label="Load Developer Stencil Directory..." oncommand="Pencil.selectDeveloperStencilDir();"/>
                             <menuitem label="Unload Developer Stencil..." oncommand="Pencil.unselectDeveloperStencilDir();"/>
+                            <menuseparator/>
+                            <menuitem label="Show Error Console" command="openErrorConsoleCommand"/>
                         </menupopup>
                     </menu>
                     <menuseparator/>

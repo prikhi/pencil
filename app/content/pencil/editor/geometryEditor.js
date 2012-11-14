@@ -632,13 +632,13 @@ GeometryEditor.prototype.getLockingPolicy = function () {
 };
 GeometryEditor.prototype.getMinDimension = function () {
     //FIXME: this value is picked up from either the current shape box constraint or the system fallback constraint
-    var min = { w: 15, h: 15 };
+    var min = { w: 2, h: 2 };
 
     var w = this.geo.dim.w;
     var h = this.geo.dim.h;
 
     var locking = this.getLockingPolicy();
-    if (locking.ratio && (w > 15 || h > 15)) {
+    if (locking.ratio && (w > 2 || h > 2)) {
         if (w < h) {
             min.h = Math.round(min.h * (h / w));
         } else {

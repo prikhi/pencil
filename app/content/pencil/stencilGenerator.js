@@ -139,7 +139,7 @@ StencilGenerator.onload = function (event) {
         }
     };
 
-    StencilGenerator.checkNextWizard = setInterval(_checkNextWizard, 100);
+    StencilGenerator.checkNextWizard = setInterval(_checkNextWizard, 1000);
 
     StencilGenerator.stencilName = document.getElementById("stencilName");
     StencilGenerator.stencilIcon = document.getElementById("stencilIcon");
@@ -303,22 +303,33 @@ StencilGenerator.getBox = function (node) {
 
     return box;
 };
-StencilGenerator.createData = function (node, defNode, metaNode) {
-    var box = StencilGenerator.getBox(node);
+StencilGenerator.formalizeNodeToRoot = function (node) {
+    var g = node;
 
-    var transform = Svg.toTransformText(node.getTransformToElement(node.ownerSVGElement));
+    var svg = g.ownerSVGElement;
+    var matrix = g.getTransformToElement(svg);
 
-    var translate = "translate(" + (0 - box.x) + "," + (0 - box.y) + ")";
-    var newTransform = transform ? (transform + " " + translate) : translate;
+    var c = g.cloneNode(true);
 
-    debug("Old transform: " + transform);
-    debug("New transform: " + newTransform);
+    var g = svg.ownerDocument.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.appendChild(c);
+    g.setAttribute("transform", Svg.toTransformText(matrix));
+    c = g;
+    var g = svg.ownerDocument.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.appendChild(c);
 
-    var n = node.cloneNode(true);
-    n.removeAttribute("transform");
+    svg.appendChild(g);
+    var bbox = g.getBBox();
+    g.setAttribute("transform", "translate(" + (0 - bbox.x) + "," + (0 - bbox.y) + ")");
 
-    return "<g xmlns=\"http://www.w3.org/2000/svg\" transform=\"" + newTransform + "\">"
-             + Dom.serializeNode(defNode) + Dom.serializeNode(metaNode) + Dom.serializeNode(n) + "</g>";
+    return g;
+};
+
+StencilGenerator.createDataNode = function (node, defNode, metaNode) {
+    var g = StencilGenerator.formalizeNodeToRoot(node);
+    g.insertBefore(metaNode.cloneNode(true), g.firstChild);
+    g.insertBefore(defNode.cloneNode(true), g.firstChild);
+    return g;
 };
 StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
     try {
@@ -331,16 +342,19 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
         var detectInkscape = document.getElementById("detectInkscape").checked;
         if (detectInkscape) {
             Dom.workOn("//*[@inkscape:groupmode='layer']/*", svgDocument.documentElement, function (path) {
-                var box = StencilGenerator.getBox(path);
-                debug("Box: " + [box.x, box.y, box.width, box.height]);
+                var node = StencilGenerator.createDataNode(path, defNode, metaNode)
+                var box = StencilGenerator.getBox(node);
                 stencils.push({
                     id: "svg_" + index + "_" + id,
                     label: item._label + " " + index + "_"  + id,
                     type: "SVG",
                     box: box,
-                    data: StencilGenerator.createData(path, defNode, metaNode),
+                    data: Dom.serializeNode(node),
                     img: item
                 });
+                try {
+                    node.parentNode.removeChild(node);
+                } catch (e) {}
                 id++;
             });
         }
@@ -439,10 +453,12 @@ StencilGenerator.loadStencil = function (result, stencils, index, callback, list
                     box.style.MozBoxPack = "start";
                     box.style.MozBoxAlign = "start";
 
-                    window.addEventListener("DOMFrameContentLoaded", function () {
+                    var domContentLoadedListener = function () {
+                        window.removeEventListener("DOMFrameContentLoaded", domContentLoadedListener, false);
                         debug("DOMFrameContentLoaded " + [index, StencilGenerator.svgFrame.contentWindow.document]);
                         if (!StencilGenerator.svgFrame.contentWindow.initialized) {
-                            StencilGenerator.svgFrame.contentWindow.addEventListener("MozAfterPaint", function (event) {
+                            var afterPaintListener = function (event) {
+                                StencilGenerator.svgFrame.contentWindow.removeEventListener("MozAfterPaint", afterPaintListener, false);
                                 if (!StencilGenerator.svgFrame._stencils) return;
                                 var _stencils = StencilGenerator.svgFrame._stencils;
                                 var _index = StencilGenerator.svgFrame._index;
@@ -453,11 +469,13 @@ StencilGenerator.loadStencil = function (result, stencils, index, callback, list
                                 } else {
                                     StencilGenerator.loadStencil(_result, _stencils, _index + 1, callback, listener);
                                 }
-                            }, false);
+                            };
+                            StencilGenerator.svgFrame.contentWindow.addEventListener("MozAfterPaint", afterPaintListener, false);
                             StencilGenerator.svgFrame.contentDocument.documentElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
                             StencilGenerator.svgFrame.contentWindow.initialized = true;
                         }
-                    }, false);
+                    };
+                    window.addEventListener("DOMFrameContentLoaded", domContentLoadedListener, false);
 
                     StencilGenerator.svgFrame.contentWindow.document.body.setAttribute("style", "padding: 0px; margin: 0px;");
                 }
