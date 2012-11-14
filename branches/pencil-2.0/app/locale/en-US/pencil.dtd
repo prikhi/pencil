@@ -95,8 +95,6 @@
 <!ENTITY menu.view.label                         "View">
 <!ENTITY pencil.title                            "Pencil">
 <!ENTITY tab.collections.label                   "Collections">
-<!ENTITY tab.collections.label                   "Collections">
-<!ENTITY tab.my.stuffs.label                     "My Stuff">
 <!ENTITY tab.my.stuffs.label                     "My Stuff">
 <!ENTITY toolbar.align.bottom.label              "Align bottom">
 <!ENTITY toolbar.align.bottom.tooltiptext        "Align bottom">
@@ -308,7 +306,6 @@
 <!ENTITY label.description.value                 "Description:">
 <!ENTITY label.icon.value                        "Icon:">
 <!ENTITY label.name.value                        "Name:">
-<!ENTITY label.name.value                        "Name:">
 <!ENTITY label.select.pri.collection.value       "Select private collection:">
 <!ENTITY listitem.create.pri.collection.label    "Create new private collection">
 <!ENTITY wizard.collection.infor.desc            "Please enter collection or shape information.">
@@ -355,8 +352,8 @@
 <!ENTITY menu.boolean.accesskey                  "B">
 <!ENTITY menu.boolean.label                      "Boolean">
 <!ENTITY menu.copy.accesskey                     "C">
-<!ENTITY menu.copy.label                         "Copy">
 <!ENTITY menu.copy.name.label                    "Copy Name">
+<!ENTITY menu.copy.label                         "Copy">
 <!ENTITY menu.copy.value.label                   "Copy Value.">
 <!ENTITY menu.integer.accesskey                  "I">
 <!ENTITY menu.integer.label                      "Integer">
@@ -367,10 +364,10 @@
 <!ENTITY menu.reset.label                        "Reset">
 <!ENTITY menu.string.accesskey                   "S">
 <!ENTITY menu.string.label                       "String">
-<!ENTITY menu.uno.converter.label                "UNO Local commandline converter">
 <!ENTITY menu.copy.value.accesskey               "V">
 <!ENTITY menu.new.accesskey                      "w">
 <!ENTITY menu.modify.label                       "Modify">
+<!ENTITY menu.uno.converter.label                "UNO Local commandline converter">
 <!ENTITY pencil.settings.title                   "Pencil Settings">
 <!ENTITY prefpane.advanced.label                 "Advanced">
 <!ENTITY prefpane.clipart.browser.label          "Clipart Browser">

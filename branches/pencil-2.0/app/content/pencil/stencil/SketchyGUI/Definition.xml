@@ -27,7 +27,7 @@
             <Property name="defaultHeaderBGColor" type="Color" displayName="Default Header Background Color">#ccccccff</Property>
         </PropertyGroup>
         <PropertyGroup name="Table: border">
-            <Property name="defaultTableBorderColor" type="Color" displayName="Default Border Color">#00000055</Property>
+            <Property name="defaultTableBorderColor" type="Color" displayName="Default Border Color">#000000FF</Property>
             <Property name="defaultTableBorderStyle" type="StrokeStyle" displayName="Default Border Style">1|</Property>
         </PropertyGroup>
     </Properties>
@@ -83,7 +83,7 @@
                 <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
             </PropertyGroup>
             <PropertyGroup name="Text">
-                <Property name="textContent" displayName="Text Content" type="RichText"><![CDATA[]]></Property>
+                <Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[]]></Property>
                 <Property name="textFont" displayName="Default Font" type="Font"><E>$$textFont</E></Property>
                 <Property name="textColor" displayName="Text Color" type="Color"><E>$$textColor</E></Property>
                 <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
@@ -91,14 +91,14 @@
         </Properties>
         <Behaviors>
             <For ref="text">
-                <TextContent>$textContent</TextContent>
                 <Font>$textFont</Font>
                 <Fill>$textColor</Fill>
                 <Color>$textColor</Color>
-                <BoxFit>
+                <PlainTextContent>
+                    <Arg>$textContent</Arg>
                     <Arg>Bound.fromBox($box, $textPadding.x, $textPadding.y)</Arg>
                     <Arg>$textAlign</Arg>
-                </BoxFit>
+                </PlainTextContent>
             </For>
             <For ref="line1">
                 <Transform>[translate(($strokeStyle.w % 2 == 0 ? 0 : 0.5), ($strokeStyle.w % 2 == 0 ? 0 : 0.5))]</Transform>
@@ -118,16 +118,15 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <path id="line1" style="stroke-linejoin: round;"/>
-            <foreignObject x="0" y="0" width="200" height="150" id="text">
-                <div xmlns="http://www.w3.org/1999/xhtml"></div>
-            </foreignObject>
+            <text id="text"/>
         </p:Content>
     </Shape>
     <Shape id="line" displayName="Line" icon="Icons/line.png">
         <Properties>
             <PropertyGroup>
-                <Property name="a" displayName="Start" type="Handle">0,0</Property>
-                <Property name="b" displayName="Start" type="Handle">100,0</Property>
+                <Property name="a" displayName="Start" type="Handle" p:lockX="$mode.value == 'vertical'" p:lockY="$mode.value == 'horizontal'">0,0</Property>
+                <Property name="b" displayName="Start" type="Handle" p:lockX="$mode.value == 'vertical'"  p:lockY="$mode.value == 'horizontal'">100,0</Property>
+                <Property name="mode" displayName="Direction" type="Enum" p:enumValues="['horizontal|Horizontal', 'vertical|Vertical', 'free|Free']">free</Property>
             </PropertyGroup>
             <PropertyGroup name="Border">
                 <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$strokeColor</E></Property>
@@ -135,7 +134,7 @@
             </PropertyGroup>
         </Properties>
         <Behaviors>
-            <For ref="line1">
+            <For ref="line1,bg">
                 <Transform>[translate(($strokeStyle.w % 2 == 0 ? 0 : 0.5), ($strokeStyle.w % 2 == 0 ? 0 : 0.5))]</Transform>
                 <D>
                     [
@@ -151,10 +150,19 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-    			<path id="line1" style="stroke-linejoin: round;"/>
+    			<path id="bg" style="stroke: #FFFFFF; stroke-opacity: 0; stroke-width: 8px; fill: none;"/>
+    			<path id="line1" style="stroke-linejoin: round; fill: none;"/>
     		</g>
         </p:Content>
     </Shape>
+    <Shortcut displayName="Horizontal Line" icon="Icons/hline.png" to="line">
+        <PropertyValue name="b">100,0</PropertyValue>
+        <PropertyValue name="mode" p:readonly="true">horizontal</PropertyValue>
+    </Shortcut>
+    <Shortcut displayName="Vertical Line" icon="Icons/hline.png" to="line">
+        <PropertyValue name="b">0,100</PropertyValue>
+        <PropertyValue name="mode" p:readonly="true">vertical</PropertyValue>
+    </Shortcut>
     <Shape id="textbox" displayName="Text Field" icon="Icons/textfield.png">
         <Properties>
             <PropertyGroup>
@@ -797,9 +805,11 @@
              </For>
             <For ref="triangle">
                 <D>
+                    var d = $box.h / 5;
                     [
-                        sk($box.w - $box.h + 3.85 * $box.h / 25, 5 * $box.h / 25, $box.w - $box.h + 21.16 * $box.h / 25, 5 * $box.h / 25),
-                        skTo($box.w - $box.h + 12.51 * $box.h / 25, 20 * $box.h / 25),
+                        sk($box.w - $box.h / 2 - 0.87 * d, $box.h / 2 - d / 2, $box.w - $box.h / 2 + 0.87 * d, $box.h / 2 - d / 2),
+                        skTo($box.w - $box.h / 2, $box.h / 2 + d),
+                        skTo($box.w - $box.h / 2 - 0.87 * d, $box.h / 2 - d / 2),
                         z
                     ]
                 </D>
@@ -1806,7 +1816,7 @@ MenuItem]]></Property>
                                 table._children.push(tbody);
                             }
 
-                            fragment = F.newDOMFragment([table]);
+                            fragment = Dom.newDOMFragment([table]);
                         } catch (e) {
                             Console.dumpError(e);
                         }
@@ -1912,6 +1922,190 @@ MenuItem]]></Property>
                 </div>
                 <div xmlns="http://www.w3.org/1999/xhtml" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"/>
             </foreignObject>
+        </p:Content>
+    </Shape>
+    <Shape id="Balloon" displayName="Balloon" icon="Icons/balloon.png">
+        <Properties>
+            <PropertyGroup>
+                <Property name="box" type="Dimension">200,80</Property>
+                <Property name="withBlur" type="Bool" displayName="With Shadow">false</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Handles">
+                <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="Math.min($box.w, $box.h) / 2">8,0</Property>
+
+                <Property name="leftStart" displayName="Start Point" type="Handle" p:lockX="true" p:minY="$radius.x + 2" p:maxY="$leftEnd.y - 5" p:disabled="F.getRelativeLocation($pin, $box) != 'left'">0,12</Property>
+                <Property name="leftEnd" displayName="End Point" type="Handle" p:lockX="true" p:minY="$leftStart.y + 5" p:maxY="$box.h - $radius.x - 2" p:disabled="F.getRelativeLocation($pin, $box) != 'left'">0,33</Property>
+
+                <Property name="rightStart" displayName="Start Point" type="Handle" p:lockX="true" p:expressionX="$box.w" p:minY="$radius.x + 2" p:maxY="$rightEnd.y - 5" p:disabled="F.getRelativeLocation($pin, $box) != 'right'">0,12</Property>
+                <Property name="rightEnd" displayName="End Point" type="Handle" p:lockX="true" p:expressionX="$box.w" p:minY="$rightStart.y + 5" p:maxY="$box.h - $radius.x - 2" p:disabled="F.getRelativeLocation($pin, $box) != 'right'">0,33</Property>
+
+                <Property name="topStart" displayName="Start Point" type="Handle" p:lockY="true" p:minX="$radius.x + 2" p:maxX="$topEnd.x - 5" p:disabled="F.getRelativeLocation($pin, $box) != 'top'">12,0</Property>
+                <Property name="topEnd" displayName="End Point" type="Handle" p:lockY="true" p:minX="$topStart.x + 5" p:maxX="$box.w - $radius.x - 2" p:disabled="F.getRelativeLocation($pin, $box) != 'top'">33,0</Property>
+
+                <Property name="bottomStart" displayName="Start Point" type="Handle" p:lockY="true" p:expressionY="$box.h" p:minX="$radius.x + 2" p:maxX="$bottomEnd.x - 5" p:disabled="F.getRelativeLocation($pin, $box) != 'bottom'">12,0</Property>
+                <Property name="bottomEnd" displayName="End Point" type="Handle" p:lockY="true" p:expressionY="$box.h" p:minX="$bottomStart.x + 5" p:maxX="$box.w - $radius.x - 2" p:disabled="F.getRelativeLocation($pin, $box) != 'bottom'">33,0</Property>
+
+                <Property name="pin" displayName="Balloon Pin" type="Handle" p:connectTo="*" p:noMove="true">-12,23</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Color" type="Color">
+                    <E>$$fillColor</E>
+                </Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Color" type="Color">
+                    <E>$$strokeColor</E>
+                </Property>
+                <Property name="strokeStyle" displayName="Style" type="StrokeStyle">
+                    <E>$$strokeStyle</E>
+                </Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Annotation]]></Property>
+                <Property name="textFont" displayName="Default Font" type="Font">
+                    <E>$$textFont</E>
+                </Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color">
+                    <E>$$textColor</E>
+                </Property>
+                <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="rect">
+                <D>
+                    var type = F.getRelativeLocation($pin, $box);
+
+                    var x = {"left": [sk($radius.x, 0, $box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                                        skTo($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                                        skTo($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                                        skTo(0, $leftEnd.y), skTo($pin.x, $pin.y), skTo(0, $leftStart.y), skTo(0, $radius.x),
+                                        C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)],
+
+                    "top": [sk($radius.x, 0, $topStart.x,0), skTo($pin.x, $pin.y), skTo($topEnd.x,0),
+                            skTo($box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                            skTo($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                            skTo($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                            skTo(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)],
+                    "right": [sk($radius.x, 0, $box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                            skTo($box.w, $rightStart.y),skTo($pin.x, $pin.y), skTo($box.w, $rightEnd.y), skTo($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                            skTo($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                            skTo(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)] ,
+                    "bottom": [sk($radius.x, 0, $box.w - $radius.x, 0), C($box.w - $radius.x / 3, 0, $box.w, $radius.x / 3, $box.w, $radius.x),
+                            skTo($box.w, $box.h - $radius.x), C($box.w, $box.h - $radius.x / 3, $box.w - $radius.x / 3, $box.h, $box.w - $radius.x, $box.h),
+                            skTo($bottomEnd.x, $box.h), skTo($pin.x, $pin.y),skTo($bottomStart.x, $box.h),
+                            skTo($radius.x, $box.h), C($radius.x / 3, $box.h, 0, $box.h - $radius.x / 3, 0, $box.h - $radius.x),
+                            skTo(0, $radius.x),C(0, $radius.x / 3, $radius.x / 3, 0, $radius.x, 0)]
+                    }[type];
+                    x</D>
+                <Fill>$fillColor</Fill>
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+            <For ref="text">
+                <Font>$textFont</Font>
+                <Fill>$textColor</Fill>
+                <Color>$textColor</Color>
+                <PlainTextContent>
+                    <Arg>$textContent</Arg>
+                    <Arg>Bound.fromBox($box, $radius.x / 2)</Arg>
+                    <Arg>$textAlign</Arg>
+                </PlainTextContent>
+            </For>
+            <For ref="bgCopy">
+                <ApplyFilter>$withBlur</ApplyFilter>
+                <Visibility>$withBlur</Visibility>
+            </For>
+        </Behaviors>
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+
+            <defs>
+                <filter id="imageShading" height="1.2558399" y="-0.12792" width="1.06396" x="-0.03198">
+                    <feGaussianBlur stdDeviation="1.3325" in="SourceAlpha" />
+                </filter>
+                <g id="container">
+                    <path transform="translate(0.5 0.5)" style="stroke-width: 1px;" id="rect" />
+                </g>
+            </defs>
+            <use xlink:href="#container" id="bgCopy" transform="translate(1, 1)" p:filter="url(#imageShading)" style=" opacity:0.6;" p:heavy="true" />
+            <use xlink:href="#container" />
+            <text id="text"/>
+        </p:Content>
+    </Shape>
+    <Shape id="Pointer1" displayName="Pointer 1" icon="Icons/pointer1.png">
+        <Properties>
+            <PropertyGroup name="Common">
+                <Property name="box" type="Dimension" p:lockRatio="true">38,28</Property>
+                <Property name="angle" type="PlainText" p:readonly="true">45</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Color" type="Color">
+                    <E>$$fillColor</E>
+                </Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Color" type="Color">
+                    <E>$$strokeColor</E>
+                </Property>
+                <Property name="strokeStyle" displayName="Style" type="StrokeStyle">
+                    <E>$$strokeStyle</E>
+                </Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[1]]></Property>
+                <Property name="textFont" displayName="Default Font" type="Font">
+                    <E>$$textFont</E>
+                </Property>
+                <Property name="textColor" displayName="Default Text Color" type="Color">
+                    <E>$$textColor</E>
+                </Property>
+                <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="path">
+                <Transform>
+                    var c = {x: $box.w * 81 / 202.4, y: $box.h / 2};
+                    [
+                        scale($box.w / 202.4, $box.h / 152),
+                        translate(81, 76),
+                        rotate($angle),
+                        translate(-81, -76),
+                    ]
+                </Transform>
+                <Fill>$fillColor</Fill>
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>
+                    var r = 202.4 / $box.w;
+                    var a = [];
+                    if ($strokeStyle.array) {
+                        var b = $strokeStyle.array.split(",");
+                        for (var i = 0; i &lt; b.length; i ++) {
+                            var item = parseInt(b[i], 10);
+                            a.push(item * r);
+                        }
+                    }
+                    stencilDebug("r: " + r);
+                    stencilDebug("$strokeStyle.w * r: " + $strokeStyle.w);
+                    stencilDebug("r*: " + $strokeStyle.w * r);
+                    new StrokeStyle("" + $strokeStyle.w * r, "" + a);
+                </StrokeStyle>
+            </For>
+            <For ref="text">
+                <Font>$textFont</Font>
+                <Fill>$textColor</Fill>
+                <Color>$textColor</Color>
+                <PlainTextContent>
+                    <Arg>$textContent</Arg>
+                    <Arg>new Bound(0, 0, $box.h, $box.h)</Arg>
+                    <Arg>$textAlign</Arg>
+                </PlainTextContent>
+            </For>
+        </Behaviors>
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+            <path id="path" style="stroke-linejoin:round;"
+                    d="M 115.16242,135.0524 C 99.441333,146.0604 80.746673,146.47208 63.230283,143.73702 45.713894,141.00197 26.54735,137.94861 15.539353,122.22754 4.5313381,106.50645 8.7158499,72.255446 11.804461,54.739062 14.893073,37.222678 20.421317,30.076951 36.142397,19.068936 48.109263,10.689649 64.002155,4.2019066 78.480832,6.8535552 92.959509,9.5052038 120.87321,19.882029 132.84008,28.261314 l 35.40381,32.708176 38.23224,31.293962 -51.31371,19.273158 z" />
+            <text id="text"/>
         </p:Content>
     </Shape>
 </Shapes>

@@ -125,7 +125,6 @@ Pencil.behaviors.Font = function (font) {
     Svg.setStyle(this, "text-decoration", font.decor);
 };
 Pencil.behaviors.BoxFit = function (bound, align) {
-	debug("BoxFit called");
     try {
         var isText = (this.localName == "text");
         if (isText) {
@@ -220,6 +219,7 @@ const DEFAULT_SKETCHY_SEG_SIZE = 20;
 const DEFAULT_SKETCHY_OVERSHOOT = 3;
 const ROTATED_ANGLE = 10;
 const SKETCHY_ANGLE = 4;
+const SKETCHY_ANGLE_LEN_REF = 50;
 
 function sk(x1, y1, x2, y2, d, noMove) {
 	var result = [];
@@ -228,8 +228,13 @@ function sk(x1, y1, x2, y2, d, noMove) {
     var p1 = {x: x1, y: y1,};
     var p2 = {x: x2, y: y2,};
     var l = geo_vectorLength (p1, p2) / 3;
-	
-	var angle = Math.random() * SKETCHY_ANGLE - (SKETCHY_ANGLE / 2);
+
+    var maxAngle = SKETCHY_ANGLE;
+    if (l > SKETCHY_ANGLE_LEN_REF) {
+        maxAngle = SKETCHY_ANGLE_LEN_REF * SKETCHY_ANGLE / l;
+    }
+    
+	var angle = Math.random() * maxAngle - (maxAngle / 2);
 	angle = Math.PI * angle / 180;
 	
 	var a = geo_getRotatedPoint(p2, p1, l, angle);
