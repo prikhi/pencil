@@ -1767,6 +1767,8 @@
                     g.setAttribute("transform", "translate(" + [rect.x, rect.y] + ")");
 
                     this.selectShape(g);
+                    
+                    this.currentController.processNewGroup();
 
                     this.snappingHelper.updateSnappingGuide(this.currentController);
                     for (var t in this.currentController.targets) {
@@ -2435,6 +2437,10 @@
                         </menupopup>
                     </menu>
 
+                    <menuseparator/>
+                    
+                    <menuitem class="menuitem-iconic sizing-menu" aid="sizingPolicyMenuItem" label="Sizing Policy..." p:for="Shape,Group" oncommand="Group.openSizingPolicyDialog(Pencil.activeCanvas.currentController);"/>
+                    
                     <menuseparator/>
 
                     <menuitem class="menuitem-iconic properties-menu" aid="propertyMenuItem" label="&menu.properties.label;" command="editPagePropertiesCommand"/>

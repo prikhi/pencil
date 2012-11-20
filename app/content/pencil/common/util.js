@@ -1615,6 +1615,22 @@ Util.getFileExtension = function (path) {
     }
     return null;
 };
+Util.getCustomProperty = function (node, name, defaultValue) {
+	if (node.hasAttributeNS(PencilNamespaces.p, name)) {
+		return node.getAttributeNS(PencilNamespaces.p, name);
+	}
+	
+	return defaultValue;
+};
+Util.getCustomNumberProperty = function (node, name, defaultValue) {
+	var v = Util.getCustomProperty(node, name, null);
+	if (v == null) return defaultValue;
+	
+	return parseFloat(v);
+};
+Util.setCustomProperty = function (node, name, value) {
+	node.setAttributeNS(PencilNamespaces.p, "p:" + name, value);
+};
 
 function stencilDebug(x) {
     debug(x);
