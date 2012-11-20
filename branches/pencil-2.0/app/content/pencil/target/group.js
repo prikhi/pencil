@@ -119,10 +119,22 @@ Group.prototype.moveBy = function (dx, dy, targetSet, moving) {
     //   this.dockingManager.handleMoveBy(dx, dy, targetSet, moving);
     //}
 };
-Group.prototype.scaleTo = function (nw, nh, group) {
+Group.getSizingOriginalInfo = function (node) {
+	var ow = Util.getCustomProperty(node, "sizing-ow", null);
+	if (!ow) return null;
+	
+	return {
+			w0: Util.getCustomNumberProperty(node, "sizing-ow", 1),
+			h0: Util.getCustomNumberProperty(node, "sizing-oh", 1),
+			x0: Util.getCustomNumberProperty(node, "sizing-ox", 0),
+			y0: Util.getCustomNumberProperty(node, "sizing-oy", 0)
+	};
+};
+Group.prototype.scaleTo_noPolicy = function (nw, nh, group) {
     var geo = this.getGeometry();
     var dw = nw / geo.dim.w;
     var dh = nh / geo.dim.h;
+    
     for (t in this.targets) {
         var target = this.targets[t];
 
@@ -143,6 +155,57 @@ Group.prototype.scaleTo = function (nw, nh, group) {
     //    this.dockingManager.handleScaleTo(nw, nh, geo.dim.w, geo.dim.h, group);
     //}
 };
+Group.calculateLayout = function (ePos0, eSize0, gSize0, posPolicy, sizePolicy, size) {
+	var layout = {};
+	
+	if (sizePolicy == "relative") {
+		layout.size = eSize0 * size / gSize0;
+	} else if (sizePolicy == "start-end") {
+		var d = gSize0 - ePos0 - eSize0;
+		layout.size = size - d - ePos0;
+	} else {
+		layout.size = eSize0;
+	}
+	
+	if (posPolicy == "start") {
+		layout.pos = ePos0;
+	} else if (posPolicy == "middle") {
+		layout.pos = (size - layout.size) / 2;
+	} else if (posPolicy == "relative") {
+		layout.pos = ePos0 * size / gSize0;
+	} else {
+		var d = gSize0 - ePos0 - eSize0;
+		layout.pos = size - d - layout.size;
+	}
+	
+	return layout;
+};
+Group.prototype.scaleTo = function (nw, nh, group) {
+	var gi = Group.getSizingOriginalInfo(this.svg);
+	if (!gi) {
+		this.scaleTo_noPolicy(nw, nh, group);
+		return;
+	}
+	
+    var geo = this.getGeometry();
+    
+    for (t in this.targets) {
+        var target = this.targets[t];
+        var ei = Group.getSizingOriginalInfo(target.svg);
+        var policy = Group.getSizingPolicy(target);
+        
+        var hLayout = Group.calculateLayout(ei.x0, ei.w0, gi.w0, policy.xPolicy, policy.wPolicy, nw);
+        var vLayout = Group.calculateLayout(ei.y0, ei.h0, gi.h0, policy.yPolicy, policy.hPolicy, nh);
+        
+
+        var bounding = target.getBounding(this.svg);
+
+        bounding = target.getBounding(this.svg);
+        target.moveBy(Math.round(hLayout.pos - bounding.x), Math.round(vLayout.pos - bounding.y), true);
+        target.scaleTo(Math.round(hLayout.size), Math.round(vLayout.size), true);
+    }
+};
+
 Group.prototype.rotateBy = function (da) {
     debug("rotateBy: " + da);
     var ctm = this.svg.getTransformToElement(this.svg.parentNode);
@@ -402,4 +465,47 @@ Group.prototype.invalidateOutboundConnections = function () {
     for (t in this.targets) {
         this.targets[t].invalidateOutboundConnections();
     }
+};
+Group.prototype.processNewGroup = function () {
+    var geo = this.getGeometry();
+    Util.setCustomProperty(this.svg, "sizing-ow", geo.dim.w);
+    Util.setCustomProperty(this.svg, "sizing-oh", geo.dim.h);
+    
+    for (t in this.targets) {
+        var target = this.targets[t];
+
+        var bounding = target.getBounding(this.svg);
+        
+        Util.setCustomProperty(target.svg, "sizing-ox", bounding.x);
+        Util.setCustomProperty(target.svg, "sizing-oy", bounding.y);
+
+        var targetGeo = target.getGeometry();
+        Util.setCustomProperty(target.svg, "sizing-ow", targetGeo.dim.w);
+        Util.setCustomProperty(target.svg, "sizing-oh", targetGeo.dim.h);
+    }
+};
+
+Group.getSizingPolicy = function (target) {
+	return {
+		xPolicy: Util.getCustomProperty(target.svg, "sizing-x-policy", "relative"),
+		yPolicy: Util.getCustomProperty(target.svg, "sizing-y-policy", "relative"),
+		wPolicy: Util.getCustomProperty(target.svg, "sizing-w-policy", "relative"),
+		hPolicy: Util.getCustomProperty(target.svg, "sizing-h-policy", "relative")
+	}
+};
+Group.openSizingPolicyDialog = function (target) {
+	var holder = {
+			input: Group.getSizingPolicy(target)
+	};
+	
+	var dialog = window.openDialog("chrome://pencil/content/sizingPolicyDialog.xul",
+            "sizingPolicyDialog" + Util.getInstanceToken(),
+            "modal,centerscreen", holder);
+	
+	if (!holder.output) return;
+	
+	Util.setCustomProperty(target.svg, "sizing-x-policy", holder.output.xPolicy);
+	Util.setCustomProperty(target.svg, "sizing-y-policy", holder.output.yPolicy);
+	Util.setCustomProperty(target.svg, "sizing-w-policy", holder.output.wPolicy);
+	Util.setCustomProperty(target.svg, "sizing-h-policy", holder.output.hPolicy);
 };

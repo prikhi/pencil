@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE dialog SYSTEM "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
+  <!ENTITY % pencilDTD SYSTEM "chrome://pencil/locale/pencil.dtd">
+  %pencilDTD;
+]>
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://pencil/skin/dialog.css" type="text/css"?>
+
+<dialog id="pencilSizingPolicyDialog" title="Sizing Policy"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+        buttons="cancel,accept"
+        buttonlabelaccept="&button.accept.label.apply;"
+        buttonlabelcancel="&button.cancel.label.cancel;"
+        ondialogaccept="return handleDialogAccept();"
+        style="min-width: 25em;">
+
+    <script src="chrome://pencil/content/common/util.js"/>
+    <script src="chrome://pencil/content/common/io.js"/>
+    <script src="chrome://pencil/content/sizingPolicyDialog.js"/>
+
+    <vbox style="padding: 1em;">
+        <groupbox>
+            <caption>Position</caption>
+            <hbox align="center">
+                <label value="Horizontal:" style="min-width: 10ex;" />
+                <menulist flex="1" id="xPolicy" oncommand="validateWidthPolicySelection();">
+                    <menupopup>
+                        <menuitem label="Attached to group's left" value="start"/>
+                        <menuitem label="Attached to group's center" value="middle"/>
+                        <menuitem label="Attached to group's right" value="end"/>
+                        <menuitem label="Relative to group width" value="relative"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+            <hbox align="center">
+                <label value="Vertical:" style="min-width: 10ex;" />
+                <menulist flex="1" id="yPolicy" oncommand="validateHeightPolicySelection();">
+                    <menupopup>
+                        <menuitem label="Attached to group's top" value="start"/>
+                        <menuitem label="Attached to group's middle" value="middle"/>
+                        <menuitem label="Attached to group's bottom" value="end"/>
+                        <menuitem label="Relative to group height" value="relative"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+        </groupbox>
+        <groupbox>
+            <caption>Size</caption>
+            <hbox align="center">
+                <label value="Width" style="min-width: 10ex;" />
+                <menulist flex="1" id="wPolicy">
+                    <menupopup>
+                        <menuitem label="Fixed width" value="fixed"/>
+                        <menuitem label="Relative to group width" value="relative"/>
+                        <menuitem label="Attached to both sizes" value="start-end" id="widthStartEndItem" disabled="true"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+            <hbox align="center">
+                <label value="Height:" style="min-width: 10ex;" />
+                <menulist flex="1" id="hPolicy">
+                    <menupopup>
+                        <menuitem label="Fixed height" value="fixed"/>
+                        <menuitem label="Relative to group height" value="relative"/>
+                        <menuitem label="Attached to both sizes" value="start-end" id="heightStartEndItem" disabled="true"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+        </groupbox>
+    </vbox>
+
+</dialog>
