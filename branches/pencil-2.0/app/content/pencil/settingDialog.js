@@ -22,6 +22,7 @@ handleOnLoad = function () {
     // e
     document.getElementById("enableDocking").disabled = true;
 
+    /*
     var currentConverer = Config.get("export.oo.converter", "uno");
     document.getElementById("unoBox").style.display = (currentConverer == "uno" ? "" : "none");
     document.getElementById("jodBox").style.display = (currentConverer == "jod" ? "" : "none");
@@ -31,6 +32,8 @@ handleOnLoad = function () {
     var path = Config.get("export.oo.converter.uno.path", "/bin/sh");
     document.getElementById("jodConverterUrl").value = url;
     document.getElementById("unoConverterUrl").value = path;
+    
+    */
 
     var w = Config.get("clipartbrowser.scale.width");
     var h = Config.get("clipartbrowser.scale.height");
