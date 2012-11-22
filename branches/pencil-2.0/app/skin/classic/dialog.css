@@ -105,3 +105,30 @@ dialog hbox.Body vbox html|a {
 #pencilAboutDialog textbox[readonly="true"] hbox {
 	padding: 3px;
 }
+
+#pencilSizingPolicyDialog button[type='radio'][disabled='true'] {
+	opacity: .2;
+}
+#pencilSizingPolicyDialog button[type='radio'] {
+	  -moz-appearance: none;
+	padding: 3px;
+	border: none !important;
+    background: rgba(255, 255, 255, 0.2);
+}
+#pencilSizingPolicyDialog button[type='radio'] hbox {
+	padding: 0px;
+	padding-start-value: 0px;
+	padding-end-value: 0px;
+}
+#pencilSizingPolicyDialog button[type='radio'] * {
+	margin: 0px;
+    margin-start-value: 0px;
+    margin-end-value: 0px;
+}
+#pencilSizingPolicyDialog button[type='radio'] label {
+	display: none;
+}
+#pencilSizingPolicyDialog button[type='radio'][checked='true'] {
+    border: solid 1px highlight !important;
+    background: rgba(33, 66, 99, 0.1);
+}

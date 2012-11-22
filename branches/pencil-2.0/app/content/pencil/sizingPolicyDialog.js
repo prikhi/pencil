@@ -13,51 +13,66 @@ function handleOnload() {
         Console.dumpError(e, "stdout");
     }
 }
-function validateWidthPolicySelection() {
-	if (xPolicy.value == "start") {
-		widthStartEndItem.disabled = false;
+function validateXPolicySelection() {
+	if (getPolicyValue("w") == "start-end") {
+		setPolicyValue("x", "start");
+		disableGroup("x", true);
 	} else {
-		widthStartEndItem.disabled = true;
-		if (wPolicy.value == "start-end") {
-			wPolicy.value = "fixed";
+		disableGroup("x", false);
+	}
+}
+function validateYPolicySelection() {
+	if (getPolicyValue("h") == "start-end") {
+		setPolicyValue("y", "start");
+		disableGroup("y", true);
+	} else {
+		disableGroup("y", false);
+	}
+}
+function getPolicyValue(name) {
+	var buttons = document.getElementById("group-" + name).getElementsByTagName("button");
+	for (var i = 0; i < buttons.length; i ++) {
+		if (buttons[i].checked) {
+			var id = buttons[i].id;
+			id.match(/^[^\-]+\-(.+)$/);
+			return RegExp.$1;
 		}
 	}
 }
-function validateHeightPolicySelection() {
-	if (yPolicy.value == "start") {
-		heightStartEndItem.disabled = false;
-	} else {
-		heightStartEndItem.disabled = true;
-		if (hPolicy.value == "start-end") {
-			hPolicy.value = "fixed";
-		}
+function setPolicyValue(name, value) {
+	var buttons = document.getElementById("group-" + name).getElementsByTagName("button");
+	debug("setting " + [name, value]);
+	for (var i = 0; i < buttons.length; i ++) {
+		var id = buttons[i].id;
+		id.match(/^[^\-]+\-(.+)$/);
+		var buttonValue = RegExp.$1;
+		buttons[i].checked = (buttonValue == value);
 	}
 }
+function disableGroup(name, disabled) {
+	var buttons = document.getElementById("group-" + name).getElementsByTagName("button");
+	for (var i = 0; i < buttons.length; i ++) {
+		buttons[i].disabled = disabled;
+	}
+}
+
 function handleOnloadImpl() {
-    xPolicy = document.getElementById("xPolicy");
-    yPolicy = document.getElementById("yPolicy");
-    wPolicy = document.getElementById("wPolicy");
-    hPolicy = document.getElementById("hPolicy");
-    
-    widthStartEndItem = document.getElementById("widthStartEndItem");
-    heightStartEndItem = document.getElementById("heightStartEndItem");
-    
     valueHolder = window.arguments[0];
     
-    xPolicy.value = valueHolder.input.xPolicy;
-    yPolicy.value = valueHolder.input.yPolicy;
-    wPolicy.value = valueHolder.input.wPolicy;
-    hPolicy.value = valueHolder.input.hPolicy;
+    setPolicyValue("w", valueHolder.input.wPolicy);
+    setPolicyValue("h", valueHolder.input.hPolicy);
+    setPolicyValue("x", valueHolder.input.xPolicy);
+    setPolicyValue("y", valueHolder.input.yPolicy);
     
-    validateWidthPolicySelection();
-    validateHeightPolicySelection();
+    validateXPolicySelection();
+    validateYPolicySelection();
 }
 function handleDialogAccept() {
 	valueHolder.output = {
-		xPolicy: xPolicy.value,
-		yPolicy: yPolicy.value,
-		wPolicy: wPolicy.value,
-		hPolicy: hPolicy.value
+		xPolicy: getPolicyValue("x"),
+		yPolicy: getPolicyValue("y"),
+		wPolicy: getPolicyValue("w"),
+		hPolicy: getPolicyValue("h")
 	};
 	
     return true;
