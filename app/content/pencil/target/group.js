@@ -120,14 +120,14 @@ Group.prototype.moveBy = function (dx, dy, targetSet, moving) {
     //}
 };
 Group.getSizingOriginalInfo = function (node) {
-	var ow = Util.getCustomProperty(node, "sizing-ow", null);
-	if (!ow) return null;
-	
 	return {
-			w0: Util.getCustomNumberProperty(node, "sizing-ow", 1),
-			h0: Util.getCustomNumberProperty(node, "sizing-oh", 1),
-			x0: Util.getCustomNumberProperty(node, "sizing-ox", 0),
-			y0: Util.getCustomNumberProperty(node, "sizing-oy", 0)
+		gw0: Util.getCustomNumberProperty(node, "sizing-gow", 1),
+		gh0: Util.getCustomNumberProperty(node, "sizing-goh", 1),
+		
+		w0: Util.getCustomNumberProperty(node, "sizing-ow", 1),
+		h0: Util.getCustomNumberProperty(node, "sizing-oh", 1),
+		x0: Util.getCustomNumberProperty(node, "sizing-ox", 0),
+		y0: Util.getCustomNumberProperty(node, "sizing-oy", 0)
 	};
 };
 Group.prototype.scaleTo_noPolicy = function (nw, nh, group) {
@@ -181,12 +181,12 @@ Group.calculateLayout = function (ePos0, eSize0, gSize0, posPolicy, sizePolicy, 
 	return layout;
 };
 Group.prototype.scaleTo = function (nw, nh, group) {
-	var gi = Group.getSizingOriginalInfo(this.svg);
-	if (!gi) {
+	if (!this.svg.getAttributeNS(PencilNamespaces.p, "sizing-gow")) {
 		this.scaleTo_noPolicy(nw, nh, group);
 		return;
 	}
 	
+	var gi = Group.getSizingOriginalInfo(this.svg);
     var geo = this.getGeometry();
     
     for (t in this.targets) {
@@ -194,8 +194,8 @@ Group.prototype.scaleTo = function (nw, nh, group) {
         var ei = Group.getSizingOriginalInfo(target.svg);
         var policy = Group.getSizingPolicy(target);
         
-        var hLayout = Group.calculateLayout(ei.x0, ei.w0, gi.w0, policy.xPolicy, policy.wPolicy, nw);
-        var vLayout = Group.calculateLayout(ei.y0, ei.h0, gi.h0, policy.yPolicy, policy.hPolicy, nh);
+        var hLayout = Group.calculateLayout(ei.x0, ei.w0, gi.gw0, policy.xPolicy, policy.wPolicy, nw);
+        var vLayout = Group.calculateLayout(ei.y0, ei.h0, gi.gh0, policy.yPolicy, policy.hPolicy, nh);
         
 
         var bounding = target.getBounding(this.svg);
@@ -468,8 +468,8 @@ Group.prototype.invalidateOutboundConnections = function () {
 };
 Group.prototype.processNewGroup = function () {
     var geo = this.getGeometry();
-    Util.setCustomProperty(this.svg, "sizing-ow", geo.dim.w);
-    Util.setCustomProperty(this.svg, "sizing-oh", geo.dim.h);
+    Util.setCustomProperty(this.svg, "sizing-gow", geo.dim.w);
+    Util.setCustomProperty(this.svg, "sizing-goh", geo.dim.h);
     
     for (t in this.targets) {
         var target = this.targets[t];

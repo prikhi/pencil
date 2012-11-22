@@ -1034,10 +1034,7 @@
                     }
 
                     if (this.controllerHeld && this.currentController) {
-                        tick("start");
-
                         if (this.currentController.markAsMoving) this.currentController.markAsMoving(true);
-                        tick("after mark");
                         var newX = Math.round(event.clientX / this.zoom);
                         var newY = Math.round(event.clientY / this.zoom);
 
@@ -1125,7 +1122,6 @@
                             }
                         }
                         
-                        tick("after move");
                         return;
                     }
 

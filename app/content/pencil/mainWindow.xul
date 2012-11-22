@@ -252,6 +252,7 @@
         <key id="groupKey" command="groupCommand" modifiers="accel" key="G"/>
         <key id="unGroupKey" command="unGroupCommand" modifiers="accel alt" key="G"/>
         <key id="unGroupKey2" command="unGroupCommand" modifiers="accel" key="U"/>
+        <key id="unGroupKey3" command="unGroupCommand" modifiers="accel shift" key="G"/>
 
         <key id="undoKey" command="undoCommand" modifiers="accel" key="Z"/>
         <key id="redoKey" command="redoCommand" modifiers="accel" key="Y"/>
