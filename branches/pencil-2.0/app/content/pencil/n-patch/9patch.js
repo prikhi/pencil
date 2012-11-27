@@ -52,7 +52,6 @@ function handleImageLoad () {
 };
 
 NinePatch.createPatches = function (image) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserRead");
     var w = image.width;
     var h = image.height;
     
@@ -191,7 +190,6 @@ function getPixel(imageData, x, y) {
 }
 
 function createPatch(srcImage, p1, p2, scaleX, scaleY) {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserRead");
     var canvas = document.getElementById("canvas");
     var w = p2.x - p1.x;
     var h = p2.y - p1.y;
@@ -225,8 +223,6 @@ function appendResult(data, w, h, scaleX, scaleY) {
 }
 
 function browse() {
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect UniversalBrowserRead");
-    
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, "Open .9.png", nsIFilePicker.modeOpen);

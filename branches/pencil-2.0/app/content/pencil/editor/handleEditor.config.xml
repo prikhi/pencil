@@ -18,6 +18,10 @@
                     stroke-opacity: 0;
                     fill-opacity: .7;
                 }
+                g.HandleEditor rect[p|name='Handle'][p|focused='true'] {
+                    stroke: #f00;
+                    stroke-opacity: .8 !important;
+                }
                 g.HandleEditor rect[p|name='Handle']:hover {
                     stroke-width: 6;
                     stroke-opacity: .3;

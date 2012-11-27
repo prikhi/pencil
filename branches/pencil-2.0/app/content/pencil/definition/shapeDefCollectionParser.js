@@ -168,6 +168,13 @@ ShapeDefCollectionParser.prototype.loadCustomLayout = function (uri) {
                 node.setAttribute("style", title);
             });
             
+            try {
+                var w = Dom.getSingle("./html:div", div).getAttribute("width");
+                div._originalWidth = parseInt(w, 10); 
+            } catch (e) {
+            	
+            }
+            
             return div;
         }
     } catch (ex) {

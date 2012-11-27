@@ -1184,6 +1184,17 @@
                         debug("OnScreenTextEditor.isEditing = true");
                         return;
                     }
+                    
+                    for (editor in this.onScreenEditors) {
+                        var e = this.onScreenEditors[editor];
+                        if (e.handleKeyPressEvent) {
+                            if (e.handleKeyPressEvent(event)) {
+                                return;
+                            }
+                        }
+                    }
+                    
+                    
                     if (event.keyCode == event.DOM_VK_UP ||
                         event.keyCode == event.DOM_VK_DOWN ||
                         event.keyCode == event.DOM_VK_LEFT ||
@@ -2096,10 +2107,10 @@
                             collection.shapeDefs.push(shapeDef);
                         }
 
-                        //debug("generating icon... ");
+                        debug("generating icon... ");
                         if (valueHolder.autoGenerateIcon) {
                             Util.generateIcon(target, 64, 64, 2, null, function (data) {
-                                //debug("done. ");
+                                debug("\tdone generating icon.");
                                 shapeDef.iconData = data;
                                 if (isNewCollection) {
                                     PrivateCollectionManager.addShapeCollection(collection);
@@ -2400,7 +2411,7 @@
                     <menuitem class="menuitem-iconic redo-menu" label="&menu.redo.label;" key="redoKey" command="redoCommand" aid="contextRedoMenu"/>
                     <menuseparator/>
 
-                    <menu label="&menu.arrangement.label;" aid="arrangementMenu" p:for="Shape,TargetSet">
+                    <menu label="&menu.arrangement.label;" aid="arrangementMenu" p:for="Shape,TargetSet,Group">
                         <menupopup>
                             <menuitem label="&menu.bring.to.front.label;" command="bringToFrontCommand" key="bringToFrontKey"/>
                             <menuitem label="&menu.bring.forward.label;" command="bringForwardCommand" key="bringForwardKey"/>
