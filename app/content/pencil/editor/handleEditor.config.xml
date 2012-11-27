@@ -19,11 +19,12 @@
                     fill-opacity: .7;
                 }
                 g.HandleEditor rect[p|name='Handle'][p|focused='true'] {
+                    stroke-width: 2;
+                    stroke-opacity: 1;
                     stroke: #f00;
-                    stroke-opacity: .8 !important;
                 }
                 g.HandleEditor rect[p|name='Handle']:hover {
-                    stroke-width: 6;
+                    stroke-width: 6 !important;
                     stroke-opacity: .3;
                     fill-opacity: 1;
                 }
