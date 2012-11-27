@@ -174,14 +174,15 @@ Pencil.toggleFullscreen = function () {
 };
 
 Pencil.selectDeveloperStencilDir = function () {
-	alert("Please select the directory that contains the 'Definition.xml' file of your stencil");
+	//alert("Please select the directory that contains the 'Definition.xml' file of your stencil");
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-    fp.init(window, "Select Developer Stencil Directory", nsIFilePicker.modeGetFolder);
+    fp.init(window, "Select Developer Stencil 'Definition.xml' file", nsIFilePicker.modeGetFile);
+    fp.appendFilter("Definition.xml", "Definition.xml");
     
     if (fp.show() != nsIFilePicker.returnOK) return;
     
-    var path = fp.file.path;
+    var path = fp.file.parent.path;
     Config.set("dev.stencil.path", path);
     CollectionManager.loadStencils();
 };

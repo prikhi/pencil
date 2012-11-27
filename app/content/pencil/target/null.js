@@ -175,6 +175,9 @@ Null.prototype.markAsMoving = function (moving) {
     Svg.optimizeSpeed(this.svg, moving);
 };
 
-
+Null.prototype.invalidateInboundConnections = function () {
+};
+Null.prototype.invalidateOutboundConnections = function () {
+};
 
 

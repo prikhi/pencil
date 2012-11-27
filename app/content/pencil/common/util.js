@@ -14,7 +14,7 @@ Components.utils.import("resource://gre/modules/NetUtil.jsm");
 Components.utils.import("resource://gre/modules/FileUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
 
-/* class */ var Dom = {}
+/* class */ var Dom = {};
 
 /* static int */ Dom.workOn = function (xpath, node, worker) {
     var nodes = Dom.getList(xpath, node);
@@ -1044,68 +1044,21 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
         content.setAttribute("transform", transform);
 
         svg.appendChild(content);
-
-        var id = "__generate_icon_iframe__";
-        var iframe = document.createElementNS(PencilNamespaces.html, "html:iframe");
-        var container = document.body;
-        if (!container) container = document.documentElement;
-        var box = document.createElement("box");
-        box.setAttribute("id", id);
-        box.setAttribute("style", "-moz-box-pack: start; -moz-box-align: start;");
-
-        iframe.setAttribute("style", "border: none; min-width: 0px; min-height: 0px; width: 1px; height: 1px; visibility: hidden;");
-        iframe.setAttribute("src", "chrome://pencil/content/blank.html");
-
-        box.appendChild(iframe);
-        var eb = container.getElementsByAttribute("id", id);
-        if (eb && eb[0]) {
-            container.removeChild(eb[0]);
+        
+        if (!rasterizer && Pencil) {
+            rasterizer = Pencil.rasterizer;
         }
-        container.appendChild(box);
+        
 
-        box.style.MozBoxPack = "start";
-        box.style.MozBoxAlign = "start";
-
-        var win = iframe.contentWindow;
-        win.document.body.setAttribute("style", "padding: 0px; margin: 0px;");
-
-        var tempFile = Local.newTempFile(Util.newUUID(), "svg");
-        Dom.serializeNodeToFile(svg, tempFile);
-
-        var url = ios.newFileURI(tempFile).spec;
-        win.addEventListener("DOMContentLoaded", function () {
-            try {
-                var doc = iframe.contentWindow.document;
-                var g = doc.documentElement.firstChild;
-                if (!g) return;
-
-                /*
-                var bound = g.getBoundingClientRect();
-                var transform = g.getAttribute("transform");
-                transform = "translate(" + (padding - bound.left) + " , " + (padding - bound.top) + ") " + transform;
-                g.setAttribute("transform", transform);
-                */
-
-                if (!rasterizer && Pencil) {
-                    rasterizer = Pencil.rasterizer;
+        if (iconPath) {
+            rasterizer.rasterizeDOM(svg, iconPath, function () {});
+        } else {
+            rasterizer.rasterizeDOMToUrl(svg, function (data) {
+                if (callback) {
+                    callback(data.url);
                 }
-
-                if (!rasterizer) return;
-                if (iconPath) {
-                    rasterizer.rasterizeDOM(doc.documentElement, iconPath, function () {});
-                } else {
-                    rasterizer.rasterizeDOMToUrl(doc.documentElement, function (data) {
-                        if (callback) {
-                            callback(data.url);
-                        }
-                    });
-                }
-            } catch(ex1) {
-                Console.dumpError(ex1);
-            }
-        }, false);
-        win.location.href = url;
-        debug("--> processing: " + url);
+            });
+        }
     } catch (ex) {
         Console.dumpError(ex);
     }
@@ -1644,7 +1597,18 @@ window.addEventListener("DOMContentLoaded", function () {
 }, false);
 
 var propertyTypeArray = ["Alignment", "Bool", "Bound", "Color", "CSS", "Dimension", "Enum", "Font", "Handle", "ImageData", "PlainText", "Point", "RichText", "RichTextArray", "ShadowStyle", "SnappingData", "StrokeStyle", "Outlet"];
-var pencilSandbox = Components.utils.Sandbox("http://pencil.evolus.vn/");
+
+Util.isXul17OrLater = function() {
+    var version = Util.getXulrunnerVersion();
+    var q = version.split("\.");
+    if (q.length > 0) {
+        return parseInt(q[0]) >= 17;
+    }
+    return false;
+};
+
+
+var pencilSandbox = Components.utils.Sandbox(Util.isXul17OrLater() ? window : "http://pencil.evolus.vn/");
 pencilSandbox.Dom = Dom;
 pencilSandbox.Console = Console;
 pencilSandbox.PencilNamespaces = PencilNamespaces;
@@ -1653,7 +1617,11 @@ Util.importSandboxFunctions = function () {
     for (var i = 0; i < arguments.length; i ++) {
         var f = arguments[i];
         if (typeof(f) == "function") {
-            pencilSandbox.importFunction(f);
+        	if (Util.isXul17OrLater()) {
+        		pencilSandbox[f.name] = f;
+        	} else {
+                pencilSandbox.importFunction(f);
+        	}
         } else {
             pencilSandbox[f.name] = f;
         }
@@ -1663,13 +1631,21 @@ Util.importSandboxFunctions = function () {
 function pEval(expression, extra) {
     for (var name in extra) {
         if (typeof(extra[name]) == "function") {
-            pencilSandbox.importFunction(extra[name]);
+        	if (Util.isXul17OrLater()) {
+                pencilSandbox[name] = extra[name];
+        	} else {
+                pencilSandbox.importFunction(extra[name]);
+        	}
         } else {
             pencilSandbox[name] = extra[name];
         }
     }
     
-    pencilSandbox.importFunction(stencilDebug);
+    if (Util.isXul17OrLater()) {
+        pencilSandbox.stencilDebug = stencilDebug;
+    } else {
+        pencilSandbox.importFunction(stencilDebug);
+    }
     
     try {
         //debug("eval: " + expression);

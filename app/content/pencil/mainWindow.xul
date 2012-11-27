@@ -191,6 +191,7 @@
         <command id="newWindowCommand" oncommand="window.openDialog('chrome://pencil/content/mainWindow.xul', '_blank', 'chrome, centerscreen, resizable=yes, dialog=no, all, modal=no, dependent=no');"/>
 
         <command id="installNewCollectionCommand" oncommand="CollectionManager.installNewCollection();"/>
+        <command id="installRemoteCollectionCommand" oncommand="window.openDialog('chrome://pencil/content/installRemoteCollectionsDialog.xul', '', 'modal,centerscreen,chrome')"/>
         <command id="manageExportTemplateCommand" oncommand="window.openDialog('chrome://pencil/content/templateManagementDialog.xul', '', 'modal,centerscreen,chrome')"/>
 
         <command id="shapeFilterCommand" oncommand="if (Config.get('collectionPane.floating') &amp;&amp; !Pencil.isCollectionPaneVisibled()) { Pencil.showCollectionPane(); } Pencil.collectionPane.shapeFilter.focus();"/>
@@ -353,15 +354,16 @@
                     <menuseparator/>
                     <menuitem label="&menu.dom.inspector.label;" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
                     <menuitem label="&menu.install.new.collection.label;" command="installNewCollectionCommand"/>
+                    <!-- 
+                    <menuitem label="Find online collections..." command="installRemoteCollectionCommand"/>
+                     -->
                     <menuitem label="&menu.manage.template.label;" command="manageExportTemplateCommand"/>
-                    <!--
-                    <menuitem label="Export as Layout..." oncommand="Pencil.controller._exportAsLayout()"/>
-                    -->
                     <menuseparator/>
                     <menu label="Developer Tools">
                         <menupopup id="devToolsMenu">
                             <menuitem class="menuitem-iconic stencil-generator-menu" label="&menu.stencil.generator.label;" oncommand="window.openDialog('chrome://pencil/content/stencilGenerator.xul', 'Stencilgenerator', 'chrome,centerscreen', Pencil);"/>
                             <menuitem id="nPatchGenerator" label="N-Patch Script Generator..." oncommand="window.openDialog('chrome://pencil/content/n-patch/nPatchGeneratorDialog.xul', 'Nn-Patch Generator', 'chrome,titlebar,toolbar,centerscreen,modal,resizable', Pencil);"/>
+                            <menuitem label="Export as Layout..." oncommand="Pencil.controller._exportAsLayout()"/>
                             <menuseparator/>
                             <menuitem label="Load Developer Stencil Directory..." oncommand="Pencil.selectDeveloperStencilDir();"/>
                             <menuitem label="Unload Developer Stencil..." oncommand="Pencil.unselectDeveloperStencilDir();"/>

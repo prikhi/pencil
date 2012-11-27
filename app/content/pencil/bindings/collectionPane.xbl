@@ -104,7 +104,7 @@
                 this.aboutMenuItem.addEventListener("command", function (event) {
                     if (thiz.currentCollection) {
                         var collection = thiz.currentCollection._collection;
-                        var detail = "<div>" + Dom.htmlEncode(collection.description) + "</div><ul>";
+                        var detail = "<div>" + Dom.htmlEncode(collection.description).replace(/[\r\n]+/g, "<br/>") + "</div><ul>";
                         if (collection.author) {
                             detail += "<li><strong>" + Util.getMessage("collectionpane.author.label") + "</strong> " + Dom.htmlEncode(collection.author) + "</li>";
                         }
@@ -202,10 +202,21 @@
                     collection._shapeCount = 0;
 
                     var thiz = this;
-                    if (collection.customLayout) {
+                    if (collection.customLayout && !(Config.get("collectionPane.disableCustomLayout") == true)) {
                         var importedLayout = div.ownerDocument.importNode(collection.customLayout, true);
-                        div.appendChild(importedLayout);
-                        div.setAttribute("class", "CustomLayoutContent");
+                        var divWidth = collection.customLayout._originalWidth;
+                        var width = hbox.boxObject.width;
+                        var r = width / divWidth;
+                        
+                        var wrapper = div.ownerDocument.createElementNS(PencilNamespaces.html, "div");
+                        wrapper.appendChild(importedLayout);
+                        
+                        div.appendChild(wrapper);
+                        
+                        var style = "position: absolute; top: 0px; left: 0px; -moz-transform: scale(" + r + ")";
+                        importedLayout.setAttribute("style", style);
+                        
+                        //div.setAttribute("class", "CustomLayoutContent");
                         Dom.workOn(".//html:*[@id]", div, function (node) {
                             var ref = node.getAttribute("id");
                             if (ref.indexOf(":") < 0) ref = collection.id + ":" + ref;

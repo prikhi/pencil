@@ -57,17 +57,17 @@ CollectionManager._loadDeveloperStencil = function () {
 		var path = Config.get("dev.stencil.path", "null");
 		if (!path || path == "none" || path == "null") {
 			Config.set("dev.stencil.path", "none");
-			return;
+		} else {
+			var file = Components.classes["@mozilla.org/file/local;1"].
+		    createInstance(Components.interfaces.nsILocalFile);
+			file.initWithPath(path);
+			
+			if (!file.exists()) return;
+			
+			var parser = new ShapeDefCollectionParser();
+			CollectionManager._loadStencil(file, parser, "isSystem");
 		}
 		
-		var file = Components.classes["@mozilla.org/file/local;1"].
-	    createInstance(Components.interfaces.nsILocalFile);
-		file.initWithPath(path);
-		
-		if (!file.exists()) return;
-		
-		var parser = new ShapeDefCollectionParser();
-		CollectionManager._loadStencil(file, parser, "isSystem");
 	} catch (e) {
         Util.error("Failed to load developer stencil", ex.message + "\n" + definitionFile.path, Util.getMessage("button.cancel.close"));
 	}
@@ -76,16 +76,15 @@ CollectionManager._loadDeveloperStencil = function () {
 		var path = Config.get("dev.stencil.dir", "null");
 		if (!path || path == "none" || path == "null") {
 			Config.set("dev.stencil.dir", "none");
-			return;
+		} else {
+			var file = Components.classes["@mozilla.org/file/local;1"].
+		    createInstance(Components.interfaces.nsILocalFile);
+			file.initWithPath(path);
+			
+			if (!file.exists()) return;
+			
+			CollectionManager._loadUserDefinedStencilsIn(file, null, "isSystem");
 		}
-		
-		var file = Components.classes["@mozilla.org/file/local;1"].
-	    createInstance(Components.interfaces.nsILocalFile);
-		file.initWithPath(path);
-		
-		if (!file.exists()) return;
-		
-		CollectionManager._loadUserDefinedStencilsIn(file, null, "isSystem");
 	} catch (e) {
         Util.error("Failed to load developer stencil", ex.message + "\n" + definitionFile.path, Util.getMessage("button.cancel.close"));
 	}

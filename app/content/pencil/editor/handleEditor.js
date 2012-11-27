@@ -90,11 +90,24 @@ HandleEditor.prototype.findHandle = function (element) {
 HandleEditor.prototype.handleMouseDown = function (event) {
 	this.lastMatchedOutlet = null;
     this.currentHandle = this.findHandle(event.originalTarget);
+    
+    if (!event.fake) {
+        if (this.focusedHandle) {
+        	this.focusedHandle.removeAttributeNS(PencilNamespaces.p, "focused");
+        }
+        this.focusedHandle = this.currentHandle;
+        
+        if (this.focusedHandle) {
+        	this.focusedHandle.setAttributeNS(PencilNamespaces.p, "p:focused", "true");
+        }
+    }
+
     this.oX = event.clientX;
     this.oY = event.clientY;
 
     //finding matching outlet
     if (this.currentHandle) {
+    	
         var def = this.currentHandle._def;
         if (def.meta && def.meta.connectTo) {
             var classes = def.meta.connectTo;
@@ -143,6 +156,40 @@ HandleEditor.prototype.handleMouseUp = function (event) {
         this.currentHandle = null;
     }
 };
+HandleEditor.prototype.handleKeyPressEvent = function (event) {
+	if (!this.focusedHandle) return false;
+	
+	var fakeEvent = {
+			preventDefault: function() {
+				event.preventDefault();
+			},
+			fake: true,
+			originalTarget: this.focusedHandle,
+			clientX: 0,
+			clientY: 0
+	};
+	
+	this.handleMouseDown(fakeEvent);
+	
+	var d = event.ctrlKey ? 5 : (event.shiftKey ? 15 : 1);
+	
+	if (event.keyCode == event.DOM_VK_UP) {
+		fakeEvent.clientY -= d;
+	} else if (event.keyCode == event.DOM_VK_DOWN) {
+		fakeEvent.clientY += d;
+	} else if (event.keyCode == event.DOM_VK_LEFT) {
+		fakeEvent.clientX -= d;
+	} else if (event.keyCode == event.DOM_VK_RIGHT) {
+		fakeEvent.clientX += d;
+	} else {
+		return false;
+	}
+	
+	this.handleMouseMove(fakeEvent);
+	this.handleMouseUp(fakeEvent);
+	
+	return true;
+};
 HandleEditor.prototype.handleMouseMove = function (event) {
     event.preventDefault();
     if (!this.currentHandle) return;
@@ -151,14 +198,19 @@ HandleEditor.prototype.handleMouseMove = function (event) {
         this.targetObject.dockingManager.altKey = event.altKey;
     }
 
+    this.handleMoveTo(event.clientX, event.clientY, event);
+};
+HandleEditor.prototype.handleMoveTo = function (x, y, event) {
+	var handle = this.currentHandle;
+	
     var uPoint1 = Svg.vectorInCTM(new Point(this.oX, this.oY), this.geo.ctm);
-    var uPoint2 = Svg.vectorInCTM(new Point(event.clientX, event.clientY), this.geo.ctm);
+    var uPoint2 = Svg.vectorInCTM(new Point(x, y), this.geo.ctm);
 
 
     dx = uPoint2.x - uPoint1.x;
     dy = uPoint2.y - uPoint1.y;
 
-    var constraints = this.getPropertyConstraints(this.currentHandle);
+    var constraints = this.getPropertyConstraints(handle);
 
     dx = constraints.lockX ? 0 : dx;
     dy = constraints.lockY ? 0 : dy;
@@ -169,16 +221,16 @@ HandleEditor.prototype.handleMouseMove = function (event) {
         dy = grid.h * Math.round(dy / grid.h);
     }
 
-    var newX = this.currentHandle._x + dx;
-    var newY = this.currentHandle._y + dy;
+    var newX = handle._x + dx;
+    var newY = handle._y + dy;
     if (!constraints.lockX) newX = Math.min(Math.max(newX, constraints.minX*Pencil.activeCanvas.zoom), constraints.maxX*Pencil.activeCanvas.zoom);
     if (!constraints.lockY) newY = Math.min(Math.max(newY, constraints.minY*Pencil.activeCanvas.zoom), constraints.maxY*Pencil.activeCanvas.zoom);
 
     if (uPoint1.x != uPoint2.x || uPoint1.y != uPoint2.y) {
         if (constraints.constraintFunction) {
             var a = {
-                x: this.currentHandle._x,
-                y: this.currentHandle._y
+                x: handle._x,
+                y: handle._y
             };
             var b = {
                 x: newX,
@@ -194,15 +246,15 @@ HandleEditor.prototype.handleMouseMove = function (event) {
         }
     }
 
-    this.currentHandle._newX = newX;
-    this.currentHandle._newY = newY;
-
-    Svg.setX(this.currentHandle, this.currentHandle._newX);
-    Svg.setY(this.currentHandle, this.currentHandle._newY);
+    handle._newX = newX;
+    handle._newY = newY;
+    
+    Svg.setX(handle, handle._newX);
+    Svg.setY(handle, handle._newY);
 
     //find matching outlets
-    var x = this.currentHandle._newX / this.canvas.zoom;
-    var y = this.currentHandle._newY / this.canvas.zoom;
+    var x = handle._newX / this.canvas.zoom;
+    var y = handle._newY / this.canvas.zoom;
 
     var delta = 8;
     var found = false;
@@ -211,10 +263,10 @@ HandleEditor.prototype.handleMouseMove = function (event) {
         if (Math.abs(x - outlet.x) < delta &&
             Math.abs(y - outlet.y) < delta) {
             this.lastMatchedOutlet = outlet;
-            this.currentHandle.setAttributeNS(PencilNamespaces.p, "p:connected", "true");
+            handle.setAttributeNS(PencilNamespaces.p, "p:connected", "true");
             
-            Svg.setX(this.currentHandle, outlet.x * this.canvas.zoom);
-            Svg.setY(this.currentHandle, outlet.y * this.canvas.zoom);
+            Svg.setX(handle, outlet.x * this.canvas.zoom);
+            Svg.setY(handle, outlet.y * this.canvas.zoom);
             
             debug("Found matching outlet: " + outlet.id);
             found = true;
@@ -223,10 +275,9 @@ HandleEditor.prototype.handleMouseMove = function (event) {
     };
 
     if (!found) {
-        this.currentHandle.removeAttributeNS(PencilNamespaces.p, "connected");
+    	handle.removeAttributeNS(PencilNamespaces.p, "connected");
         this.lastMatchedOutlet = null;
     }
-
 };
 HandleEditor.prototype.getPropertyConstraints = function (handle) {
     if (!this.currentHandle) return {};

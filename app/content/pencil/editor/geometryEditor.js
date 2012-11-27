@@ -554,7 +554,28 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
     //this.currentAnchor = null;
 
     newGeo.ctm = this.oGeo.ctm.translate(dx, dy);
-    newGeo.dim = new Dimension(Math.round(this.oGeo.dim.w + dw), Math.round(this.oGeo.dim.h + dh));
+    
+    if (locking.ratio && !locking.width && !locking.height) {
+    	var r = this.oGeo.dim.w / this.oGeo.dim.h;
+    	var w = 0, h = 0;
+    	if (dw > dh) {
+    		w = this.oGeo.dim.w + dw;
+    		h = w / r;
+    	} else {
+    		h = this.oGeo.dim.h + dh;
+    		w = h * r;
+    	}
+    	
+    	w = Math.round(w);
+    	h = Math.round(h);
+        newGeo.dim = new Dimension(w, h);
+        dw = w - this.oGeo.dim.w;
+        dh = h - this.oGeo.dim.h;
+    } else {
+        newGeo.dim = new Dimension(Math.round(this.oGeo.dim.w + dw), Math.round(this.oGeo.dim.h + dh));
+    }
+    
+    
 
     var p = Svg.vectorInCTM(new Point(dx, dy), this.geo.ctm.inverse(), true);
     this.adx = p.x;

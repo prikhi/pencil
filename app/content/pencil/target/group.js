@@ -463,7 +463,8 @@ Group.prototype.invalidateInboundConnections = function () {
 };
 Group.prototype.invalidateOutboundConnections = function () {
     for (t in this.targets) {
-        this.targets[t].invalidateOutboundConnections();
+    	var target = this.targets[t];
+        target.invalidateOutboundConnections();
     }
 };
 Group.prototype.processNewGroup = function () {
