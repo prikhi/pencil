@@ -169,7 +169,7 @@
             </Action>
         </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-            <text id="text" y="9.0077095" x="17.999992" style="font-size:12px;font-style:normal;font-weight:normal;text-align:left;text-anchor:start; dominant-baseline: central;fill:#000000;font-family:'Segoe UI'" xml:space="preserve">checkbutton2</text>
+            <text id="text" xml:space="preserve">checkbutton2</text>
         </p:Content>
     </Shape>
     <Shape id="PlainTextV2" displayName="Plain Text" icon="Icons/plain-text.png">
@@ -224,7 +224,7 @@
         </Actions>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <rect x="0" y="0" style="fill: none; stroke: none;" id="bgRect" />
-            <text id="text" y="9.0077095" x="17.999992" text-anchor="start" style="dominant-baseline: hanging;" xml:space="preserve">checkbutton2</text>
+            <text id="text" xml:space="preserve">checkbutton2</text>
         </p:Content>
     </Shape>
     <Shape id="RichTextBox" system="true" displayName="Rich Text" icon="Icons/rich-text.png">

@@ -393,8 +393,22 @@ Shape.prototype.getBounding = function (to) {
     return rect;
 };
 Shape.prototype.supportScaling = function () {
-    return this.getProperty("box") ? true : false;
+    return this.getProperty("box") ? this.isBoxEnabled() : false;
 };
+
+Shape.prototype.isBoxEnabled = function () {
+	try {
+	    this.prepareExpressionEvaluation();
+
+	    var meta = this.def.propertyMap["box"].meta;
+	    var disabled = this.evalExpression(meta.disabled, false);
+	    
+	    return !disabled;
+	} catch (e) {
+		return true;
+	}
+};
+
 
 //~new impl
 
