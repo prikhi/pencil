@@ -30,8 +30,6 @@
 
                 <command id="editHorzRuleCommmand" oncommand="OnScreenTextEditor._runEditorCommand('inserthorizontalrule');"/>
                 <command id="editInsertLinkCommand" oncommand="OnScreenTextEditor._runEditorCommand('createlink', '#');"/>
-
-                <command id="quitCommand" oncommand="OnScreenTextEditor._hide();"/>
             </commandset>
             <label value="Text format:"/>
             <hbox>

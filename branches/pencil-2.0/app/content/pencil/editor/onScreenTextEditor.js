@@ -236,6 +236,8 @@ OnScreenTextEditor.prototype.handleKeyPress = function (event) {
         this.commitChange(event);
     } else if (event.keyCode == event.DOM_VK_ESCAPE) {
         this.cancelChange();
+        event.stopPropagation();
+        event.preventDefault();
     }
 };
 OnScreenTextEditor.prototype.commitChange = function (event) {
