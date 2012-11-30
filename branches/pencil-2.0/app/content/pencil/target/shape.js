@@ -416,13 +416,13 @@ Shape.prototype.getBoundingRect = function () {
     var rect = {x: 0, y: 0, width: 0, height: 0};
     try {
         rect = this.svg.getBBox();
-    if (rect == null) {
-        rect = {x: 0, y: 0, width: 0, height: 0};
-    }
-    var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
-
-    var rect = Svg.getBoundRectInCTM(rect, ctm.inverse());
-    rect = {x: rect.left, y: rect.top, width: rect.right - rect.left, height: rect.bottom - rect.top};
+	    if (rect == null) {
+	        rect = {x: 0, y: 0, width: 0, height: 0};
+	    }
+	    var ctm = this.svg.getTransformToElement(this.canvas.drawingLayer);
+	
+	    var rect = Svg.getBoundRectInCTM(rect, ctm.inverse());
+	    rect = {x: rect.left, y: rect.top, width: rect.right - rect.left, height: rect.bottom - rect.top};
     } catch (e) { }
 
     return this.canvas.getZoomedRect(rect);

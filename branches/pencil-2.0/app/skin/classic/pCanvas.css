@@ -58,6 +58,15 @@ pcanvas > box > box {
     border: solid 1px #666;
     background-color: #fff;
 }
+pcanvas box[focusable='true'] {
+	-moz-user-focus: normal;
+	user-focus: normal;
+}
+pcanvas box[focusable='true'] svg {
+    -moz-user-focus: ignore;
+    user-focus: ignore;
+}
+
 pcanvas > box:focus > box {
     border: solid 1px highlight;
 }
