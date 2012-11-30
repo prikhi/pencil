@@ -199,6 +199,7 @@
 
         <command id="toggleCollectionPaneCommand1" oncommand="Pencil.toggleCollectionPane(true);"/>
         <command id="toggleFullscreenCommand" oncommand="Pencil.toggleFullscreen();"/>
+        <command id="exitFullscreenCommand" oncommand="Pencil.exitFullscreen();"/>
 
         <command id="openErrorConsoleCommand" oncommand="window.open('chrome://global/content/console.xul', 'global:console', 'chrome, centerscreen, resizable=yes, dialog=no, modal=no, dependent=yes,extrachrome,scrollbars,status,toolbar')"/>
     </commandset>
@@ -265,7 +266,8 @@
         <key id="toggleCollectionPaneCommandKey" command="toggleCollectionPaneCommand" key="A"/>
         <key id="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" modifiers="alt" key="A"/>
         <key id="toggleFullscreenKey" command="toggleFullscreenCommand" keycode="VK_F11"/>
-
+        <key id="toggleFullscreenKeyMac" command="toggleFullscreenCommand" key="F" modifiers="accel,shift"/>
+        <key id="exitFullscreenKey" keycode="VK_ESCAPE" command="exitFullscreenCommand"/>
     </keyset>
     <keyset>
         <key id="editBoldKey" key="B" modifiers="accel" command="editBoldCommand"/>
@@ -278,7 +280,6 @@
         <key id="editRightKey" key="R" modifiers="accel" command="editRightCommand"/>
         <key id="editFullKey" key="J" modifiers="accel" command="editFullCommand"/>
         <key id="editFullKey" key="K" modifiers="accel" command="editInsertLinkCommand"/>
-        <key id="escapeKey" keycode="VK_ESCAPE" command="quitCommand"/>
     </keyset>
     <toolbox id="navigator-toolbox" class="toolbox-top chromeclass-toolbar" mode="icons" defaultmode="icons">
         <!-- Menu -->
@@ -323,7 +324,7 @@
                 <menupopup id="view-popup">
                     <menuitem class="menuitem-iconic view-collection-pane-menu" label="&menu.collection.pane.label;" type="checkbox" checked="false" key="toggleCollectionPaneCommandKey1" command="toggleCollectionPaneCommand1" id="floatingCollectionPane"/>
                     <menuitem id="hideHeavyElementsMenuItem" label="&menu.hide.heavy.elements.label;" type="checkbox" checked="false" command="hideHeavyElementsCommand" key="hideHeavyElementsKey"/>
-                    <menuitem label="Fullscreen" key="toggleFullscreenKey" command="toggleFullscreenCommand" />
+                    <menuitem id="toggleFullscreenMenuItem" label="Fullscreen" key="toggleFullscreenKey" command="toggleFullscreenCommand" />
                 </menupopup>
             </menu>
             <menu id="shape-menu" label="&menu.shape.label;" accesskey="&menu.shape.accesskey;">

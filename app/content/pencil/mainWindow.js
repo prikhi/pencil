@@ -40,7 +40,8 @@ Pencil.postBoot = function() {
         }, false);
         invalidateToolbars();
 
-        if (navigator.userAgent.indexOf("Intel Mac") != -1) {
+        if (navigator.userAgent.indexOf("Mac OS") != -1) {
+        	document.getElementById("toggleFullscreenMenuItem").setAttribute("key", "toggleFullscreenKeyMac");
             var pencilMenu = document.getElementById("pencil-menu");
             pencilMenu.setAttribute("label", "File ▾");
             //var quitSep = document.getElementById("quitMenuSeparator");
@@ -170,6 +171,12 @@ Pencil.toggleFullscreen = function () {
 
     if (Pencil.activeCanvas) {
         Pencil.activeCanvas.setSize(Pencil.activeCanvas.width, Pencil.activeCanvas.height);
+    }
+};
+Pencil.exitFullscreen = function () {
+    var isFullscreen = Dom.hasClass(document.documentElement, "Fullscreen");
+    if (isFullscreen) {
+        Pencil.toggleFullscreen();
     }
 };
 
