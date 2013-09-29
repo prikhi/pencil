@@ -77,7 +77,7 @@
                 </groupbox>
                 <groupbox>
                     <caption label="&caption.options.label;"/>
-                    <checkbox id="detectInkscape" label="&checkbox.detect.inkscape.label;"/>
+                    <checkbox id="detectInkscape" checked="true" label="&checkbox.detect.inkscape.label;"/>
                 </groupbox>
             </vbox>
         </hbox>

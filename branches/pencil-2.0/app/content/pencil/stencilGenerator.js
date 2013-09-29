@@ -792,6 +792,7 @@ StencilGenerator.buildShape = function(shapeDef) {
             "        </p:Content>\n" +
             "    </Shape>");
     } else {
+        /*
         var shortcut = Dom.newDOMElement({
             _name: "Shortcut",
             _uri: "http://www.evolus.vn/Namespace/Pencil",
@@ -821,6 +822,7 @@ StencilGenerator.buildShape = function(shapeDef) {
         }, document);
 
         return Dom.serializeNode(shortcut);
+        */
 
         return (
             "<Shape id=\"" + shapeDef.id + "\" displayName=\"" + shapeDef.label + "\" icon=\"" + shapeDef.iconData + "\" xmlns=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:p=\"http://www.evolus.vn/Namespace/Pencil\" xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns:cc=\"http://web.resource.org/cc/\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\r\n" +

@@ -16,7 +16,6 @@ h1 {
 
 .SVGContainer {
     border: solid 2px #ccc;
-    text-align: center;
 }
 .SVGContainer > svg {
     display: inline-block;

@@ -1,12 +1,10 @@
 [App]
-Name=@NAME@
-Version=@VERSION@
-BuildID=@BUILD@
+Name=Pencil
+Version=@VERSION@.@BUILD@
+BuildID=@BUILD_ID@
 Copyright=Copyright (c) 2009-2011 Evolus. All rights reserved.
 ID=pencil@evolus.vn
 
-
 [Gecko]
-MinVersion=@MIN_VERSION@
-MaxVersion=@MAX_VERSION@
-
+MinVersion=1.9.8
+MaxVersion=*
