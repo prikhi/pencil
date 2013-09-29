@@ -8,7 +8,7 @@ AndroidSupports.screenCaptureStarter = function (listener) {
     
     var SEP = "/";
     
-    var sdkPath = "/home/dgthanhan/Apps/android-sdk-linux_x86_15";
+    var sdkPath = "/home/dgthanhan/Apps/android-sdk-linux_x86-64_r21";
     var utilJar = "/home/dgthanhan/Working/Projects/Pencil/DDMSUtil/ddmsutil.jar";
     
     var java = "/usr/bin/java";

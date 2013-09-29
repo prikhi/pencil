@@ -29,6 +29,7 @@ PropertyPageEditor.prototype.attach = function (targetObject) {
     } catch (e) { alert(e); }
 
 };
+PropertyPageEditor.SMALL_EDITOR_TYPES = ["pfonteditor", "paligneditor", "pstrokeeditor", "pplaintexteditor", "pshadowstyleeditor", "penumeditor"];
 PropertyPageEditor.prototype.invalidateData = function (targetObject) {
     var definedGroups = this.targetObject.getPropertyGroups();
 
@@ -37,12 +38,16 @@ PropertyPageEditor.prototype.invalidateData = function (targetObject) {
         var group = definedGroups[i];
         //var strippedGroup = new PropertyGroup();
         var properties = [];
+        var allSmall = true;
         for (var j in group.properties) {
             var property = group.properties[j];
             var editor = TypeEditorRegistry.getTypeEditor(property.type);
             if (editor) {
                 //strippedGroup.properties.push(property);
                 properties.push(property);
+                if (PropertyPageEditor.SMALL_EDITOR_TYPES.indexOf(editor) < 0) {
+                    allSmall = false;
+                }
             }
         }
 
@@ -50,11 +55,11 @@ PropertyPageEditor.prototype.invalidateData = function (targetObject) {
         if (properties.length > 0) {
             //strippedGroup.name = group.name;
             //strippedGroups.push(strippedGroup);
-            // 3 editors/tab
-            for (var k = 0; k < properties.length; k+=3) {
+            var N = allSmall ? properties.length : 3; // N editors/tab
+            for (var k = 0; k < properties.length; k+=N) {
                 var strippedGroup = new PropertyGroup();
                 strippedGroup.name = group.name;
-                for (var l = k; l < k + 3; l++) {
+                for (var l = k; l < k + N; l++) {
                     if (l < properties.length) {
                         strippedGroup.properties.push(properties[l]);
                     }

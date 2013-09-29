@@ -261,7 +261,7 @@ Rasterizer.prototype.saveURI = function (url, file) {
               createInstance(Components.interfaces.nsIWebBrowserPersist);
 
     persist.progressListener = persistListener;
-    persist.saveURI(uri, null, null, null, null, localFile);
+    persist.saveURI(uri, null, null, null, null, localFile, null);
     //persist.cancelSave();
 }
 

@@ -52,6 +52,7 @@ function handleOnload() {
     }
 };
 function handleOnCancel() {
+    window.close();
     return false;
 };
 

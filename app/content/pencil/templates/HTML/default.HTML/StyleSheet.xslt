@@ -10,6 +10,7 @@
                 <title>
                     <xsl:value-of select="/p:Document/p:Properties/p:Property[@name='fileName']/text()"/>
                 </title>
+                <link rel="stylesheet" href="Resources/SampleStyle.css" />
             </head>
             <body>
                 <h1 id="documentTitle"><xsl:value-of select="/p:Document/p:Properties/p:Property[@name='fileName']/text()"/></h1>

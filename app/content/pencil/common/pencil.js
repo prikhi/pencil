@@ -11,7 +11,7 @@ var Pencil = {};
 pencilSandbox.Pencil = Pencil;
 
 Pencil.SNAP = 4;
-Pencil.UNSNAP = 7;
+Pencil.UNSNAP = 4;
 Pencil.editorClasses = [];
 Pencil.registerEditor = function (editorClass) {
     Pencil.editorClasses.push(editorClass);
