@@ -1,4 +1,4 @@
 window, toolbox, toolbar {
 	background: transparent;
-  -moz-appearance: -moz-mac-unified-toolbar;
+  /* -moz-appearance: -moz-mac-unified-toolbar; */
 }
