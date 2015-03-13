@@ -15,10 +15,10 @@
 <?xul-overlay href="chrome://pencil/content/textToolOverlay.xul"?>
 <?xul-overlay href="chrome://pencil/content/colorToolOverlay.xul"?>
 <?xul-overlay href="chrome://pencil/content/borderToolOverlay.xul"?>
-<!-- 
+<!--
 <?xul-overlay href="chrome://pencil/content/androidSupportOverlay.xul"?>
  -->
- 
+
 <window
         title="&pencil.title;"
         id="main-window"
@@ -357,7 +357,7 @@
                     <menuseparator/>
                     <menuitem label="&menu.dom.inspector.label;" oncommand="window.open('chrome://inspector/content/inspector.xul', '', 'chrome,resizable');" style="display:none" id="domInspector"/>
                     <menuitem label="&menu.install.new.collection.label;" command="installNewCollectionCommand"/>
-                    <!-- 
+                    <!--
                     <menuitem label="Find online collections..." command="installRemoteCollectionCommand"/>
                      -->
                     <menuitem label="&menu.manage.template.label;" command="manageExportTemplateCommand"/>

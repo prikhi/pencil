@@ -33,7 +33,7 @@ Pencil.postBoot = function() {
         }, false);
 
         Pencil.buildRecentFileMenu();
-        
+
         var toolBox = document.getElementById("navigator-toolbox");
         toolBox.addEventListener("mouseup", function (event) {
             Pencil.activeCanvas.endFormatPainter();
@@ -41,7 +41,7 @@ Pencil.postBoot = function() {
         invalidateToolbars();
 
         if (navigator.userAgent.indexOf("Mac OS") != -1) {
-        	document.getElementById("toggleFullscreenMenuItem").setAttribute("key", "toggleFullscreenKeyMac");
+            document.getElementById("toggleFullscreenMenuItem").setAttribute("key", "toggleFullscreenKeyMac");
             var pencilMenu = document.getElementById("pencil-menu");
             pencilMenu.setAttribute("label", "File ▾");
             //var quitSep = document.getElementById("quitMenuSeparator");
@@ -92,19 +92,19 @@ Pencil.postBoot = function() {
     }
 };
 function czInitComponent() {
-	try {
-		const cid = "@iosart.com/Utils/ColorZilla;1";
-		gCZComponent = Components.classes[cid].createInstance();
-		gCZComponent = gCZComponent.QueryInterface(Components.interfaces.mozIColorZilla);
-	} catch (err) {
-		dump("Couldn't get object: " + err + "\n");
-		return;
-	}
+    try {
+        const cid = "@iosart.com/Utils/ColorZilla;1";
+        gCZComponent = Components.classes[cid].createInstance();
+        gCZComponent = gCZComponent.QueryInterface(Components.interfaces.mozIColorZilla);
+    } catch (err) {
+        dump("Couldn't get object: " + err + "\n");
+        return;
+    }
 }
 
 function czGetScreenColor(x, y) {
-	var col = gCZComponent.GetPixel(x, y);
-	return col;
+    var col = gCZComponent.GetPixel(x, y);
+    return col;
 }
 Pencil._getCanvasPadding = function () {
     return window.fullScreen ? 10 : 60;
@@ -181,14 +181,14 @@ Pencil.exitFullscreen = function () {
 };
 
 Pencil.selectDeveloperStencilDir = function () {
-	//alert("Please select the directory that contains the 'Definition.xml' file of your stencil");
+    //alert("Please select the directory that contains the 'Definition.xml' file of your stencil");
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, "Select Developer Stencil 'Definition.xml' file", nsIFilePicker.modeGetFile);
     fp.appendFilter("Definition.xml", "Definition.xml");
-    
+
     if (fp.show() != nsIFilePicker.returnOK) return;
-    
+
     var path = fp.file.parent.path;
     Config.set("dev.stencil.path", path);
     CollectionManager.loadStencils();
@@ -196,7 +196,7 @@ Pencil.selectDeveloperStencilDir = function () {
 Pencil.unselectDeveloperStencilDir = function () {
     Config.set("dev.stencil.path", "none");
     CollectionManager.loadStencils();
-	alert("Developer stencil is unloaded.");
+    alert("Developer stencil is unloaded.");
 };
 
 var registeredToolbars = [];
