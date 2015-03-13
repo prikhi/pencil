@@ -71,11 +71,13 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
                         OnScreenTextEditor.shoudClose = false;
                     }
                 }
-            }, false);
+        }, false);
         document.addEventListener("p:CanvasMouseDown", function (event) {
+            if (OnScreenTextEditor.isEditing) {
                 OnScreenTextEditor.currentInstance.applyChanges();
                 OnScreenTextEditor._hide();
-            }, false);
+            }
+        }, false);
 
         //setup toolbar
         var fontPopup = document.getElementById("fontlist-popup");
