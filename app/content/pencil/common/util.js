@@ -1,6 +1,7 @@
 // Copyright (c) Evolus Solutions. All rights reserved.
 // License: GPL/MPL
 // $Id$
+/* jshint esnext: true */
 const PR_RDONLY      = 0x01;
 const PR_WRONLY      = 0x02;
 const PR_RDWR        = 0x04;
@@ -44,7 +45,7 @@ Components.utils.import("resource://gre/modules/Services.jsm");
     }
 
     return nodes;
-}
+};
 /* public static XmlDocument */ Dom.getImplementation = function () {
     return document.implementation;
 };
@@ -93,7 +94,7 @@ Dom.removeClass = function (node, className) {
 };
 Dom.findUpward = function (node, evaluator) {
     try {
-        if (node == null) {
+        if (node === null) {
             return null;
         }
         if (evaluator(node)) {
@@ -108,7 +109,7 @@ Dom.isChildOf = function (childNode, parentNode) {
     });
 };
 Dom.doUpward = function (node, evaluator, worker) {
-    if (node == null) {
+    if (node === null) {
         return;
     }
     if (evaluator(node)) {
@@ -148,15 +149,15 @@ Dom.parser = new DOMParser();
 Dom.serializer = new XMLSerializer();
 Dom.parseToNode = function (xml, dom) {
     var doc = Dom.parser.parseFromString(xml, "text/xml");
-    if (!doc || !doc.documentElement
-            || doc.documentElement.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml") {
+    if (!doc || !doc.documentElement ||
+            doc.documentElement.namespaceURI == "http://www.mozilla.org/newlayout/xml/parsererror.xml") {
         return null;
     }
     var node = doc.documentElement;
     if (dom) return dom.importNode(node, true);
 
     return node;
-}
+};
 Dom.parseDocument = function (xml) {
     var dom = Dom.parser.parseFromString(xml, "text/xml");
     return dom;
@@ -207,7 +208,7 @@ Dom._buildHiddenFrame = function () {
     box.style.MozBoxAlign = "start";
 
     Dom._hiddenFrame = iframe.contentWindow;
-    Dom._hiddenFrame.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
+    Dom._hiddenFrame.document.body.setAttribute("style", "padding: 0px; margin: 0px;");
 };
 //
 /*
@@ -340,7 +341,7 @@ Dom.newDOMElement = function (spec, doc) {
     var ownerDocument = doc ? doc : document;
     var e = spec._uri ? ownerDocument.createElementNS(spec._uri, spec._name) : ownerDocument.createElement(spec._name);
 
-    for (name in spec) {
+    for (var name in spec) {
         if (name.match(/^_/)) continue;
 
         if (name.match(/^([^:]+):(.*)$/)) {
@@ -400,7 +401,7 @@ Svg.setHeight = function (node, h) {
     node.height.baseVal.value = h;
 };
 Svg.setStyle = function (node, name, value) {
-    if (value == null) {
+    if (value === null) {
         node.style.removeProperty(name);
         return;
     }
@@ -566,7 +567,7 @@ Local.getInstalledFonts = function () {
     var localFonts;
     var enumerator = Components.classes["@mozilla.org/gfx/fontenumerator;1"]
                             .getService(Components.interfaces.nsIFontEnumerator);
-    var localFontCount = { value: 0 }
+    var localFontCount = { value: 0 };
     localFonts = enumerator.EnumerateAllFonts(localFontCount);
 
     /*/ google webfonts
@@ -611,9 +612,9 @@ Local.chromeToPath = function(aPath) {
     }
 
     var rv;
-    var ios = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces["nsIIOService"]);
+    var ios = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
     var uri = ios.newURI(aPath, "UTF-8", null);
-    var cr = Components.classes['@mozilla.org/chrome/chrome-registry;1'].getService(Components.interfaces["nsIChromeRegistry"]);
+    var cr = Components.classes['@mozilla.org/chrome/chrome-registry;1'].getService(Components.interfaces.nsIChromeRegistry);
     rv = cr.convertChromeURL(uri).spec;
 
     if (/^file:/.test(rv)) {
@@ -689,7 +690,7 @@ Local.installWebFont = function(name, url) {
     var content = FileIO.read(fontFile);
     if (content.indexOf(fontFace) == -1) {
         var rv = FileIO.write(fontFile, fontFace, 'a');
-        Services.obs.notifyObservers(null, "startupcache-invalidate", null)
+        Services.obs.notifyObservers(null, "startupcache-invalidate", null);
     }
 };
 Local.isFontExisting = function (font) {
@@ -784,11 +785,11 @@ Util.getInstanceToken = function () {
 };
 
 Util.gridNormalize = function (value, size) {
-    if (Config.get("edit.snap.grid", false) == false) {
+    if (Config.get("edit.snap.grid", false) === false) {
         return value;
     }
     var r = value % size;
-    if (r == 0) return value;
+    if (r === 0) return value;
 
     if (r > size / 2) {
         return value + size - r;
@@ -798,7 +799,7 @@ Util.gridNormalize = function (value, size) {
 };
 Util.enumInterfaces = function (object) {
     var ifaces = [];
-    for (name in Components.interfaces) {
+    for (var name in Components.interfaces) {
         var iface = Components.interfaces[name];
         try {
             var o = object.QueryInterface(iface);
@@ -934,7 +935,7 @@ Util.error = function(title, description, buttonLabel) {
 
     var returnValueHolder = {};
     var dialog = window.openDialog("chrome://pencil/content/messageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
-}
+};
 Util.confirm = function(title, description, acceptLabel, cancelLabel) {
     var message = {type: "confirm",
                     title: title,
@@ -945,7 +946,7 @@ Util.confirm = function(title, description, acceptLabel, cancelLabel) {
     var returnValueHolder = {};
     var dialog = window.openDialog("chrome://pencil/content/messageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
     return returnValueHolder.button == "accept";
-}
+};
 Util.confirmWithWarning = function(title, description, acceptLabel, cancelLabel) {
     var message = {type: "confirmWarned",
                     title: title,
@@ -956,7 +957,7 @@ Util.confirmWithWarning = function(title, description, acceptLabel, cancelLabel)
     var returnValueHolder = {};
     var dialog = window.openDialog("chrome://pencil/content/messageDialog.xul", "pencilMessageDialog" + Util.getInstanceToken(), "modal,centerscreen", message, returnValueHolder);
     return returnValueHolder.button == "accept";
-}
+};
 Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancelLabel) {
     var message = {type: "confirm2",
                     title: title,
@@ -974,7 +975,7 @@ Util.confirmExtra = function(title, description, acceptLabel, extraLabel, cancel
     result.extra = (returnValueHolder.button == "extra");
 
     return result;
-}
+};
 Util.beginProgressJob = function(jobName, jobStarter) {
     var dialog = window.openDialog("chrome://pencil/content/progressDialog.xul", "pencilProgressDialog" + Util.getInstanceToken(), "alwaysRaised,centerscreen", jobName, jobStarter, function (message, p) {
         if (!Util.statusbarDisplay) return;
@@ -1044,11 +1045,11 @@ Util.generateIcon = function (target, maxWidth, maxHeight, padding, iconPath, ca
         content.setAttribute("transform", transform);
 
         svg.appendChild(content);
-        
+
         if (!rasterizer && Pencil) {
             rasterizer = Pencil.rasterizer;
         }
-        
+
 
         if (iconPath) {
             rasterizer.rasterizeDOM(svg, iconPath, function () {});
@@ -1100,9 +1101,8 @@ Util.preloadFonts = function (doc) {
     Util.fontList = menupopup;
 };
 Util.openDonate = function () {
+    var link = "http://pencil.evolus.vn/Donation.aspx";
     try {
-        var link = "http://pencil.evolus.vn/Donation.aspx";
-
         var mediator = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
         var ioservice = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
         var protoservice = Components.classes['@mozilla.org/uriloader/external-protocol-service;1'].getService(Components.interfaces.nsIExternalProtocolService);
@@ -1144,7 +1144,7 @@ Util.getMessage = function (msg, args) {
             s = Util.bundle.GetStringFromName(msg);
         }
 
-        if (s && s != "") {
+        if (s && s !== "") {
             return s;
         }
 
@@ -1173,7 +1173,7 @@ Util.getXulrunnerVersion = function() {
 };
 Util.isXul6OrLater = function() {
     var version = Util.getXulrunnerVersion();
-    var q = version.split("\.");
+    var q = version.split(".");
     if (q.length > 0) {
         return parseInt(q[0]) >= 6;
     }
@@ -1181,7 +1181,7 @@ Util.isXul6OrLater = function() {
 };
 Util.isMac = function() {
     return navigator.userAgent.indexOf("Intel Mac") != -1;
-}
+};
 function debugx(ex) {
     debug("debugx is no longer supported");
 }
@@ -1213,22 +1213,22 @@ if (typeof(console) == "undefined") {
 }
 
 function debug(value) {
-	//DEBUG_BEGIN
+    //DEBUG_BEGIN
     if (true) {
         Components.classes['@mozilla.org/consoleservice;1']
-	            .getService(Components.interfaces.nsIConsoleService)
+                .getService(Components.interfaces.nsIConsoleService)
                 .logStringMessage(value);
     }
     console.info(value);
     //DEBUG_END
 }
 function stackTrace() {
-	//DEBUG_BEGIN
-	var lines = [];
-	for (var frame = Components.stack; frame; frame = frame.caller) {
-		lines.push(frame.name + " (" + frame.filename + "@" + frame.lineNumber + ")");	
-	}
-	debug(lines.join("\n"));
+    //DEBUG_BEGIN
+    var lines = [];
+    for (var frame = Components.stack; frame; frame = frame.caller) {
+        lines.push(frame.name + " (" + frame.filename + "@" + frame.lineNumber + ")");
+    }
+    debug(lines.join("\n"));
     //DEBUG_END
 }
 function warn(value) {
@@ -1236,7 +1236,7 @@ function warn(value) {
     debug(value);
 }
 function info(value) {
-	//DEBUG_BEGIN
+    //DEBUG_BEGIN
     console.info(value);
     debug(value);
     //DEBUG_END
@@ -1247,7 +1247,7 @@ function error(value) {
 }
 var lastTick = (new Date()).getTime();
 function tick(value) {
-	//DEBUG_BEGIN
+    //DEBUG_BEGIN
     return;
     var date = new Date();
     var newTick = date.getTime();
@@ -1256,7 +1256,7 @@ function tick(value) {
 
     var prefix = value ? (value + ": ").toUpperCase() : "TICK: ";
     dump(prefix + date.getSeconds() + "." + date.getMilliseconds() + " (" + delta + " ms)\n");
-	//DEBUG_END
+    //DEBUG_END
 }
 
 var Net = {};
@@ -1270,7 +1270,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
 
     var httpChannel = channel.QueryInterface(Components.interfaces.nsIHttpChannel);
 
-    var listener = {
+    listener = {
         foStream: null,
         file: downloadTargetFile,
         listener: listener,
@@ -1373,7 +1373,7 @@ Net.uploadAndDownload = function (url, uploadFile, downloadTargetFile, listener,
     httpChannel.requestMethod = "POST";
 
     if (options && options.headers) {
-        for (name in options.headers) {
+        for (var name in options.headers) {
             httpChannel.setRequestHeader(name, options.headers[name], false);
         }
     }
@@ -1390,7 +1390,7 @@ Net.submitMultiplart = function (url, parts, externalListener, options) {
     var channel = ioService.newChannelFromURI(uri);
 
     var httpChannel = channel.QueryInterface(Components.interfaces.nsIHttpChannel);
-    
+
     var listener = {
         foStream: null,
         file: downloadTargetFile,
@@ -1441,32 +1441,33 @@ Net.submitMultiplart = function (url, parts, externalListener, options) {
             throw Components.results.NS_NOINTERFACE;
         }
     }; //listener
-    
+
     var stream = Components.classes["@mozilla.org/io/multiplex-input-stream;1"]
                             .createInstance(Components.interfaces.nsIMultiplexInputStream)
                             .QueryInterface(Components.interfaces.nsIInputStream);
-                            
+
     var boundary = "--------PENCIL--" + new Date().getTime();
     var boundaryStart = "\r\n--" + boundary + "\r\n" ;
     var boundaryEnd = "\r\n--" + boundary + "--" ;
-                            
+
     for (var i = 0; i < parts.length; i ++) {
         var part = parts[i];
+        var mimeInputStream;
         if (part.file) {
-            //append the open boundary   
+            //append the open boundary
             stream.appendStream(Net.createSimpleTextStream(boundaryStart));
-            
+
             var inputStream = Components.classes["@mozilla.org/network/file-input-stream;1"]
-                                .createInstance(Components.interfaces.nsIFileInputStream);
+                .createInstance(Components.interfaces.nsIFileInputStream);
             inputStream.init(part.file, 0x04 | 0x08, 0644, 0x04); // file is an nsIFile instance
-            
+
             var bufferedInputStream = Components.classes["@mozilla.org/network/buffered-input-stream;1"]
-                                .createInstance(Components.interfaces.nsIBufferedInputStream);
+                .createInstance(Components.interfaces.nsIBufferedInputStream);
             bufferedInputStream.init(inputStream, 4096);
-         
+
             //wrap the file stream into a MIME-input stream
-            var mimeInputStream = Components.classes["@mozilla.org/network/mime-input-stream;1"]
-                                    .createInstance(Components.interfaces.nsIMIMEInputStream);
+            mimeInputStream = Components.classes["@mozilla.org/network/mime-input-stream;1"]
+                .createInstance(Components.interfaces.nsIMIMEInputStream);
 
             mimeInputStream.addHeader("Content-Type", "image/png");
             mimeInputStream.addHeader("Content-Disposition", "form-data; name=\"" + part.name + "\"; filename=\"" + part.file.leafName + "\"");
@@ -1475,11 +1476,11 @@ Net.submitMultiplart = function (url, parts, externalListener, options) {
             mimeInputStream.setData(bufferedInputStream);
             stream.appendStream(mimeInputStream);
         } else {
-            //append the open boundary   
+            //append the open boundary
             stream.appendStream(Net.createSimpleTextStream(boundaryStart));
 
-            var mimeInputStream = Components.classes["@mozilla.org/network/mime-input-stream;1"]
-                                    .createInstance(Components.interfaces.nsIMIMEInputStream);
+            mimeInputStream = Components.classes["@mozilla.org/network/mime-input-stream;1"]
+                .createInstance(Components.interfaces.nsIMIMEInputStream);
 
             mimeInputStream.addContentLength = true;
             mimeInputStream.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -1488,7 +1489,7 @@ Net.submitMultiplart = function (url, parts, externalListener, options) {
             stream.appendStream(mimeInputStream);
         }
     }
-    
+
     stream.appendStream(Net.createSimpleTextStream(boundaryEnd));
 
     var uploadChannel = channel.QueryInterface(Components.interfaces.nsIUploadChannel);
@@ -1498,11 +1499,11 @@ Net.submitMultiplart = function (url, parts, externalListener, options) {
     httpChannel.setRequestHeader("Content-Length", stream.available() - 2, false);
     httpChannel.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + boundary, false);
     httpChannel.allowPipelining = false;
-    
+
     if (options.auth) {
         var authenticator = Components.classes["@mozilla.org/network/http-authenticator;1?scheme=" + options.auth.scheme]
                             .getService(Components.interfaces.nsIHttpAuthenticator);
-                            
+
         var credentials = authenticator.generateCredentials(httpChannel, "Basic realm=\"Bugzilla\"",
                                                               false, uri.host,
                                                               {value: options.auth.user},
@@ -1514,7 +1515,7 @@ Net.submitMultiplart = function (url, parts, externalListener, options) {
 
 
     if (options && options.headers) {
-        for (name in options.headers) {
+        for (var name in options.headers) {
             httpChannel.setRequestHeader(name, options.headers[name], false);
         }
     }
@@ -1526,7 +1527,7 @@ Net.createSimpleTextStream = function (text) {
     var stream = Components.classes['@mozilla.org/io/string-input-stream;1']
                     .createInstance(Components.interfaces.nsIStringInputStream);
     stream.setData(text, -1);
-    
+
     return stream;
 };
 Net.downloadAsync = function(url, destPath, listener) {
@@ -1551,7 +1552,7 @@ Net.downloadAsync = function(url, destPath, listener) {
       }
     }*/
     persist.saveURI(obj_URI, null, null, null, "", file);
-}
+};
 Util.goDoCommand = function (command, doc) {
     var dom = doc ? doc : document;
     var controller = dom.commandDispatcher.getControllerForCommand(command);
@@ -1569,20 +1570,20 @@ Util.getFileExtension = function (path) {
     return null;
 };
 Util.getCustomProperty = function (node, name, defaultValue) {
-	if (node.hasAttributeNS(PencilNamespaces.p, name)) {
-		return node.getAttributeNS(PencilNamespaces.p, name);
-	}
-	
-	return defaultValue;
+    if (node.hasAttributeNS(PencilNamespaces.p, name)) {
+        return node.getAttributeNS(PencilNamespaces.p, name);
+    }
+
+    return defaultValue;
 };
 Util.getCustomNumberProperty = function (node, name, defaultValue) {
-	var v = Util.getCustomProperty(node, name, null);
-	if (v == null) return defaultValue;
-	
-	return parseFloat(v);
+    var v = Util.getCustomProperty(node, name, null);
+    if (v === null) return defaultValue;
+
+    return parseFloat(v);
 };
 Util.setCustomProperty = function (node, name, value) {
-	node.setAttributeNS(PencilNamespaces.p, "p:" + name, value);
+    node.setAttributeNS(PencilNamespaces.p, "p:" + name, value);
 };
 
 function stencilDebug(x) {
@@ -1600,7 +1601,7 @@ var propertyTypeArray = ["Alignment", "Bool", "Bound", "Color", "CSS", "Dimensio
 
 Util.isXul17OrLater = function() {
     var version = Util.getXulrunnerVersion();
-    var q = version.split("\.");
+    var q = version.split(".");
     if (q.length > 0) {
         return parseInt(q[0]) >= 17;
     }
@@ -1617,11 +1618,11 @@ Util.importSandboxFunctions = function () {
     for (var i = 0; i < arguments.length; i ++) {
         var f = arguments[i];
         if (typeof(f) == "function") {
-        	if (Util.isXul17OrLater()) {
-        		pencilSandbox[f.name] = f;
-        	} else {
+            if (Util.isXul17OrLater()) {
+                pencilSandbox[f.name] = f;
+            } else {
                 pencilSandbox.importFunction(f);
-        	}
+            }
         } else {
             pencilSandbox[f.name] = f;
         }
@@ -1631,22 +1632,22 @@ Util.importSandboxFunctions = function () {
 function pEval(expression, extra) {
     for (var name in extra) {
         if (typeof(extra[name]) == "function") {
-        	if (Util.isXul17OrLater()) {
+            if (Util.isXul17OrLater()) {
                 pencilSandbox[name] = extra[name];
-        	} else {
+            } else {
                 pencilSandbox.importFunction(extra[name]);
-        	}
+            }
         } else {
             pencilSandbox[name] = extra[name];
         }
     }
-    
+
     if (Util.isXul17OrLater()) {
         pencilSandbox.stencilDebug = stencilDebug;
     } else {
         pencilSandbox.importFunction(stencilDebug);
     }
-    
+
     try {
         //debug("eval: " + expression);
         for (var pa = 0; pa < propertyTypeArray.length; pa++) {
@@ -1658,7 +1659,7 @@ function pEval(expression, extra) {
     } catch (e) {
         Console.dumpError(e);
     }
-};
+}
 function doLater(f, ms, win) {
     var w = win ? win : window;
     var start = new Date().getTime();
@@ -1671,16 +1672,16 @@ function doLater(f, ms, win) {
         }
         w.setTimeout(g, 100);
     };
-    
+
     g();
 }
 
 function geo_translate (p, dx, dy) {
     return {x: p.x + dx, y: p.y + dy};
-};
+}
 function geo_rotate (p, a) {
     return {x: p.x * Math.cos(a) - p.y * Math.sin(a), y: p.x * Math.sin(a) + p.y * Math.cos(a)};
-};
+}
 
 /**
  * p1: rotated point
@@ -1704,72 +1705,71 @@ function geo_getRotatedPoint(p1, p2, d, a) {
     };
 
     return p;
-};
+}
 function geo_vectorLength (p1, p2) {
     var dx = p1.x - p2.x;
     var dy = p1.y - p2.y;
 
     return Math.sqrt(dx * dx + dy * dy);
-};
+}
 
 function geo_pointAngle (x, y) {
-    if (x == 0) return y > 0 ? Math.PI / 2 : 0 - Math.PI / 2;
+    if (x === 0) return y > 0 ? Math.PI / 2 : 0 - Math.PI / 2;
     return Math.atan2(y, x);
-};
+}
 
 function geo_vectorAngle (p1, p2, q1, q2) {
     return geo_pointAngle(q2.x - q1.x, q2.y - q1.y) - geo_pointAngle(p2.x - p1.x, p2.y - p1.y);
-};
+}
 
 function geo_findIntersection(a1, b1, a2, b2) {
-	var x0 = a1.x;
-	var y0 = a1.y;
-	var a = b1.x - a1.x;
-	var b = b1.y - a1.y;
-	
-	var x1 = a2.x;
-	var y1 = a2.y;
-	var c = b2.x - a2.x;
-	var d = b2.y - a2.y;
-	
-	var u = d*a - c*b;
-	if (u == 0) return null;
-	
-	var t = (d*x1 - d*x0 - c*y1 + c*y0) / u;
-	return {
-		x: x0 + a*t,
-		y: y0 + b*t,
-	};
+    var x0 = a1.x;
+    var y0 = a1.y;
+    var a = b1.x - a1.x;
+    var b = b1.y - a1.y;
+
+    var x1 = a2.x;
+    var y1 = a2.y;
+    var c = b2.x - a2.x;
+    var d = b2.y - a2.y;
+
+    var u = d*a - c*b;
+    if (u === 0) return null;
+
+    var t = (d*x1 - d*x0 - c*y1 + c*y0) / u;
+    return {
+        x: x0 + a*t,
+        y: y0 + b*t,
+    };
 }
 
 function geo_buildQuickSmoothCurve(points, inputControlLength) {
-	debug("geo_buildQuickSmoothCurve: points = " + points.length + ", controlLength: " + inputControlLength);
-	if (points.length != 4) {
-		return geo_buildSmoothCurve(points);
-		return;
-	}
-	
+    debug("geo_buildQuickSmoothCurve: points = " + points.length + ", controlLength: " + inputControlLength);
+    if (points.length != 4) {
+        return geo_buildSmoothCurve(points);
+    }
+
     var spec = [M(points[0].x, points[0].y)];
     var controlLength = Math.min(geo_vectorLength(points[0], points[3]) / 2, 60);
-    
+
     if (typeof(inputControlLength) != "undefined") {
-    	controlLength = Math.max(3 * inputControlLength, controlLength);
+        controlLength = Math.max(3 * inputControlLength, controlLength);
     }
-    
+
     debug("controlLength: " + controlLength);
     var p1 = geo_getRotatedPoint(points[1], points[0], controlLength, 0);
     var p2 = geo_getRotatedPoint(points[2], points[3], controlLength, 0);
     spec.push(C(p1.x, p1.y, p2.x, p2.y, points[3].x, points[3].y));
 
     return spec;
-};
+}
 function geo_buildSmoothCurve (points) {
     var spec = [M(points[0].x, points[0].y)];
     var len = points.length;
     var lastAngle = null;
     for (var i = 1; i < len; i ++) {
         var p1 = points[i - 1];
-        if (lastAngle != null) {
+        if (lastAngle !== null) {
             p1 = geo_getRotatedPoint(points[i], points[i - 1],
                                             geo_vectorLength(points[i], points[i - 1]) / 5,
                                             angle
@@ -1780,7 +1780,7 @@ function geo_buildSmoothCurve (points) {
         if (i < len - 1) {
             var a = geo_vectorAngle(points[i], points[i- 1], points[i], points[i + 1]);
             if (a < 0) a = Math.PI * 2 + a;
-            
+
             angle = (Math.PI / 2 - Math.abs(a) / 2);
             p2 = geo_getRotatedPoint(points[i - 1], points[i],
                                             geo_vectorLength(points[i], points[i - 1]) / 5,
@@ -1788,12 +1788,12 @@ function geo_buildSmoothCurve (points) {
                                             );
             lastAngle = angle;
         }
-        
+
         spec.push(C(p1.x, p1.y, p2.x, p2.y, points[i].x, points[i].y));
         //spec.push(L(points[i].x, points[i].y));
     }
 
     return spec;
-};
+}
 
 Util.importSandboxFunctions(geo_buildQuickSmoothCurve, geo_buildSmoothCurve, geo_getRotatedPoint, geo_pointAngle, geo_rotate, geo_translate, geo_vectorAngle, geo_vectorLength, geo_findIntersection);
