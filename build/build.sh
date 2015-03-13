@@ -7,9 +7,9 @@ prep() {
     rm -Rf ./Outputs/
     mkdir -p ./Outputs
 
-    echo "----------------------"
-    echo "* Cleaning up source *"
-    echo "----------------------"
+    echo "--------------------"
+    echo "* Preparing Source *"
+    echo "--------------------"
 
     rm -Rf ./Outputs/Pencil/
     mkdir ./Outputs/Pencil/
@@ -22,7 +22,6 @@ prep() {
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/pencil.js
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/util.js
 
-    rm ./Outputs/Pencil/defaults/preferences/personal.js
     rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
     rm ./Outputs/Pencil/defaults/preferences/debug.js
 }
@@ -55,29 +54,25 @@ linux() {
     echo "-------------------------------------"
     echo "* Building Linux Shared XRE version *"
     echo "-------------------------------------"
-    rm -Rf ./Outputs/Linux/
-    mkdir ./Outputs/Linux/
+    export OUTPUT="./Outputs/Linux"
+    rm -Rf $OUTPUT
+    mkdir -p $OUTPUT
 
-    cp -R ./Linux/* ./Outputs/Linux/
-    cp -R ./XULRunner/* ./Outputs/Linux/
+    cp -R ./Outputs/Pencil/* $OUTPUT/
 
-    find ./Outputs/Linux/ -name .svn | xargs -i rm -Rf {}
+    echo "Copying Icons..."
+    mkdir -p $OUTPUT/chrome/icons/default/
+    cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
+    cp ./Outputs/Pencil/skin/classic/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
 
-    mkdir -p ./Outputs/Linux/chrome/content
-    cp -R ./Outputs/Pencil/* ./Outputs/Linux/chrome/content/
-
-    mkdir -p ./Outputs/Linux/chrome/icons/default/
-    cp ./Outputs/Pencil/Icons/pencil.ico ./Outputs/Linux/chrome/icons/default/pencilMainWindow.ico
-    cp ./Outputs/Pencil/Icons/pencil.xpm ./Outputs/Linux/chrome/icons/default/pencilMainWindow.xpm
-
-    ./replacer.sh ./Outputs/Linux/application.ini
-    chmod +x ./Outputs/Linux/pencil
+    ./replacer.sh $OUTPUT/application.ini
+    ./replacer.sh $OUTPUT/content/pencil/aboutDialog.js
+    ./replacer.sh $OUTPUT/defaults/preferences/pencil.js
 
     echo "Compressing..."
-    cd ./Outputs/Linux/
+    cd $OUTPUT/
     tar -czvf ../Pencil-$VERSION-$BUILD-linux-gtk.tar.gz * > /dev/null
     cd ../../
-    rm -Rf ./Outputs/Linux/
 }
 
 fedorarpm()  {
@@ -208,14 +203,21 @@ ubuntu(){
 }
 
 cleanup() {
-    rm -Rf ./Outputs/XPI/
-    rm -Rf ./Outputs/Win32/
-    rm -Rf ./Outputs/Pencil/
-    rm -Rf ./Outputs/Mac/
-    rm -Rf ./Outputs/RPM/
-    rm -Rf ./Outputs/Linux/
-	#rm -Rf ./Outputs/Ubuntu/
+    echo "------------------------"
+    echo "* Removing Build Files *"
+    echo "------------------------"
+
+    rm -Rf ./Outputs
+    echo "Done!"
+    exit
 }
+
+
+
+if [ "$1" = "clean" ]
+then
+    cleanup
+fi
 
 prep
 
@@ -234,6 +236,11 @@ then
     mac
 fi
 
+if [ "$1" = "linux" ]
+then
+    linux
+fi
+
 if [ "$1" = "fedorarpm" ] 
 then
     fedorarpm
@@ -248,11 +255,8 @@ if [ "$1" = "all" ]
 then
     xpi
     win32
-    fedorarpm
+    linux
     mac
 fi
 
-cleanup
-
 echo "Done!"
-
