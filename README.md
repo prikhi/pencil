@@ -8,7 +8,7 @@ was abandoned around 2013. This fork was started for new development on March
 
 Much of this project is still unmaintained & could use some love.
 
-# Build
+## Build
 
 Only building for GNU/Linux has been tested since forking.
 
@@ -20,7 +20,7 @@ xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/applicati
 
 ```
 
-# License
+## License
 
 This fork is released under GPLv2 like it's parent codebase.
 
