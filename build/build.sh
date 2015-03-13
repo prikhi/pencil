@@ -22,8 +22,10 @@ prep() {
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/pencil.js
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/util.js
 
-    rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
-    rm ./Outputs/Pencil/defaults/preferences/debug.js
+    if [ ! $DEBUG ]; then
+        rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
+        rm ./Outputs/Pencil/defaults/preferences/debug.js
+    fi
 }
 
 xpi() {

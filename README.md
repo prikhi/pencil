@@ -2,6 +2,7 @@
 
 A GUI prototyping tool for GNU/Linux, Windows & Mac.
 
+
 ## Status
 
 This project was originally hosted on https://code.google.com/p/evoluspencil/ &
@@ -29,6 +30,20 @@ xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/applicati
 
 If you want to build for Firefox, Mac or Windows, pass `xpi`, `mac` or `win32`
 to `./build.sh`, respectively.
+
+
+## Develop
+
+If you set the `DEBUG` environmental variable, the `build.sh` script will
+enable debugging settings, like printing calls to `dump()` to the console:
+```bash
+
+export DEBUG=true
+cd build
+./build.sh linux
+xulrunner Outputs/Linux/application.ini -console
+
+```
 
 
 ## License
