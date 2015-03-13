@@ -1,3 +1,4 @@
+/* jshint esnext: true */
 Pencil.buildRecentFileMenu = function (files) {
     var menu = document.getElementById("recentDocumentMenu");
     Dom.empty(menu);
@@ -56,7 +57,7 @@ Pencil.postBoot = function() {
             if (cmdLine) {
                 cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
 
-                var filePath = ""
+                var filePath = "";
                 var i = 0;
                 while (true && i < cmdLine.length) {
                     try {
@@ -68,7 +69,7 @@ Pencil.postBoot = function() {
                         i ++;
                     } catch (e) { Console.dumpError(e); break; }
                 }
-                if (filePath && filePath.indexOf("-") != 0) {
+                if (filePath && filePath.indexOf("-") !== 0) {
                     window.setTimeout(function () {
                         Pencil.controller.loadDocument(filePath);
                     }, 100);
@@ -221,10 +222,16 @@ function invalidateToolbars() {
             Dom.removeClass(toolbar, "Visible");
         }
     }
-};
+}
 function setupToolbarContextMenu() {
     var menu = document.getElementById("toolbarContextMenu");
     Dom.empty(menu);
+    var toggleToolbar = function (event) {
+                var target = event.originalTarget;
+                var toolbarId = target.getAttribute("toolbar");
+                setToolbarVisible(toolbarId, target.getAttribute("checked") == "true");
+                invalidateToolbars();
+    };
     for (var i = 0; i < registeredToolbars.length; i ++) {
         var info = registeredToolbars[i];
         var menuItem = document.createElementNS(PencilNamespaces.xul, "menuitem");
@@ -233,12 +240,7 @@ function setupToolbarContextMenu() {
         menuItem.setAttribute("type", "checkbox");
         menuItem.setAttribute("checked", isToolbarVisible(info.id));
         menu.appendChild(menuItem);
-        menuItem.addEventListener("command", function (event) {
-                var target = event.originalTarget;
-                var toolbarId = target.getAttribute("toolbar");
-                setToolbarVisible(toolbarId, target.getAttribute("checked") == "true");
-                invalidateToolbars();
-            }, false);
+        menuItem.addEventListener("command", toggleToolbar, false);
     }
 }
 
