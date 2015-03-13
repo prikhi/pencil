@@ -6,4 +6,3 @@ mv -f temp $1
 
 sed -f sed-debug-script < $1 > temp
 mv -f temp $1
-

@@ -89,7 +89,7 @@ fedorarpm()  {
     rm -f $OUTPUT/license.txt
     rm -rf $OUTPUT/platform
     find $OUTPUT -iname "*.ico" | xargs -i rm -Rf {}
-    
+
     ./replacer.sh $OUTPUT/application.ini
     ./replacer.sh $OUTPUT/content/pencil/aboutDialog.js
     ./replacer.sh $OUTPUT/defaults/preferences/pencil.js
@@ -101,7 +101,7 @@ fedorarpm()  {
     cp -R ./Fedora-RPM/buildroot/* $BUILDROOT
     cp -R ../app/license.txt $BUILDROOT/COPYING
     cp ./Fedora-RPM/*.spec $TMP
-    
+
     ./replacer.sh $BUILDROOT/usr/bin/pencil
     chmod 775 $BUILDROOT/usr/bin/pencil
     ./replacer.sh $BUILDROOT/usr/share/applications/pencil.desktop
@@ -109,7 +109,7 @@ fedorarpm()  {
     ./replacer.sh $TMP/pencil.spec
 
     find ./Outputs/RPM/ -name .svn | xargs -i rm -Rf {}
-    
+
     echo "Creating source tarball..."
     CURRENT_DIR=`pwd`
     cd $TMP
@@ -177,29 +177,29 @@ mac() {
 }
 
 ubuntu(){
-	echo "---------------------------------------------"
+    echo "---------------------------------------------"
     echo "* Building Ubuntu amd 64                    *"
     echo "---------------------------------------------"
     rm -Rf ./Outputs/Ubuntu/
     mkdir ./Outputs/Ubuntu/
-    
+
     mkdir ./Outputs/Ubuntu/pencil-2.0.2
-	mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr
-	mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/bin
-	mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/
-	mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications
-	cp ./Ubuntu/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/bin/pencil
-	cp ./Ubuntu/pencil.desktop ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications/pencil.desktop
-	cp -r ./Ubuntu/share/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil
-	#wget -nc http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/15.0.1/runtimes/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2 -O ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2 
-	#tar xvfj ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
-	#cp -r ./xulrunner  ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil/xre
-	cp ./Ubuntu/deb ./Outputs/Ubuntu/pencil-2.0.2/deb
-	cp ./Ubuntu/control ./Outputs/Ubuntu/pencil-2.0.2/control
-	cp ./Ubuntu/rules ./Outputs/Ubuntu/pencil-2.0.2/rules
-	cd ./Outputs/Ubuntu/pencil-2.0.2
-	sh ./deb
-	mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
+    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr
+    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/bin
+    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/
+    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications
+    cp ./Ubuntu/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/bin/pencil
+    cp ./Ubuntu/pencil.desktop ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications/pencil.desktop
+    cp -r ./Ubuntu/share/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil
+    #wget -nc http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/15.0.1/runtimes/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2 -O ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
+    #tar xvfj ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
+    #cp -r ./xulrunner  ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil/xre
+    cp ./Ubuntu/deb ./Outputs/Ubuntu/pencil-2.0.2/deb
+    cp ./Ubuntu/control ./Outputs/Ubuntu/pencil-2.0.2/control
+    cp ./Ubuntu/rules ./Outputs/Ubuntu/pencil-2.0.2/rules
+    cd ./Outputs/Ubuntu/pencil-2.0.2
+    sh ./deb
+    mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
 }
 
 cleanup() {
@@ -221,17 +221,17 @@ fi
 
 prep
 
-if [ "$1" = "xpi" ] 
+if [ "$1" = "xpi" ]
 then
     xpi
 fi
 
-if [ "$1" = "win32" ] 
+if [ "$1" = "win32" ]
 then
     win32
 fi
 
-if [ "$1" = "mac" ] 
+if [ "$1" = "mac" ]
 then
     mac
 fi
@@ -241,17 +241,17 @@ then
     linux
 fi
 
-if [ "$1" = "fedorarpm" ] 
+if [ "$1" = "fedorarpm" ]
 then
     fedorarpm
 fi
 
-if [ "$1" = "ubuntu" ] 
+if [ "$1" = "ubuntu" ]
 then
     ubuntu
 fi
 
-if [ "$1" = "all" ] 
+if [ "$1" = "all" ]
 then
     xpi
     win32
