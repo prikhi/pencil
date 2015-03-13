@@ -30,7 +30,7 @@ F.richTextSize = function (name) {
     var dim = new Dimension(tm.width, tm.height);
 
     return dim;
-}
+};
 F.textSize = function (name) {
     var target = Pencil.findObjectByName(this._target, name);
     if (!target) return new Dimension(0, 0);
@@ -41,7 +41,7 @@ F.textSize = function (name) {
 };
 F.getObjectBoundingBox = function (name) {
     var target = Pencil.findObjectByName(this._target, name);
-    if (!target) return new {x:0, y: 0, w: 0, h: 0};
+    if (!target) return {x:0, y: 0, w: 0, h: 0};
 
     var bbox = target.getBBox();
     return {x: bbox.x, y: bbox.y, w: bbox.width, h: bbox.height};
@@ -55,7 +55,7 @@ F.elementSize = function (name) {
 };
 
 F.getRelativeLocation = function (handle, box) {
-    if (box.w == 0) return "top";
+    if (box.w === 0) return "top";
 
     var y1 = (box.h * handle.x) / box.w;    //y value at the y = h*x/w line
     var y2 = box.h - (box.h * handle.x / box.w); //y value the y = h - h*x/w line
@@ -103,7 +103,7 @@ F.newDOMFragment = function (specs) {
 
 F.thirdPoint = function(a, b, r, m) {
     var ab = Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-    if (ab == 0) return {x: 0, y: 0};
+    if (ab === 0) return {x: 0, y: 0};
 
     var l = (m.match && m.match(/^([0-9\.]+)%$/)) ? (ab * parseFloat(RegExp.$1) * 0.01) : m;
     var d = l / ab;
@@ -136,7 +136,7 @@ F.pieConstraintFunction = function(a, b, box) {
     var si = Math.sin(alpha);
 
     var m = Math.sqrt(ry * ry * co * co + rx * rx * si * si);
-    var r = rx * ry / m;
+    r = rx * ry / m;
 
     var x = r * co + rx;
     var y = r * si + ry;
@@ -188,7 +188,7 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
     var lastLineHeight = 0;
     for (var j = 0; j < lines.length; j ++) {
         var line = lines[j];
-        if (line.length == 0) {
+        if (line.length === 0) {
             lastHeight += lastLineHeight;
             continue;
         }
@@ -196,26 +196,27 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
         var i = 0;
         var s = "";
         var lastBBoxWidth = 0;
+        var box;
         while (i < words.length) {
             if (s.length > 0) s += " ";
             s += words[i];
-            
+
             Dom.empty(textElement);
             textElement.appendChild(textElement.ownerDocument.createTextNode(s));
-            var box = textElement.getBBox();
-            
+            box = textElement.getBBox();
+
             i ++;
-            
+
             if (box.width < width) {
                 lastBBoxWidth = box.width;
                 continue;
             }
-            
+
             //now add the tspan
-            
+
             var index = s.lastIndexOf(" ");
-            var line = "";
-            
+            line = "";
+
             if (index > 0) {
                 line = s.substring(0, index);
                 i --;
@@ -224,7 +225,7 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
                 lastBBoxWidth = box.width;
             }
             s = "";
-            
+
             tspans.push({
                 _name: "tspan",
                 _uri: "http://www.w3.org/2000/svg",
@@ -232,16 +233,16 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
                 x: (align ? align.h : 0) * (width - lastBBoxWidth) / 2,
                 y: lastHeight
             });
-            
+
             lastHeight += box.height;
             lastLineHeight = box.height;
-            
+
         }
         if (s.length > 0) {
             Dom.empty(textElement);
             textElement.appendChild(textElement.ownerDocument.createTextNode(s));
-            var box = textElement.getBBox();
-            
+            box = textElement.getBBox();
+
             tspans.push({
                 _name: "tspan",
                 _uri: "http://www.w3.org/2000/svg",
@@ -254,6 +255,6 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
 
     }
     var frag = Dom.newDOMFragment(tspans, textElement.ownerDocument);
-    
+
     return frag;
 };

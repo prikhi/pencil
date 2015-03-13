@@ -50,7 +50,7 @@ OnScreenTextEditor._enableGlobalKey = function (id, enable) {
     }  else {
         key.setAttribute("disabled", "true");
     }
-}
+};
 
 OnScreenTextEditor._ensureSupportElements = function () {
     try {
@@ -111,7 +111,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         OnScreenTextEditor.richtextEditorSizeGrip.style.display = "none";
 
         OnScreenTextEditor.miniToolbarPane.addEventListener("mousedown", function (event) {
-            if (event.button != 0 || !event.originalTarget || (event.originalTarget.nodeName != "toolbar" && event.originalTarget.nodeName != "toolbox" && event.originalTarget.nodeName != "vbox")) return;
+            if (event.button !== 0 || !event.originalTarget || (event.originalTarget.nodeName != "toolbar" && event.originalTarget.nodeName != "toolbox" && event.originalTarget.nodeName != "vbox")) return;
             OnScreenTextEditor.miniToolbarPane._oX = event.clientX;
             OnScreenTextEditor.miniToolbarPane._oY = event.clientY;
             OnScreenTextEditor.miniToolbarPane._left = parseInt(OnScreenTextEditor.miniToolbarPane.getAttribute("left"));
@@ -119,15 +119,16 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
             OnScreenTextEditor.miniToolbarPane._hold = true;
         }, true);
         window.addEventListener("mousemove", function (event) {
+            var dx, dy;
             if (OnScreenTextEditor.miniToolbarPane._hold) {
-                var dx = event.clientX - OnScreenTextEditor.miniToolbarPane._oX;
-                var dy = event.clientY - OnScreenTextEditor.miniToolbarPane._oY;
+                dx = event.clientX - OnScreenTextEditor.miniToolbarPane._oX;
+                dy = event.clientY - OnScreenTextEditor.miniToolbarPane._oY;
                 OnScreenTextEditor.miniToolbarPane.setAttribute("left", OnScreenTextEditor.miniToolbarPane._left + dx);
                 OnScreenTextEditor.miniToolbarPane.setAttribute("top", OnScreenTextEditor.miniToolbarPane._top + dy);
             }
             if (OnScreenTextEditor.richtextEditorSizeGrip._hold && OnScreenTextEditor.currentInstance) {
-                var dx = event.screenX - OnScreenTextEditor.richtextEditorSizeGrip._oX;
-                var dy = event.screenY - OnScreenTextEditor.richtextEditorSizeGrip._oY;
+                dx = event.screenX - OnScreenTextEditor.richtextEditorSizeGrip._oX;
+                dy = event.screenY - OnScreenTextEditor.richtextEditorSizeGrip._oY;
 
                 var newWidth = OnScreenTextEditor.richtextEditorSizeGrip._width + dx;
                 var newHeight = OnScreenTextEditor.richtextEditorSizeGrip._height + dy;
@@ -149,7 +150,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         }, true);
 
         OnScreenTextEditor.richtextEditorSizeGrip.addEventListener("mousedown", function (event) {
-            if (event.button != 0 || !event.originalTarget) return;
+            if (event.button !== 0 || !event.originalTarget) return;
             OnScreenTextEditor.richtextEditorSizeGrip._oX = event.screenX;
             OnScreenTextEditor.richtextEditorSizeGrip._oY = event.screenY;
             OnScreenTextEditor.richtextEditorSizeGrip._left = parseInt(OnScreenTextEditor.richtextEditorSizeGrip.getAttribute("left"));
@@ -182,7 +183,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
                 }
                 OnScreenTextEditor.currentInstance.applyChanges();
                 OnScreenTextEditor._hide();
-            }, 20)
+            }, 20);
 
         }, false);
         OnScreenTextEditor.richTextEditor.contentDocument.addEventListener("keypress", function (event) {
@@ -298,10 +299,10 @@ OnScreenTextEditor._updateListByCommandValue = function (commandName, controlId)
 
     var control = document.getElementById(controlId);
     if (control.localName == "menulist") {
-        if (value == null) return;
+        if (value === null) return;
         control.value = value;
     }
-}
+};
 OnScreenTextEditor._updateColorButtonByCommandValue = function (commandName, controlId) {
     var value = null;
     try {
@@ -312,10 +313,10 @@ OnScreenTextEditor._updateColorButtonByCommandValue = function (commandName, con
 
     var control = document.getElementById(controlId);
     if (control.localName == "pcolorbutton") {
-        if (value == null) return;
+        if (value === null) return;
         control.color = Color.fromString(value);
     }
-}
+};
 OnScreenTextEditor._updateButtonByCommandState = function (commandName, controlId) {
     var value = null;
     try {
@@ -328,7 +329,7 @@ OnScreenTextEditor._updateButtonByCommandState = function (commandName, controlI
     if (control.localName == "toolbarbutton") {
         control.checked = value ? true : false;
     }
-}
+};
 OnScreenTextEditor._hide = function () {
     Dom.removeClass(document.documentElement, "RichTextEditActivated");
 
@@ -401,7 +402,9 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = "";
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = this.textEditingInfo.value;
 
-    var inlineEditor = !this.textEditingInfo.inlineEditor || (this.textEditingInfo.inlineEditor && !(this.textEditingInfo.inlineEditor.toLowerCase() == "false"));
+    var inlineEditor = !this.textEditingInfo.inlineEditor ||
+        (this.textEditingInfo.inlineEditor &&
+            (this.textEditingInfo.inlineEditor.toLowerCase() != "false"));
 
     if (this.textEditingInfo.font) {
         var font = this.textEditingInfo.font;
