@@ -21,7 +21,7 @@ function Rasterizer(format) {
     var thiz = this;
 
     this.nextHandler = null;
-    
+
     var start = 0;
 
     window.addEventListener("DOMFrameContentLoaded", function (event) {
@@ -62,8 +62,8 @@ function Rasterizer(format) {
     }, false);
 
     this.win = iframe.contentWindow;
-    this.win.document.body.setAttribute("style", "padding: 0px; margin: 0px;")
-};
+    this.win.document.body.setAttribute("style", "padding: 0px; margin: 0px;");
+}
 Rasterizer.prototype.getImageDataFromUrl = function (url, callback) {
     this.win.document.body.innerHTML = "";
     var image = this.win.document.createElementNS(PencilNamespaces.html, "img");
@@ -154,17 +154,17 @@ Rasterizer.prototype._prepareWindowForRasterization = function(backgroundColor) 
         width: w,
         height: h
     };
-}
+};
 
 Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
     debug("Rasterizing window to URL");
     canvas = this._prepareWindowForRasterization();
     var dataURL = canvas.canvas.toDataURL("image/png", "");
-    
+
     var path = "/home/dgthanhan/Desktop/tmp.png";
     //this.saveURI(dataURL, path);
     //alert("data saved to " + path);
-    
+
     data = {
         url: dataURL,
         width: canvas.width,
@@ -241,29 +241,28 @@ Rasterizer.prototype.rasterizeWindow = function (filePath, callback, preprocesso
         debug("Preprocessing document with "  + preprocessor);
         preprocessor.process(this.win.document);
     }
-    canvas = this._prepareWindowForRasterization(backgroundColor);
-    data = canvas.canvas.toDataURL(); // Defaults to image/png
+    var canvas = this._prepareWindowForRasterization(backgroundColor);
+    var data = canvas.canvas.toDataURL(); // Defaults to image/png
     this.saveURI(data, filePath);
     callback();
 };
 
 Rasterizer.prototype.saveURI = function (url, file) {
-    uri = Components.classes["@mozilla.org/network/standard-url;1"].
-          createInstance(Components.interfaces.nsIURI);
+    var uri = Components.classes["@mozilla.org/network/standard-url;1"].
+        createInstance(Components.interfaces.nsIURI);
     uri.spec = url;
 
-    localFile = Components.classes["@mozilla.org/file/local;1"].
-                createInstance(Components.interfaces.nsILocalFile)
-    localFile.initWithPath(file)
+    var localFile = Components.classes["@mozilla.org/file/local;1"].
+        createInstance(Components.interfaces.nsILocalFile);
+    localFile.initWithPath(file);
 
-    persistListener = new PersistProgressListener();
+    var persistListener = new PersistProgressListener();
     var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].
-              createInstance(Components.interfaces.nsIWebBrowserPersist);
+        createInstance(Components.interfaces.nsIWebBrowserPersist);
 
     persist.progressListener = persistListener;
     persist.saveURI(uri, null, null, null, null, null, localFile, null);
-    //persist.cancelSave();
-}
+};
 
 function PersistProgressListener(callback) {
     this.init();

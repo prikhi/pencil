@@ -27,7 +27,7 @@ ExportWizard.setup = function () {
 
     var selectedExporterRadioItem = null;
     
-    var selectedExporter = null
+    var selectedExporter = null;
     if (ExportWizard.dialogData.forcedExporterId) {
         selectedExporter = ExportWizard.Pencil.getDocumentExporterById(ExportWizard.dialogData.forcedExporterId);
     } else if (lastSelection.exporterId) {
@@ -59,15 +59,15 @@ ExportWizard.setup = function () {
     //Setup Pages
     var pages = ExportWizard.Pencil.controller.doc.pages;
     Dom.empty(ExportWizard.pageList);
-    for (var i = 0; i < pages.length; i++) {
+    for (var j = 0; j < pages.length; j++) {
         var item = Dom.newDOMElement({
             _name: "listitem",
             _uri: PencilNamespaces.xul,
-            label: pages[i].properties.name,
+            label: pages[j].properties.name,
             type: "checkbox",
-            checked: lastSelection.pageIds ? (lastSelection.pageIds.indexOf(pages[i].properties.id) >= 0) : "true"
+            checked: lastSelection.pageIds ? (lastSelection.pageIds.indexOf(pages[j].properties.id) >= 0) : "true"
         });
-        item._pageId = pages[i].properties.id;
+        item._pageId = pages[j].properties.id;
 
         ExportWizard.pageList.appendChild(item);
     }
@@ -81,8 +81,8 @@ ExportWizard.setup = function () {
     window.setTimeout(ExportWizard.onPageSelectionChanged, 10);
 
     //Setup templates and other options
-    if (ExportWizard.getSelectedExporter().supportTemplating()
-        && lastSelection.templateId) {
+    if (ExportWizard.getSelectedExporter().supportTemplating() && 
+            lastSelection.templateId) {
         ExportWizard.templateMenu.value = lastSelection.templateId;
     }
 
@@ -140,10 +140,11 @@ ExportWizard.onExporterChanged = function () {
     Dom.empty(ExportWizard.templateMenu.firstChild);
     Dom.empty(ExportWizard.templateDescription);
     var popup = ExportWizard.templateMenu.firstChild;
+    var menuitem;
     if (!exporter.supportTemplating()) {
         ExportWizard.templateMenu.disabled = true;
 
-        var menuitem = document.createElementNS(PencilNamespaces.xul, "menuitem");
+        menuitem = document.createElementNS(PencilNamespaces.xul, "menuitem");
         menuitem.setAttribute("label", Util.getMessage("template.not.supported"));
         popup.appendChild(menuitem);
     } else {
@@ -152,7 +153,7 @@ ExportWizard.onExporterChanged = function () {
 
         for (var i = 0; i < templates.length; i ++) {
             var template = templates[i];
-            var menuitem = document.createElementNS(PencilNamespaces.xul, "menuitem");
+            menuitem = document.createElementNS(PencilNamespaces.xul, "menuitem");
             menuitem.setAttribute("label", template.name);
             menuitem.setAttribute("value", template.id);
             menuitem._template = template;
@@ -187,10 +188,11 @@ ExportWizard.browseTargetFile = function () {
     var isChoosingFile = exporter.getOutputType() == BaseExporter.OUTPUT_TYPE_FILE;
 
     try {
+        var file;
         //if value specified, use it
         if (ExportWizard.targetFilePathText.value) {
-            var file = Components.classes["@mozilla.org/file/local;1"]
-                                 .createInstance(Components.interfaces.nsILocalFile);
+            file = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
             file.initWithPath(ExportWizard.targetFilePathText.value);
 
             if (file.exists()) currentDir = isChoosingFile ? file.parent : file;
@@ -198,8 +200,8 @@ ExportWizard.browseTargetFile = function () {
 
         //if still not, use the bound file
         if (!currentDir && ExportWizard.Pencil.controller.isBoundToFile()) {
-            var file = Components.classes["@mozilla.org/file/local;1"]
-                                 .createInstance(Components.interfaces.nsILocalFile);
+            file = Components.classes["@mozilla.org/file/local;1"]
+                             .createInstance(Components.interfaces.nsILocalFile);
             file.initWithPath(ExportWizard.Pencil.controller.filePath);
 
             currentDir = file.parent;
@@ -217,14 +219,14 @@ ExportWizard.browseTargetFile = function () {
         fp.init(window, Util.getMessage("select.output.file"), nsIFilePicker.modeSave);
         var exts = exporter.getOutputFileExtensions();
         if (exts) {
-            for (i in exts) {
-            	var ext = exts[i].ext;
+            for (var i in exts) {
+                var ext = exts[i].ext;
                 fp.appendFilter(exts[i].title, ext);
-                if (defaultExt == null && ext != "*.*") {
-                	var index = ext.indexOf(".");
-                	if (index >= 0) {
-                    	defaultExt = ext.substring(index);
-                	}
+                if (defaultExt === null && ext != "*.*") {
+                    var index = ext.indexOf(".");
+                    if (index >= 0) {
+                        defaultExt = ext.substring(index);
+                    }
                 }
             }
         }
@@ -239,7 +241,7 @@ ExportWizard.browseTargetFile = function () {
     
     var path = fp.file.path;
     if (isChoosingFile && defaultExt && path.indexOf(".") < 0) {
-    	path = path + defaultExt;
+        path = path + defaultExt;
     }
     
     ExportWizard.targetFilePathText.value = path;
@@ -252,7 +254,7 @@ ExportWizard.validatePageSelection = function () {
         if (item.checked) selected ++;
     });
 
-    if (selected == 0) {
+    if (selected === 0) {
         Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.at.least.one.page.to.export"), Util.getMessage("button.close.label"));
         return false;
     }
@@ -286,7 +288,7 @@ ExportWizard.validateOptions = function () {
 };
 ExportWizard.onFinish = function () {
     var templateId = ExportWizard.templateMenu.value;
-    if (!ExportWizard.templateMenu.disabled && (!templateId || templateId == null)) {
+    if (!ExportWizard.templateMenu.disabled && (!templateId || templateId === null)) {
         Util.error(Util.getMessage("error.title"), Util.getMessage("no.template.has.been.installed.for.exporting"), Util.getMessage("button.close.label"));
         return false;
     }
