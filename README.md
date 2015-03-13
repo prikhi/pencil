@@ -10,21 +10,31 @@ was abandoned around 2013. This fork was started for new development on March
 
 Much of this project is still unmaintained & could use some love.
 
+
+## Prerequisites
+
+You will need version 36 or higher of `firefox` or `xulrunner` to run Pencil.
+
+
 ## Build
 
-Only building for GNU/Linux has been tested since forking.
-
+Only building for GNU/Linux has been tested since forking:
 ```bash
 
 cd build
-./build linux
+./build.sh linux
 xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/application.ini
 
 ```
+
+If you want to build for Firefox, Mac or Windows, pass `xpi`, `mac` or `win32`
+to `./build.sh`, respectively.
+
 
 ## License
 
 This fork is released under GPLv2 like it's parent codebase.
 
 http://pencil.evolus.vn/
+
 https://code.google.com/p/evoluspencil/
