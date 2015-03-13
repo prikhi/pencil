@@ -75,13 +75,16 @@ F.rotate = function(a, o, rad) {
 F.newDOMElement = function (spec) {
     var e = spec._uri ? this._target.ownerDocument.createElementNS(spec._uri, spec._name) : this._target.ownerDocument.createElement(spec._name);
 
-    for (name in spec) {
+    for (var name in spec) {
         if (name.match(/^_/)) continue;
         e.setAttribute(name, spec[name]);
     }
 
     if (spec._text) {
         e.appendChild(e.ownerDocument.createTextNode(spec._text));
+    }
+    if (spec._html) {
+        e.innerHTML = spec._html;
     }
     if (spec._children && spec._children.length > 0) {
         e.appendChild(F.newDOMFragment(spec._children));

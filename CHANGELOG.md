@@ -3,6 +3,7 @@ This file describes changes for users(not developers), by version.
 # develop
 
 * Add the Ctrl-Q shortcut for quitting Pencil.
+* Fix the Basic Web Element Table's "Use HTML Content" property(#143).
 
 
 # v2.0.7
