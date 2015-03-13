@@ -30,7 +30,7 @@ prep() {
 
 xpi() {
     echo "----------------"
-    echo "* Building XPI * XPI_NAME"
+    echo "* Building XPI * $XPI_NAME"
     echo "----------------"
     rm -Rf ./Outputs/XPI/
     mkdir ./Outputs/XPI/
