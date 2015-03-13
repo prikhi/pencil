@@ -2,6 +2,8 @@
 
 A GUI prototyping tool for GNU/Linux, Windows & Mac.
 
+## Status
+
 This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
 13th, 2015.
