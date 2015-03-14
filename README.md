@@ -19,7 +19,10 @@ You will need version 36 or higher of `firefox` or `xulrunner` to run Pencil.
 
 ## Build
 
-Only building for GNU/Linux has been tested since forking:
+If you want to build for Firefox, or Mac pass `xpi` or `mac` to
+`./build.sh`, respectively. It might work.
+
+### Linux
 ```bash
 
 cd build
@@ -28,8 +31,14 @@ xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/applicati
 
 ```
 
-If you want to build for Firefox, Mac or Windows, pass `xpi`, `mac` or `win32`
-to `./build.sh`, respectively.
+### Windows
+```bash
+
+cd build
+./build.sh win32
+```
+
+This should place an installer `exe` in `Outputs/`.
 
 
 ## Develop

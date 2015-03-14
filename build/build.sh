@@ -77,7 +77,7 @@ linux() {
     cd ../../
 }
 
-fedorarpm()  {
+fedorarpm() {
     echo "--------------------------------------"
     echo "* Building Fedora RPM with Shared XRE *"
     echo "--------------------------------------"
@@ -144,22 +144,22 @@ win32() {
     echo "---------------------------------------------"
     echo "* Building Win32 Installer with Private XRE *"
     echo "---------------------------------------------"
+    export OUTPUT="./Outputs/Win32"
 
-    rm -Rf ./Outputs/Win32/
-    mkdir ./Outputs/Win32/
-    mkdir -p ./Outputs/Win32/app
+    rm -Rf $OUTPUT/
+    mkdir -p $OUTPUT/app
 
-    cp -R ./Outputs/Pencil/* ./Outputs/Win32/app/
-    cp -R ./Win32/* ./Outputs/Win32/
+    cp -R ./Outputs/Pencil/* $OUTPUT/app/
+    cp -R ./Win32/* $OUTPUT/
 
-    cp -R ./Outputs/Pencil/application.ini.tpl ./Outputs/Win32/app/application.ini
+    cp -R ./Outputs/Pencil/application.ini.tpl $OUTPUT/app/application.ini
 
-    ./replacer.sh ./Outputs/Win32/app/application.ini
-    ./replacer.sh ./Outputs/Win32/app/defaults/preferences/pencil.js
+    ./replacer.sh $OUTPUT/app/application.ini
+    ./replacer.sh $OUTPUT/app/defaults/preferences/pencil.js
 
-    ./replacer.sh ./Outputs/Win32/setup.nsi
+    ./replacer.sh $OUTPUT/setup.nsi
 
-    cd Outputs/Win32
+    cd $OUTPUT
     makensis pencil.nsi && makensis setup.nsi
     cd ../../
 }
@@ -188,7 +188,7 @@ mac() {
     cp -R ./Outputs/Mac/Pencil.app ./Outputs/Pencil.app
 }
 
-ubuntu(){
+ubuntu() {
     echo "---------------------------------------------"
     echo "* Building Ubuntu amd 64                    *"
     echo "---------------------------------------------"
@@ -216,7 +216,7 @@ ubuntu(){
 
 clean() {
     echo "------------------------"
-    echo "* Removing Build Files *"
+    echo "* Removing Built Files *"
     echo "------------------------"
 
     rm -Rf ./Outputs
@@ -232,55 +232,50 @@ maintainer_clean() {
 
 
 
-if [ "$1" = "clean" ]
-then
-    clean
-fi
+case "$1" in
+    clean)
+        clean
+        ;;
 
-if [ "$1" = "maintainer-clean" ]
-then
-    maintainer_clean
-fi
+    maintainer-clean)
+        maintainer_clean
+        ;;
 
+    *)
+        prep
+        ;;
+esac
 
-prep
+case "$1" in
+    xpi)
+        xpi
+        ;;
 
-if [ "$1" = "xpi" ]
-then
-    xpi
-fi
+    win32)
+        win32
+        ;;
 
-if [ "$1" = "win32" ]
-then
-    win32
-fi
+    mac)
+        mac
+        ;;
 
-if [ "$1" = "mac" ]
-then
-    mac
-fi
+    linux)
+        linux
+        ;;
 
-if [ "$1" = "linux" ]
-then
-    linux
-fi
+    fedorarpm)
+        fedorarpm
+        ;;
 
-if [ "$1" = "fedorarpm" ]
-then
-    fedorarpm
-fi
-
-if [ "$1" = "ubuntu" ]
-then
-    ubuntu
-fi
-
-if [ "$1" = "all" ]
-then
-    xpi
-    win32
-    linux
-    mac
-fi
+    ubuntu)
+        ubuntu
+        ;;
+    *)
+        xpi
+        win32
+        mac
+        linux
+        ;;
+esac
 
 echo "Done!"
