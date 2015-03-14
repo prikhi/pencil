@@ -131,6 +131,16 @@ fedorarpm()  {
 }
 
 win32() {
+    if [ ! -d 'Win32/xulrunner' ]; then
+        echo "-------------------------"
+        echo "* Downloading XULRunner *"
+        echo "-------------------------"
+        XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$WIN_VERSION/runtimes/xulrunner-$WIN_VERSION.en-US.win32.zip"
+        wget $XUL_DL_URL -O temp.zip
+        unzip temp.zip -d Win32
+        rm temp.zip
+    fi
+
     echo "---------------------------------------------"
     echo "* Building Win32 Installer with Private XRE *"
     echo "---------------------------------------------"
@@ -204,7 +214,7 @@ ubuntu(){
     mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
 }
 
-cleanup() {
+clean() {
     echo "------------------------"
     echo "* Removing Build Files *"
     echo "------------------------"
@@ -214,12 +224,24 @@ cleanup() {
     exit
 }
 
+maintainer_clean() {
+    echo "Removing the Windows copy of XULRunner..."
+    rm -Rf ./Win32/xulrunner
+    clean
+}
+
 
 
 if [ "$1" = "clean" ]
 then
-    cleanup
+    clean
 fi
+
+if [ "$1" = "maintainer-clean" ]
+then
+    maintainer_clean
+fi
+
 
 prep
 
