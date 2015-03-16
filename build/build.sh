@@ -3,22 +3,23 @@
 . ./properties.sh
 
 prep() {
-
     rm -Rf ./Outputs/
     mkdir -p ./Outputs
 
-    echo "--------------------"
-    echo "* Preparing Source *"
-    echo "--------------------"
+    echo "--------------------------"
+    echo "* Preparing Common Files *"
+    echo "--------------------------"
 
     rm -Rf ./Outputs/Pencil/
-    mkdir ./Outputs/Pencil/
+    mkdir -p ./Outputs/Pencil/
 
     cp -R ../app/* ./Outputs/Pencil/
-    find ./Outputs/Pencil/ -name .svn | xargs -i rm -Rf {}
 
+    ./replacer.sh ./Outputs/Pencil/application.ini
+    ./replacer.sh ./Outputs/Pencil/defaults/preferences/pencil.js
     ./replacer.sh ./Outputs/Pencil/content/pencil/mainWindow.xul
     ./replacer.sh ./Outputs/Pencil/content/pencil/aboutDialog.xul
+    ./replacer.sh ./Outputs/Pencil/content/pencil/aboutDialog.js
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/pencil.js
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/util.js
 
@@ -32,19 +33,18 @@ xpi() {
     echo "----------------"
     echo "* Building XPI * $XPI_NAME"
     echo "----------------"
-    rm -Rf ./Outputs/XPI/
-    mkdir ./Outputs/XPI/
+    OUTPUT="./Outputs/XPI"
+    rm -Rf $OUTPUT/
+    mkdir -p $OUTPUT/
 
-    cp -R ./Outputs/Pencil/* ./Outputs/XPI/
+    cp -R ./Outputs/Pencil/* $OUTPUT/
+    cp -R ./XPI/* $OUTPUT
 
-    cp -R ./Outputs/Pencil/install.rdf.tpl.xml ./Outputs/XPI/install.rdf
-    cp -R ./Outputs/Pencil/update.rdf.tpl.xml ./Outputs/XPI/update.rdf
-
-    ./replacer.sh ./Outputs/XPI/install.rdf
-    ./replacer.sh ./Outputs/XPI/update.rdf
+    ./replacer.sh $OUTPUT/install.rdf
+    ./replacer.sh $OUTPUT/update.rdf
 
     echo "Compressing XPI file..."
-    cd ./Outputs/XPI/
+    cd $OUTPUT/
     rm -f ../$XPI_NAME
     zip -r ../$XPI_NAME * > /dev/null
     export XPIHASH=`sha1sum ../$XPI_NAME | sed -e s^..../$XPI_NAME^^`
@@ -56,7 +56,7 @@ linux() {
     echo "-------------------------------------"
     echo "* Building Linux Shared XRE version *"
     echo "-------------------------------------"
-    export OUTPUT="./Outputs/Linux"
+    OUTPUT="./Outputs/Linux"
     rm -Rf $OUTPUT
     mkdir -p $OUTPUT
 
@@ -66,10 +66,6 @@ linux() {
     mkdir -p $OUTPUT/chrome/icons/default/
     cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
     cp ./Outputs/Pencil/skin/classic/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
-
-    ./replacer.sh $OUTPUT/application.ini
-    ./replacer.sh $OUTPUT/content/pencil/aboutDialog.js
-    ./replacer.sh $OUTPUT/defaults/preferences/pencil.js
 
     echo "Compressing..."
     cd $OUTPUT/
@@ -135,7 +131,7 @@ win32() {
         echo "-------------------------"
         echo "* Downloading XULRunner *"
         echo "-------------------------"
-        XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$WIN_VERSION/runtimes/xulrunner-$WIN_VERSION.en-US.win32.zip"
+        XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XUL_VERSION/runtimes/xulrunner-$XUL_VERSION.en-US.win32.zip"
         wget $XUL_DL_URL -O temp.zip
         unzip temp.zip -d Win32
         rm temp.zip
@@ -144,7 +140,7 @@ win32() {
     echo "---------------------------------------------"
     echo "* Building Win32 Installer with Private XRE *"
     echo "---------------------------------------------"
-    export OUTPUT="./Outputs/Win32"
+    OUTPUT="./Outputs/Win32"
 
     rm -Rf $OUTPUT/
     mkdir -p $OUTPUT/app
@@ -152,15 +148,11 @@ win32() {
     cp -R ./Outputs/Pencil/* $OUTPUT/app/
     cp -R ./Win32/* $OUTPUT/
 
-    cp -R ./Outputs/Pencil/application.ini.tpl $OUTPUT/app/application.ini
-
-    ./replacer.sh $OUTPUT/app/application.ini
-    ./replacer.sh $OUTPUT/app/defaults/preferences/pencil.js
-
     ./replacer.sh $OUTPUT/setup.nsi
 
     cd $OUTPUT
-    makensis pencil.nsi && makensis setup.nsi
+    echo "Compiling Windows Installer..."
+    makensis -V2 pencil.nsi && makensis -V2 setup.nsi
     cd ../../
 }
 

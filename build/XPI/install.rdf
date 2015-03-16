@@ -5,28 +5,28 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>pencil@evolus.vn</em:id>
-    <em:version>2.0</em:version>
+    <em:version>@VERSION@.@BUILD@</em:version>
     <em:type>2</em:type>
 
     <!-- Firefox -->
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>14.0</em:maxVersion>
+        <em:minVersion>@MIN_VERSION@</em:minVersion>
+        <em:maxVersion>@MAX_VERSION@</em:maxVersion>
       </Description>
     </em:targetApplication>
 
-    <em:name>Pencil</em:name>
+    <em:name>@NAME@</em:name>
     <em:description>Sketching, simplified</em:description>
-    <em:creator>Duong Thanh An</em:creator>
+    <em:creator>@AUTHOR@</em:creator>
     <em:contributor>Maxime Delorme</em:contributor>
     <em:contributor>Frederic Vandaele</em:contributor>
     <em:contributor>Brainiac Kalel</em:contributor>
-    <em:iconURL>chrome://pencil/content/pencil.png</em:iconURL>
+    <em:iconURL>chrome://pencil/skin/pencil.png</em:iconURL>
     <em:icon64URL>chrome://pencil/content/pencil-64.png</em:icon64URL>
     <em:homepageURL>http://pencil.evolus.vn/</em:homepageURL>
-    <em:updateURL>http://pencil.evolus.vn/update.rdf</em:updateURL>
+    <em:updateURL>@UPDATE_URL@/Downloads/update.rdf</em:updateURL>
     <em:updateKey>
           MIGTMA0GCSqGSIb3DQEBBQUAA4GBAMO1O2gwSCCth1GwYMgscfaNakpN40PJfOWt
           ub2HVdg8+OXMciF8d/9eVWm8eH/IxuxyZlmRZTs3O5tv9eWAY5uBCtqDf1WgTsGk
