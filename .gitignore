@@ -1,3 +1,7 @@
+# Build Files
+build/Outputs
+build/Win32/xulrunner
+
 # OS cache files
 .DS_Store
 ._.*
