@@ -1,0 +1,4 @@
+# OS cache files
+.DS_Store
+._.*
+Thumbs.db
