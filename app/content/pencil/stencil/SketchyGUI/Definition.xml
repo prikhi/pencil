@@ -155,11 +155,11 @@
     		</g>
         </p:Content>
     </Shape>
-    <Shortcut displayName="Horizontal Line" icon="Icons/hline.png" to="line">
+    <Shortcut displayName="Horizontal Line" icon="Icons/line.png" to="line">
         <PropertyValue name="b">100,0</PropertyValue>
         <PropertyValue name="mode" p:readonly="true">horizontal</PropertyValue>
     </Shortcut>
-    <Shortcut displayName="Vertical Line" icon="Icons/hline.png" to="line">
+    <Shortcut displayName="Vertical Line" icon="Icons/vline.png" to="line">
         <PropertyValue name="b">0,100</PropertyValue>
         <PropertyValue name="mode" p:readonly="true">vertical</PropertyValue>
     </Shortcut>
