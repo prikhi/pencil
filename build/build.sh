@@ -43,6 +43,12 @@ xpi() {
     ./replacer.sh $OUTPUT/install.rdf
     ./replacer.sh $OUTPUT/update.rdf
 
+    echo "Configuring XPI-specific settings"
+    cp -f ../app/defaults/preferences/pencil.js $OUTPUT/defaults/preferences/pencil.js
+    export XULRUNNER_XUL=""
+    ./replacer.sh ./Outputs/XPI/defaults/preferences/pencil.js
+
+
     echo "Compressing XPI file..."
     cd $OUTPUT/
     rm -f ../$XPI_NAME

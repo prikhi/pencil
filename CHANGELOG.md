@@ -2,6 +2,7 @@ This file describes changes for users(not developers), by version.
 
 # develop
 
+* Fix Pencil automatically opening everytime Firefox is launched.
 * Fix the icons for the Sketchy GUI stencils.
 * Fix the Firefox XPI Build Script.
 * Fix the Windows Build Script.
