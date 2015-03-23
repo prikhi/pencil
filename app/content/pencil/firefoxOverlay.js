@@ -110,8 +110,8 @@ PencilOverlay.saveURI = function (url, filePath, callback)
     uri.spec = url;
 
     localFile = Components.classes["@mozilla.org/file/local;1"].
-                createInstance(Components.interfaces.nsILocalFile)
-    localFile.initWithPath(filePath)
+                createInstance(Components.interfaces.nsILocalFile);
+    localFile.initWithPath(filePath);
 
     persistListener = new PersistProgressListener(callback ? callback : null);
     persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].
@@ -119,7 +119,7 @@ PencilOverlay.saveURI = function (url, filePath, callback)
 
     persist.progressListener = persistListener;
     persist.saveURI(uri, null, null, null, null, localFile);
-}
+};
 
 function PersistProgressListener(callback)
 {
@@ -166,9 +166,3 @@ PersistProgressListener.prototype =
   onSecurityChange : function(aWebProgress, aRequest, aState) {
   }
 };
-
-
-
-
-
-
