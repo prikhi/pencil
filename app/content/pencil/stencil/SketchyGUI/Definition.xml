@@ -2032,7 +2032,7 @@ MenuItem]]></Property>
             <text id="text"/>
         </p:Content>
     </Shape>
-    <Shape id="Pointer1" displayName="Pointer 1" icon="Icons/pointer1.png">
+    <Shape id="Pointer" displayName="Pointer" icon="Icons/pointer.png">
         <Properties>
             <PropertyGroup name="Common">
                 <Property name="box" type="Dimension" p:lockRatio="true">38,28</Property>

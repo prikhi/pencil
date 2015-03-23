@@ -2,6 +2,7 @@ This file describes changes for users(not developers), by version.
 
 # develop
 
+* Fix the icons for the Sketchy GUI stencils.
 * Fix the Firefox XPI Build Script.
 * Fix the Windows Build Script.
 * Add the Ctrl-Q shortcut for quitting Pencil.
