@@ -1,4 +1,4 @@
-This file describes changes for users(not developers), by version.
+This file describes all user-facing changes, by version.
 
 # develop
 

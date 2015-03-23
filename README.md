@@ -9,13 +9,12 @@ This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
 13th, 2015.
 
-Much of this project is still unmaintained & could use some love.
-
 
 ## Prerequisites
 
-You will need version 36 or higher of `firefox` or `xulrunner` to run Pencil
-under Linux. Windows builds have everything you need in the installer.
+You will need version 36 or higher of `firefox` to run Pencil as a Firefox
+Extension. Linux users will need version 36 of either `firefox` or `xulrunner`.
+The Windows installer has everything you need in the built-in.
 
 
 ## Build
@@ -33,21 +32,19 @@ cd build
 firefox Outputs/Pencil*.xpi
 ```
 
-There is currently no toolbar icon, you need to press `Alt+T` to open the Tools
-menu in Firefox and select Pencil from there.
-
 ### Linux
 ```bash
 
 cd build
 ./build.sh linux
-xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/application.ini
+xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/application.ini --no-remote
 
 ```
 
 ### Windows
 
-You'll need `wget` installed so you can pull the Windows XULRunner runtime.
+You'll need `wget` installed so you can pull the Windows XULRunner runtime and
+`nsis` to compile the installer.
 
 ```bash
 
@@ -70,6 +67,8 @@ cd build
 xulrunner Outputs/Linux/application.ini -console
 
 ```
+
+If you make changes that affect users, please update `CHANGELOG.md`.
 
 
 ## License

@@ -13,8 +13,10 @@ prep() {
     rm -Rf ./Outputs/Pencil/
     mkdir -p ./Outputs/Pencil/
 
+    echo "Copying base application files..."
     cp -R ../app/* ./Outputs/Pencil/
 
+    echo "Configuring..."
     ./replacer.sh ./Outputs/Pencil/application.ini
     ./replacer.sh ./Outputs/Pencil/defaults/preferences/pencil.js
     ./replacer.sh ./Outputs/Pencil/content/pencil/mainWindow.xul
@@ -24,6 +26,7 @@ prep() {
     ./replacer.sh ./Outputs/Pencil/content/pencil/common/util.js
 
     if [ ! $DEBUG ]; then
+        echo "Removing debugging files..."
         rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
         rm ./Outputs/Pencil/defaults/preferences/debug.js
     fi
