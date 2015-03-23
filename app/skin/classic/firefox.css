@@ -1,0 +1,7 @@
+#pencil-button {
+  list-style-image: url("chrome://pencil/skin/pencil-24.png");
+}
+
+toolbar[iconsize="small"] #pencil-button {
+  list-style-image: url("chrome://pencil/skin/pencil-16.png");
+}
