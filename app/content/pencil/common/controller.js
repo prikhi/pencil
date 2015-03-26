@@ -349,6 +349,7 @@ Controller.prototype.loadDocument = function (uri) {
             }
         }
         if (!file.exists()) {
+            this.newDocument();
             Util.error(Util.getMessage("error.title"), Util.getMessage("file.not.exist", file.path), Util.getMessage("button.cancel.close"));
             //alert("The file '" + file.path + "' does not exist");
             return;
