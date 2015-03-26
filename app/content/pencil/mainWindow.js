@@ -57,29 +57,20 @@ Pencil.postBoot = function() {
             if (cmdLine) {
                 cmdLine = cmdLine.QueryInterface(Components.interfaces.nsICommandLine);
 
-                var filePath = "";
-                var i = 0;
-                while (true && i < cmdLine.length) {
-                    try {
-                        var part = cmdLine.getArgument(i);
-                        if (!part) break;
-                        if (filePath.length > 0) filePath += " ";
-                        if (part.indexOf("application.ini") == -1)
-                            filePath += part;
-                        i ++;
-                    } catch (e) { Console.dumpError(e); break; }
+                var filePath = null;
+                for (var i = 0; i < cmdLine.length; i++) {
+                    var arg = cmdLine.getArgument(i);
+                    if (arg.match(/\.epz?$/) !== null) {
+                        filePath = cmdLine.resolveFile(arg).path;
+                        break;
+                    }
                 }
-                if (filePath && filePath.indexOf("-") !== 0) {
+                if (filePath !== null) {
                     window.setTimeout(function () {
                         Pencil.controller.loadDocument(filePath);
                     }, 100);
-                } else {
-                    window.setTimeout(function() {
-                        Pencil.controller.newDocument();
-                    }, 100);
+                    loaded = true;
                 }
-
-                loaded = true;
             }
         }
         if (!loaded) {
