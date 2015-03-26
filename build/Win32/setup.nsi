@@ -134,6 +134,10 @@ Section "Main Section" SecMain
 
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_EXECUTE_FILE}"
 
+    ;Associate .ep files
+    WriteRegStr HKLM "Software\Classes\ep_auto_file\DefaultIcon" "" '"$INSTDIR\app\icons\default\main-window.ico"'
+    WriteRegStr HKLM "Software\Classes\ep_auto_file\shell\open\command" "" '"$INSTDIR\xulrunner\xulrunner.exe" "$INSTDIR\app\application.ini" "%1"'
+
     !ifdef README_FILE
       CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Readme.lnk" "$INSTDIR\${README_FILE}"
     !endif
@@ -189,5 +193,8 @@ Section "Uninstall"
   DeleteRegKey /ifempty HKCU "${PRODUCT_REGKEY}"
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
+
+  ;Remove File Associations
+  DeleteRegKey HKLM "Software\Classes\ep_auto_file"
 
 SectionEnd

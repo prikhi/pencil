@@ -2,6 +2,7 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Fix Windows File Associations(#431).
 * Add a Toolbar Icon for Firefox.
 * Fix Pencil automatically opening everytime Firefox is launched.
 * Fix the icons for the Sketchy GUI stencils.

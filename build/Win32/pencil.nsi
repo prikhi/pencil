@@ -12,6 +12,6 @@ AutoCloseWindow true
 ShowInstDetails nevershow
 
 Section ""
-    StrCpy $0 '"$EXEDIR\xulrunner\xulrunner.exe" --app "$EXEDIR\app\application.ini"'
+    StrCpy $0 '"$EXEDIR\xulrunner\xulrunner.exe" "$EXEDIR\app\application.ini"'
     Exec $0
 SectionEnd
