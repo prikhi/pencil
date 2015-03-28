@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Pencil
+Comment=Sketching and GUI prototyping tool
+Comment[vi_VN]=Công cụ phát thảo giao diện Pencil
+Exec=/usr/bin/pencil
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=/usr/share/evolus-pencil/skin/classic/icon.svg
+Categories=Graphics;2DGraphics;Development;
+MimeType=application/ep;

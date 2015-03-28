@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+   <mime-type type="application/ep">
+     <comment>Pencil Document</comment>
+     <glob pattern="*.ep"/>
+     <glob pattern="*.epz"/>
+     <sub-class-of type="application/xml"/>
+   </mime-type>
+</mime-info>

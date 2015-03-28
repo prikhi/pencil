@@ -43,8 +43,11 @@ firefox Outputs/Pencil*.xpi
 cd build
 ./build.sh linux
 xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/application.ini --no-remote
-
 ```
+
+A `Pencil-*-linux-pkg.tar.gz` package will also be created. This contains the
+proper directory structure along with a binary, desktop entry & mimetype
+information and can be used for creating distribution-specific packages.
 
 ### Windows
 

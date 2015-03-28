@@ -13,10 +13,19 @@ prep() {
     rm -Rf ./Outputs/Pencil/
     mkdir -p ./Outputs/Pencil/
 
+    echo "Configuring build..."
+    PKG_NAME="evolus-pencil"
+
+
     echo "Copying base application files..."
     cp -R ../app/* ./Outputs/Pencil/
 
-    echo "Configuring..."
+    echo "Copying icons..."
+    mkdir -p ./Outputs/Pencil/chrome/icons/default/
+    cp ./Outputs/Pencil/skin/classic/pencil.ico ./Outputs/Pencil/chrome/icons/default/pencilMainWindow.ico
+    cp ./Outputs/Pencil/skin/classic/pencil.xpm ./Outputs/Pencil/chrome/icons/default/pencilMainWindow.xpm
+
+    echo "Configuring application..."
     ./replacer.sh ./Outputs/Pencil/application.ini
     ./replacer.sh ./Outputs/Pencil/defaults/preferences/pencil.js
     ./replacer.sh ./Outputs/Pencil/content/pencil/mainWindow.xul
@@ -72,18 +81,42 @@ linux() {
     rm -Rf $OUTPUT
     mkdir -p $OUTPUT
 
+    echo "Copying common files..."
     cp -R ./Outputs/Pencil/* $OUTPUT/
-
-    echo "Copying Icons..."
-    mkdir -p $OUTPUT/chrome/icons/default/
-    cp ./Outputs/Pencil/skin/classic/pencil.ico $OUTPUT/chrome/icons/default/pencilMainWindow.ico
-    cp ./Outputs/Pencil/skin/classic/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
 
     echo "Compressing..."
     cd ./Outputs
-    cp -R ../$OUTPUT evolus-pencil
-    tar -czf ./Pencil-$VERSION-$BUILD-linux-gtk.tar.gz evolus-pencil
-    rm -Rf evolus-pencil
+    cp -R ../$OUTPUT $PKG_NAME
+    tar -czf ./Pencil-$VERSION-$BUILD-linux.tar.gz $PKG_NAME
+    rm -Rf $PKG_NAME
+    cd ..
+}
+
+linuxpkg() {
+    echo "------------------------------------------"
+    echo "* Building Linux Package with Shared XRE *"
+    echo "------------------------------------------"
+    OUTPUT="./Outputs/LinuxPkg"
+    rm -Rf $OUTPUT
+    mkdir -p $OUTPUT
+
+    echo "Creating directory structure..."
+    mkdir -p $OUTPUT/usr/{bin,share/{$PKG_NAME,applications,mime/packages}}
+
+    echo "Copying common files..."
+    cp -R ./Outputs/Pencil/* $OUTPUT/usr/share/$PKG_NAME/
+
+    echo "Copying executable and mime information..."
+    cp ./Linux/pencil $OUTPUT/usr/bin/
+    cp ./Linux/pencil.desktop $OUTPUT/usr/share/application/
+    cp ./Linux/ep.xml $OUTPUT/usr/share/mime/packages/
+
+    echo "Compressing..."
+    cd ./Outputs
+    cp -R ../$OUTPUT $PKG_NAME
+    tar -czf ./Pencil-$VERSION-$BUILD-linux-pkg.tar.gz $PKG_NAME
+    rm -Rf $PKG_NAME
+    cd ..
 }
 
 fedorarpm() {
@@ -266,6 +299,7 @@ case "$1" in
 
     linux)
         linux
+        linuxpkg
         ;;
 
     fedorarpm)
