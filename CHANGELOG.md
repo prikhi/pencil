@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.8
+
 * Fix incorrect page backgrounds when exporting the document.
 * Open a new document if the file to load does not exist.
 * Fix loading files from the command line(#83).
