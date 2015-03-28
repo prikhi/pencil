@@ -26,10 +26,10 @@ No hosted packages yet, sorry. Most likely some will appear in `v2.0.8`.
 
 The build script is currently broken for Mac OS X :(
 
-### Firefox
+### Firefox Extension
 
-Pencil can be installed as an Extension to Firefox, instead of a standalone
-app. To build the addon's `XPI` file:
+Pencil can be installed as Firefox Extension, instead of a standalone
+application. To build the extension's `XPI` file:
 ```bash
 
 cd build
@@ -45,9 +45,11 @@ cd build
 xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/application.ini --no-remote
 ```
 
-A `Pencil-*-linux-pkg.tar.gz` package will also be created. This contains the
-proper directory structure along with a binary, desktop entry & mimetype
-information and can be used for creating distribution-specific packages.
+A `Pencil-*-linux-pkg.tar.gz` package will also be created. This contains
+Pencil nested within the directory structure that most Linux distributions
+expect(under `/usr/share` and `/usr/bin`) along with an executable, a desktop
+entry & mimetype information. This can be used for creating
+distribution-specific packages.
 
 ### Windows
 
@@ -66,8 +68,9 @@ This should place an installer `exe` in the `Outputs/` folder.
 ## Contibute
 
 You don't have to be a programmer to contribute! All feature requests & bug
-reports are appreciated. You can also update or improve the docs, write some
-stencils, attempt to reproduce bug reports or just spread the word :)
+reports are appreciated. You can also update or improve the docs, package
+Pencil for your Linux distribution, write some stencils, attempt to reproduce
+bug reports or just spread the word :)
 
 ### Develop
 
