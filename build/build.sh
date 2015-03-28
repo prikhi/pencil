@@ -314,6 +314,7 @@ case "$1" in
         win32
         mac
         linux
+        linuxpkg
         ;;
 esac
 
