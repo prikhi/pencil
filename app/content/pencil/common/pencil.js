@@ -86,6 +86,18 @@ Pencil.boot = function (event) {
 
         Pencil.window.setAttribute("chromehidden", "");
 
+        //DEBUG_BEGIN
+        // Start Remote Debugging Server
+        var windowtype = "PencilMainWindow";
+        Components.utils.import('resource://gre/modules/devtools/dbg-server.jsm');
+        DebuggerServer.chromeWindowType = windowtype;
+        if (!DebuggerServer.initialized) {
+            DebuggerServer.init();
+            DebuggerServer.addBrowserActors(windowtype);
+        }
+        DebuggerServer.openListener(6000);
+        //DEBUG_END
+
         if (window.arguments) {
             var cmdLine = window.arguments[0];
             if (cmdLine) {
@@ -455,16 +467,3 @@ window.addEventListener("close", function (event) {
     }
     Pencil.rasterizer.cleanup();
 }, false);
-
-
-
-
-
-
-
-
-
-
-
-
-

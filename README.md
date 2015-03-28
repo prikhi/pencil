@@ -69,6 +69,12 @@ xulrunner Outputs/Linux/application.ini -console
 ```
 
 If you make changes that affect users, please update `CHANGELOG.md`.
+Setting `DEBUG` will cause also Pencil to start a remote debugging server on
+port `6000`. This lets you use Firefox's DOM Inspector to debug Pencil. You can
+connect Firefox to the debugging server by going to `Firefox -> Tools -> Web
+Developer -> Connect...`. You may need to enable Remote Debugging under
+Firefox's `Web Developer Tools` Settings(`Ctrl-Shift-I` then click the gear
+icon in the upper-right).
 
 
 ## License
