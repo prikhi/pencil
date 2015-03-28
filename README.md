@@ -13,8 +13,8 @@ was abandoned around 2013. This fork was started for new development on March
 ## Prerequisites
 
 You will need version 36 or higher of `firefox` to run Pencil as a Firefox
-Extension. Linux users will need version 36 of either `firefox` or `xulrunner`.
-The Windows installer has everything you need in the built-in.
+Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
+`xulrunner`. The Windows installer has everything you need in the built-in.
 
 
 ## Install
