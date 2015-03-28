@@ -15,6 +15,7 @@ prep() {
 
     echo "Configuring build..."
     PKG_NAME="evolus-pencil"
+    XUL_VERSION='36.0.1'        # The version of XULRunner for Private XREs
 
 
     echo "Copying base application files..."
