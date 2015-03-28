@@ -109,7 +109,7 @@ linuxpkg() {
 
     echo "Copying executable and mime information..."
     cp ./Linux/pencil $OUTPUT/usr/bin/
-    cp ./Linux/pencil.desktop $OUTPUT/usr/share/application/
+    cp ./Linux/pencil.desktop $OUTPUT/usr/share/applications/
     cp ./Linux/ep.xml $OUTPUT/usr/share/mime/packages/
 
     echo "Compressing..."
