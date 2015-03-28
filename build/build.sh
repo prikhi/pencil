@@ -116,6 +116,7 @@ linuxpkg() {
     cd ./Outputs
     cp -R ../$OUTPUT $PKG_NAME
     tar -czf ./Pencil-$VERSION-linux-pkg.tar.gz $PKG_NAME
+    echo "SHA256SUM: " `sha256sum ./Pencil-$VERSION-linux-pkg.tar.gz`
     rm -Rf $PKG_NAME
     cd ..
 }

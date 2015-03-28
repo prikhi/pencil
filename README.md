@@ -22,6 +22,9 @@ Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
 Windows, Linux & Firefox Packages are available for download from the
 [Releases Page](https://github.com/prikhi/pencil/releases).
 
+For specific Linux distributions:
+* **Arch Linux** - Available in the
+  [AUR](https://aur.archlinux.org/packages/pencil/)
 
 ## Build
 
@@ -127,8 +130,14 @@ can use `maintainer-clean` to remove any XULRunner downloads as well.
 #### Creating a Release
 
 Start off by changing the version number in `build/properties.sh` and
-sectioning off the changes in `CHANGELOG.md`. Then create a new tag, merge it
-into master & push:
+sectioning off the changes in `CHANGELOG.md`. Then run `cd build; ./build.sh` &
+test the built packages in `Outputs`.
+
+If everything looks OK, update the `pkgver` & `sha256sums` variables in the
+`build/ArchLinux/PKGBUILD` file & commit all the changes(with a message like
+`Prepare for v2.0.8 Release`).
+
+Create a new tag, merge it into master & push:
 
 ```bash
 
@@ -138,11 +147,10 @@ git checkout master
 git merge develop
 git push
 git push --tags
-cd build
-./build.sh
 ```
 
-Upload the packages in `build/Outputs/` to github.
+Upload the packages in `build/Outputs/` to the new Release created on Github.
+Update the GNU/Linux distro-specific packages or ping their maintainers.
 
 
 ## License

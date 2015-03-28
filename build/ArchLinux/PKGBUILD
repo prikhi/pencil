@@ -1,0 +1,19 @@
+# Maintainer: Pavan Rikhi <pavan.rikhi@gmail.com>
+pkgname=pencil
+pkgver=2.0.8
+pkgrel=1
+pkgdesc="Sketching and GUI prototyping/wireframing tool"
+arch=('any')
+license=('GPL2')
+url="http://github.com/prikhi/pencil"
+install='pencil.install'
+
+source=("https://github.com/prikhi/pencil/releases/download/v$pkgver/Pencil-$pkgver-linux-pkg.tar.gz")
+sha256sums=('3426d0222b213649e448b06384556718c833667394f442682ff66da3cda1b881')
+depends=('xulrunner')
+
+package() {
+    cp -dr "$srcdir/evolus-pencil/usr" "$pkgdir"
+    # fix permissions of directories
+    chmod -R a+rX "$pkgdir"/*
+}
