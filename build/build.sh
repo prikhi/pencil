@@ -80,9 +80,10 @@ linux() {
     cp ./Outputs/Pencil/skin/classic/pencil.xpm $OUTPUT/chrome/icons/default/pencilMainWindow.xpm
 
     echo "Compressing..."
-    cd $OUTPUT/
-    tar -czvf ../Pencil-$VERSION-$BUILD-linux-gtk.tar.gz * > /dev/null
-    cd ../../
+    cd ./Outputs
+    cp -R ../$OUTPUT evolus-pencil
+    tar -czf ./Pencil-$VERSION-$BUILD-linux-gtk.tar.gz evolus-pencil
+    rm -Rf evolus-pencil
 }
 
 fedorarpm() {
