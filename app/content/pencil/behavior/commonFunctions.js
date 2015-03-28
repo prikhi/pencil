@@ -73,32 +73,10 @@ F.rotate = function(a, o, rad) {
     };
 };
 F.newDOMElement = function (spec) {
-    var e = spec._uri ? this._target.ownerDocument.createElementNS(spec._uri, spec._name) : this._target.ownerDocument.createElement(spec._name);
-
-    for (var name in spec) {
-        if (name.match(/^_/)) continue;
-        e.setAttribute(name, spec[name]);
-    }
-
-    if (spec._text) {
-        e.appendChild(e.ownerDocument.createTextNode(spec._text));
-    }
-    if (spec._html) {
-        e.innerHTML = spec._html;
-    }
-    if (spec._children && spec._children.length > 0) {
-        e.appendChild(F.newDOMFragment(spec._children));
-    }
-
-    return e;
+    return Dom.newDOMElement(spec, this._target.ownerDocument);
 };
 F.newDOMFragment = function (specs) {
-    var f = this._target.ownerDocument.createDocumentFragment();
-
-    for (var i in specs) {
-        f.appendChild(this.newDOMElement(specs[i]));
-    }
-    return f;
+    return Dom.newDOMFragment(specs, this._target.ownerDocument);
 };
 
 F.thirdPoint = function(a, b, r, m) {
