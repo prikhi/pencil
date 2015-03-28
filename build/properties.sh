@@ -2,7 +2,7 @@
 
 export NAME='Pencil'
 export VERSION='2.0.7'
-export BUILD='3'
+export BUILD=`date -I | sed 's/-//g'`
 export AUTHOR='Duong Thanh An (an.duong@evolus.vn) and Contributors'
 export XPI_NAME='Pencil-'$VERSION'-'$BUILD'-fx.xpi'
 export MIN_VERSION='36.0'
