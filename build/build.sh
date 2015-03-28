@@ -87,7 +87,7 @@ linux() {
     echo "Compressing..."
     cd ./Outputs
     cp -R ../$OUTPUT $PKG_NAME
-    tar -czf ./Pencil-$VERSION-$BUILD-linux.tar.gz $PKG_NAME
+    tar -czf ./Pencil-$VERSION-linux.tar.gz $PKG_NAME
     rm -Rf $PKG_NAME
     cd ..
 }
@@ -114,7 +114,7 @@ linuxpkg() {
     echo "Compressing..."
     cd ./Outputs
     cp -R ../$OUTPUT $PKG_NAME
-    tar -czf ./Pencil-$VERSION-$BUILD-linux-pkg.tar.gz $PKG_NAME
+    tar -czf ./Pencil-$VERSION-linux-pkg.tar.gz $PKG_NAME
     rm -Rf $PKG_NAME
     cd ..
 }

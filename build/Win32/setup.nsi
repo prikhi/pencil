@@ -31,7 +31,7 @@
 
   ;Name and file
   Name "${COMPANY_NAME} ${PRODUCT_NAME}"
-  OutFile "..\Pencil-@VERSION@.@BUILD@.win32.installer.exe"
+  OutFile "..\Pencil-@VERSION@.win32.installer.exe"
 
   VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "${PRODUCT_DESCRIPTION}"
