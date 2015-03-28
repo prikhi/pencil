@@ -1222,6 +1222,11 @@ function debug(value) {
     console.info(value);
     //DEBUG_END
 }
+function debugObject(object) {
+    //DEBUG_BEGIN
+    debug(JSON.stringify(object, null, 2));
+    //DEBUG_END
+}
 function stackTrace() {
     //DEBUG_BEGIN
     var lines = [];
