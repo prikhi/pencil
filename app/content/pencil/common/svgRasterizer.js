@@ -158,14 +158,14 @@ Rasterizer.prototype._prepareWindowForRasterization = function(backgroundColor) 
 
 Rasterizer.prototype.rasterizeWindowToUrl = function (callback) {
     debug("Rasterizing window to URL");
-    canvas = this._prepareWindowForRasterization();
+    var canvas = this._prepareWindowForRasterization();
     var dataURL = canvas.canvas.toDataURL("image/png", "");
 
     var path = "/home/dgthanhan/Desktop/tmp.png";
     //this.saveURI(dataURL, path);
     //alert("data saved to " + path);
 
-    data = {
+    var data = {
         url: dataURL,
         width: canvas.width,
         height: canvas.height

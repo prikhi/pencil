@@ -23,7 +23,7 @@ XMLDocumentPersister.parse = function (dom) {
     Dom.workOn("./p:Pages/p:Page", dom.documentElement, function (pageNode) {
         var page = XMLDocumentPersister.parsePage(pageNode, doc);
 
-        for (i in XMLDocumentPersister.hooks) {
+        for (var i in XMLDocumentPersister.hooks) {
             var hook = XMLDocumentPersister.hooks[i];
             if (hook.onPageLoad) {
                 try {

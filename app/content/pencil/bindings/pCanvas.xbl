@@ -1026,7 +1026,7 @@
                         }
                     }
 
-                    if (this._button != 0) return;
+                    if (this._button && this._button != 0) return;
 
                     if (!fake) {
                         event.preventDefault();
@@ -1185,7 +1185,7 @@
                         return;
                     }
                     
-                    for (editor in this.onScreenEditors) {
+                    for (var editor in this.onScreenEditors) {
                         var e = this.onScreenEditors[editor];
                         if (e.handleKeyPressEvent) {
                             if (e.handleKeyPressEvent(event)) {
