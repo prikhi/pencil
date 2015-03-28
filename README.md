@@ -19,7 +19,8 @@ Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
 
 ## Install
 
-No hosted packages yet, sorry. Most likely some will appear in `v2.0.8`.
+Windows, Linux & Firefox Packages are available for download from the
+[Releases Page](https://github.com/prikhi/pencil/releases).
 
 
 ## Build
@@ -88,7 +89,6 @@ cd build
 xulrunner Outputs/Linux/application.ini -console -jsconsole -purgecaches
 # If you only have Firefox installed:
 firefox --app Outputs/Linux/application.ini --no-remote -console -jsconsole -purgecaches
-
 ```
 
 Setting `DEBUG` will cause also Pencil to start a remote debugging server on
