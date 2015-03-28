@@ -124,6 +124,26 @@ happens in the `prep()` function).
 You can pass the `clean` argument to `build.sh` to remove all the outputs. You
 can use `maintainer-clean` to remove any XULRunner downloads as well.
 
+#### Creating a Release
+
+Start off by changing the version number in `build/properties.sh` and
+sectioning off the changes in `CHANGELOG.md`. Then create a new tag, merge it
+into master & push:
+
+```bash
+
+git checkout develop
+git tag -s -a v2.0.8
+git checkout master
+git merge develop
+git push
+git push --tags
+cd build
+./build.sh
+```
+
+Upload the packages in `build/Outputs/` to github.
+
 
 ## License
 
