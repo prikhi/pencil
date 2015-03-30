@@ -10,6 +10,16 @@ was abandoned around 2013. This fork was started for new development on March
 13th, 2015.
 
 
+## Links
+
+The original project's homepage: http://pencil.evolus.vn/
+
+And it's repository: https://code.google.com/p/evoluspencil/
+
+The current discussion forum:
+https://groups.google.com/forum/#!forum/pencil-user
+
+
 ## Prerequisites
 
 You will need version 36 or higher of `firefox` to run Pencil as a Firefox
@@ -156,13 +166,3 @@ Update the GNU/Linux distro-specific packages or ping their maintainers.
 ## License
 
 This fork is released under GPLv2 like it's parent codebase.
-
-
-## Links
-
-The original project's homepage: http://pencil.evolus.vn/
-
-And it's repository: https://code.google.com/p/evoluspencil/
-
-The current discussion forum:
-https://groups.google.com/forum/#!forum/pencil-user
