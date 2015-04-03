@@ -3,21 +3,18 @@
 A GUI prototyping tool for GNU/Linux, Windows & Mac.
 
 
-## Status
+### Status
 
 This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
 13th, 2015.
 
 
-## Links
+### Links
 
-The original project's homepage: http://pencil.evolus.vn/
-
-And it's repository: https://code.google.com/p/evoluspencil/
-
-The current discussion forum:
-https://groups.google.com/forum/#!forum/pencil-user
+* [The discussion forum][google-group]
+* [The original project's homepage][evolus-page]
+* [The original repository][evolus-repo]
 
 
 ## Prerequisites
@@ -30,11 +27,12 @@ Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
 ## Install
 
 Windows, Linux & Firefox Packages are available for download from the
-[Releases Page](https://github.com/prikhi/pencil/releases).
+[Releases Page][releases].
 
 For specific Linux distributions:
-* **Arch Linux** - Available in the
-  [AUR](https://aur.archlinux.org/packages/pencil/)
+* **Arch Linux** - Available in the [AUR][aur-pkg].
+* **Nix/NixOS** - Run `nix-env -iA pencil`. You'll need to be tracking
+  [Unstable][nix-unstable].
 
 ## Build
 
@@ -166,3 +164,11 @@ Update the GNU/Linux distro-specific packages or ping their maintainers.
 ## License
 
 This fork is released under GPLv2 like it's parent codebase.
+
+
+[google-group]: https://groups.google.com/forum/#!forum/pencil-user
+[evolus-page]: http://pencil.evolus.vn/
+[evolus-repo]: https://code.google.com/p/evoluspencil/
+[releases]: https://github.com/prikhi/pencil/releases
+[aur-pkg]: https://aur.archlinux.org/packages/pencil/
+[nix-unstable]: https://nixos.org/nixos/manual/sec-upgrading.html
