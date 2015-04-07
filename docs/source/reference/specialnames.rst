@@ -1,7 +1,11 @@
 Special Property Names
 ======================
 
-There is no actual limitation on the way shape properties can be named. Stencil developers can choose the names that best describe the purpose of each property. There is however a list of special names that Pencil provides special support for. The following list summarizes those special names together with how they are handled in Pencil.
+There is no actual limitation on the way shape properties can be named. Stencil
+developers can choose the names that best describe the purpose of each
+property. There is however a list of special names that Pencil provides special
+support for. The following list summarizes those special names together with
+how they are handled in Pencil.
 
 +---------------+-------------+----------------------------------------------+
 | Property Name | Type        | Pencil Supports                              |

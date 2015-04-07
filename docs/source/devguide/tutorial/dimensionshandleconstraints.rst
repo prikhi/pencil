@@ -1,7 +1,9 @@
 Special Constraints for Dimension and Handle
 ============================================
 
-Sometimes, shapes may have to be created with special features such as scaling with a fixed ratio, having handles move only in one direction or within a limited range. Pencil supports many constraints for Pencil properties.
+Sometimes, shapes may have to be created with special features such as scaling
+with a fixed ratio, having handles move only in one direction or within a
+limited range. Pencil supports many constraints for Pencil properties.
 
 Dimension
 ---------
@@ -11,7 +13,9 @@ Dimension
     <Property name="box" type="Dimension" p:lockRatio="true">36,45</Property>
 
 **p:lockRatio**
-    $box size is scaled with a fixed ratio. This means any objects that have their have width and height properties set based on $box will be scaled with a fixed ratio too.
+    $box size is scaled with a fixed ratio. This means any objects that have
+    their have width and height properties set based on $box will be scaled
+    with a fixed ratio too.
 **p:lockW**
     the box width cannot be scaled.
 **p:lockH**

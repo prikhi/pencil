@@ -1,7 +1,12 @@
 Using Shortcuts
 ===============
 
-A stencil may contain many properties. When a shape is dragged onto the canvas, each property is assigned its default value. It is often useful to be able to provide several variations of a shape, each with different default property values. Pencil supports this through **shortcuts**, which allow a stencil to be linked to by any number of shortcuts stencils, with each shortcut specifying its own default property values.
+A stencil may contain many properties. When a shape is dragged onto the canvas,
+each property is assigned its default value. It is often useful to be able to
+provide several variations of a shape, each with different default property
+values. Pencil supports this through **shortcuts**, which allow a stencil to be
+linked to by any number of shortcuts stencils, with each shortcut specifying
+its own default property values.
 
 .. code-block:: xml
 
@@ -46,9 +51,13 @@ A stencil may contain many properties. When a shape is dragged onto the canvas, 
         <PropertyValue name="shadow">true</PropertyValue>
     </Shortcut>
 
-Here, a shortcut is created to the ``label`` stencil, with the shortcut overriding the default value of the label's ``shadow`` property. All properties can be changed using this method. The ``to`` attribute refers to the target shape id.
+Here, a shortcut is created to the ``label`` stencil, with the shortcut
+overriding the default value of the label's ``shadow`` property. All properties
+can be changed using this method. The ``to`` attribute refers to the target
+shape id.
 
-A shortcut may refer to a stencil from another collection. In this situation, the ``to`` property needs to be in the form of ``collectionid:shapeId``.
+A shortcut may refer to a stencil from another collection. In this situation,
+the ``to`` property needs to be in the form of ``collectionid:shapeId``.
 
 .. code-block:: xml
 
@@ -57,4 +66,5 @@ A shortcut may refer to a stencil from another collection. In this situation, th
     </Shortcut>
 
 .. Note::
-    Due to limitations in Pencil, the referenced collection needs to be loaded first otherwise the shortcut will not work.
+    Due to limitations in Pencil, the referenced collection needs to be loaded
+    first otherwise the shortcut will not work.

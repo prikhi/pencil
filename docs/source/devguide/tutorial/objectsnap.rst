@@ -1,7 +1,9 @@
 Object Snapping
 ===============
 
-Pencil users will know that Pencil provides snapping between objects. Object snapping is very useful for aligning objects so that drawing operations can be done quickly. There are 6 default snappings in Pencil:
+Pencil users will know that Pencil provides snapping between objects. Object
+snapping is very useful for aligning objects so that drawing operations can be
+done quickly. There are 6 default snappings in Pencil:
 
 .. figure:: /images/tutorial_top_snapping.png
 
@@ -28,7 +30,10 @@ Pencil users will know that Pencil provides snapping between objects. Object sna
     Middle-to-Middle (vertical)
 
 
-Sometimes the snapping needs to be customized for specific purposes. This tutorial will show how to create new custom snappings. These definitions are put into an ``<Action></Action>`` which must have the exact id of ``getSnappingGuide``.
+Sometimes the snapping needs to be customized for specific purposes. This
+tutorial will show how to create new custom snappings. These definitions are
+put into an ``<Action></Action>`` which must have the exact id of
+``getSnappingGuide``.
 
 .. code-block:: xml
 
@@ -58,18 +63,23 @@ Sometimes the snapping needs to be customized for specific purposes. This tutori
         </p:Content>
     </Shape>
 
-The ``getSnappingGuide`` action is expected to return an array of snapping hints. Each snapping hint is composed of an object of type SnappingData::
+The ``getSnappingGuide`` action is expected to return an array of snapping
+hints. Each snapping hint is composed of an object of type SnappingData::
 
     new SnappingData(SnappingName, position, ToSnappingName, isHorizontalSnapping, this.id)
 
 Where:
 
-* **isHorizontalSnapping:** if true, the snapping will be in the Horizontal direction.
+* **isHorizontalSnapping:** if true, the snapping will be in the Horizontal
+  direction.
 * **SnappingName:** is the name of this snapping hint.
-* **ToSnappingName:** is the Snapping name of other hints that can be snapped to this hint.
-* **Position:** is the position in this shape when the snapping hint is defined (vertical or horizontal).
+* **ToSnappingName:** is the Snapping name of other hints that can be snapped
+  to this hint.
+* **Position:** is the position in this shape when the snapping hint is defined
+  (vertical or horizontal).
 
-Built-in snapping data: by default, even if you don't provide snapping definitions, Pencil has the following snapping data defined for all objects::
+Built-in snapping data: by default, even if you don't provide snapping
+definitions, Pencil has the following snapping data defined for all objects::
 
     new SnappingData("Top", b.y, "Top", false, this.id),
     new SnappingData("Bottom", b.y + b.height, "Bottom", false, this.id),
@@ -78,28 +88,44 @@ Built-in snapping data: by default, even if you don't provide snapping definitio
     new SnappingData("Right", b.x + b.width, "Right", true, this.id),
     new SnappingData("VCenter", b.x + b.width / 2, "VCenter", true, this.id),
 
-where b is the object bounds, b.y is the object's top position, b.x is the object's left position, b.height is the object bound height, b.width is the object bound width.
+where b is the object bounds, b.y is the object's top position, b.x is the
+object's left position, b.height is the object bound height, b.width is the
+object bound width.
 
-In the above example for the Rectangle shape, four default snappings are modified and a new snapping is created.
+In the above example for the Rectangle shape, four default snappings are
+modified and a new snapping is created.
 
 .. image:: /images/tutorial_top_bottom_snapping.png
 
-In the above example, A's Top snapping was modified by new SnappingData("Top", b.y + b.height, "Top", false, this.id),. So other object have Top snapping will be possible to snap to A's new Top. The logic for Bottom, Left, Right snappings are the same.
+In the above example, A's Top snapping was modified by new SnappingData("Top",
+b.y + b.height, "Top", false, this.id),. So other object have Top snapping will
+be possible to snap to A's new Top. The logic for Bottom, Left, Right snappings
+are the same.
 
 .. image:: /images/tutorial_top_middle_snapping.png
 
-Also in this example, a custom, new snapping hint is introduced. This is good for special stencils where we would like to have very specific snappings defined::
+Also in this example, a custom, new snapping hint is introduced. This is good
+for special stencils where we would like to have very specific snappings
+defined::
 
     new SnappingData("FrameTop", b.y + b.height/2, "TabBottom", false, this.id)
 
-Suppose that we have another stencil named *B* with the following custom snapping defined::
+Suppose that we have another stencil named *B* with the following custom
+snapping defined::
 
     new SnappingData("TabBottom", b.y, "FrameTop", false, this.id)
 
-So, A has a new snapping, ``FrameTop``, which allows other snappings of type ``TabBottom`` to be snapped to. Since B has a snapping hint called ``TabBottom`` defined, it will be possible for B to snap to A at the expected position.
+So, A has a new snapping, ``FrameTop``, which allows other snappings of type
+``TabBottom`` to be snapped to. Since B has a snapping hint called
+``TabBottom`` defined, it will be possible for B to snap to A at the expected
+position.
 
-If other shapes want to snap to A at ``FrameTop``, they just need to define a snapping with the name ``TabBottom`` like B does.
+If other shapes want to snap to A at ``FrameTop``, they just need to define a
+snapping with the name ``TabBottom`` like B does.
 
-As noted above, all objects in Pencil have a ``Top`` snapping hint defined by default as its top position, so to have all objects be able to snap to our A's special ``FrameTop`` snapping point, just modify the SnappingData definition to the following::
+As noted above, all objects in Pencil have a ``Top`` snapping hint defined by
+default as its top position, so to have all objects be able to snap to our A's
+special ``FrameTop`` snapping point, just modify the SnappingData definition to
+the following::
 
     new SnappingData("FrameTop", b.y + b.height/2, "Top", false, this.id)

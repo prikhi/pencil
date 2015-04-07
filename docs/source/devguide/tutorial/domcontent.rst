@@ -1,7 +1,13 @@
 Dynamic DOM Content
 ===================
 
-In some special cases, a shape's content is composed of a dynamic element structure. Pencil provides the ``DomContent`` behaviour so that the DOM content of an element can be changed dynamically. The value provided to this behaviour is a DOM node that will be inserted as a child of the target element. Together with providing this behaviour, Pencil also provides utility functions for quickly building DOM nodes and fragments from the spec, defined as JavaScript objects.
+In some special cases, a shape's content is composed of a dynamic element
+structure. Pencil provides the ``DomContent`` behaviour so that the DOM content
+of an element can be changed dynamically. The value provided to this behaviour
+is a DOM node that will be inserted as a child of the target element. Together
+with providing this behaviour, Pencil also provides utility functions for
+quickly building DOM nodes and fragments from the spec, defined as JavaScript
+objects.
 
 .. code-block:: xml
 
@@ -65,6 +71,10 @@ In some special cases, a shape's content is composed of a dynamic element struct
         </p:Content>
     </Shape>
 
-In this example, the text content entered by the user is supposed to be split across multiple lines. The code inside the behaviour splits the text content and creates a ``text`` element for each line, containing that line and a ``path`` element as the footer of the ``text``.
+In this example, the text content entered by the user is supposed to be split
+across multiple lines. The code inside the behaviour splits the text content
+and creates a ``text`` element for each line, containing that line and a
+``path`` element as the footer of the ``text``.
 
-The utility method ``Dom.newDOMFragment(specs);`` is used here to create DOM fragments from the object specs.
+The utility method ``Dom.newDOMFragment(specs);`` is used here to create DOM
+fragments from the object specs.

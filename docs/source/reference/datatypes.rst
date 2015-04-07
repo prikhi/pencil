@@ -1,9 +1,13 @@
 Pencil Data Types
 =================
 
-Pencil supports various data types for shape properties. Some of them are equivalent to data types in popular programming languages while the others are for convenience.
+Pencil supports various data types for shape properties. Some of them are
+equivalent to data types in popular programming languages while the others are
+for convenience.
 
-This document lists all supported data types in Pencil, with both JavaScript syntax and XML syntax for use in stencil coding. Most of the supported data types have at least one way end-users can modify the value from the GUI.
+This document lists all supported data types in Pencil, with both JavaScript
+syntax and XML syntax for use in stencil coding. Most of the supported data
+types have at least one way end-users can modify the value from the GUI.
 
 
 Alignment
@@ -77,7 +81,8 @@ Editor support
 
 Context menu:
 
-Properties of type Bool can be edited in the context menu of the shape using a checkbox item.
+Properties of type Bool can be edited in the context menu of the shape using a
+checkbox item.
 
 .. image:: /images/bool-menu-editor.png
 
@@ -104,7 +109,9 @@ Data structure for storing object size, a pair of width and height values
 
         :param number paddingX:
         :param number paddingY:
-        :returns: Return a new Dimension object with is created by narrowing the callee by the provided paddings. If paddingY is omitted, paddingX will be used for both directions.
+        :returns: Return a new Dimension object with is created by narrowing
+                  the callee by the provided paddings. If paddingY is omitted,
+                  paddingX will be used for both directions.
 
 XML syntax
 ^^^^^^^^^^
@@ -117,27 +124,31 @@ XML syntax
 .. note::
 
     **p:lockRatio**
-        Meta constraint used in XML syntax to hint that the ratio of this object should be maintained when its width and height are changed.
+        Meta constraint used in XML syntax to hint that the ratio of this
+        object should be maintained when its width and height are changed.
 
 Editor support
 ^^^^^^^^^^^^^^
 
 On-canvas editor:
 
-A Dimension property with the special name of box can be edited using the on-canvas geometry editor.
+A Dimension property with the special name of box can be edited using the
+on-canvas geometry editor.
 
 .. image:: /images/box-onscreen-editor.png
 
 Toolbar editor:
 
-And also via the geometry toolbar located on the top of the Pencil application window.
+And also via the geometry toolbar located on the top of the Pencil application
+window.
 
 .. image:: /images/box-toolbar-editor.png
 
 Bound
 -----
 
-Data structure for storing a bounding box which is a composite of a location and a size.
+Data structure for storing a bounding box which is a composite of a location
+and a size.
 
 .. class:: Bound(left, top, width, height)
 
@@ -152,7 +163,8 @@ Data structure for storing a bounding box which is a composite of a location and
         :param box:
         :param number paddingX:
         :param number paddingY:
-        :returns:  a new Bound object from a Dimension object narrowed down on each sides using the provided paddings
+        :returns:  a new Bound object from a Dimension object narrowed down on
+                   each sides using the provided paddings
 
         .. code-block:: js
 
@@ -175,7 +187,8 @@ Data structure for storing a bounding box which is a composite of a location and
 
         :param number paddingX:
         :param number paddingY:
-        :retruns: a new Bound object by using the callee and narrowing down each sides by the provided paddings
+        :returns: a new Bound object by using the callee and narrowing down
+                  each sides by the provided paddings
 
 Color
 -----
@@ -189,7 +202,8 @@ Data structure for storing object color with alpha blending
     .. function:: static Color.fromString(String)
 
         :param String s: colour representation
-        :returns: a colour object from string presentation in CSS numerical color syntax.
+        :returns: a colour object from string presentation in CSS numerical
+                  color syntax.
 
         .. code-block:: js
 
@@ -248,11 +262,13 @@ Editor support
 
 Property page:
 
-Properties of type Color can be edited in the property dialog with a color chooser that supports both simple and advanced mode.
+Properties of type Color can be edited in the property dialog with a color
+chooser that supports both simple and advanced mode.
 
 .. image:: /images/color-prop-editor.png
 
-Color properties with the following special names can be also edited with the Color toolbar: textColor, fillColor and strokeColor.
+Color properties with the following special names can be also edited with the
+Color toolbar: textColor, fillColor and strokeColor.
 
 CSS
 ---
@@ -268,7 +284,8 @@ Provides a data object for styling SVG elements and HTML elements.
         :param string value: Value to set the property to
         :returns: CSS object with newly added property
 
-        CSS Sets a CSS property value, overriding existing one if any and returns the object itself.
+        CSS Sets a CSS property value, overriding existing one if any and
+        returns the object itself.
 
 
     .. function:: CSS.toString()
@@ -279,7 +296,8 @@ Provides a data object for styling SVG elements and HTML elements.
 
         :returns: empty CSS object
 
-        Removes all properties contained in a CSS object and returns the object itself.
+        Removes all properties contained in a CSS object and returns the object
+        itself.
 
     .. function:: CSS.unset(name)
 
@@ -301,11 +319,13 @@ Provides a data object for styling SVG elements and HTML elements.
 
     .. function:: static CSS.fromString(literal)
 
-        Parses the CSS string and creates a CSS object containing all parsed property/value pairs.
+        Parses the CSS string and creates a CSS object containing all parsed
+        property/value pairs.
 
     .. function:: CSS.importRaw(literal)
 
-        Parses the CSS string and add all parsed property/value pairs to the object overriding any existing properties.
+        Parses the CSS string and add all parsed property/value pairs to the
+        object overriding any existing properties.
 
 Enum
 ----
@@ -321,7 +341,8 @@ XML syntax
                       p:enumValues="['one|One', 'two|Two']">two</Property>
 
 * **value**: Member field storing the selected value.
-* **p:enumValues**: An array literal containing all possible options. Each option is in the syntax of 'id|Display Name'.
+* **p:enumValues**: An array literal containing all possible options. Each
+  option is in the syntax of 'id|Display Name'.
 
 Editor support
 ^^^^^^^^^^^^^^
@@ -380,12 +401,14 @@ Property page:
 
 Properties of type Font can be edited in the property dialogue.
 
-A Font property with the special name textFont is editable with the Font style toolbar.
+A Font property with the special name textFont is editable with the Font style
+toolbar.
 
 Handle
 ------
 
-Provides a special data object representing a 2D coordinate that can be modified on the drawing canvas by user operations.
+Provides a special data object representing a 2D coordinate that can be
+modified on the drawing canvas by user operations.
 
 .. code-block:: xml
 
@@ -393,13 +416,20 @@ Provides a special data object representing a 2D coordinate that can be modified
 
 * **x**: Distance to the left border of the shape
 * **y**: Distance to the top border of the shape
-* **p:lockX**: The 'x' value should not be changed, horizontal movement is disabled. Default value: false
-* **p:lockY**: The 'y' value should not be changed, vertical movement is disabled. Default value: false
-* **p:minX**: Minimum value of 'x'. Movement of the handle should not pass this lower limit.
-* **p:maxX**: Maximum value of 'x'. Movement of the handle should not pass this upper limit.
-* **p:minY**: Minimum value of 't'. Movement of the handle should not pass this lower limit.
-* **p:maxY**: Maximum value of 'y'. Movement of the handle should 0not pass this upper limit.
-* **p:noScale**: Disable auto-scaling of Handle value when the object 'box' property is changed. Default value: false
+* **p:lockX**: The 'x' value should not be changed, horizontal movement is
+  disabled. Default value: false
+* **p:lockY**: The 'y' value should not be changed, vertical movement is
+  disabled. Default value: false
+* **p:minX**: Minimum value of 'x'. Movement of the handle should not pass this
+  lower limit.
+* **p:maxX**: Maximum value of 'x'. Movement of the handle should not pass this
+  upper limit.
+* **p:minY**: Minimum value of 't'. Movement of the handle should not pass this
+  lower limit.
+* **p:maxY**: Maximum value of 'y'. Movement of the handle should 0not pass
+  this upper limit.
+* **p:noScale**: Disable auto-scaling of Handle value when the object 'box'
+  property is changed. Default value: false
 
 Editor support
 ^^^^^^^^^^^^^^
@@ -408,7 +438,8 @@ On-canvas editor:
 
 .. image:: /images/handle-onscreen-editor.png
 
-Each property of type Handle is shown as a yellow bullet when the shape is focused. The property can be edited by moving the bullet.
+Each property of type Handle is shown as a yellow bullet when the shape is
+focused. The property can be edited by moving the bullet.
 
 ImageData
 ---------
@@ -480,7 +511,8 @@ On-canvas editor:
 
 .. image:: /images/plaintext-onscreen-editor.png
 
-PlainText properties can be edited right on the canvas using a simple text input.
+PlainText properties can be edited right on the canvas using a simple text
+input.
 
 RichText
 --------
@@ -545,7 +577,8 @@ Data structure for storing stroke styling information.
     .. function:: StrokeStyle.condensed(ratio)
 
         :param number ratio:
-        :returns: a new version of the callee by condensing the width by the provided ratio.
+        :returns: a new version of the callee by condensing the width by the
+                  provided ratio.
 
 XML syntax
 ^^^^^^^^^^

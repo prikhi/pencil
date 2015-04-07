@@ -1,11 +1,14 @@
 Drawing Sketchy Lines
 =====================
 
-Users may want to work with sketchy shapes to create draft notes. So Pencil supports drawing sketchy lines in addition to providing a stencil that contains many basic sketchy shapes.
+Users may want to work with sketchy shapes to create draft notes. So Pencil
+supports drawing sketchy lines in addition to providing a stencil that contains
+many basic sketchy shapes.
 
 .. image:: /images/tutorial_sketchy_shapes.png
 
-This tutorial will show how to create a simple sketchy shape from sketchy lines.
+This tutorial will show how to create a simple sketchy shape from sketchy
+lines.
 
 .. code-block:: xml
 
@@ -63,4 +66,5 @@ This tutorial will show how to create a simple sketchy shape from sketchy lines.
         </p:Content>
     </Shape>
 
-In fact, drawing sketchy lines is the same as drawing normal lines. Simply use sk(x, y), skTo(x, y) instead of M(x, y), L(x, y) to create sketchy shapes.
+In fact, drawing sketchy lines is the same as drawing normal lines. Simply use
+sk(x, y), skTo(x, y) instead of M(x, y), L(x, y) to create sketchy shapes.
