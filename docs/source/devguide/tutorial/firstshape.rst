@@ -3,7 +3,7 @@ Your First Shape
 
 Let's begin with a collection contains a simple shape that provides a *Hello
 World* text item. This shape contains Property definitions, element definitions
-in the Content section and the behaviours that make the content change
+in the Content section and the behaviors that make the content change
 according to property values.
 
 .. code-block:: xml

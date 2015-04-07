@@ -2,10 +2,10 @@ Dynamic DOM Content
 ===================
 
 In some special cases, a shape's content is composed of a dynamic element
-structure. Pencil provides the ``DomContent`` behaviour so that the DOM content
-of an element can be changed dynamically. The value provided to this behaviour
+structure. Pencil provides the ``DomContent`` behavior so that the DOM content
+of an element can be changed dynamically. The value provided to this behavior
 is a DOM node that will be inserted as a child of the target element. Together
-with providing this behaviour, Pencil also provides utility functions for
+with providing this behavior, Pencil also provides utility functions for
 quickly building DOM nodes and fragments from the spec, defined as JavaScript
 objects.
 
@@ -72,7 +72,7 @@ objects.
     </Shape>
 
 In this example, the text content entered by the user is supposed to be split
-across multiple lines. The code inside the behaviour splits the text content
+across multiple lines. The code inside the behavior splits the text content
 and creates a ``text`` element for each line, containing that line and a
 ``path`` element as the footer of the ``text``.
 

@@ -1,7 +1,7 @@
 External JavaScript
 ===================
 
-A shape may contain long and complex JavaScript code for calculating behaviour
+A shape may contain long and complex JavaScript code for calculating behavior
 values, Moreover, other shapes may contain exactly the same code. This means it
 takes time to review and modify shapes. For convenience, such code should be
 brought out of shapes and put into ``<Script></Script>`` tags that at the
@@ -84,7 +84,7 @@ Example:
     </Shape>
 
 As you may notice, in the context of JavaScript execution within a stencil
-behaviour, the ``collection`` object is bound to the current collection that
+behavior, the ``collection`` object is bound to the current collection that
 owns the stencil. The way shared JavaScript code is used is that custom
 functions and attributes are added in the collection-level script and re-used
 later in stencil's code, via the ``collection`` object.

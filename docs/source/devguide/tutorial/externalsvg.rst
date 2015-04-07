@@ -96,7 +96,7 @@ Maintaining a Fixed Stroke Width
 --------------------------------
 
 Please note that without any special handling, when an SVG element is scaled
-with ``Transform`` behaviour, the stroke width will be also scaled accordingly.
+with ``Transform`` behavior, the stroke width will be also scaled accordingly.
 If we would like to have the hand scaled while the stroke width is unchanged,
 the way to do it is as in the above example: recalculating the width using the
 scale ratio::
@@ -110,12 +110,12 @@ Grouping SVG elements
 
 Many of the SVG attributes are inherited by children nodes from their parent
 node. In this example, the two <path> elements are grouped in a <g> parent node
-so that common behaviours can be applied to just this parent node. By grouping,
-all the Fill, StrokeStyle, StroleColor and Transform behaviours will be applied
+so that common behaviors can be applied to just this parent node. By grouping,
+all the Fill, StrokeStyle, StroleColor and Transform behaviors will be applied
 to both the paths.
 
 In case one or more children need to have special treatments, you can always
-assign them an id and declare separate behaviours for it::
+assign them an id and declare separate behaviors for it::
 
     <For ref="hand">
         <Fill>$fillColor</Fill>

@@ -2,7 +2,7 @@ Drawing Resizeable Shapes - The box Property
 ============================================
 
 In most cases, shapes are expected to be scalable. Pencil uses the
-``Dimension`` property type to set shape size through the ``Box`` behaviour. A
+``Dimension`` property type to set shape size through the ``Box`` behavior. A
 Dimension property named ``box`` can be modified by the on-screen geometry
 editor. The box size changes will be applied to the shape size.
 
@@ -37,17 +37,17 @@ property.
         </p:Content>
     </Shape>
 
-The SVG rectangle has width and height attributes. The Box behaviour will use
+The SVG rectangle has width and height attributes. The Box behavior will use
 the input Dimension value to change those width and height attributes. When the
-user scales the shape using the on-canvas geometry editor, the behaviour will
+user scales the shape using the on-canvas geometry editor, the behavior will
 apply the changes to the SVG element.
 
 Add Rounded Corner
 ------------------
 
-SVG rectangle may have rounded corners. Pencil also supports Radius behaviour
+SVG rectangle may have rounded corners. Pencil also supports Radius behavior
 to simplify this. In this example we add a Handle property into the shape and
-use its value in the Radius behaviour.
+use its value in the Radius behavior.
 
 .. code-block:: xml
 
@@ -66,10 +66,10 @@ use its value in the Radius behaviour.
     </Behaviors>
 
 In previous examples, the ``Dimension`` property type is used for drawing
-resizeable shapes via the ``Box`` behaviour. However the ``Box`` behaviour can
+resizeable shapes via the ``Box`` behavior. However the ``Box`` behavior can
 only be used in cases where the target element supports width and height
 attributes. For cases where we want to apply the ``Dimension`` value to an
-arbitrary attribute we can use the ``Attr`` behaviour. This approach can be
+arbitrary attribute we can use the ``Attr`` behavior. This approach can be
 used for all property types, not just ``Dimension``.
 
 .. code-block:: xml
@@ -115,8 +115,8 @@ used for all property types, not just ``Dimension``.
         </p:Content>
     </Shape>
 
-The ``<Attr></Attr>`` behaviour can be used for assigning a value to any
-attribute of an object. In the previous example, the ``Attr`` behaviour can
+The ``<Attr></Attr>`` behavior can be used for assigning a value to any
+attribute of an object. In the previous example, the ``Attr`` behavior can
 also be used instead of ``<Box>$box</Box>`` for the rectangle element:
 
 .. code-block:: xml

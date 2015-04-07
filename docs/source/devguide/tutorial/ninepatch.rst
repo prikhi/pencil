@@ -11,7 +11,7 @@ http://developer.android.com/guide/topics/graphics/2d-graphics.html#nine-patch
 
 It is very simple and flexible to make a stencil based on an existing bitmap
 image by defining the areas that should stretch using the Nine-patch format.
-Starting from version 2.0, Pencil also provides built-in behaviours and tools
+Starting from version 2.0, Pencil also provides built-in behaviors and tools
 to support this technique for developers to use when creating their
 collections. There are already many collections using this technique in the
 Pencil repository such as the iOS UI Stencils.
@@ -202,7 +202,7 @@ Pencil's built-in functions to simplify the code.
     </Shape>
 
 
-The ``NPatchDomContent`` behaviour uses the provided nine-patch and dimension
+The ``NPatchDomContent`` behavior uses the provided nine-patch and dimension
 to perform scaling calculations and fill the bg element with images generated
 from the nine-patch.
 

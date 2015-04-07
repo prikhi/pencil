@@ -4,7 +4,7 @@ Tips and Tricks
 Visibility and Transform
 ------------------------
 
-There are two universal behaviours in Pencil that can be applied to any type of
+There are two universal behaviors in Pencil that can be applied to any type of
 object::
 
     <Visibility>...</Visibility>
@@ -15,11 +15,11 @@ Forced dependencies
 -------------------
 
 Upon changes being made to a specific property, all elements that have at least
-one behaviour referring to that property will be invalidated and the behaviour
-code will be executed. In some special cases, you may want a specific behaviour
+one behavior referring to that property will be invalidated and the behavior
+code will be executed. In some special cases, you may want a specific behavior
 to be executed when a specific property changes even when that property is not
 explicitly referenced. In this case, add a comment with the format ``//depends
-$propertyName`` to the behaviour concerned.
+$propertyName`` to the behavior concerned.
 
 .. code-block:: xml
 

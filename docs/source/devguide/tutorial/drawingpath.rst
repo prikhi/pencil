@@ -1,9 +1,9 @@
-Drawing Path - The D Behaviour
+Drawing Path - The D Behavior
 ==============================
 
 Pencil shapes are usually created using paths that are based on the SVG path
-specification. Pencil supports drawing shapes using the ``D`` behaviour. This
-behaviour generates the "d" attribute for the ``<path>`` SVG element as defined
+specification. Pencil supports drawing shapes using the ``D`` behavior. This
+behavior generates the "d" attribute for the ``<path>`` SVG element as defined
 in the SVG Path data specification . The value used in ``D`` is an array in
 which each item is a drawing command.
 
@@ -38,7 +38,7 @@ by properties of type Handle .
 
 
 In the above example, Handle properties provide points that can be moved on the
-drawing canvas. Their values are changed upon the move and the behaviour code
+drawing canvas. Their values are changed upon the move and the behavior code
 will be executed to re-generate the path's "D" value.
 
 You can notice that various commands are used in this example. Pencil supports
@@ -71,7 +71,7 @@ the following example:
     </Shape>
 
 It is very convenient to create shapes with specific points based on handles or
-the bounding box. The "D" behaviour is used heavily in the built-in Flowchart
+the bounding box. The "D" behavior is used heavily in the built-in Flowchart
 stencil collection .
 
 Add Transparent Background

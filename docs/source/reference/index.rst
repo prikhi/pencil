@@ -6,5 +6,5 @@ Reference Guide
 
     stencilstructure
     datatypes
-    behaviours
+    behaviors
     specialnames

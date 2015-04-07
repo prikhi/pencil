@@ -197,12 +197,12 @@ Data structure for storing object color with alpha blending
 
 .. class:: Color()
 
-    Default opaque black colour
+    Default opaque black color
 
     .. function:: static Color.fromString(String)
 
-        :param String s: colour representation
-        :returns: a colour object from string presentation in CSS numerical
+        :param String s: color representation
+        :returns: a color object from string presentation in CSS numerical
                   color syntax.
 
         .. code-block:: js
@@ -225,29 +225,29 @@ Data structure for storing object color with alpha blending
 
     .. function:: Color.toRGBString()
 
-        :returns: the CSS colour in the format of "rgb(red, green, blue)"
+        :returns: the CSS color in the format of "rgb(red, green, blue)"
 
     .. function:: Color.toRGBAString()
 
-        :returns: the CSS colour in the format of "rgba(red, green, blue, alpha)"
+        :returns: the CSS color in the format of "rgba(red, green, blue, alpha)"
 
     .. function:: Color.shaded(percent)
 
         :param number percent:
-        :returns: a darker version of a colour using the provided percent.
+        :returns: a darker version of a color using the provided percent.
 
     .. function:: Color.hollowed(percent)
 
         :param number percent:
-        :returns: a more transparent version of a colour by the provided percent.
+        :returns: a more transparent version of a color by the provided percent.
 
     .. function:: Color.inverse()
 
-        :returns: negative version of a colour
+        :returns: negative version of a color
 
     .. function:: Color.transparent()
 
-        :returns: a fully transparent version of a colour
+        :returns: a fully transparent version of a color
 
 XML syntax
 ^^^^^^^^^^

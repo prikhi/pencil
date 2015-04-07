@@ -1,16 +1,16 @@
-Behaviour Reference
-===================
+Behavior Reference
+==================
 
 To help Stencil developers define how the content in shapes should be changed
-to be reflect a shape's properties, Pencil provides the Behaviour concept. With
-behaviours, attributes or content of the target object can be changed based on
-the Behaviour's input values. The target object can be an SVG object or an HTML
+to be reflect a shape's properties, Pencil provides the Behavior concept. With
+behaviors, attributes or content of the target object can be changed based on
+the Behavior's input values. The target object can be an SVG object or an HTML
 object in the <Content> section of the shape.
 
-This document lists all supported behaviours in Pencil, each with XML syntax
+This document lists all supported behaviors in Pencil, each with XML syntax
 and examples.
 
-Behaviours applied to an object within the shape are defined as below:::
+Behaviors applied to an object within the shape are defined as below:::
 
     <For ref="target_object_id">
         <Behavior_1>....</Behavior_1>
@@ -27,9 +27,9 @@ that we have a box property of type ``Dimension`` defined for the shape::
 CustomStyle
 -----------
 
-This behaviour is used to assign a value to a specific CSS attribute of the
+This behavior is used to assign a value to a specific CSS attribute of the
 target object. Value and name are specified in the input arguments of the
-behaviour.
+behavior.
 
 Target object
 ^^^^^^^^^^^^^
@@ -71,9 +71,9 @@ Example
 Attr
 ----
 
-This behaviour is used to assign a value to a specific XML attribute of the
+This behavior is used to assign a value to a specific XML attribute of the
 target object. Value and name (and optional namespace URI) are specified in the
-input arguments of the behaviour.
+input arguments of the behavior.
 
 Target object
 ^^^^^^^^^^^^^
@@ -133,7 +133,7 @@ omitted.
 Box
 ---
 
-This behaviour is used to assign values to the width and height attributes of
+This behavior is used to assign values to the width and height attributes of
 the target object.
 
 Target object
@@ -175,7 +175,7 @@ Or directly
 Bound
 -----
 
-This behaviour is used to assign values to the width and height attributes and
+This behavior is used to assign values to the width and height attributes and
 set the position of the target object.
 
 Target object
@@ -220,7 +220,7 @@ Example
 Radius
 ------
 
-This behaviour sets the "rx" and "ry" attributes of the target SVG objects that
+This behavior sets the "rx" and "ry" attributes of the target SVG objects that
 support corner radius (including Rectangle and Ellipse).
 
 Target object
@@ -263,13 +263,13 @@ Example
 Fill
 ----
 
-This behaviour sets the "fill" and "fill-opacity" attributes of the target SVG
-objects that can be filled with colour.
+This behavior sets the "fill" and "fill-opacity" attributes of the target SVG
+objects that can be filled with color.
 
 Target object
 ^^^^^^^^^^^^^
 
-Any SVG object that can be filled with colour.
+Any SVG object that can be filled with color.
 
 XML syntax
 ^^^^^^^^^^
@@ -281,7 +281,7 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **color**: The colour to fill the target with - an object of type Color.
+* **color**: The color to fill the target with - an object of type Color.
 
 Result
 ^^^^^^
@@ -306,7 +306,7 @@ Example
 Color
 -----
 
-This behaviour sets the "color" and "opacity" attributes of the target HTML
+This behavior sets the "color" and "opacity" attributes of the target HTML
 object.
 
 Target object
@@ -324,7 +324,7 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **color**: The desired text colour for the target - an object of type Color.
+* **color**: The desired text color for the target - an object of type Color.
 
 Result
 ^^^^^^
@@ -349,7 +349,7 @@ Example
 StrokeColor
 -----------
 
-This behaviour sets the "stroke" and "stroke-opacity" attributes of the SVG
+This behavior sets the "stroke" and "stroke-opacity" attributes of the SVG
 target objects that have stroke.
 
 Target object
@@ -367,7 +367,7 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **color**: Colour of the stroke - an object of type Color.
+* **color**: Color of the stroke - an object of type Color.
 
 Result
 ^^^^^^
@@ -392,7 +392,7 @@ Example
 StrokeStyle
 -----------
 
-This behaviour is used to set the "stroke-width" and "stroke-dasharray"
+This behavior is used to set the "stroke-width" and "stroke-dasharray"
 attributes of the target object.
 
 Target object
@@ -437,7 +437,7 @@ Example
 Visibility
 ----------
 
-This behaviour is used to assign value to the "visibility" and "display"
+This behavior is used to assign value to the "visibility" and "display"
 attributes of the target object.
 
 Target object
@@ -482,7 +482,7 @@ Example
 BoxFit
 ------
 
-This behaviour is used to set text bounds and alignment.
+This behavior is used to set text bounds and alignment.
 
 Target object
 ^^^^^^^^^^^^^
@@ -531,8 +531,8 @@ Example
 Font
 ----
 
-This behaviour is used to set the target object's text font. With this
-behaviour, a set of font-related attributes are changed.
+This behavior is used to set the target object's text font. With this
+behavior, a set of font-related attributes are changed.
 
 Target object
 ^^^^^^^^^^^^^
@@ -574,7 +574,7 @@ Example
 D
 -
 
-This behaviour is used to set the "d" attribute of an SVG path object. The
+This behavior is used to set the "d" attribute of an SVG path object. The
 provided array of drawing functions is converted to SVG drawing operations.
 
 Target object
@@ -629,7 +629,7 @@ Example
 Transform
 ---------
 
-This behaviour is used to control the "transform" attribute of SVG target
+This behavior is used to control the "transform" attribute of SVG target
 objects. The provided array of transformation functions is converted to SVG
 transformation functions.
 
@@ -673,9 +673,9 @@ Example
 Scale
 -----
 
-This behaviour is used to assigned to the "scale" function in the "transform"
-attribute of an SVG object. This behaviour is equivalent to the Transform
-behaviour with just one scale().
+This behavior is used to assigned to the "scale" function in the "transform"
+attribute of an SVG object. This behavior is equivalent to the Transform
+behavior with just one scale().
 
 Target object
 ^^^^^^^^^^^^^
@@ -699,7 +699,7 @@ Result
 ^^^^^^
 
 The SVG object will be given a ``transform`` attribute containing a scale
-function with the given ratios. Note that using this behaviour will empty the
+function with the given ratios. Note that using this behavior will empty the
 current value of the transform attribute.
 
 Example
@@ -715,11 +715,11 @@ Example
 TextContent
 -----------
 
-This behaviour is used to control the content of the target text object.
+This behavior is used to control the content of the target text object.
 
-Note: this behaviour does not support text wrapping for PlainText content in
+Note: this behavior does not support text wrapping for PlainText content in
 SVG elements. To have the PlainText content wrapped inside an SVG text element
-with a specific aligmnent, please use the PlainTextContent behaviour.
+with a specific aligmnent, please use the PlainTextContent behavior.
 
 Target object
 ^^^^^^^^^^^^^
@@ -757,9 +757,9 @@ Example
 PlainTextContent
 ----------------
 
-This behaviour is used to control the wrapped text inside an SVG text element.
+This behavior is used to control the wrapped text inside an SVG text element.
 This is the recommended way to implement wrapped plain-text content instead of
-using HTML wrapping. This behaviour produces compliant SVG output and the
+using HTML wrapping. This behavior produces compliant SVG output and the
 resultant drawing can be used in other SVG editors like Inkscape.
 
 Target object
@@ -811,7 +811,7 @@ Example
 DomContent
 ----------
 
-This behaviour populates the target object with a child DOM node.
+This behavior populates the target object with a child DOM node.
 
 Target object
 ^^^^^^^^^^^^^
@@ -837,7 +837,7 @@ information.
 Image
 -----
 
-This behaviour is used to control the xlink:href, width and height attributes
+This behavior is used to control the xlink:href, width and height attributes
 of an SVG <image> element.
 
 XML Syntax
@@ -874,7 +874,7 @@ Example
 EllipseFit
 ----------
 
-This behaviour is used control an ellipse element so that it fits into the
+This behavior is used control an ellipse element so that it fits into the
 provided bound.
 
 Target object
@@ -912,7 +912,7 @@ Example
 Width
 -----
 
-This behaviour is used to assign the "width" attribute of the target object.
+This behavior is used to assign the "width" attribute of the target object.
 
 Target object
 ^^^^^^^^^^^^^
@@ -944,7 +944,7 @@ Example
 Height
 ------
 
-This behaviour is used to assign the "height" attribute of the target object.
+This behavior is used to assign the "height" attribute of the target object.
 
 Target object
 ^^^^^^^^^^^^^
@@ -978,7 +978,7 @@ Example
 NPatchDomContent
 ----------------
 
-This behaviour is used to fill the target ``<g>`` SVG element with ``<image>``
+This behavior is used to fill the target ``<g>`` SVG element with ``<image>``
 elements provided in the Nine-Patch with correct scaling for the provided
 dimensions.
 
@@ -1013,13 +1013,13 @@ generated and added as children of the target <g> element.
 Example
 ^^^^^^^
 
-For more information on how to use this behaviour, please refer the associated
+For more information on how to use this behavior, please refer the associated
 tutorial on Using Nine-Patch.
 
 InnerText
 ---------
 
-This behaviour is used to fill the content of the target object with a DOM text
+This behavior is used to fill the content of the target object with a DOM text
 node.
 
 Target object

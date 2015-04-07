@@ -18,19 +18,19 @@ how they are handled in Pencil.
 |               |             | change the box property value. The way the   |
 |               |             | shape is scaled upon changes of this         |
 |               |             | property is defined by the stencil developer |
-|               |             | via the behaviour definition.                |
+|               |             | via the behavior definition.                 |
 +---------------+-------------+----------------------------------------------+
 | textFont      | Font        | Value of this property can be changed using  |
 |               |             | the Font toolbar                             |
 +---------------+-------------+----------------------------------------------+
 | textColor     | Color       | Value of this property can be changed using  |
-|               |             | the Text colour toolbar button               |
+|               |             | the Text color toolbar button                |
 +---------------+-------------+----------------------------------------------+
 | fillColor     | Color       | Value of this property can be changed using  |
-|               |             | the Background colour toolbar button         |
+|               |             | the Background color toolbar button          |
 +---------------+-------------+----------------------------------------------+
 | strokeColor   | Color       | Value of this property can be changed using  |
-|               |             | the Line colour toolbar button               |
+|               |             | the Line color toolbar button                |
 +---------------+-------------+----------------------------------------------+
 | strokeStyle   | StrokeStyle | Value of this property can be changed using  |
 |               |             | the Line style toolbar                       |

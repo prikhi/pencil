@@ -23,7 +23,7 @@ defines:
     property of type Colour.
 
 
-* **The behaviours:** how the shape's look is changed according to changes made
+* **The behaviors:** how the shape's look is changed according to changes made
   to its properties.
 
     *For example:* the Rectangle <rect> element has its fill and fill-opacity
@@ -57,7 +57,7 @@ stencil:
 3. Setting initial values for all properties in the shape to the default values
    as defined in the stencil.
 
-4. Applying all behaviours defined in the stencil to make the shape's look
+4. Applying all behaviors defined in the stencil to make the shape's look
    change according to these initial property values.
 
 Manipulating Shapes in the Drawing Page
