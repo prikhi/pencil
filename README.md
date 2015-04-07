@@ -94,7 +94,7 @@ make latexpdf
 The output files will be put in `/docs/build/`.
 
 
-## Contibute
+## Contribute
 
 You don't have to be a programmer to contribute! All feature requests & bug
 reports are appreciated. You can also update or improve the docs, package
@@ -131,7 +131,7 @@ icon in the upper-right).
 The `build.sh` script is responsible for building everything. Each build is
 usually in two steps: copying & modifying files common to all builds then
 customizing those files for the specific build(by removing files, embedding
-xulrunner, creating the expected direcory structure, etc.).
+xulrunner, creating the expected directory structure, etc.).
 
 The build script uses the `properties.sh` file to hold variables such as the
 current version & the minimum/maximum firefox/xulrunner versions. The script
