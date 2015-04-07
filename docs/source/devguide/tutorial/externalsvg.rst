@@ -1,13 +1,13 @@
 Using External SVG
 ==================
 
-There may be cases that you would like to create a stencil based on an existing SVG vector image. Since the internal format of Pencil shapes is also SVG, it will be natural and straight-forward to import an SVG image into a stencil. The principle to do this is to use your SVG editor to pickup the SVG code of the element you want to import and place that SVG XML code into the stencil <Content> tag. The recommended SVG editor tool is Inkscape which is available for many platforms.
+There may be cases where you would like to create a stencil based on an existing SVG vector image. Since the internal format of Pencil shapes is also SVG, it is straight-forward to import an SVG image into a stencil. The general approach to do this is to use your SVG editor to pick up the SVG code of the element you want to import and place that SVG XML code into the stencil's <Content> tag. The recommended SVG editor is Inkscape which is available for many platforms.
 
-Suppose that we have a handle image in SVG format:
+Suppose that we have a hand image in SVG format:
 
+.. image:: ../../images/Main_html_m6eadbed1.png
 
-
-And its SVG XML code is as the following:
+And its SVG XML code is the following:
 
 .. code-block:: xml
 
@@ -22,7 +22,7 @@ And its SVG XML code is as the following:
         <path sodipodi:nodetypes="cccccccccc" style="fill:none;stroke:#000000" inkscape:connector-curvature="0" id="path10" d="M 22.025873,18.820772 22.948882,32.71885 M 28.060203,14.888365 29,31 M 34.808683,14.331201 35,32 m 3,5 c 0,0 -5,1 -7,11 M 20,35 c 4,-5 12,-4 17,-3" />
     </svg>
 
-The primary part of the SVG is at the set of two <path> elements. This XML fragment should be copied into the stencil code as in the following code:
+The primary part of the SVG is the set of two ``<path>`` elements. This XML fragment should be copied into the stencil code as in the following code:
 
 .. code-block:: xml
 
@@ -87,7 +87,7 @@ The stencil will contain only the SVG content copied from the original hand imag
 Maintaining a Fixed Stroke Width
 --------------------------------
 
-Please note that without any special handling, when and SVG element is scaled with Transform behaviour, the stroke width will be also scaled accordingly. If we would like to have the hand scaled while the stroke width is unchanged, the way to do it is as in the above example: recalculating the width using the scale ratio::
+Please note that without any special handling, when an SVG element is scaled with ``Transform`` behaviour, the stroke width will be also scaled accordingly. If we would like to have the hand scaled while the stroke width is unchanged, the way to do it is as in the above example: recalculating the width using the scale ratio::
 
     <StrokeStyle>
         new StrokeStyle($strokeStyle.w / (Math.max($box.w / 36, $box.h / 45)), $strokeStyle.array);
@@ -96,9 +96,9 @@ Please note that without any special handling, when and SVG element is scaled wi
 Grouping SVG elements
 ---------------------
 
-Many of the SVG attributes are inherited from parent node to children. In this example, the two <path> elements are grouped in to a <g> parent node so that common behaviours can be applied to just this parent node. By grouping, all the Fill, StrokeStyle, StroleColor and Transform behaviours will be applied to the paths.
+Many of the SVG attributes are inherited by children nodes from their parent node. In this example, the two <path> elements are grouped in a <g> parent node so that common behaviours can be applied to just this parent node. By grouping, all the Fill, StrokeStyle, StroleColor and Transform behaviours will be applied to both the paths.
 
-In case one or more children need to have special treatments, you can always assign it an id and declare separate behaviours for it::
+In case one or more children need to have special treatments, you can always assign them an id and declare separate behaviours for it::
 
     <For ref="hand">
         <Fill>$fillColor</Fill>

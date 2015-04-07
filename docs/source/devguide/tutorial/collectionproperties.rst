@@ -1,7 +1,8 @@
 Collection Properties
 =====================
 
-Shapes in a collection tend to have the same style such as same font, color, stroke style... To be convenient to stencil authors in this situation, Pencil supports grouping all shapes common style to collection style. These collection properties can be used as the default value for stencil properties. Then if collection style is changed, default property values for shapes will be changed accordingly.
+Shapes in a collection tend to have the same style such as the same font, color and stroke style. To be convenient for stencil authors in this situation, Pencil supports grouping styles common to several shapes to collection properties. These collection properties can be used as the default value for stencil properties. Then, if the collection style is changed, the default property values for shapes will be changed accordingly.
+
 
 Have a look at this example. Collection properties are defined and then used in shape properties.
 
@@ -33,4 +34,4 @@ Have a look at this example. Collection properties are defined and then used in 
         </Shape>
     </Shapes>
 
-Text content inside the <Property> tag of a stencil is the literal presentation of the initial value for that property. In this example you can notice that the content inside that tag is a <E></E> instead. This is the notation to imply that the initial value should be obtained by evaluation the 'expression' inside the <E> tag. To reference a specific collection property in side this expression, the $$ syntax is used.
+Text content inside the ``<Property>`` tag of a stencil is the literal presentation of the initial value for that property. In this example you will notice that the content inside that tag is a ``<E></E>`` instead. This is the notation to indicate that the initial value should be obtained by evaluating the 'expression' inside the ``<E>`` tag. To reference a specific collection property inside this expression, the ``$$`` syntax is used.

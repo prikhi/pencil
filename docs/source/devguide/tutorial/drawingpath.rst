@@ -1,7 +1,7 @@
 Drawing Path - The D Behaviour
 ==============================
 
-Pencil shape is usually created by paths that base on SVG path specification. Pencil simply supports drawing shapes by the D behaviour. This behaviour generates the "d" attribute for the <path> SVG element as defined in the SVG Path data specification . The value used in D is an array in which each item is a drawing command.
+Pencil shapes are usually created using paths that are based on the SVG path specification. Pencil supports drawing shapes using the ``D`` behaviour. This behaviour generates the "d" attribute for the ``<path>`` SVG element as defined in the SVG Path data specification . The value used in ``D`` is an array in which each item is a drawing command.
 
 The shape in this tutorial is a triangle drawn from 3 points that are defined by properties of type Handle .
 
@@ -34,9 +34,9 @@ The shape in this tutorial is a triangle drawn from 3 points that are defined by
 
 In the above example, Handle properties provide points that can be moved on the drawing canvas. Their values are changed upon the move and the behaviour code will be executed to re-generate the path's "D" value.
 
-You can notice that various commands are used in this example. Pencil supports to following SVG Path commands: M, L, l, C, c, S, s, Q, q, T, A and a.
+You can notice that various commands are used in this example. Pencil supports the following SVG Path commands: M, L, l, C, c, S, s, Q, q, T, A and a.
 
-In many other situations, paths may not rely solely on position of handles. For example, a triangle can also be drawn basing on a bounding box in the following example:
+In many other situations, paths may not rely solely on the position of handles. For example, a triangle can also be drawn based on a bounding box, as shown in the following example:
 
 .. code-block:: xml
 
@@ -60,12 +60,12 @@ In many other situations, paths may not rely solely on position of handles. For 
         </p:Content>
     </Shape>
 
-It is very convenient to create shape with specific points based on handles and box. The "D" behaviour is used heavily in the built-in Flowchart stencil collection .
+It is very convenient to create shapes with specific points based on handles or the bounding box. The "D" behaviour is used heavily in the built-in Flowchart stencil collection .
 
 Add Transparent Background
 --------------------------
 
-The 2 examples above generate no-filled triangles so it is very difficult for users to drag and move the objects on the drawing canvas. To avoid this, the suggested way is to create a transparent path as the background below the triangle with thicker stroke.
+The two examples above generate unfilled triangles so it is very difficult for users to drag and move the objects on the drawing canvas. The suggested way to avoid this is to create a transparent path as the background below the triangle with a thicker stroke.
 
 .. code-block:: xml
 

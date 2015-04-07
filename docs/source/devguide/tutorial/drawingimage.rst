@@ -1,17 +1,17 @@
 Drawing Images
 --------------
 
-A Pencil shape may contain some bitmap images. This tutorial will show how to embed an image to a stencil.
+A Pencil shape may contain bitmap images. This tutorial will show how to embed an image in a stencil.
 
-Suppose that we have a bitmap image of a hand and we would like to create a stencil of the hand image with an editable name text.
+Suppose that we have a bitmap image of a hand and we would like to create a stencil of the hand image with an editable name text label.
 
 .. image:: ../../images/Main_html_m6eadbed1.png
 
-The first thing you have to do is to convert the image into BASE64 format which is supported by Pencil for embedding binary data. There are many ways for converting an image into BASE64, the method shown below is for the case you are working on a GNU/Linux box::
+The first thing you have to do is convert the image into BASE64 format which is supported by Pencil for embedding binary data. There are many ways of converting an image into BASE64; the method shown below is for developers on GNU/Linux systems::
 
   $ base64 --wrap=0 hand.png
 
-After doing the conversion, you can copy the output and use it as in the below XML code:
+After performing the conversion, you can copy the output and use it in the XML code, as shown below:
 
 .. code-block:: xml
 
@@ -46,4 +46,6 @@ After doing the conversion, you can copy the output and use it as in the below X
         </p:Content>
     </Shape>
 
-Note that the BASE64 content of the image is here used in the xlink:href attribute of SVG image as a URL in the form of Data URL scheme.
+Note that the BASE64 content of the image is used here in the form of a `Data URL`_ in the ``xlink:href`` attribute of an SVG ``image`` element.
+
+.. _Data URL: http://en.wikipedia.org/wiki/Data_URI_scheme

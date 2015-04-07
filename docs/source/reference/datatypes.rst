@@ -3,7 +3,7 @@ Pencil Data Types
 
 Pencil supports various data types for shape properties. Some of them are equivalent to data types in popular programming languages while the others are for convenience.
 
-This document lists all supported data types in Pencil, each with both JavaScript syntax and XML syntax for use in stencil coding. Most of the supported data types have at least one way end-user can modify the value.
+This document lists all supported data types in Pencil, with both JavaScript syntax and XML syntax for use in stencil coding. Most of the supported data types have at least one way end-users can modify the value from the GUI.
 
 
 Alignment
@@ -33,8 +33,8 @@ XML syntax
     <Property name="test" displayName="Test" type="Alignment">h,v</Property>
 
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 Property page:
 
@@ -72,8 +72,8 @@ XML syntax
     <Property name="sample" displayName="Sample" type="Bool">value</Property>
 
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 Context menu:
 
@@ -117,10 +117,10 @@ XML syntax
 .. note::
 
     **p:lockRatio**
-        Meta constraint used in XML syntax to hint that the ratio of this object need to be maintained when its width and height are changed.
+        Meta constraint used in XML syntax to hint that the ratio of this object should be maintained when its width and height are changed.
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 On-canvas editor:
 
@@ -243,8 +243,8 @@ XML syntax
     <Property name="color" displayName="My Color" type="Color">#000000ff</Property>
 
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 Property page:
 
@@ -310,7 +310,7 @@ Provides a data object for styling SVG elements and HTML elements.
 Enum
 ----
 
-Data structure to store option with the possibility to specify available options via XML metadata.
+Data structure to store an option with the possibility to specify available options via XML metadata.
 
 XML syntax
 ^^^^^^^^^^
@@ -323,8 +323,8 @@ XML syntax
 * **value**: Member field storing the selected value.
 * **p:enumValues**: An array literal containing all possible options. Each option is in the syntax of 'id|Display Name'.
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 Context menu:
 
@@ -371,8 +371,8 @@ XML syntax
 
 
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 Property page:
 
@@ -380,12 +380,12 @@ Property page:
 
 Properties of type Font can be edited in the property dialogue.
 
-Font property with the special name textFont is editable with the Font style toolbar.
+A Font property with the special name textFont is editable with the Font style toolbar.
 
 Handle
 ------
 
-Provides a special data object representing a point in 2D coordinate and can be modified on the drawing canvas by user operations.
+Provides a special data object representing a 2D coordinate that can be modified on the drawing canvas by user operations.
 
 .. code-block:: xml
 
@@ -401,19 +401,19 @@ Provides a special data object representing a point in 2D coordinate and can be 
 * **p:maxY**: Maximum value of 'y'. Movement of the handle should 0not pass this upper limit.
 * **p:noScale**: Disable auto-scaling of Handle value when the object 'box' property is changed. Default value: false
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 On-canvas editor:
 
 .. image:: ../images/handle-onscreen-editor.png
 
-Each property of type Handle is shown as a yellow bullet when the shape is focused. The property can be edited by moving that bullet.
+Each property of type Handle is shown as a yellow bullet when the shape is focused. The property can be edited by moving the bullet.
 
 ImageData
 ---------
 
-Data structure that store a binary bitmap image.
+Data structure that stores a binary bitmap image.
 
 .. class:: ImageData(w, h, dataUrl)
 
@@ -444,7 +444,7 @@ XML syntax
 PlainText
 ---------
 
-Data object that represents a piece of plain texts.
+Data object that represents a piece of plain text.
 
 .. class::  PlainText(S)
 
@@ -473,8 +473,8 @@ XML syntax
           type="PlainText"><![CDATA[Pugnabant totidemque vos nam]]></Property>
 
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 On-canvas editor:
 
@@ -509,8 +509,8 @@ XML syntax
           type="RichText"><![CDATA[A <b>rich</b> text string]]></Property>
 
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 On-canvas editor:
 
@@ -521,12 +521,12 @@ RichText properties can be edited right on the canvas using a rich-text input.
 StrokeStyle
 -----------
 
-Data structure storing stroke styling information.
+Data structure for storing stroke styling information.
 
 .. class:: StrokeStyle(width, dasharray)
 
     :param number width:
-    :param array dasharray: The dasharray value is specified as a JavaScript array containing lengths of dashes and spaces. More information can be found in the SVG Specification for Stroke dash array.
+    :param array dasharray: The dasharray value is specified as a JavaScript array containing lengths of dashes and spaces. More information can be found in the `SVG Specification for Stroke dash array`_.
 
     .. code-block:: js
 
@@ -545,7 +545,7 @@ Data structure storing stroke styling information.
     .. function:: StrokeStyle.condensed(ratio)
 
         :param number ratio:
-        :returns: a new version of the callee by condensing the width by the provided ration.
+        :returns: a new version of the callee by condensing the width by the provided ratio.
 
 XML syntax
 ^^^^^^^^^^
@@ -562,8 +562,8 @@ When the dasharray is omitted, the stroke is considered solid.
     <Property name="stroke" type="StrokeStyle"
           displayName="Border Style">1|[4,2,1,2]</Property>
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 Property page editor:
 
@@ -607,8 +607,8 @@ XML syntax
     <Property name="shadow" type="ShadowStyle"
           displayName="Box Shadow">dx|dy|size</Property>
 
-Editor supports
-^^^^^^^^^^^^^^^
+Editor support
+^^^^^^^^^^^^^^
 
 Property page editor:
 
@@ -616,5 +616,4 @@ Property page editor:
 
 ShadowStyle properties can be edited in the property page of the shape.
 
-
-
+.. _SVG Specification for Stroke dash array: http://www.w3.org/TR/SVG/painting.html#StrokeDasharrayProperty

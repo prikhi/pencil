@@ -1,9 +1,9 @@
 Drawing Resizeable Shapes - The box Property
 ============================================
 
-In most of the cases, shapes are expected to be scalable. Pencil uses Dimension property type to set shape size through Box behaviour. Dimension property named box can be modified by the on-screen geometry editor. The box size changes will be applied to shape size.
+In most cases, shapes are expected to be scalable. Pencil uses the ``Dimension`` property type to set shape size through the ``Box`` behaviour. A Dimension property named ``box`` can be modified by the on-screen geometry editor. The box size changes will be applied to the shape size.
 
-The example in this tutorial is a resizeable rectangle base on a $box property.
+The example in this tutorial is a resizeable rectangle based on a $box property.
 
 .. code-block:: xml
 
@@ -33,7 +33,7 @@ The example in this tutorial is a resizeable rectangle base on a $box property.
         </p:Content>
     </Shape>
 
-The SVG rectangle has width and height attributes. The Box behaviour will use the input Dimension value to change those width and height attributes. When the shape's property is changed when user doing scaling via the geometry editor, the behaviour will reflect that change into the SVG element.
+The SVG rectangle has width and height attributes. The Box behaviour will use the input Dimension value to change those width and height attributes. When the user scales the shape using the on-canvas geometry editor, the behaviour will apply the changes to the SVG element.
 
 Add Rounded Corner
 ------------------
@@ -56,7 +56,7 @@ SVG rectangle may have rounded corners. Pencil also supports Radius behaviour to
         ...
     </Behaviors>
 
-In previous examples, Dimension property type is used for drawing resizeable shapes via the Box behaviour. However the Box behaviour can be used only in case objects have width and height attributes. For other cases that we want to apply the Dimension value to an arbitrary attribute we can use the Attr behaviour. This approach can be used for all other cases, not limited to property of type Dimension.
+In previous examples, the ``Dimension`` property type is used for drawing resizeable shapes via the ``Box`` behaviour. However the ``Box`` behaviour can only be used in cases where the target element supports width and height attributes. For cases where we want to apply the ``Dimension`` value to an arbitrary attribute we can use the ``Attr`` behaviour. This approach can be used for all property types, not just ``Dimension``.
 
 .. code-block:: xml
 
@@ -101,7 +101,7 @@ In previous examples, Dimension property type is used for drawing resizeable sha
         </p:Content>
     </Shape>
 
-<Attr></Attr> behaviour can be used for assigning all object properties value. In previous example, Attr behaviour can also be used instead of <Box>$box</Box> for rectangle:
+The ``<Attr></Attr>`` behaviour can be used for assigning a value to any attribute of an object. In the previous example, the ``Attr`` behaviour can also be used instead of ``<Box>$box</Box>`` for the rectangle element:
 
 .. code-block:: xml
 

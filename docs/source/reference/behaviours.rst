@@ -1,7 +1,7 @@
 Behaviour Reference
 ===================
 
-To help Stencil developers define how the content in shapes can be changed to be reflect shape's properties, Pencil provides the Behaviour concept. With behaviours, attributes or content of the target object can be changed based on Behaviour's input values. The target object can be an SVG object or an HTML object in the <Content> section of the shape.
+To help Stencil developers define how the content in shapes should be changed to be reflect a shape's properties, Pencil provides the Behaviour concept. With behaviours, attributes or content of the target object can be changed based on the Behaviour's input values. The target object can be an SVG object or an HTML object in the <Content> section of the shape.
 
 This document lists all supported behaviours in Pencil, each with XML syntax and examples.
 
@@ -14,19 +14,19 @@ Behaviours applied to an object within the shape are defined as below:::
         <Behavior_n>....</Behavior_n>
     </For>
 
-For the ease of understanding the examples used in this document, let's assume that we have a box property of type Dimension defined for the shape::
+For the ease of understanding the examples used in this document, let's assume that we have a box property of type ``Dimension`` defined for the shape::
 
     <Property name="box" type="Dimension">150,150</Property>
 
 CustomStyle
 -----------
 
-This behaviour is used to assign value to a specific CSS attribute of the target object. Value and name are specified in the input arguments of the behaviour.
+This behaviour is used to assign a value to a specific CSS attribute of the target object. Value and name are specified in the input arguments of the behaviour.
 
 Target object
 ^^^^^^^^^^^^^
 
-All kind of objects.
+Any object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -41,13 +41,13 @@ XML Syntax
 Input value
 ^^^^^^^^^^^
 
-* **propertyName**: name of property.
-* **value**: value is assigned to propertyName.
+* **propertyName**: name of CSS property.
+* **value**: value to assign to propertyName.
 
 Result
 ^^^^^^
 
-The the CSS property "propertyName" of the target object is assigned with the provided value.
+The the CSS property "propertyName" of the target object is assigned the provided value.
 
 Example
 ^^^^^^^
@@ -62,12 +62,12 @@ Example
 Attr
 ----
 
-This behaviour is used to assign value to a specific XML attribute of the target object. Value and name (and optional namespace URI) are specified in the input arguments of the behaviour.
+This behaviour is used to assign a value to a specific XML attribute of the target object. Value and name (and optional namespace URI) are specified in the input arguments of the behaviour.
 
 Target object
 ^^^^^^^^^^^^^
 
-All kind of objects.
+Any object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -84,13 +84,13 @@ Input value
 ^^^^^^^^^^^
 
 * **attributeName**: name of attribute.
-* **value**: value is assigned to propertyName.
+* **value**: value to assign to propertyName.
 * **namespace**: namespace URI that this attribute is in. If the attribute has no namespace, the namespace argument can be omitted.
 
 Result
 ^^^^^^
 
-The "attributeName" attribute of the target object is assigned with the provided value.
+The "attributeName" attribute of the target object is assigned the provided value.
 
 Example
 ^^^^^^^
@@ -107,7 +107,7 @@ Example
         <Arg>PencilNamespaces.xlink</Arg>
     </Attr>
 
-If the namespace was defined in parent node, namespace argument could also be omitted.
+If the namespace was defined in a parent node, the namespace argument could be omitted.
 
 .. code-block:: xml
 
@@ -119,12 +119,12 @@ If the namespace was defined in parent node, namespace argument could also be om
 Box
 ---
 
-This behaviour is used to assign value to width and height attributes of the target object.
+This behaviour is used to assign values to the width and height attributes of the target object.
 
 Target object
 ^^^^^^^^^^^^^
 
-All objects have width and height attributes.
+Any object that supports width and height attributes.
 
 XML syntax
 ^^^^^^^^^^
@@ -136,12 +136,12 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **dimensionValue**: an expression that returns the value of type Dimension.
+* **dimensionValue**: an expression that returns a value of type Dimension.
 
 Result
 ^^^^^^
 
-The width and height attributes of the target object is set to the dimensionValue object.
+The width and height attributes of the target object are set to the values represented by the dimensionValue object.
 
 Example
 ^^^^^^^
@@ -159,12 +159,12 @@ Or directly
 Bound
 -----
 
-This behaviour is used to assign value to width and height attributes and set position of the target object.
+This behaviour is used to assign values to the width and height attributes and set the position of the target object.
 
 Target object
 ^^^^^^^^^^^^^
 
-All objects have width and height properties.
+Any object that supports width and height attributes.
 
 XML syntax
 ^^^^^^^^^^
@@ -181,26 +181,32 @@ Example
 
 .. figure:: ../images/Behaviors_html_3c35ed33.png
 
+.. code-block:: xml
+
     <Bound>new Bound(x, y, width, height)</Bound>
 
 
 .. figure:: ../images/Behaviors_html_m1f1bf638.png
 
+.. code-block:: xml
+
     <Bound>Bound.fromBox(Box, paddingX, paddingY)</Bound>
 
 .. figure:: ../images/Behaviors_html_m42afb0a2.png
+
+.. code-block:: xml
 
       <Bound>Bound.fromBox(new Dimension(width, height), paddingX, paddingY)</Bound>
 
 Radius
 ------
 
-This behaviour sets the "rx" and "ry" attribute of the SVG objects that support corner radius including Rectangle and Ellipse.
+This behaviour sets the "rx" and "ry" attributes of the target SVG objects that support corner radius (including Rectangle and Ellipse).
 
 Target object
 ^^^^^^^^^^^^^
 
-rectangle and ellipse
+A rectangle or ellipse SVG element.
 
 XML syntax
 ^^^^^^^^^^
@@ -221,7 +227,7 @@ Input value
 Result
 ^^^^^^
 
-The target object (Rectangle, Ellipse) is set "rx" and "ry".
+The target object's (Rectangle, Ellipse) "rx" and "ry" attributes are set to the given values.
 
 Example
 ^^^^^^^
@@ -236,12 +242,12 @@ Example
 Fill
 ----
 
-This behaviour sets the "fill" and "fill-opacity" attribute of the target SVG objects that can be filled with colour.
+This behaviour sets the "fill" and "fill-opacity" attributes of the target SVG objects that can be filled with colour.
 
 Target object
 ^^^^^^^^^^^^^
 
-SVG objects that can be filled with colour.
+Any SVG object that can be filled with colour.
 
 XML syntax
 ^^^^^^^^^^
@@ -253,12 +259,12 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **color**: an object of type Colour.
+* **color**: The colour to fill the target with - an object of type Color.
 
 Result
 ^^^^^^
 
-The target object color and opacity are set.
+The target object's color and opacity are set.
 
 Example
 ^^^^^^^
@@ -278,12 +284,12 @@ Example
 Color
 -----
 
-This behaviour sets the "color" and "opacity" attribute of the target HTML object.
+This behaviour sets the "color" and "opacity" attributes of the target HTML object.
 
 Target object
 ^^^^^^^^^^^^^
 
-HTML objects.
+Any HTML object.
 
 XML syntax
 ^^^^^^^^^^
@@ -295,12 +301,12 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **color**: an object of type Color.
+* **color**: The desired text colour for the target - an object of type Color.
 
 Result
 ^^^^^^
 
-The target object color and opacity are set.
+The target object's color and opacity CSS properties are set.
 
 Example
 ^^^^^^^
@@ -320,12 +326,12 @@ Example
 StrokeColor
 -----------
 
-This behaviour sets the "stroke" and "stroke-opacity" attribute of the SVG target objects that have stroke.
+This behaviour sets the "stroke" and "stroke-opacity" attributes of the SVG target objects that have stroke.
 
 Target object
 ^^^^^^^^^^^^^
 
-Objects that can be stroked.
+Any Object that can be given a stroke.
 
 XML syntax
 ^^^^^^^^^^
@@ -337,12 +343,12 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **color**: an object of type Color.
+* **color**: Colour of the stroke - an object of type Color.
 
 Result
 ^^^^^^
 
-The target object stroke color and stroke opacity are set.
+The target object's stroke color and stroke opacity are set.
 
 Example
 ^^^^^^^
@@ -362,12 +368,12 @@ Example
 StrokeStyle
 -----------
 
-This behaviour is used to set "stroke-width" and "stroke-dasharray" attribute of the target object
+This behaviour is used to set the "stroke-width" and "stroke-dasharray" attributes of the target object.
 
 Target object
 ^^^^^^^^^^^^^
 
-Objects that have stroke.
+Any Object that has a stroke.
 
 XML syntax
 ^^^^^^^^^^
@@ -384,7 +390,7 @@ Input value
 Result
 ^^^^^^
 
-The stroke of the target object is assigned value
+The stroke of the target object is assigned the given value.
 
 Example
 ^^^^^^^
@@ -406,12 +412,12 @@ Example
 Visibility
 ----------
 
-This behaviour is used to assign value to "visibility" and "display" attribute of the target object
+This behaviour is used to assign value to the "visibility" and "display" attributes of the target object.
 
 Target object
 ^^^^^^^^^^^^^
 
-All kind of objects.
+Any object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -423,12 +429,12 @@ XML Syntax
 Input value
 ^^^^^^^^^^^
 
-* **value**: either Pencil's Bool data object or a JavaScript boolean value.
+* **value**: Whether the object should be visible/displayed. Either Pencil's Bool data object or a JavaScript boolean value.
 
 Result
 ^^^^^^
 
-"visibility" and "display" attribute of target object is changed according to input value.
+"visibility" and "display" attributes of the target object are changed according to the input value.
 
 Example
 ^^^^^^^
@@ -448,12 +454,12 @@ Example
 BoxFit
 ------
 
-This behaviour is used to set text bound and alignment.
+This behaviour is used to set text bounds and alignment.
 
 Target object
 ^^^^^^^^^^^^^
 
-Only text object.
+An SVG text object.
 
 XML syntax
 ^^^^^^^^^^
@@ -468,13 +474,13 @@ XML syntax
 Input value
 ^^^^^^^^^^^
 
-* **bound**: an object of type Bound
+* **bound**: an object of type Bound.
 * **alignment**: an object of type Alignment.
 
 Result
 ^^^^^^
 
-Text content of the elment are changed to fit the provided bound and in the provided alignment.
+The text content of the element is changed to fit the provided bound and given the provided alignment.
 
 Example
 ^^^^^^^
@@ -496,12 +502,12 @@ Example
 Font
 ----
 
-This behaviour is used to set the target object text font. With this behaviour, a set of font-related attributes are changed.
+This behaviour is used to set the target object's text font. With this behaviour, a set of font-related attributes are changed.
 
 Target object
 ^^^^^^^^^^^^^
 
-SVG Text object and HTML objects.
+An SVG Text object or any HTML object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -518,9 +524,9 @@ Input value
 Result
 ^^^^^^
 
-"font-family", "font-size", "font-weight", "font-style" and "text-decoration" attribute of text object are assigned value.
+"font-family", "font-size", "font-weight", "font-style" and "text-decoration" attributes of the object are assigned values derived from the given Font object.
 
-Note that "text-decoration" attribute is only supported for HTML objects. So it is impossible to set "text-decoration" to SVG Text object.
+Note that the "text-decoration" attribute is only supported for HTML objects. It is impossible to set "text-decoration" on SVG Text objects.
 
 Example
 ^^^^^^^
@@ -535,12 +541,12 @@ Example
 D
 -
 
-This behaviour is used to set "d" attribute of an SVG path object. The values are put into D behaviour will be listed in the input value.
+This behaviour is used to set the "d" attribute of an SVG path object. The provided array of drawing functions is converted to SVG drawing operations.
 
 Target object
 ^^^^^^^^^^^^^
 
-Only path object.
+A path object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -574,7 +580,7 @@ Input value
 Result
 ^^^^^^
 
-"d" attribute of the path object is assigned value each function is converted to correstpodent SVG drawing operation. Pencil-specificc instructions are converted to also standard SVG drawing operations but in a special algorithm to make the line sketchy.
+Each function in the input array is converted to its corresponding SVG drawing operation. Pencil-specific instructions are also converted to standard SVG drawing operations but using a special algorithm to make the lines sketchy. The resulting value is assigned to the "d" attribute of the path object.
 
 Example
 ^^^^^^^
@@ -591,7 +597,7 @@ This behaviour is used to control the "transform" attribute of SVG target object
 Target object
 ^^^^^^^^^^^^^
 
-All SVG objects.
+Any SVG object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -614,7 +620,7 @@ Input value
 Result
 ^^^^^^
 
-"transform" attribute of the SVG target object is assigned value.
+The "transform" attribute of the SVG target object is assigned a value based on the input functions.
 
 Example
 ^^^^^^^
@@ -626,12 +632,12 @@ Example
 Scale
 -----
 
-This behaviour is used to assigned to "scale" function of "transform" attribute of SVG object. This behaviour is equivalent to a Transform with just one scale()
+This behaviour is used to assigned to the "scale" function in the "transform" attribute of an SVG object. This behaviour is equivalent to the Transform behaviour with just one scale().
 
 Target object
 ^^^^^^^^^^^^^
 
-All SVG objects.
+Any SVG object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -649,7 +655,7 @@ Input value
 Result
 ^^^^^^
 
-The SVG object width and height will be changed based on the ratio. Note that using this behaviour will empty the current value of the transform attribute.
+The SVG object will be given a ``transform`` attribute containing a scale function with the given ratios. Note that using this behaviour will empty the current value of the transform attribute.
 
 Example
 ^^^^^^^
@@ -666,12 +672,12 @@ TextContent
 
 This behaviour is used to control the content of the target text object.
 
-Note: this behaviour does not support text wrapping for PlainText content in SVG elements. To have the PlainText content wrapped in side an SVG text element in a specific aligmnent, please use the PlainTextContent behaviour.
+Note: this behaviour does not support text wrapping for PlainText content in SVG elements. To have the PlainText content wrapped inside an SVG text element with a specific aligmnent, please use the PlainTextContent behaviour.
 
 Target object
 ^^^^^^^^^^^^^
 
-SVG text object and HTML objects.
+An SVG text object or any HTML object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -688,7 +694,7 @@ Input value
 Result
 ^^^^^^
 
-The target object text content is changed.
+The target object's text content is changed.
 
 Example
 ^^^^^^^
@@ -704,12 +710,12 @@ Example
 PlainTextContent
 ----------------
 
-This behaviour is used to control the wrapped text inside an SVG text element. This is the recommended way to implement wrapped plain-text content instead of using HTML wrapping. This behaviour produces compliant SVG output and the resulted drawing can be used in other SVG editors like Inkscape.
+This behaviour is used to control the wrapped text inside an SVG text element. This is the recommended way to implement wrapped plain-text content instead of using HTML wrapping. This behaviour produces compliant SVG output and the resultant drawing can be used in other SVG editors like Inkscape.
 
 Target object
 ^^^^^^^^^^^^^
 
-SVG text elements.
+An SVG text element.
 
 XML Syntax
 ^^^^^^^^^^
@@ -727,13 +733,13 @@ Input value
 ^^^^^^^^^^^
 
 * **text**: an object of type PlainText.
-* **bound**: an object of type Bound
-* **alignment**: an object of type Alignment
+* **bound**: an object of type Bound.
+* **alignment**: an object of type Alignment.
 
 Result
 ^^^^^^
 
-Content of the text target object will be filled with <tspan> elements to create wrapped text content. transform attribute of this element may be used in for controlling the bounding.
+Content of the target object will be filled with <tspan> elements to create wrapped text content. The transform attribute of this element may be used in for controlling the bounding.
 
 Example
 ^^^^^^^
@@ -753,12 +759,12 @@ Example
 DomContent
 ----------
 
-This behaviour populate child DOM nodes into the target object.
+This behaviour populates the target object with a child DOM node.
 
 Target object
 ^^^^^^^^^^^^^
 
-All objects
+Any object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -770,14 +776,14 @@ XML Syntax
 Input value
 ^^^^^^^^^^^
 
-* **domContent**: a DOM element of a DOM fragment.
+* **domContent**: a DOM element or a DOM fragment to add as a child of the target object.
 
 Please refer the associated tutorial on Dynamic DOM Content for more information.
 
 Image
 -----
 
-This behaviour is used to control the xlink:href, width and height attribute of an SVG <image> element.
+This behaviour is used to control the xlink:href, width and height attributes of an SVG <image> element.
 
 XML Syntax
 ^^^^^^^^^^
@@ -817,7 +823,7 @@ This behaviour is used control an ellipse element so that it fits into the provi
 Target object
 ^^^^^^^^^^^^^
 
-SVG ellipse elements.
+An SVG ellipse object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -847,12 +853,12 @@ Example
 Width
 -----
 
-This behaviour is used to assign "width" attribute of the target object.
+This behaviour is used to assign the "width" attribute of the target object.
 
 Target object
 ^^^^^^^^^^^^^
 
-All SVG objects that have "width" attribute
+Any SVG object that supports the "width" attribute.
 
 XML Syntax
 ^^^^^^^^^^
@@ -862,12 +868,12 @@ XML Syntax
 Input value
 ^^^^^^^^^^^
 
-* **width**: a number
+* **width**: a number.
 
 Result
 ^^^^^^
 
-"width" attribute of the target object is assigned value.
+The "width" attribute of the target object is assigned the given value.
 
 Example
 ^^^^^^^
@@ -879,12 +885,12 @@ Example
 Height
 ------
 
-This behaviour is used to assign "height" attribute of the target object.
+This behaviour is used to assign the "height" attribute of the target object.
 
 Target object
 ^^^^^^^^^^^^^
 
-All SVG objects that have "height" attribute
+Any SVG object that supports the "height" attribute.
 
 XML Syntax
 ^^^^^^^^^^
@@ -896,12 +902,12 @@ XML Syntax
 Input value
 ^^^^^^^^^^^
 
-* **height**: a number
+* **height**: a number.
 
 Result
 ^^^^^^
 
-The "height" attribute of the target object is assigned value.
+The "height" attribute of the target object is assigned the given value.
 
 Example
 ^^^^^^^
@@ -913,12 +919,12 @@ Example
 NPatchDomContent
 ----------------
 
-This behaviour is used to fill the target <g> SVG element with <image> elements provided in the Nine-Patch with correct scaling to the provided dimension.
+This behaviour is used to fill the target ``<g>`` SVG element with ``<image>`` elements provided in the Nine-Patch with correct scaling for the provided dimensions.
 
 Target object
 ^^^^^^^^^^^^^
 
-SVG <g> elements.
+An SVG ``<g>`` element.
 
 XML Syntax
 ^^^^^^^^^^
@@ -939,7 +945,7 @@ Input value
 Result
 ^^^^^^
 
-The Nine-Patch data structure is used together with the dimension to calculate scaling for patches and <image> elements are generated and filled into the target <g> element.
+The Nine-Patch data structure is used together with the dimension object to calculate scaling for patches. ``<image>`` elements for the patches are generated and added as children of the target <g> element.
 
 Example
 ^^^^^^^
@@ -954,7 +960,7 @@ This behaviour is used to fill the content of the target object with a DOM text 
 Target object
 ^^^^^^^^^^^^^
 
-All objects
+Any object.
 
 XML Syntax
 ^^^^^^^^^^
@@ -971,7 +977,7 @@ Input value
 Result
 ^^^^^^
 
-A new DOM text node is generated with provided value and filled into the target object.
+A new DOM text node is generated with the provided value and added as a child of the target object.
 
 Example
 ^^^^^^^

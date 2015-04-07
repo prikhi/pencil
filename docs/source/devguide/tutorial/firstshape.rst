@@ -1,7 +1,7 @@
 Your First Shape
 ================
 
-Let's begin with a collection contains a simple shape that provide a text Hello World. This shape contains Properties definition, elements definition in the Content section and the behaviours that make content changed to property values.
+Let's begin with a collection contains a simple shape that provides a *Hello World* text item. This shape contains Property definitions, element definitions in the Content section and the behaviours that make the content change according to property values.
 
 .. code-block:: xml
 
@@ -47,6 +47,6 @@ Let's begin with a collection contains a simple shape that provide a text Hello 
     </Shapes>
 
 
-Each child node in <For></For> is an behavior that defines how content should be changed according to the properties. More details about can be found at the Behavior Reference.
+Each child node in ``<For></For>`` is an behavior that defines how content should be changed according to the properties. More details about can be found in the Behavior Reference.
 
-The $label variable is used in the TextContent behavior in this example shows you the way properties can be referenced in the input arguments for behaviors.
+The ``$label`` variable is used in the ``TextContent`` behavior in this example, demonstrating how properties can be referenced in the input arguments for behaviors.

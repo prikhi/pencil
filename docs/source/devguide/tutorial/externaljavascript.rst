@@ -1,13 +1,13 @@
 External JavaScript
 ===================
 
-A shape may contain a complex and long JavaScript code for calculating behaviors value, moreover, other shapes may also contains this exactly the same code. So it takes time to review and modify shapes. To be convenient, these code should be brought out of shapes and put into <Script></Script> tag that at the collection level.
+A shape may contain long and complex JavaScript code for calculating behaviour values, Moreover, other shapes may contain exactly the same code. This means it takes time to review and modify shapes. For convenience, such code should be brought out of shapes and put into ``<Script></Script>`` tags that at the collection level.
 
 .. code-block:: xml
 
     <Shapes>
         ...
-        <Script></Script> <!-- Share code goes here -->
+        <Script></Script> <!-- Shared code goes here -->
         ...
         <Shape></Shape>
         <Shape></Shape>
@@ -79,4 +79,4 @@ Example:
         </p:Content>
     </Shape>
 
-As you may notice, in the context of JavaScript execution within a stencil behaviour, the collection object is bound to the current collection that owns the stencil. The way share JavaScript code is used is that custom functions and attributes are added in the collection-level script and re-used later in stencil's code.
+As you may notice, in the context of JavaScript execution within a stencil behaviour, the ``collection`` object is bound to the current collection that owns the stencil. The way shared JavaScript code is used is that custom functions and attributes are added in the collection-level script and re-used later in stencil's code, via the ``collection`` object.
