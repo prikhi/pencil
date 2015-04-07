@@ -3,27 +3,27 @@ Object Snapping
 
 Pencil users will know that Pencil provides snapping between objects. Object snapping is very useful for aligning objects so that drawing operations can be done quickly. There are 6 default snappings in Pencil:
 
-.. figure:: ../../images/Main_html_1a7041.png
+.. figure:: /images/tutorial_top_snapping.png
 
     Top-to-Top
 
-.. figure:: ../../images/Main_html_7e0c8180.png
+.. figure:: /images/tutorial_bottom_snapping.png
 
     Bottom-to-Bottom
 
-.. figure:: ../../images/Main_html_m38479759.png
+.. figure:: /images/tutorial_center_snapping.png
 
     Center-to-Center (horizontal)
 
-.. figure:: ../../images/Main_html_m5ba0c02d.png
+.. figure:: /images/tutorial_left_snapping.png
 
     Left-to-Left
 
-.. figure:: ../../images/Main_html_m6a190f38.png
+.. figure:: /images/tutorial_right_snapping.png
 
     Right-to-Right
 
-.. figure:: ../../images/Main_html_7dd2ebdf.png
+.. figure:: /images/tutorial_middle_snapping.png
 
     Middle-to-Middle (vertical)
 
@@ -82,11 +82,11 @@ where b is the object bounds, b.y is the object's top position, b.x is the objec
 
 In the above example for the Rectangle shape, four default snappings are modified and a new snapping is created.
 
-.. image:: ../../images/Main_html_maea559c.png
+.. image:: /images/tutorial_top_bottom_snapping.png
 
 In the above example, A's Top snapping was modified by new SnappingData("Top", b.y + b.height, "Top", false, this.id),. So other object have Top snapping will be possible to snap to A's new Top. The logic for Bottom, Left, Right snappings are the same.
 
-.. image:: ../../images/Main_html_669d32d5.png
+.. image:: /images/tutorial_top_middle_snapping.png
 
 Also in this example, a custom, new snapping hint is introduced. This is good for special stencils where we would like to have very specific snappings defined::
 

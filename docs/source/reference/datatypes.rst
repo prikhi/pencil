@@ -40,7 +40,7 @@ Property page:
 
 Properties of type Alignment can be edited in the shape property page.
 
-.. image:: ../images/alignment-prop-editor.png
+.. image:: /images/alignment-prop-editor.png
 
 Bool
 ----
@@ -79,7 +79,7 @@ Context menu:
 
 Properties of type Bool can be edited in the context menu of the shape using a checkbox item.
 
-.. image:: ../images/bool-menu-editor.png
+.. image:: /images/bool-menu-editor.png
 
 Dimension
 ---------
@@ -126,13 +126,13 @@ On-canvas editor:
 
 A Dimension property with the special name of box can be edited using the on-canvas geometry editor.
 
-.. image:: ../images/box-onscreen-editor.png
+.. image:: /images/box-onscreen-editor.png
 
 Toolbar editor:
 
 And also via the geometry toolbar located on the top of the Pencil application window.
 
-.. image:: ../images/box-toolbar-editor.png
+.. image:: /images/box-toolbar-editor.png
 
 Bound
 -----
@@ -250,7 +250,7 @@ Property page:
 
 Properties of type Color can be edited in the property dialog with a color chooser that supports both simple and advanced mode.
 
-.. image:: ../images/color-prop-editor.png
+.. image:: /images/color-prop-editor.png
 
 Color properties with the following special names can be also edited with the Color toolbar: textColor, fillColor and strokeColor.
 
@@ -328,7 +328,7 @@ Editor support
 
 Context menu:
 
-.. image:: ../images/enum-menu-editor.png
+.. image:: /images/enum-menu-editor.png
 
 Properties of type Enum can be edited in the context menu of the shape.
 
@@ -376,7 +376,7 @@ Editor support
 
 Property page:
 
-.. image:: ../images/font-prop-editor.png
+.. image:: /images/font-prop-editor.png
 
 Properties of type Font can be edited in the property dialogue.
 
@@ -406,7 +406,7 @@ Editor support
 
 On-canvas editor:
 
-.. image:: ../images/handle-onscreen-editor.png
+.. image:: /images/handle-onscreen-editor.png
 
 Each property of type Handle is shown as a yellow bullet when the shape is focused. The property can be edited by moving the bullet.
 
@@ -478,7 +478,7 @@ Editor support
 
 On-canvas editor:
 
-.. image:: ../images/plaintext-onscreen-editor.png
+.. image:: /images/plaintext-onscreen-editor.png
 
 PlainText properties can be edited right on the canvas using a simple text input.
 
@@ -514,7 +514,7 @@ Editor support
 
 On-canvas editor:
 
-.. image:: ../images/richtext-onscreen-editor.png
+.. image:: /images/richtext-onscreen-editor.png
 
 RichText properties can be edited right on the canvas using a rich-text input.
 
@@ -567,7 +567,7 @@ Editor support
 
 Property page editor:
 
-.. image:: ../images/strokestyle-prop-editor.png
+.. image:: /images/strokestyle-prop-editor.png
 
 StrokeStyle properties can be edited in the property page of the shape.
 
@@ -612,7 +612,7 @@ Editor support
 
 Property page editor:
 
-.. image:: ../images/shadowstyle-prop-editor.png
+.. image:: /images/shadowstyle-prop-editor.png
 
 ShadowStyle properties can be edited in the property page of the shape.
 

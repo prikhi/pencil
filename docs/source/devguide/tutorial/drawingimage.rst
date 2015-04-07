@@ -5,7 +5,7 @@ A Pencil shape may contain bitmap images. This tutorial will show how to embed a
 
 Suppose that we have a bitmap image of a hand and we would like to create a stencil of the hand image with an editable name text label.
 
-.. image:: ../../images/Main_html_m6eadbed1.png
+.. image:: /images/tutorial_hand_image.png
 
 The first thing you have to do is convert the image into BASE64 format which is supported by Pencil for embedding binary data. There are many ways of converting an image into BASE64; the method shown below is for developers on GNU/Linux systems::
 

@@ -5,7 +5,7 @@ There may be cases where you would like to create a stencil based on an existing
 
 Suppose that we have a hand image in SVG format:
 
-.. image:: ../../images/Main_html_m6eadbed1.png
+.. image:: /images/tutorial_hand_image.png
 
 And its SVG XML code is the following:
 

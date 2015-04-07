@@ -169,6 +169,8 @@ Any object that supports width and height attributes.
 XML syntax
 ^^^^^^^^^^
 
+.. code-block:: xml
+
       <Bound>bound</Bound>
 
 Input value
@@ -179,20 +181,20 @@ Input value
 Example
 ^^^^^^^
 
-.. figure:: ../images/Behaviors_html_3c35ed33.png
+.. figure:: /images/behaviors_bound_new.png
 
 .. code-block:: xml
 
     <Bound>new Bound(x, y, width, height)</Bound>
 
 
-.. figure:: ../images/Behaviors_html_m1f1bf638.png
+.. figure:: /images/behaviors_bound_frombox.png
 
 .. code-block:: xml
 
     <Bound>Bound.fromBox(Box, paddingX, paddingY)</Bound>
 
-.. figure:: ../images/Behaviors_html_m42afb0a2.png
+.. figure:: /images/behaviors_bound_frombox_dimension.png
 
 .. code-block:: xml
 
@@ -844,6 +846,8 @@ The "cx", "cy", "rx", "ry" attribute values are changed.
 
 Example
 ^^^^^^^
+
+.. figure:: /images/behaviors_ellipsefit.png
 
 .. code-block:: xml
 

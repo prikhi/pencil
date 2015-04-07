@@ -3,7 +3,7 @@ Drawing Sketchy Lines
 
 Users may want to work with sketchy shapes to create draft notes. So Pencil supports drawing sketchy lines in addition to providing a stencil that contains many basic sketchy shapes.
 
-.. image:: ../../images/Main_html_m48d4f82c.png
+.. image:: /images/tutorial_sketchy_shapes.png
 
 This tutorial will show how to create a simple sketchy shape from sketchy lines.
 
