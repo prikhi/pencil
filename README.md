@@ -12,6 +12,7 @@ was abandoned around 2013. This fork was started for new development on March
 
 ### Links
 
+* [The documentation][docs]
 * [The discussion forum][google-group]
 * [The original project's homepage][evolus-page]
 * [The original repository][evolus-repo]
@@ -182,6 +183,7 @@ Update the GNU/Linux distro-specific packages or ping their maintainers.
 This fork is released under GPLv2 like it's parent codebase.
 
 
+[docs]: http://pencil-prototyping.rtfd.org/
 [google-group]: https://groups.google.com/forum/#!forum/pencil-user
 [evolus-page]: http://pencil.evolus.vn/
 [evolus-repo]: https://code.google.com/p/evoluspencil/
