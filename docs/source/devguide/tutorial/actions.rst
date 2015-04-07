@@ -40,13 +40,7 @@ the rectangle to a square:
     </Shape>
 
 
-In Action, the shape properties are modified and will be applied immediately to
-objects refer to these properties. This above code is simple, box.h is forced
-to equal to box.w and then the rectangle becomes a square. Please note also
-that in the context of action execution, the keyword this is bound to the shape
-itself so that you can retrieve an set the property values via it.
-
-In the Action, the shape's properties are modified and will be applied
+In the ``<Action>``, the shape's properties are modified and will be applied
 immediately to objects that refer to these properties. The above code is
 simple: ``box.h`` is forced to equal ``box.w`` resulting in the rectangle
 becoming a square.

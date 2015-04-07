@@ -24,12 +24,20 @@ code, as shown below:
     <Shape id="image" displayName="Image" icon="Icons/image.png">
         <Properties>
             <PropertyGroup>
-                <Property name="box" type="Dimension" p:lockRatio="true">36,45</Property>
+                <Property name="box" type="Dimension" p:lockRatio="true">
+                    36,45
+                </Property>
             </PropertyGroup>
             <PropertyGroup name="Text">
-                <Property name="name" displayName="Name" type="PlainText">Hello World</Property>
-                <Property name="textColor" displayName="Color" type="Color">#000000ff</Property>
-                <Property name="textFont" displayName="Font" type="Font">Arial|normal|normal|13px</Property>
+                <Property name="name" displayName="Name" type="PlainText">
+                    Hello World
+                </Property>
+                <Property name="textColor" displayName="Color" type="Color">
+                    #000000ff
+                </Property>
+                <Property name="textFont" displayName="Font" type="Font">
+                    Arial|normal|normal|13px
+                </Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -46,13 +54,16 @@ code, as shown below:
                 </BoxFit>
             </For>
         </Behaviors>
-        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <image id="image" x="0" y="0" xlink:href="data:image/png;base64,iVBORw0KGgo... (BASE64 content of the image)" />
             <text id="name" />
         </p:Content>
     </Shape>
 
 Note that the BASE64 content of the image is used here in the form of a `Data
-URL`_ in the ``xlink:href`` attribute of an SVG ``image`` element.
+URL`_ in the ``xlink:href`` attribute of an `SVG image element`_.
+
 
 .. _Data URL: http://en.wikipedia.org/wiki/Data_URI_scheme
+.. _SVG image element: http://www.w3.org/TR/SVG/struct.html#ImageElement

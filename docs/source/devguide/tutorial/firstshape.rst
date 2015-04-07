@@ -2,9 +2,9 @@ Your First Shape
 ================
 
 Let's begin with a collection contains a simple shape that provides a *Hello
-World* text item. This shape contains Property definitions, element definitions
-in the Content section and the behaviors that make the content change
-according to property values.
+World* text item. This shape contains Property definitions, Element definitions
+(in the ``p:Content`` section) and Behaviors(which make the content change
+according to ``Property`` values).
 
 .. code-block:: xml
 
@@ -50,10 +50,9 @@ according to property values.
     </Shapes>
 
 
-Each child node in ``<For></For>`` is an behavior that defines how content
+Each child node in ``<For></For>`` is a behavior that defines how content
 should be changed according to the properties. More details about can be found
-in the Behavior Reference.
+in the :doc:`/reference/behaviors`.
 
-The ``$label`` variable is used in the ``TextContent`` behavior in this
-example, demonstrating how properties can be referenced in the input arguments
-for behaviors.
+The ``$label`` variable used in the :ref:`TextContent` behavior demonstrates
+how properties can be referenced in the input arguments for behaviors.

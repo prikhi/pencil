@@ -68,6 +68,9 @@ Example
         <Arg>$box.w + "px"</Arg>
     </CustomStyle>
 
+
+.. _Attr:
+
 Attr
 ----
 
@@ -129,6 +132,9 @@ omitted.
       <Arg>"xlink:href"</Arg>
       <Arg>value</Arg>
     </Attr>
+
+
+.. _Box:
 
 Box
 ---
@@ -217,6 +223,9 @@ Example
 
       <Bound>Bound.fromBox(new Dimension(width, height), paddingX, paddingY)</Bound>
 
+
+.. _Radius:
+
 Radius
 ------
 
@@ -259,6 +268,9 @@ Example
         <Arg>5</Arg>
         <Arg>5</Arg>
     </Radius>
+
+
+.. _Fill:
 
 Fill
 ----
@@ -346,6 +358,9 @@ Example
       ....
       <Color>$color</Color>
 
+
+.. _StrokeColor:
+
 StrokeColor
 -----------
 
@@ -388,6 +403,9 @@ Example
       <Property name="color" displayName="fColor" type="Color">#000000ff</Property>
       ...
       <StrokeColor>$color</StrokeColor>
+
+
+.. _StrokeStyle:
 
 StrokeStyle
 -----------
@@ -433,6 +451,9 @@ Example
               displayName="Border Style">1|[2,1,2,4]</Property>
     ...
     <StrokeStyle>$strokeStyle</StrokeStyle>
+
+
+.. _Visibility:
 
 Visibility
 ----------
@@ -571,8 +592,11 @@ Example
     ...
     <Font>$font</Font>
 
+
+.. _Behavior D:
+
 D
--
+--
 
 This behavior is used to set the "d" attribute of an SVG path object. The
 provided array of drawing functions is converted to SVG drawing operations.
@@ -625,6 +649,9 @@ Example
 .. code-block:: xml
 
       <D>[M(0, 0), L($box.w, 0), L($box.w, $box.h), L(0, $box.h), z]</D>
+
+
+.. _Transform:
 
 Transform
 ---------
@@ -711,6 +738,9 @@ Example
         <Arg>$box.w/120</Arg>
         <Arg>$box.h/100</Arg>
     </Scale>
+
+
+.. _TextContent:
 
 TextContent
 -----------
@@ -807,6 +837,9 @@ Example
         <arg>Bound.fromBox($box, 10)</arg>
         <arg>new Alignment(1, 1)</arg>
     </plaintextcontent>
+
+
+.. _DomContent:
 
 DomContent
 ----------
@@ -974,6 +1007,9 @@ Example
 .. code-block:: xml
 
     <Height>$box.h</Height>
+
+
+.. _NPatchDomContent:
 
 NPatchDomContent
 ----------------

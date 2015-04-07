@@ -86,6 +86,9 @@ checkbox item.
 
 .. image:: /images/bool-menu-editor.png
 
+
+.. _Dimension:
+
 Dimension
 ---------
 
@@ -189,6 +192,9 @@ and a size.
         :param number paddingY:
         :returns: a new Bound object by using the callee and narrowing down
                   each sides by the provided paddings
+
+
+.. _Color:
 
 Color
 -----
@@ -403,6 +409,9 @@ Properties of type Font can be edited in the property dialogue.
 
 A Font property with the special name textFont is editable with the Font style
 toolbar.
+
+
+.. _Handle:
 
 Handle
 ------

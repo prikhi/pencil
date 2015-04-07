@@ -2,7 +2,7 @@ External JavaScript
 ===================
 
 A shape may contain long and complex JavaScript code for calculating behavior
-values, Moreover, other shapes may contain exactly the same code. This means it
+values. Moreover, other shapes may contain exactly the same code. This means it
 takes time to review and modify shapes. For convenience, such code should be
 brought out of shapes and put into ``<Script></Script>`` tags that at the
 collection level.

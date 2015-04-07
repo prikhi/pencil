@@ -2,13 +2,12 @@ Drawing Sketchy Lines
 =====================
 
 Users may want to work with sketchy shapes to create draft notes. So Pencil
-supports drawing sketchy lines in addition to providing a stencil that contains
-many basic sketchy shapes.
+supports drawing sketchy lines in addition to providing a stencil collection
+that contains many basic sketchy shapes.
 
 .. image:: /images/tutorial_sketchy_shapes.png
 
-This tutorial will show how to create a simple sketchy shape from sketchy
-lines.
+This example shows how to create a simple sketchy shape from sketchy lines:
 
 .. code-block:: xml
 
@@ -59,7 +58,8 @@ lines.
                 </D>
             </For>
         </Behaviors>
-        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                   xmlns="http://www.w3.org/2000/svg">
             <path id="line1" style="stroke-linejoin: round;" />
             <path id="mask" style="fill:white;stroke:none" />
             <text id="text" />
@@ -67,4 +67,5 @@ lines.
     </Shape>
 
 In fact, drawing sketchy lines is the same as drawing normal lines. Simply use
-sk(x, y), skTo(x, y) instead of M(x, y), L(x, y) to create sketchy shapes.
+``sk(x, y), skTo(x, y)`` instead of ``M(x, y), L(x, y)`` to create sketchy
+shapes.

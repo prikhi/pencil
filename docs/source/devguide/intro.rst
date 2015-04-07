@@ -12,32 +12,32 @@ defines:
   elements.
 
     *For example:* the Rectangle stencil defines a shape formed by a single SVG
-    <rect> element.
+    ``<rect>`` element.
 
 
 * **The properties:** which properties the shape has plus optional extra
   constraints on them.
 
-    *For example:* the Rectangle stencil has a 'box' property of type
-    Dimension, a 'strokeStyle' property of type StrokeStyle and a 'fillColor'
-    property of type Colour.
+    *For example:* the Rectangle stencil has a ``box`` property of type
+    :ref:`Dimension`, a ``strokeStyle`` property of type :ref:`StrokeStyle` and
+    a ``fillColor`` property of type :ref:`Color`.
 
 
 * **The behaviors:** how the shape's look is changed according to changes made
   to its properties.
 
-    *For example:* the Rectangle <rect> element has its fill and fill-opacity
-    change to the 'fillColor' property of the shape.
+    *For example:* the Rectangle ``<rect>`` element has its fill and
+    fill-opacity change to the ``fillColor`` property of the shape.
 
 
 * **The actions:** which actions that external objects and users can ask the
   shape to do.
 
-    *For example:* the Rectangle stencil defines a 'Remove border' action to
-    allow users to set the 'strokeStyle' width property to 0px and hence makes
-    the <rect> element's border disappeared.
+    *For example:* the Rectangle stencil defines a ``Remove border`` action to
+    allow users to set the ``strokeStyle`` width property to 0px and hence
+    makes the ``<rect>`` element's border disappear.
 
-Stencils are organized in collections. Each collection contains a set of
+Stencils are organized into collections. Each collection contains a set of
 related stencils and can be installed into or uninstalled from Pencil using the
 collection manager.
 
@@ -69,10 +69,11 @@ Depending on the type, a property value can be changed in a specific way that
 is easiest for the user.
 
 .. Note::
-    Pencil reserves the use of some special property names for pre-defined
-    purposes. Please refer the Special Property Names document for detailed
-    information on how these property names can be used in your stencil.
+    Pencil reserves the use of some special property names for
+    pre-defined purposes. Please refer the :doc:`/reference/specialnames`
+    document for detailed information on how these property names can be
+    used in your stencil.
 
-    An example of this is that the 'box' property of type 'Dimension' should
-    always be used to determined the dimension of the outermost box surrounding
-    the shape.
+    An example of this is that the ``box`` property of type
+    :ref:`Dimension` should always be used to determined the dimension of
+    the outermost box surrounding the shape.

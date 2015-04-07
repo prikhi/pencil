@@ -53,8 +53,8 @@ its own default property values.
 
 Here, a shortcut is created to the ``label`` stencil, with the shortcut
 overriding the default value of the label's ``shadow`` property. All properties
-can be changed using this method. The ``to`` attribute refers to the target
-shape id.
+can be changed using this method. The ``to`` attribute should be equal to the
+target shape's ``id``.
 
 A shortcut may refer to a stencil from another collection. In this situation,
 the ``to`` property needs to be in the form of ``collectionid:shapeId``.
@@ -62,7 +62,7 @@ the ``to`` property needs to be in the form of ``collectionid:shapeId``.
 .. code-block:: xml
 
     <Shortcut displayName="name" icon="" to="collectionId:shapeId">
-        ...
+        <!-- ... -->
     </Shortcut>
 
 .. Note::

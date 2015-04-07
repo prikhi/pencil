@@ -1,27 +1,37 @@
 Drawing Path - The D Behavior
 ==============================
 
-Pencil shapes are usually created using paths that are based on the SVG path
-specification. Pencil supports drawing shapes using the ``D`` behavior. This
-behavior generates the "d" attribute for the ``<path>`` SVG element as defined
-in the SVG Path data specification . The value used in ``D`` is an array in
-which each item is a drawing command.
+Pencil shapes are usually created using paths that are based on the `SVG Path
+Specification`_. Pencil supports drawing shapes using the :ref:`Behavior D`
+behavior. This behavior generates the ``d`` attribute for the ``<path>`` SVG
+element as defined in the `SVG Path Data Specification`_. The value used in
+:ref:`Behavior D` is an array in which each item is a drawing command.
 
 The shape in this tutorial is a triangle drawn from 3 points that are defined
-by properties of type Handle .
+by properties of type :ref:`Handle`.
 
 .. code-block:: xml
 
     <Shape id="triangle" displayName="Triangle" icon="Icons/triangle.png">
         <Properties>
             <PropertyGroup>
-                <Property name="a" displayName="Point" type="Handle">0,0</Property>
-                <Property name="b" displayName="Point" type="Handle">90,0</Property>
-                <Property name="c" displayName="Point" type="Handle">45,60</Property>
+                <Property name="a" displayName="Point" type="Handle">
+                    0,0
+                </Property>
+                <Property name="b" displayName="Point" type="Handle">
+                    90,0
+                </Property>
+                <Property name="c" displayName="Point" type="Handle">
+                    45,60
+                </Property>
             </PropertyGroup>
             <PropertyGroup name="Border">
-                <Property name="strokeColor" displayName="Line Color" type="Color">#1B3280ff</Property>
-                <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+                <Property name="strokeColor" displayName="Line Color" type="Color">
+                    #1B3280ff
+                </Property>
+                <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">
+                    2|
+                </Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -31,22 +41,24 @@ by properties of type Handle .
                 <D>[M($a.x, $a.y), L($b.x, $b.y), L($c.x, $c.y), z]</D>
             </For>
         </Behaviors>
-        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                   xmlns="http://www.w3.org/2000/svg">
             <path id="path" fill="none" style="stroke-linejoin: round;" />
         </p:Content>
     </Shape>
 
 
-In the above example, Handle properties provide points that can be moved on the
-drawing canvas. Their values are changed upon the move and the behavior code
-will be executed to re-generate the path's "D" value.
+In the above example, :ref:`Handle` properties provide points that can be moved
+on the drawing canvas. Their values are changed after the move and the behavior
+code will then be executed to regenerate the path's ``D`` value.
 
-You can notice that various commands are used in this example. Pencil supports
-the following SVG Path commands: M, L, l, C, c, S, s, Q, q, T, A and a.
+You can notice that various SVG Path commands are used in this example(``M``,
+``L`` & ``z``). Pencil supports the following SVG Path commands: ``M``, ``L``,
+``l``, ``C``, ``c``, ``S``, ``s``, ``Q``, ``q``, ``T``, ``A``, ``a`` and ``z``.
 
 In many other situations, paths may not rely solely on the position of handles.
-For example, a triangle can also be drawn based on a bounding box, as shown in
-the following example:
+A triangle can also be drawn using a bounding box specified by a
+:ref:`Dimension` Property, as shown in the following example:
 
 .. code-block:: xml
 
@@ -54,8 +66,12 @@ the following example:
         <Properties>
             <PropertyGroup>
                 <Property name="box" type="Dimension">200,80</Property>
-                    <Property name="strokeColor" displayName="Line Color" type="Color">#1B3280ff</Property>
-                    <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">2|</Property>
+                <Property name="strokeColor" displayName="Line Color" type="Color">
+                    #1B3280ff
+                </Property>
+                <Property name="strokeStyle" displayName="Line Style" type="StrokeStyle">
+                    2|
+                </Property>
             </PropertyGroup>
         </Properties>
         <Behaviors>
@@ -65,14 +81,15 @@ the following example:
                 <D>[M(0, 0), L($box.w, 0), L($box.w/2, $box.h), z]</D>
             </For>
         </Behaviors>
-        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                   xmlns="http://www.w3.org/2000/svg">
             <path id="path" fill="none" style="stroke-linejoin: round;" />
         </p:Content>
     </Shape>
 
 It is very convenient to create shapes with specific points based on handles or
-the bounding box. The "D" behavior is used heavily in the built-in Flowchart
-stencil collection .
+the bounding box. The ``D`` behavior is used heavily in the built-in Flowchart
+stencil collection.
 
 Add Transparent Background
 --------------------------
@@ -85,13 +102,13 @@ with a thicker stroke.
 .. code-block:: xml
 
     <Shape>
-        ....
+        <!-- .... -->
         <Behaviors>
             <For ref="bgpath">
                 <D>[M($a.x, $a.y), L($b.x, $b.y), L($c.x, $c.y), z]</D>
             </For>
             <For ref="path">
-                ...
+                <!-- ... -->
             </For>
         </Behaviors>
         <p:Content>
@@ -99,3 +116,7 @@ with a thicker stroke.
             <path id="path" fill="none" style="stroke-linejoin: round;" />
         </p:Content>
     </Shape>
+
+
+.. _SVG Path Specification: http://www.w3.org/TR/SVG/paths.html
+.. _SVG Path Data Specification: http://www.w3.org/TR/SVG/paths.html#PathData

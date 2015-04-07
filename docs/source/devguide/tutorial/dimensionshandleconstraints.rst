@@ -13,13 +13,13 @@ Dimension
     <Property name="box" type="Dimension" p:lockRatio="true">36,45</Property>
 
 **p:lockRatio**
-    $box size is scaled with a fixed ratio. This means any objects that have
-    their have width and height properties set based on $box will be scaled
-    with a fixed ratio too.
+    ``$box`` size is scaled with a fixed ratio. This means any objects that
+    have their ``width`` and ``height`` properties set based on ``$box`` will
+    be scaled with a fixed ratio too.
 **p:lockW**
-    the box width cannot be scaled.
+    the box's ``width`` cannot be scaled.
 **p:lockH**
-    the box height cannot be scaled.
+    the box's ``height`` cannot be scaled.
 
 
 Handle
@@ -27,7 +27,8 @@ Handle
 
 .. code-block:: xml
 
-    <Property name="width" displayName="Width" type="Handle" p:lockY="true" p:minX="10" p:maxX="$box.w" p:disabled="true">100,0</Property>
+    <Property name="width" displayName="Width" type="Handle" p:lockY="true"
+              p:minX="10" p:maxX="$box.w" p:disabled="true">100,0</Property>
 
 **p:lockY**
     only move in a horizontal direction.

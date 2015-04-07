@@ -2,12 +2,12 @@ Dynamic DOM Content
 ===================
 
 In some special cases, a shape's content is composed of a dynamic element
-structure. Pencil provides the ``DomContent`` behavior so that the DOM content
-of an element can be changed dynamically. The value provided to this behavior
-is a DOM node that will be inserted as a child of the target element. Together
-with providing this behavior, Pencil also provides utility functions for
-quickly building DOM nodes and fragments from the spec, defined as JavaScript
-objects.
+structure. Pencil provides the :ref:`DomContent` behavior so that the DOM
+content of an element can be changed dynamically. The value provided to this
+behavior is a DOM node that will be inserted as a child of the target element.
+Together with providing this behavior, Pencil also provides utility functions
+for quickly building DOM nodes and fragments from the spec, defined as
+JavaScript objects.
 
 .. code-block:: xml
 
@@ -17,7 +17,9 @@ objects.
                 <Property name="box" displayName="Box" type="Dimension">191,235</Property>
             </PropertyGroup>
             <PropertyGroup name="Item Text">
-                <Property name="contentText" displayName="Text Content" type="PlainText" p:editInfo="({targetName: 'content', bound: Bound.fromBox($box, 0, 52), font: $itemFont, align: new Alignment(0, 0), multi: true})">MenuItem MenuItem MenuItem</Property>
+                <Property name="contentText" displayName="Text Content" type="PlainText" p:editInfo="({targetName: 'content', bound: Bound.fromBox($box, 0, 52), font: $itemFont, align: new Alignment(0, 0), multi: true})">
+                    MenuItem MenuItem MenuItem
+                </Property>
                 <Property name="itemFont" displayName="Text Font" type="Font">
                     <E>$$defaultTextFont</E>
                 </Property>
@@ -66,8 +68,9 @@ objects.
                 </DomContent>
             </For>
         </Behaviors>
-        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
-        <g id="content" />
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+                   xmlns="http://www.w3.org/2000/svg">
+            <g id="content" />
         </p:Content>
     </Shape>
 
