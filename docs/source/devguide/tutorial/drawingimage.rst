@@ -1,10 +1,6 @@
 Drawing Images
 --------------
 
-.. todo::
-
-  put hand image back
-
 A Pencil shape may contain some bitmap images. This tutorial will show how to embed an image to a stencil.
 
 Suppose that we have a bitmap image of a hand and we would like to create a stencil of the hand image with an editable name text.

@@ -40,9 +40,6 @@ The Definition.xml file should contain the following skeleton code:
 Development tools
 -----------------
 
-.. todo::
-    re-add or consider removal of recommended apps links
-
 Developing Pencil stencil collections requires no special tools. What you need is just a text editor and for distribution, you need just a compatible archiving tool that can create ZIP files.
 
 Although special tools are not requires, the following set of software programs are recommended since they will help you get your job done much easier.

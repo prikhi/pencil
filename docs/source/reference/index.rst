@@ -5,6 +5,6 @@ Reference Guide
     :maxdepth: 2
 
     stencilstructure
-    specialnames
-    behaviours
     datatypes
+    behaviours
+    specialnames
