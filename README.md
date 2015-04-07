@@ -76,6 +76,22 @@ cd build
 
 This should place an installer `exe` in the `Outputs/` folder.
 
+### Documentation
+
+To build the docs locally you'll need `Sphinx` and the `sphinx_rtd_theme`,
+which are easily installable using `pip`:
+
+```bash
+
+cd docs/
+sudo pip install -r requirements.txt
+make html
+# Or if you want a PDF
+make latexpdf
+```
+
+The output files will be put in `/docs/build/`.
+
 
 ## Contibute
 
