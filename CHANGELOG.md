@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Fix the link to the 9-patch documentation(#684).
+
 # v2.0.8
 
 * Fix incorrect page backgrounds when exporting the document(#358).
