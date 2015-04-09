@@ -1,6 +1,6 @@
 # Maintainer: Pavan Rikhi <pavan.rikhi@gmail.com>
 pkgname=pencil
-pkgver=2.0.8
+pkgver=2.0.9
 pkgrel=1
 pkgdesc="Sketching and GUI prototyping/wireframing tool"
 arch=('any')
@@ -9,7 +9,7 @@ url="http://github.com/prikhi/pencil"
 install='pencil.install'
 
 source=("https://github.com/prikhi/pencil/releases/download/v$pkgver/Pencil-$pkgver-linux-pkg.tar.gz")
-sha256sums=('3426d0222b213649e448b06384556718c833667394f442682ff66da3cda1b881')
+sha256sums=('a109d28a695919d2da979de6a6d0baeb4e2820ff795aecd75ba08322f21ed3ee')
 depends=('xulrunner')
 
 package() {

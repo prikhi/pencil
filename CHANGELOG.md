@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.9
+
 * Bump maximum firefox/xulrunner version to 37(#685).
 * Fix the link to the 9-patch documentation(#684).
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export NAME='Pencil'
-export VERSION='2.0.8'
+export VERSION='2.0.9'
 export BUILD=`date -I | sed 's/-//g'`
 export AUTHOR='Pavan Rikhi(pavan.rikhi@gmail.com) and Contributors'
 export XPI_NAME='Pencil-'$VERSION'.xpi'
