@@ -154,9 +154,9 @@ can use `maintainer-clean` to remove any XULRunner downloads as well.
 
 #### Creating a Release
 
-Start off by changing the version number in `build/properties.sh` and
-sectioning off the changes in `CHANGELOG.md`. Then run `cd build; ./build.sh` &
-test the built packages in `Outputs`.
+Start off by changing the version numbers in `build/properties.sh` &
+`docs/source/conf.py`and sectioning off the changes in `CHANGELOG.md`. Then run
+`cd build; ./build.sh` & test the built packages in `Outputs`.
 
 If everything looks OK, update the `pkgver` & `sha256sums` variables in the
 `build/ArchLinux/PKGBUILD` file & commit all the changes(with a message like

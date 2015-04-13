@@ -2,6 +2,12 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.10
+
+* Add a Czech translation for the Linux .desktop file(#687).
+* Support `firefox-bin` in addition to the `firefox` executable for Linux
+  builds(#686,#688).
+
 # v2.0.9
 
 * Bump maximum firefox/xulrunner version to 37(#685).
