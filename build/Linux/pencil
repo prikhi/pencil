@@ -1,18 +1,31 @@
 #!/bin/sh
 
-
+# Target for application ini
 APP_INI="/usr/share/evolus-pencil/application.ini"
 
-if [ -x /usr/bin/xulrunner ]; then
+# List of firefox binaries to search
+BINARIES="xulrunner iceweasel firefox firefox-bin"
 
-    /usr/bin/xulrunner "$APP_INI" "$@"
+# Assembling run command
+RUN=""
 
-elif [ -x /usr/bin/iceweasel ]; then
+for BIN in $BINARIES; do
+	BIN_PATH=$(which ${BIN} 2>/dev/null)
 
-    /usr/bin/iceweasel --no-remote --app "$APP_INI" "$@"
+	if [ "$?" == "0" ]; then
+		OPTS="${APP_INI}" "$@"
 
-else
+		if [ "${BIN}" != "xulrunner" ]; then
+			OPTS="--app ${OPTS}"
+		fi
 
-    /usr/bin/firefox --no-remote --app "$APP_INI" "$@"
+		RUN="${BIN_PATH} ${OPTS}"
+	fi
+done
 
+if [ "${RUN}" == "" ]; then
+	echo "You need to install firefox or xulrunner and have it in your PATH."
+	exit 1;
 fi
+
+${RUN}
