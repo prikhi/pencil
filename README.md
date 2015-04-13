@@ -55,7 +55,7 @@ firefox Outputs/Pencil*.xpi
 
 cd build
 ./build.sh linux
-xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/application.ini --no-remote
+xulrunner Outputs/Linux/application.ini || firefox --app Outputs/Linux/application.ini
 ```
 
 A `Pencil-*-linux-pkg.tar.gz` package will also be created. This contains
@@ -116,7 +116,7 @@ cd build
 # If you've got XULRunner:
 xulrunner Outputs/Linux/application.ini -console -jsconsole -purgecaches
 # If you only have Firefox installed:
-firefox --app Outputs/Linux/application.ini --no-remote -console -jsconsole -purgecaches
+firefox --app Outputs/Linux/application.ini -console -jsconsole -purgecaches
 ```
 
 Setting `DEBUG` will cause also Pencil to start a remote debugging server on
