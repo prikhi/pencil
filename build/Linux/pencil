@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Target for application ini
 APP_INI="/usr/share/evolus-pencil/application.ini"
