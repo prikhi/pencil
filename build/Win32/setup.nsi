@@ -135,8 +135,10 @@ Section "Main Section" SecMain
     CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_EXECUTE_FILE}"
 
     ;Associate .ep files
-    WriteRegStr HKLM "Software\Classes\ep_auto_file\DefaultIcon" "" '"$INSTDIR\app\icons\default\main-window.ico"'
-    WriteRegStr HKLM "Software\Classes\ep_auto_file\shell\open\command" "" '"$INSTDIR\xulrunner\xulrunner.exe" "$INSTDIR\app\application.ini" "%1"'
+    WriteRegStr HKLM "Software\Classes\.ep" "" "Pencil"
+    WriteRegStr HKLM "Software\Classes\Pencil" "" "${PRODUCT_NAME}"
+    WriteRegStr HKLM "Software\Classes\Pencil\DefaultIcon" "" '"$INSTDIR\app\icons\default\main-window.ico"'
+    WriteRegStr HKLM "Software\Classes\Pencil\shell\open\command" "" '"$INSTDIR\${PRODUCT_EXECUTE_FILE}" "%1"'
 
     !ifdef README_FILE
       CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Readme.lnk" "$INSTDIR\${README_FILE}"
@@ -195,6 +197,7 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 
   ;Remove File Associations
-  DeleteRegKey HKLM "Software\Classes\ep_auto_file"
+  DeleteRegKey HKLM "Software\Classes\.ep"
+  DeleteRegKey HKLM "Software\Classes\Pencil"
 
 SectionEnd

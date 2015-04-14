@@ -1,5 +1,6 @@
 ; Pencil Launcher
 ;--------------
+!include FileFunc.nsh
 
 Name "Pencil"
 Caption "Pencil"
@@ -13,5 +14,6 @@ ShowInstDetails nevershow
 
 Section ""
     StrCpy $0 '"$EXEDIR\xulrunner\xulrunner.exe" "$EXEDIR\app\application.ini"'
-    Exec $0
+    ${GetParameters} $R0
+    Exec "$0 $R0"
 SectionEnd
