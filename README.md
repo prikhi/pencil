@@ -17,6 +17,15 @@ was abandoned around 2013. This fork was started for new development on March
 * [The original project's homepage][evolus-page]
 * [The original repository][evolus-repo]
 
+#### Extra Stencil Collections
+
+* [Android Lollipop][lollipop-collection] by [Nathanielw][nathanielw]
+* [Bootstrap (WIP)][bootstrap-collection] by [Nathanielw][nathanielw]
+* [Material Design Icons][material-collection] by [Nathanielw][nathanielw]
+
+Additional collection are available on the
+[Original Stencil Download Page][evolus-stencil-downloads].
+
 
 ## Prerequisites
 
@@ -187,6 +196,13 @@ This fork is released under GPLv2 like it's parent codebase.
 [google-group]: https://groups.google.com/forum/#!forum/pencil-user
 [evolus-page]: http://pencil.evolus.vn/
 [evolus-repo]: https://code.google.com/p/evoluspencil/
+[evolus-stencil-downloads]: https://code.google.com/p/evoluspencil/downloads/list?q=label:Stencil
+
 [releases]: https://github.com/prikhi/pencil/releases
 [aur-pkg]: https://aur.archlinux.org/packages/pencil/
 [nix-unstable]: https://nixos.org/nixos/manual/sec-upgrading.html
+
+[nathanielw]: https://github.com/nathanielw
+[lollipop-collection]: https://github.com/nathanielw/Android-Lollipop-Pencil-Stencils
+[material-collection]: https://github.com/nathanielw/Material-Icons-for-Pencil
+[bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
