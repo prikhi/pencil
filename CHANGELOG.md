@@ -2,6 +2,9 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Fix Linux executable for systems where `sh` is not `bash`(#688).
+* Fix Windows file asssociations(for real this time, #431).
+
 # v2.0.10
 
 * Add a Czech translation for the Linux .desktop file(#687).
