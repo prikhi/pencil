@@ -2,6 +2,7 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Fix Firefox Extension's missing HTML/ODT/Print templates(#691).
 * Fix Linux executable for systems where `sh` is not `bash`(#688).
 * Fix Windows file asssociations(for real this time, #431).
 

@@ -23,6 +23,7 @@
     <em:contributor>Maxime Delorme</em:contributor>
     <em:contributor>Frederic Vandaele</em:contributor>
     <em:contributor>Brainiac Kalel</em:contributor>
+    <em:unpack>true</em:unpack>
     <em:iconURL>chrome://pencil/skin/pencil.png</em:iconURL>
     <em:icon64URL>chrome://pencil/content/pencil-64.png</em:icon64URL>
     <em:homepageURL>http://pencil.evolus.vn/</em:homepageURL>

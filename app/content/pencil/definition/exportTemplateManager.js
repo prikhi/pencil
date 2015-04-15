@@ -97,6 +97,35 @@ ExportTemplateManager.getDefaultTemplateDirectory = function () {
 
     return templateDir;
 };
+/* Attempt to load the default templates assuming Pencil is installed as an
+ * Extension.
+ */
+ExportTemplateManager.loadExtensionTemplates = function () {
+    try {
+        var templateDir = ExportTemplateManager.getExtensionTemplateDirectory();
+
+        ExportTemplateManager.loadTemplatesIn(templateDir);
+    } catch (e) {
+        Console.dumpError(e);
+    }
+};
+/* Return an nsIFile of the default template folder assuming Pencil was
+ * installed as an Extension.
+ */
+ExportTemplateManager.getExtensionTemplateDirectory = function () {
+    var properties = Components.classes["@mozilla.org/file/directory_service;1"]
+                     .getService(Components.interfaces.nsIProperties);
+
+    var templateDir = properties.get("ProfD", Components.interfaces.nsIFile);
+
+    templateDir.append("extensions");
+    templateDir.append("pencil@evolus.vn");
+    templateDir.append("content");
+    templateDir.append("pencil");
+    templateDir.append("templates");
+
+    return templateDir;
+};
 ExportTemplateManager._loadUserDefinedTemplatesIn = function (templateDir, type) {
     //loading all templates
     debug("Loading template in " + templateDir.path);
@@ -140,6 +169,7 @@ ExportTemplateManager.loadTemplates = function() {
     }
 
     ExportTemplateManager.loadDefaultTemplates();
+    ExportTemplateManager.loadExtensionTemplates();
     ExportTemplateManager.loadSystemWideDefinedTemplates();
     ExportTemplateManager.loadUserDefinedTemplates();
 };
