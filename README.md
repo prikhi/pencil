@@ -12,6 +12,7 @@ was abandoned around 2013. This fork was started for new development on March
 
 ### Links
 
+* [Downloads][releases]
 * [The documentation][docs]
 * [The discussion forum][google-group]
 * [The original project's homepage][evolus-page]
@@ -23,7 +24,7 @@ was abandoned around 2013. This fork was started for new development on March
 * [Bootstrap (WIP)][bootstrap-collection] by [Nathanielw][nathanielw]
 * [Material Design Icons][material-collection] by [Nathanielw][nathanielw]
 
-Additional collection are available on the
+Additional collections are available on the
 [Original Stencil Download Page][evolus-stencil-downloads].
 
 
@@ -31,7 +32,7 @@ Additional collection are available on the
 
 You will need version 36 or higher of `firefox` to run Pencil as a Firefox
 Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
-`xulrunner`. The Windows installer has everything you need in the built-in.
+`xulrunner`. The Windows installer has everything you need built-in.
 
 
 ## Install
@@ -46,7 +47,8 @@ For specific Linux distributions:
 
 ## Build
 
-The build script is currently broken for Mac OS X :(
+The build script is currently broken for Mac OS X, not because I do not want to
+support OS X, but because I have no OS X system to test on(see #689).
 
 ### Firefox Extension
 
