@@ -1,3 +1,5 @@
+.. _Dynamic DOM Content:
+
 Dynamic DOM Content
 ===================
 

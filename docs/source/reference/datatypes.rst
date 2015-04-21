@@ -46,6 +46,7 @@ Properties of type Alignment can be edited in the shape property page.
 
 .. image:: /images/alignment-prop-editor.png
 
+
 Bool
 ----
 
@@ -53,11 +54,11 @@ Data type for storing boolean values.
 
 .. class:: Bool(value)
 
-    :param value: true or false
+    :param boolean value: ``true`` or ``false``
 
-    .. function:: Bool.fromString(s)
+    .. function:: static Bool.fromString(s)
 
-        :param s: String representation
+        :param string s: String representation
         :returns: Bool built from String representation
 
     .. function:: Bool.toString()
@@ -99,7 +100,7 @@ Data structure for storing object size, a pair of width and height values
     :param number width:
     :param number height:
 
-    .. function:: Dimension.fromString(s)
+    .. function:: static Dimension.fromString(s)
 
         :param string s:
         :returns: Build a Dimension object from its string presentation.
@@ -128,7 +129,7 @@ XML syntax
 
     **p:lockRatio**
         Meta constraint used in XML syntax to hint that the ratio of this
-        object should be maintained when its width and height are changed.
+        object should be maintained when its width or height is changed.
 
 Editor support
 ^^^^^^^^^^^^^^
@@ -146,6 +147,7 @@ And also via the geometry toolbar located on the top of the Pencil application
 window.
 
 .. image:: /images/box-toolbar-editor.png
+
 
 Bound
 -----
@@ -166,8 +168,8 @@ and a size.
         :param box:
         :param number paddingX:
         :param number paddingY:
-        :returns:  a new Bound object from a Dimension object narrowed down on
-                   each sides using the provided paddings
+        :returns:  a new Bound object from a :class:`Dimension` object narrowed
+                   down on each sides using the provided paddings
 
         .. code-block:: js
 
@@ -178,13 +180,13 @@ and a size.
 
     .. function:: static Bound.fromString(s)
 
-        :param String s:
-        :reutrns: Build a Bound object from its string presentation
+        :param string s:
+        :returns: A Bound object built from its string presentation
 
 
     .. function:: Bound.toString()
 
-        :returns: string presentation
+        :returns: string presentation of a Bound object
 
     .. function:: Bound.narrowed(paddingX, paddingY)
 
@@ -207,7 +209,7 @@ Data structure for storing object color with alpha blending
 
     .. function:: static Color.fromString(String)
 
-        :param String s: color representation
+        :param string s: color representation
         :returns: a color object from string presentation in CSS numerical
                   color syntax.
 
@@ -227,15 +229,15 @@ Data structure for storing object color with alpha blending
 
     .. function:: Color.toString()
 
-        :returns: the extended hexa string presentation of the color: #RRGGBBAA
+        :returns: the extended hexa string presentation of the color: ``#RRGGBBAA``
 
     .. function:: Color.toRGBString()
 
-        :returns: the CSS color in the format of "rgb(red, green, blue)"
+        :returns: the CSS color in the format of ``rgb(red, green, blue)``
 
     .. function:: Color.toRGBAString()
 
-        :returns: the CSS color in the format of "rgba(red, green, blue, alpha)"
+        :returns: the CSS color in the format of ``rgba(red, green, blue, alpha)``
 
     .. function:: Color.shaded(percent)
 
@@ -274,7 +276,8 @@ chooser that supports both simple and advanced mode.
 .. image:: /images/color-prop-editor.png
 
 Color properties with the following special names can be also edited with the
-Color toolbar: textColor, fillColor and strokeColor.
+Color toolbar: ``textColor``, ``fillColor`` and ``strokeColor``.
+
 
 CSS
 ---
@@ -290,8 +293,8 @@ Provides a data object for styling SVG elements and HTML elements.
         :param string value: Value to set the property to
         :returns: CSS object with newly added property
 
-        CSS Sets a CSS property value, overriding existing one if any and
-        returns the object itself.
+        Sets a CSS property value, overriding existing one if any and returns
+        the object itself.
 
 
     .. function:: CSS.toString()
@@ -321,7 +324,8 @@ Provides a data object for styling SVG elements and HTML elements.
 
     .. function:: CSS.setIfNot(name, value)
 
-        Sets value to a property if it was not set, returns the object itself
+        Sets a property to ``valuee`` if the property has not already been set,
+        returns the object itself
 
     .. function:: static CSS.fromString(literal)
 
@@ -333,10 +337,12 @@ Provides a data object for styling SVG elements and HTML elements.
         Parses the CSS string and add all parsed property/value pairs to the
         object overriding any existing properties.
 
+
 Enum
 ----
 
-Data structure to store an option with the possibility to specify available options via XML metadata.
+Data structure to store an option with the possibility to specify available
+options via XML metadata.
 
 XML syntax
 ^^^^^^^^^^
@@ -346,9 +352,9 @@ XML syntax
     <Property name="type" displayName="Type" type="Enum"
                       p:enumValues="['one|One', 'two|Two']">two</Property>
 
-* **value**: Member field storing the selected value.
+* **value**: Member field storing the selected value's id.
 * **p:enumValues**: An array literal containing all possible options. Each
-  option is in the syntax of 'id|Display Name'.
+  option is in the syntax of ``id|Display Name``.
 
 Editor support
 ^^^^^^^^^^^^^^
@@ -359,21 +365,22 @@ Context menu:
 
 Properties of type Enum can be edited in the context menu of the shape.
 
+
 Font
 ----
 
-Data structure for manipulating font info.
+Data structure for manipulating font information.
 
 .. class:: Font()
 
     .. function:: static Font.fromString(s)
 
-        :param String s:
-        :returns: a Font object from its string presentation.
+        :param string s:
+        :returns: a Font object created from its string presentation.
 
     .. function:: Font.getPixelHeight()
 
-        :returns: the font height in pixels;
+        :returns: the font height in pixels.
 
     .. function:: Font.toString()
 
@@ -407,8 +414,8 @@ Property page:
 
 Properties of type Font can be edited in the property dialogue.
 
-A Font property with the special name textFont is editable with the Font style
-toolbar.
+A Font property with the special name ``textFont`` is editable with the Font
+style toolbar.
 
 
 .. _Handle:
@@ -425,20 +432,20 @@ modified on the drawing canvas by user operations.
 
 * **x**: Distance to the left border of the shape
 * **y**: Distance to the top border of the shape
-* **p:lockX**: The 'x' value should not be changed, horizontal movement is
-  disabled. Default value: false
-* **p:lockY**: The 'y' value should not be changed, vertical movement is
-  disabled. Default value: false
-* **p:minX**: Minimum value of 'x'. Movement of the handle should not pass this
-  lower limit.
-* **p:maxX**: Maximum value of 'x'. Movement of the handle should not pass this
-  upper limit.
-* **p:minY**: Minimum value of 't'. Movement of the handle should not pass this
-  lower limit.
-* **p:maxY**: Maximum value of 'y'. Movement of the handle should 0not pass
+* **p:lockX**: The ``x`` value should not be changed, horizontal movement is
+  disabled. Default value: ``false``
+* **p:lockY**: The ``y`` value should not be changed, vertical movement is
+  disabled. Default value: ``false``
+* **p:minX**: Minimum value of ``x``. Movement of the handle should not pass
+  this lower limit.
+* **p:maxX**: Maximum value of ``x``. Movement of the handle should not pass
   this upper limit.
-* **p:noScale**: Disable auto-scaling of Handle value when the object 'box'
-  property is changed. Default value: false
+* **p:minY**: Minimum value of ``t``. Movement of the handle should not pass
+  this lower limit.
+* **p:maxY**: Maximum value of ``y``. Movement of the handle should 0not pass
+  this upper limit.
+* **p:noScale**: Disable auto-scaling of Handle value when the object ``box``
+  property is changed. Default value: ``false``
 
 Editor support
 ^^^^^^^^^^^^^^
@@ -450,6 +457,7 @@ On-canvas editor:
 Each property of type Handle is shown as a yellow bullet when the shape is
 focused. The property can be edited by moving the bullet.
 
+
 ImageData
 ---------
 
@@ -459,7 +467,7 @@ Data structure that stores a binary bitmap image.
 
     :param number w: The image width
     :param number h: The image height
-    :param string dataUrl: The data URL of the image
+    :param string dataUrl: The base64 data URL of the image
 
     .. code-block:: xml
 
@@ -481,19 +489,20 @@ XML syntax
     <Property name="image" displayName="Image"
           type="ImageData"><![CDATA[w,h,url]]></Property>
 
+
 PlainText
 ---------
 
 Data object that represents a piece of plain text.
 
-.. class::  PlainText(S)
+.. class::  PlainText(s)
 
     :param string s: The text string
 
     .. function:: static PlainText.fromString(s)
 
         :param string s:
-        :returns: Create a PlainText object from given string
+        :returns: A PlainText object created from the given string
 
     .. function:: PlainText.toString()
 
@@ -501,7 +510,7 @@ Data object that represents a piece of plain text.
 
     .. function:: PlainText.toUpper()
 
-        :returns: uppercase version of this PlainText
+        :returns: Uppercase version of this PlainText
 
 
 XML syntax
@@ -523,6 +532,7 @@ On-canvas editor:
 PlainText properties can be edited right on the canvas using a simple text
 input.
 
+
 RichText
 --------
 
@@ -530,11 +540,11 @@ Data structure for storing rich-text content in HTML format.
 
 .. class:: RichText(String s)
 
-    :param String s: Rich text string
+    :param string s: Rich text string
 
     .. function:: static RichText.fromString(String s)
 
-        :param String s: Rich text String
+        :param string s: Rich text String
         :returns: a RichText object from the provided JS string
 
     .. function:: RichText.toString()
@@ -559,6 +569,7 @@ On-canvas editor:
 
 RichText properties can be edited right on the canvas using a rich-text input.
 
+
 StrokeStyle
 -----------
 
@@ -576,7 +587,7 @@ Data structure for storing stroke styling information.
 
     .. function:: static StrokeStyle.fromString(s)
 
-        :param String s:
+        :param string s:
         :returns: a StrokeStyle object from its string presentation.
 
     .. function:: StrokeStyle.toString()
@@ -586,8 +597,8 @@ Data structure for storing stroke styling information.
     .. function:: StrokeStyle.condensed(ratio)
 
         :param number ratio:
-        :returns: a new version of the callee by condensing the width by the
-                  provided ratio.
+        :returns: a new version of the callee created by condensing the width
+                  by the provided ratio.
 
 XML syntax
 ^^^^^^^^^^
@@ -597,7 +608,7 @@ XML syntax
     <Property name="stroke" type="StrokeStyle"
           displayName="Border Style">w|dasharray</Property>
 
-When the dasharray is omitted, the stroke is considered solid.
+When the ``dasharray`` is omitted, the stroke is considered solid.
 
 .. code-block:: xml
 
@@ -613,6 +624,7 @@ Property page editor:
 
 StrokeStyle properties can be edited in the property page of the shape.
 
+
 ShadowStyle
 -----------
 
@@ -626,7 +638,7 @@ Data structure that stores shadow style information.
 
     .. function:: static ShadowStyle.fromString(s)
 
-        :param String s:
+        :param string s:
         :returns: a ShadowStyle object from its string presentation
 
         .. code-block:: js
@@ -657,5 +669,6 @@ Property page editor:
 .. image:: /images/shadowstyle-prop-editor.png
 
 ShadowStyle properties can be edited in the property page of the shape.
+
 
 .. _SVG Specification for Stroke dash array: http://www.w3.org/TR/SVG/painting.html#StrokeDasharrayProperty

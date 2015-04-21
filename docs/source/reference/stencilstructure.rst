@@ -8,16 +8,16 @@ A stencil collection is usually distributed as a single ZIP archive containing
 all related files for that collection.
 
 This collection ZIP archive has one main XML file named (exactly)
-Definition.xml and other optional files or sub-directories containing
+``Definition.xml`` and other optional files or sub-directories containing
 supporting files for the main XML (primarily icon files).
 
-The Definition.xml file name is case-sensitive and is the only required file
-for a collection. All other files can be omitted when not needed.
+The ``Definition.xml`` file name is case-sensitive and is the only required
+file for a collection. All other files can be omitted when not needed.
 
 Format of the Definition.xml file
 ---------------------------------
 
-Each Definition.xml file defines a collection of stencils by providing
+Each ``Definition.xml`` file defines a collection of stencils by providing
 collection information and all stencil definitions. This is just a standard XML
 file that can be created by virtually any text editor you have on your system.
 
@@ -55,10 +55,10 @@ The Definition.xml file has the following structure:
 The following list summarizes the format:
 
 * The out-most tag is ``<Shapes>`` with the namespace URI set to
-  *http://www.evolus.vn/Namespace/Pencil*
+  ``http://www.evolus.vn/Namespace/Pencil``.
 
 * Information about the collection is specified by the ``<Shapes>`` node's
-  attributes: id, displayName, description, author and url.
+  attributes: ``id``, ``displayName``, ``description``, ``author`` and ``url``.
 
 * A collection may have properties that can referenced as initial values for
   shape properties. These properties should be defined in the ``<Properties>``
@@ -71,7 +71,7 @@ The following list summarizes the format:
   right under the root ``<Shapes>`` tag. Please refer the next section for
   details on definition structure for a shape.
 
-* Beside shapes, a collection may contain also shortcuts which are references
+* Beside shapes, a collection may also contain shortcuts which are references
   to another shape with different default values for its properties. Shortcuts
   are defined in ``<Shortcut>`` tags.
 
@@ -126,7 +126,7 @@ and can be changed by users by right-clicking on the collection in the
 collection pane.
 
 The structure of this section is similar to the ``<Properties>`` section at the
-stencil level:
+``<Shape>`` level:
 
 .. code-block:: xml
 

@@ -1,3 +1,5 @@
+.. _Nine-Patch:
+
 Nine-Patch
 ==========
 
