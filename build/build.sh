@@ -205,12 +205,12 @@ win32() {
 }
 
 mac() {
-    if [ ! 'Mac/XUL.framework' ]; then
+    if [ ! -d 'Mac/XUL.framework' ]; then
         echo "-------------------------"
         echo "* Downloading XULRunner *"
         echo "-------------------------"
         XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XUL_VERSION/runtimes/xulrunner-$XUL_VERSION.en-US.mac.tar.bz2"
-        curl $XUL_DL_URL -O temp.tar.bz2
+        curl $XUL_DL_URL -o temp.tar.bz2
         tar -jxvf temp.tar.bz2 -C Mac
         rm temp.tar.bz2
     fi
@@ -223,7 +223,8 @@ mac() {
 
     cp -R ./Mac/* ./Outputs/Mac/
 		
-    cp -R ./Outputs/Pencil/* ./Outputs/Mac/Pencil.app/Contents/Resources/
+    mkdir -p ./Outputs/Mac/Pencil.app/Contents/Resources/
+    cp -R ./Outputs/Pencil/* $_
 	cp -RL ./Outputs/Mac/XUL.framework/Versions/Current/* ./Outputs/Mac/Pencil.app/Contents/MacOS/
     mv ./Outputs/Mac/Pencil.app/Contents/MacOS/dependentlibs.list ./Outputs/Mac/Pencil.app/Contents/Resources/dependentlibs.list
     cp ./Outputs/Pencil/application.ini ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
@@ -281,7 +282,7 @@ maintainer_clean() {
 	    clean
     fi
 
-    if [ 'Mac/XUL.framework' ]; then
+    if [ -d 'Mac/XUL.framework' ]; then
 	    echo "Removing the Mac copy of XULRunner..."
 	    rm -Rf ./Mac/XUL.framework
 	    clean
