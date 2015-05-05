@@ -1,11 +1,11 @@
 Tips and Tricks
 ===============
 
-:ref:`Visibility` and :ref:`Transform`
---------------------------------------
+Visibility and Transform
+-------------------------
 
-There are two universal behaviors in Pencil that can be applied to any type of
-object:
+:ref:`Visibility` and :ref:`Transform` are two universal behaviors in Pencil
+that can be applied to any type of object:
 
 .. code-block:: xml
 
