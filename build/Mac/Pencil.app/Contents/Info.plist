@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleExecutable</key>
-	<string>xulrunner</string>
+	<string>Pencil</string>
 	<key>CFBundleGetInfoString</key>
 	<string>@NAME@</string>
 	<key>CFBundleIconFile</key>

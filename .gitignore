@@ -1,6 +1,7 @@
 # Build Files
 build/Outputs
 build/Win32/xulrunner
+build/Mac/XUL.framework
 docs/build
 
 # OS cache files

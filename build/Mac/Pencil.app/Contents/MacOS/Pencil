@@ -1,0 +1,4 @@
+#!/bin/sh
+
+APP_ROOT=$( dirname "$( dirname "$( dirname "$0" ) ") ")
+"$APP_ROOT"/Contents/MacOS/xulrunner -app "$APP_ROOT"/Contents/Resources/application.ini

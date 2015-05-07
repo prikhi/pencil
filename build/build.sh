@@ -205,6 +205,15 @@ win32() {
 }
 
 mac() {
+    if [ ! -d 'Mac/XUL.framework' ]; then
+        echo "-------------------------"
+        echo "* Downloading XULRunner *"
+        echo "-------------------------"
+        XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XUL_VERSION/runtimes/xulrunner-$XUL_VERSION.en-US.mac.tar.bz2"
+        curl $XUL_DL_URL -o temp.tar.bz2
+        tar -jxvf temp.tar.bz2 -C Mac
+        rm temp.tar.bz2
+    fi
     echo "---------------------------------------------"
     echo "* Building Mac OS X App with Private XRE *"
     echo "---------------------------------------------"
@@ -213,11 +222,12 @@ mac() {
     mkdir ./Outputs/Mac/
 
     cp -R ./Mac/* ./Outputs/Mac/
-    cp -R ./Outputs/Pencil/* ./Outputs/Mac/Pencil.app/Contents/Resources/
-
-    find ./Outputs/Mac/ -name .svn | xargs -i rm -Rf {}
-
-    cp -R ./Outputs/Pencil/application.ini.tpl ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
+		
+    mkdir -p ./Outputs/Mac/Pencil.app/Contents/Resources/
+    cp -R ./Outputs/Pencil/* $_
+	cp -RL ./Outputs/Mac/XUL.framework/Versions/Current/* ./Outputs/Mac/Pencil.app/Contents/MacOS/
+    mv ./Outputs/Mac/Pencil.app/Contents/MacOS/dependentlibs.list ./Outputs/Mac/Pencil.app/Contents/Resources/dependentlibs.list
+    cp ./Outputs/Pencil/application.ini ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
 
     ./replacer.sh ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
     ./replacer.sh ./Outputs/Mac/Pencil.app/Contents/Resources/defaults/preferences/pencil.js
@@ -265,9 +275,18 @@ clean() {
 }
 
 maintainer_clean() {
-    echo "Removing the Windows copy of XULRunner..."
-    rm -Rf ./Win32/xulrunner
-    clean
+	
+    if [ -d 'Win32/xulrunner' ]; then
+	    echo "Removing the Windows copy of XULRunner..."
+	    rm -Rf ./Win32/xulrunner
+	    clean
+    fi
+
+    if [ -d 'Mac/XUL.framework' ]; then
+	    echo "Removing the Mac copy of XULRunner..."
+	    rm -Rf ./Mac/XUL.framework
+	    clean
+    fi
 }
 
 
