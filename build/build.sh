@@ -180,7 +180,7 @@ win32() {
         echo "* Downloading XULRunner *"
         echo "-------------------------"
         XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XUL_VERSION/runtimes/xulrunner-$XUL_VERSION.en-US.win32.zip"
-        wget $XUL_DL_URL -O temp.zip
+        curl $XUL_DL_URL -o temp.zip
         unzip temp.zip -d Win32
         rm temp.zip
     fi
@@ -253,7 +253,7 @@ ubuntu() {
     cp ./Ubuntu/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/bin/pencil
     cp ./Ubuntu/pencil.desktop ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications/pencil.desktop
     cp -r ./Ubuntu/share/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil
-    #wget -nc http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/15.0.1/runtimes/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2 -O ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
+    #curl -nc http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/15.0.1/runtimes/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2 -o ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
     #tar xvfj ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
     #cp -r ./xulrunner  ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil/xre
     cp ./Ubuntu/deb ./Outputs/Ubuntu/pencil-2.0.2/deb
