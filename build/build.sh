@@ -214,28 +214,28 @@ mac() {
         tar -jxvf temp.tar.bz2 -C Mac
         rm temp.tar.bz2
     fi
-    echo "---------------------------------------------"
+    echo "------------------------------------------"
     echo "* Building Mac OS X App with Private XRE *"
-    echo "---------------------------------------------"
+    echo "------------------------------------------"
 
-    rm -Rf ./Outputs/Mac/
-    mkdir ./Outputs/Mac/
+    OUTPUT="./Outputs/Mac"
 
-    cp -R ./Mac/* ./Outputs/Mac/
+    rm -Rf $OUTPUT
+    mkdir $OUTPUT
+
+    cp -R ./Mac/* $OUTPUT/
 		
-    mkdir -p ./Outputs/Mac/Pencil.app/Contents/Resources/
+    mkdir -p $OUTPUT/Pencil.app/Contents/Resources/
     cp -R ./Outputs/Pencil/* $_
-	cp -RL ./Outputs/Mac/XUL.framework/Versions/Current/* ./Outputs/Mac/Pencil.app/Contents/MacOS/
-    mv ./Outputs/Mac/Pencil.app/Contents/MacOS/dependentlibs.list ./Outputs/Mac/Pencil.app/Contents/Resources/dependentlibs.list
-    cp ./Outputs/Pencil/application.ini ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
+	cp -RL $OUTPUT/XUL.framework/Versions/Current/* $OUTPUT/Pencil.app/Contents/MacOS/
+    mv $OUTPUT/Pencil.app/Contents/MacOS/dependentlibs.list $OUTPUT/Pencil.app/Contents/Resources/dependentlibs.list
+    cp ./Outputs/Pencil/application.ini $OUTPUT/Pencil.app/Contents/Resources/application.ini
 
-    ./replacer.sh ./Outputs/Mac/Pencil.app/Contents/Resources/application.ini
-    ./replacer.sh ./Outputs/Mac/Pencil.app/Contents/Resources/defaults/preferences/pencil.js
-    ./replacer.sh ./Outputs/Mac/Pencil.app/Contents/Info.plist
+    ./replacer.sh $OUTPUT/Pencil.app/Contents/Resources/application.ini
+    ./replacer.sh $OUTPUT/Pencil.app/Contents/Resources/defaults/preferences/pencil.js
+    ./replacer.sh $OUTPUT/Pencil.app/Contents/Info.plist
 
-    #genisoimage -V Pencil -r -apple -root ./Outputs/Mac/
-
-    cp -R ./Outputs/Mac/Pencil.app ./Outputs/Pencil.app
+    cp -R $OUTPUT/Pencil.app ./Outputs/Pencil.app
 }
 
 ubuntu() {
@@ -279,14 +279,13 @@ maintainer_clean() {
     if [ -d 'Win32/xulrunner' ]; then
 	    echo "Removing the Windows copy of XULRunner..."
 	    rm -Rf ./Win32/xulrunner
-	    clean
     fi
 
     if [ -d 'Mac/XUL.framework' ]; then
 	    echo "Removing the Mac copy of XULRunner..."
 	    rm -Rf ./Mac/XUL.framework
-	    clean
     fi
+    clean
 }
 
 

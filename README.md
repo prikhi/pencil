@@ -77,7 +77,7 @@ distribution-specific packages.
 
 ### Windows
 
-You'll need `wget` installed so you can pull the Windows XULRunner runtime and
+You'll need `curl` installed so you can pull the Windows XULRunner runtime and
 `nsis` to compile the installer.
 
 ```bash
@@ -87,6 +87,18 @@ cd build
 ```
 
 This should place an installer `exe` in the `Outputs/` folder.
+
+### OS X
+
+You'll need `curl` installed to fetch the OS X XULRunner runtime.
+
+```bash
+
+cd build
+./build.sh mac
+```
+
+This will create a `Pencil.app` in the `Outputs/` folder.
 
 ### Documentation
 
