@@ -47,9 +47,6 @@ For specific Linux distributions:
 
 ## Build
 
-The build script is currently broken for Mac OS X, not because I do not want to
-support OS X, but because I have no OS X system to test on(see #689).
-
 ### Firefox Extension
 
 Pencil can be installed as Firefox Extension, instead of a standalone
