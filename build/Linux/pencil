@@ -20,6 +20,7 @@ for BIN in $BINARIES; do
         fi
 
         RUN="${BIN_PATH} ${OPTS}"
+        break
     fi
 done
 
