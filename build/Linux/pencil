@@ -10,22 +10,22 @@ BINARIES="xulrunner iceweasel firefox firefox-bin"
 RUN=""
 
 for BIN in $BINARIES; do
-	BIN_PATH=$(which ${BIN} 2>/dev/null)
+    BIN_PATH=$(which ${BIN} 2>/dev/null)
 
-	if [ "$?" == "0" ]; then
-		OPTS="${APP_INI}" "$@"
+    if [ "$?" == "0" ]; then
+        OPTS="${APP_INI}" "$@"
 
-		if [ "${BIN}" != "xulrunner" ]; then
-			OPTS="--app ${OPTS}"
-		fi
+        if [ "${BIN}" != "xulrunner" ]; then
+            OPTS="--app ${OPTS}"
+        fi
 
-		RUN="${BIN_PATH} ${OPTS}"
-	fi
+        RUN="${BIN_PATH} ${OPTS}"
+    fi
 done
 
 if [ "${RUN}" == "" ]; then
-	echo "You need to install firefox or xulrunner and have it in your PATH."
-	exit 1;
+    echo "You need to install firefox or xulrunner and have it in your PATH."
+    exit 1;
 fi
 
 ${RUN}
