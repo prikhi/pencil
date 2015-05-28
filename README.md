@@ -2,6 +2,7 @@
 
 A GUI prototyping tool for GNU/Linux, Windows & Mac.
 
+![Screenshot](http://i.imgur.com/DF715Nr.png)
 
 ### Status
 
