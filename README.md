@@ -180,28 +180,34 @@ can use `maintainer-clean` to remove any XULRunner downloads as well.
 
 #### Creating a Release
 
-Start off by changing the version numbers in `build/properties.sh` &
-`docs/source/conf.py`and sectioning off the changes in `CHANGELOG.md`. Then run
-`cd build; ./build.sh` & test the built packages in `Outputs`.
-
-If everything looks OK, update the `pkgver` & `sha256sums` variables in the
-`build/ArchLinux/PKGBUILD` file & commit all the changes(with a message like
-`Prepare for v2.0.8 Release`).
-
-Create a new tag, merge it into master & push:
+A `release.sh` script lives in the `build` directory to automate the creation
+of new releases. You will need `git`, `curl`, `sed` and `jshon`. Then you can
+just pass the new version number to the script:
 
 ```bash
-
-git checkout develop
-git tag -s -a v2.0.8
-git checkout master
-git merge develop
-git push
-git push --tags
+cd build
+./release.sh 2.4.42
 ```
 
-Upload the packages in `build/Outputs/` to the new Release created on Github.
-Update the GNU/Linux distro-specific packages or ping their maintainers.
+The script will create a new release branch, update version numbers and
+checksums, build the packages, commit/tag/push the release branch, create a new
+release on github and upload the packages. You will be prompted for your Github
+credentials.
+
+Once the script is complete, you will have to manually merge the release branch
+into the `master` and `develop` branches, then delete the release branch:
+
+```bash
+git checkout master
+git merge release-v2.4.42
+git push origin
+git checkout develop
+git merge release-v2.4.42
+git push origin
+
+git push origin :release-v2.4.42
+git branch -d release-v2.4.42
+```
 
 
 ## License
