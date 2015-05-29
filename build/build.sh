@@ -235,7 +235,10 @@ mac() {
     ./replacer.sh $OUTPUT/Pencil.app/Contents/Resources/defaults/preferences/pencil.js
     ./replacer.sh $OUTPUT/Pencil.app/Contents/Info.plist
 
-    cp -R $OUTPUT/Pencil.app ./Outputs/Pencil.app
+    echo "Compressing..."
+    cd $OUTPUT
+    zip -r ../Pencil-$VERSION-mac-osx.zip Pencil.app > /dev/null
+    cd ../..
 }
 
 ubuntu() {
