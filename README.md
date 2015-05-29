@@ -33,13 +33,17 @@ Additional collections are available on the
 
 You will need version 36 or higher of `firefox` to run Pencil as a Firefox
 Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
-`xulrunner`. The Windows installer has everything you need built-in.
+`xulrunner`. The Windows installer and OS X archive has everything you need
+built-in.
 
 
 ## Install
 
-Windows, Linux & Firefox Packages are available for download from the
+Windows, Linux, OS X & Firefox Packages are available for download from the
 [Releases Page][releases].
+
+To install the OS X package, unzip the archive and copy the `Pencil.app` folder
+to your `Applications` directory.
 
 For specific Linux distributions:
 * **Arch Linux** - Available in the [AUR][aur-pkg].
@@ -96,7 +100,8 @@ cd build
 ./build.sh mac
 ```
 
-This will create a `Pencil.app` in the `Outputs/` folder.
+This will create a `Pencil.app` folder in `Outputs/Mac` and a compressed
+version in `Outputs/`.
 
 ### Documentation
 
