@@ -224,10 +224,10 @@ mac() {
     mkdir $OUTPUT
 
     cp -R ./Mac/* $OUTPUT/
-		
+
     mkdir -p $OUTPUT/Pencil.app/Contents/Resources/
     cp -R ./Outputs/Pencil/* $_
-	cp -RL $OUTPUT/XUL.framework/Versions/Current/* $OUTPUT/Pencil.app/Contents/MacOS/
+    cp -RL $OUTPUT/XUL.framework/Versions/Current/* $OUTPUT/Pencil.app/Contents/MacOS/
     mv $OUTPUT/Pencil.app/Contents/MacOS/dependentlibs.list $OUTPUT/Pencil.app/Contents/Resources/dependentlibs.list
     cp ./Outputs/Pencil/application.ini $OUTPUT/Pencil.app/Contents/Resources/application.ini
 
@@ -278,15 +278,14 @@ clean() {
 }
 
 maintainer_clean() {
-	
     if [ -d 'Win32/xulrunner' ]; then
-	    echo "Removing the Windows copy of XULRunner..."
-	    rm -Rf ./Win32/xulrunner
+        echo "Removing the Windows copy of XULRunner..."
+        rm -Rf ./Win32/xulrunner
     fi
 
     if [ -d 'Mac/XUL.framework' ]; then
-	    echo "Removing the Mac copy of XULRunner..."
-	    rm -Rf ./Mac/XUL.framework
+        echo "Removing the Mac copy of XULRunner..."
+        rm -Rf ./Mac/XUL.framework
     fi
     clean
 }
