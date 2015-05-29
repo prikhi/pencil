@@ -79,11 +79,11 @@ main() {
     echo "Uploading packages to Github..."
     UPLOAD_URL=`echo $CREATE_RESPONSE | jshon -e upload_url -u`
 
-    BUILD_FILES=("Pencil-$NEW_VERSION.xpi"
+    BUILD_FILES=("Pencil-$NEW_VERSION-firefox.xpi"
                  "Pencil-$NEW_VERSION-linux.tar.gz"
                  "Pencil-$NEW_VERSION-linux-pkg.tar.gz"
                  "Pencil-$NEW_VERSION-mac-osx.zip"
-                 "Pencil-$NEW_VERSION.win32.installer.exe")
+                 "Pencil-$NEW_VERSION-win32.installer.exe")
 
     for f in ${BUILD_FILES[@]}; do
         echo "Uploading $f..."
