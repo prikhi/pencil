@@ -42,7 +42,7 @@ main() {
     git add ../CHANGELOG.md
 
     echo "Building packages..."
-    #./build.sh > /dev/null
+    ./build.sh > /dev/null
 
     echo "Updating ArchLinux PKGBUILD..."
     ARCH_PKGBUILD="./ArchLinux/PKGBUILD"
@@ -59,7 +59,7 @@ main() {
 
     echo "Tagging commit..."
     git tag -a -m "v$NEW_VERSION" "v$NEW_VERSION"
-    #
+
     echo "Pushing release branch and tag..."
     git push origin
     git push origin --tags
@@ -69,7 +69,7 @@ main() {
     # Create Github Release & Upload Packages
     BASE_CMD="curl -u $GITHUB_USER:$GITHUB_PASS "
 
-    echo -e "\nCreating draft Github release..."
+    echo -e "Creating draft Github release..."
     RELEASE_DESCRIPTION=`sed -n "/# v$NEW_VERSION/,/# v$VERSION/p" ../CHANGELOG.md | tail -n+3 | head -n-2`
     CREATE_PAYLOAD=`jshon -Q -n {} -s "$RELEASE_DESCRIPTION" -i body -s "v$NEW_VERSION" -i tag_name -s "v$NEW_VERSION" -i name -j`
     CREATE_CMD="$BASE_CMD -s $API_ENDPOINT/releases"
