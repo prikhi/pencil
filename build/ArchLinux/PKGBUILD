@@ -1,6 +1,6 @@
 # Maintainer: Pavan Rikhi <pavan.rikhi@gmail.com>
 pkgname=pencil
-pkgver=2.0.10
+pkgver=2.0.11
 pkgrel=1
 pkgdesc="Sketching and GUI prototyping/wireframing tool"
 arch=('any')
@@ -9,8 +9,10 @@ url="http://github.com/prikhi/pencil"
 install='pencil.install'
 
 source=("https://github.com/prikhi/pencil/releases/download/v$pkgver/Pencil-$pkgver-linux-pkg.tar.gz")
-sha256sums=('b5dcb12986108bf3eb13cdd1ee1fc1f8d1a88c7fadf2a5c44e7a59a254f2b0dd')
+sha256sums=('a35d1353de6665cbd4a5bd821dcdf7439f2a3c1fcbccee0f01ec8dd1bb67c4f3')
 depends=('xulrunner')
+optdepends=('pencil-android-lollipop-stencils-git: Android UI'
+            'pencil-material-icons-git: Material Design Icons')
 
 package() {
     cp -dr "$srcdir/evolus-pencil/usr" "$pkgdir"

@@ -2,6 +2,11 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.11
+
+* Add Support for Firefox/XULrunner v38.
+* Fix Linux Executable for Systems with Firefox and XULrunner.
+* Fix the OS X Build Script(#689).
 * Fix Firefox Extension's missing HTML/ODT/Print templates(#691).
 * Fix Linux executable for systems where `sh` is not `bash`(#688).
 * Fix Windows file asssociations(for real this time, #431).
