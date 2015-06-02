@@ -123,13 +123,32 @@ The output files will be put in `/docs/build/`.
 ## Contribute
 
 You don't have to be a programmer to contribute! All feature requests & bug
-reports are appreciated. You can also update or improve the docs, package
-Pencil for your Linux distribution, write some stencils, attempt to reproduce
-bug reports or just spread the word :)
+reports are appreciated. 
+
+### Users
+* File Bugs and Feature Requests. If you are unsure how to do this, read ["Writing Good Bug Reports"](http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html).
+* Reproduce Bugs – there are quite many which are not "confirmed". Try to reproduce the bug and state in a comment if you could reproduce it or not. State your operating system and Pencil version ([example bug](https://github.com/prikhi/pencil/issues/640)). 
+* Improve the [documentation](http://pencil-prototyping.readthedocs.org/en/latest/). The files are in the "docs" folder and written in [reStructuredText](http://docutils.sourceforge.net/docs/user/rst/quickref.html)
+* just spread the word :)
+
+### Technical
+* Package Pencil for your distribution or OS
+* Write Stencils, like described in the [docs](http://pencil-prototyping.readthedocs.org/en/latest/).
 
 ### Develop
+There are many bugs to fix – if you could tackle one or two that would be great! The most important bugs have the [critical](https://github.com/prikhi/pencil/labels/Priority-Critical) label; The "stars" are a heritage of the old google code repo: Many stars = many people interested in the bug (fix).
+
+Commenting uncommented code to ease the programming for others is also appreciated. 
+
+Begin your journey with the `MainWindow.xul`/ `MainWindow.js` which is the code that kicks of the application. 
 
 If you make changes that affect users, please update `CHANGELOG.md`.
+
+#### Hints
+
+Begin your journey with the `MainWindow.xul`/ `MainWindow.js` which is the code that kicks of the application. 
+
+For programming, you probably want to setup an [extension development environment](https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment). 
 
 If you set the `DEBUG` environmental variable, the `build.sh` script will
 enable debugging features like printing calls to `dump()` to the console or
