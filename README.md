@@ -139,11 +139,11 @@ reports are appreciated.
   written in [reStructuredText][rst-quickref].
 * Just spread the word :)
 
-### Technical
+### Technical Users
 * Package Pencil for your distribution or OS.
 * Create a Stencil Collection for your favorite UI framework or improve
   Pencil's default offering, as described in the
-  [Stencil Developer Documentation][docs].
+  [Stencil Developer Documentation][stencil-dev-docs].
 
 ### Developers
 There are many bugs to fix – if you could tackle one or two that would be
@@ -155,109 +155,10 @@ many people interested in the bug or feature. You can also check the
 Documenting undocumented code to ease the programming for others is also
 appreciated.
 
-You will probably want to setup an
-[extension development environment][extension-dev-env].
-
 If you make changes that affect users, please update `CHANGELOG.md`.
 
-#### Code Overview
-
-The application code lives under `app/content/pencil/`. `mainWindow.xul` &
-`common/pencil.js` are good places to start reading the code - they are
-responsible for initializing the application.
-
-`mainWindow.xul` is responsible for specifying the application's base UI,
-including keybindings, menus, toolbars, panes, etc. `mainWindow.js` contains
-mostly helper functions used in the `.xul` file, along with post-boot code like
-parsing command-line arguments & building the `Recent Documents` menu.
-
-`common/pencil.js` initializes a global `Pencil` object & sets up event
-listeners on boot-up. The `Pencil` object contains attributes linked to the
-application's Controller, Rasterizer, etc.
-
-`common/controller.js` is responsible for managing the `Document` & it's
-`Pages`. The `Controller` object contains methods for creating new
-Documents/Pages, saving/loading Documents & moving/removing/duplicating Pages.
-
-#### Debugging
-
-If you set the `DEBUG` environmental variable when building Pencil, the
-`build.sh` script will enable debugging features like printing calls to
-`dump()` to the console or `debug()` to the javascript console:
-```bash
-
-export DEBUG=true
-cd build
-./build.sh linux
-# If you've got XULRunner:
-xulrunner Outputs/Linux/application.ini -console -jsconsole -purgecaches
-# If you only have Firefox installed:
-firefox --app Outputs/Linux/application.ini -console -jsconsole -purgecaches
-```
-
-Setting `DEBUG` will cause also Pencil to start a remote debugging server on
-port `6000`. This lets you use Firefox's DOM Inspector to debug Pencil. You can
-connect Firefox to the debugging server by going to `Firefox -> Tools -> Web
-Developer -> Connect...`. You may need to enable Remote Debugging under
-Firefox's `Web Developer Tools` Settings(`Ctrl-Shift-I` then click the gear
-icon in the upper-right).
-
-#### The Build System
-
-The `build.sh` script is responsible for building everything. Each build is
-usually in two steps: copying & modifying files common to all builds then
-customizing those files for the specific build(by removing files, embedding
-xulrunner, creating the expected directory structure, etc.).
-
-The build script uses the `properties.sh` file to hold variables such as the
-current version & the minimum/maximum firefox/xulrunner versions. The script
-uses `replacer.sh` to replace all instances of `@VARIABLE@` with the value of
-`VARIABLE` in the file passed to it.
-
-If you add a variable to `properties.sh` you **must** modify the `replacer.sh`
-script to replace the variable. If you add a variable to a file, you **must**
-make sure that file is processed by `replacer.sh` at some point(usually in the
-`prep()` function).
-
-`replacer.sh` uses the `sed-debug-script` to remove all the text between
-`//DEBUG_BEGIN` and `//DEBUG_END`. This can be used to enable code only when
-building for development. If you add `//DEBUG_BEGIN` and `//DEBUG_END` to a
-file, make sure `build.sh` passes the file to `replacer.sh`(again, this usually
-happens in the `prep()` function).
-
-You can pass the `clean` argument to `build.sh` to remove all the outputs. You
-can use `maintainer-clean` to remove any XULRunner downloads as well.
-
-#### Creating a Release
-
-A `release.sh` script lives in the `build` directory to automate the creation
-of new releases. You will need `git`, `curl`, `sed` and `jshon`. Then you can
-just pass the new version number to the script:
-
-```bash
-cd build
-./release.sh 2.4.42
-```
-
-The script will create a new release branch, update version numbers and
-checksums, build the packages, commit/tag/push the release branch, create a new
-release on github and upload the packages. You will be prompted for your Github
-credentials.
-
-Once the script is complete, you will have to manually merge the release branch
-into the `master` and `develop` branches, then delete the release branch:
-
-```bash
-git checkout master
-git merge release-v2.4.42
-git push origin
-git checkout develop
-git merge release-v2.4.42
-git push origin
-
-git push origin :release-v2.4.42
-git branch -d release-v2.4.42
-```
+For lots more information on getting started developing on Pencil, check out
+the [Developer's Documentation][dev-docs].
 
 
 ## License
@@ -283,7 +184,8 @@ This fork is released under GPLv2 like it's parent codebase.
 [writing-bugs]: http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html
 [example-bug]: https://github.com/prikhi/pencil/issues/640
 [rst-quickref]: http://docutils.sourceforge.net/docs/user/rst/quickref.html
+[stencil-dev-docs]:
 
 [critical-issues]: https://github.com/prikhi/pencil/labels/Priority-Critical
 [milestones]: https://github.com/prikhi/pencil/milestones?state=open
-[extension-dev-env]: https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment
+[dev-docs]:

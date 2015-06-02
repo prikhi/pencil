@@ -1,5 +1,5 @@
-Introduction to Pencil Stencil
-==============================
+Introduction to Pencil Stencils
+===============================
 
 Overview
 --------
@@ -69,10 +69,10 @@ Depending on the type, a property value can be changed in a specific way that
 is easiest for the user.
 
 .. Note::
-    Pencil reserves the use of some special property names for
-    pre-defined purposes. Please refer the :doc:`/reference/specialnames`
-    document for detailed information on how these property names can be
-    used in your stencil.
+    Pencil reserves the use of some special property names for pre-defined
+    purposes. Please refer the :doc:`reference/specialnames` document for
+    detailed information on how these property names can be used in your
+    stencil.
 
     An example of this is that the ``box`` property of type
     :ref:`Dimension` should always be used to determined the dimension of

@@ -1,7 +1,7 @@
 {% extends "!page.html" %}
 
 {% block menu %}
-  {% set toctree = toctree(maxdepth=3, collapse=True, includehidden=True) %}
+  {% set toctree = toctree(maxdepth=4, collapse=True, includehidden=True) %}
   {% if toctree %}
     {{ toctree }}
   {% else %}

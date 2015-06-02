@@ -52,7 +52,7 @@ according to ``Property`` values).
 
 Each child node in ``<For></For>`` is a behavior that defines how content
 should be changed according to the properties. More details about can be found
-in the :doc:`/reference/behaviors`.
+in the :doc:`../reference/behaviors`.
 
 The ``$label`` variable used in the :ref:`TextContent` behavior demonstrates
 how properties can be referenced in the input arguments for behaviors.
