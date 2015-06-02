@@ -184,8 +184,8 @@ This fork is released under GPLv2 like it's parent codebase.
 [writing-bugs]: http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html
 [example-bug]: https://github.com/prikhi/pencil/issues/640
 [rst-quickref]: http://docutils.sourceforge.net/docs/user/rst/quickref.html
-[stencil-dev-docs]:
+[stencil-dev-docs]: https://pencil-prototyping.readthedocs.org/en/develop/stencil-dev/
 
 [critical-issues]: https://github.com/prikhi/pencil/labels/Priority-Critical
 [milestones]: https://github.com/prikhi/pencil/milestones?state=open
-[dev-docs]:
+[dev-docs]: https://pencil-prototyping.readthedocs.org/en/develop/developers/
