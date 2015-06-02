@@ -1,6 +1,6 @@
 # Pencil
 
-A GUI prototyping tool for GNU/Linux, Windows & Mac.
+A GUI prototyping tool for Firefox, GNU/Linux, OS X & Windows.
 
 ![Screenshot](http://i.imgur.com/DF715Nr.png)
 
@@ -123,36 +123,67 @@ The output files will be put in `/docs/build/`.
 ## Contribute
 
 You don't have to be a programmer to contribute! All feature requests & bug
-reports are appreciated. 
+reports are appreciated.
 
 ### Users
-* File Bugs and Feature Requests. If you are unsure how to do this, read ["Writing Good Bug Reports"](http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html).
-* Reproduce Bugs – there are quite many which are not "confirmed". Try to reproduce the bug and state in a comment if you could reproduce it or not. State your operating system and Pencil version ([example bug](https://github.com/prikhi/pencil/issues/640)). 
-* Improve the [documentation](http://pencil-prototyping.readthedocs.org/en/latest/). The files are in the "docs" folder and written in [reStructuredText](http://docutils.sourceforge.net/docs/user/rst/quickref.html)
-* just spread the word :)
+* File Bugs and Feature Requests. If you are unsure how to do this, read
+  ["Writing Good Bug Reports"][writing-bugs].
+* Reproduce Bugs – there are many issues which have not been confirmed since
+  they were migrated from the original project. Try to reproduce the bug and
+  state in a comment if you could reproduce it or not.  State your operating
+  system and Pencil version ([example bug][example-bug]).
+* Report Duplicate Bugs - lots of imported bugs are duplicates and simply add
+  noise to the issue tracker. If you notice a duplicate issue, please leave a
+  comment on the issue & mention the issue that you think it duplicates.
+* Improve the [Documentation][docs]. The files are in the `docs` folder and
+  written in [reStructuredText][rst-quickref].
+* Just spread the word :)
 
 ### Technical
-* Package Pencil for your distribution or OS
-* Write Stencils, like described in the [docs](http://pencil-prototyping.readthedocs.org/en/latest/).
+* Package Pencil for your distribution or OS.
+* Create a Stencil Collection for your favorite UI framework or improve
+  Pencil's default offering, as described in the
+  [Stencil Developer Documentation][docs].
 
-### Develop
-There are many bugs to fix – if you could tackle one or two that would be great! The most important bugs have the [critical](https://github.com/prikhi/pencil/labels/Priority-Critical) label; The "stars" are a heritage of the old google code repo: Many stars = many people interested in the bug (fix).
+### Developers
+There are many bugs to fix – if you could tackle one or two that would be
+great! The most important bugs have a [Critical label][critical-issues]. The
+`stars` labels are a heritage of the old google code repository: Many stars =
+many people interested in the bug or feature. You can also check the
+[Milestones][milestones] for issues to tackle.
 
-Commenting uncommented code to ease the programming for others is also appreciated. 
+Documenting undocumented code to ease the programming for others is also
+appreciated.
 
-Begin your journey with the `MainWindow.xul`/ `MainWindow.js` which is the code that kicks of the application. 
+You will probably want to setup an
+[extension development environment][extension-dev-env].
 
 If you make changes that affect users, please update `CHANGELOG.md`.
 
-#### Hints
+#### Code Overview
 
-Begin your journey with the `MainWindow.xul`/ `MainWindow.js` which is the code that kicks of the application. 
+The application code lives under `app/content/pencil/`. `mainWindow.xul` &
+`common/pencil.js` are good places to start reading the code - they are
+responsible for initializing the application.
 
-For programming, you probably want to setup an [extension development environment](https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment). 
+`mainWindow.xul` is responsible for specifying the application's base UI,
+including keybindings, menus, toolbars, panes, etc. `mainWindow.js` contains
+mostly helper functions used in the `.xul` file, along with post-boot code like
+parsing command-line arguments & building the `Recent Documents` menu.
 
-If you set the `DEBUG` environmental variable, the `build.sh` script will
-enable debugging features like printing calls to `dump()` to the console or
-`debug()` to the javascript console:
+`common/pencil.js` initializes a global `Pencil` object & sets up event
+listeners on boot-up. The `Pencil` object contains attributes linked to the
+application's Controller, Rasterizer, etc.
+
+`common/controller.js` is responsible for managing the `Document` & it's
+`Pages`. The `Controller` object contains methods for creating new
+Documents/Pages, saving/loading Documents & moving/removing/duplicating Pages.
+
+#### Debugging
+
+If you set the `DEBUG` environmental variable when building Pencil, the
+`build.sh` script will enable debugging features like printing calls to
+`dump()` to the console or `debug()` to the javascript console:
 ```bash
 
 export DEBUG=true
@@ -248,3 +279,11 @@ This fork is released under GPLv2 like it's parent codebase.
 [lollipop-collection]: https://github.com/nathanielw/Android-Lollipop-Pencil-Stencils
 [material-collection]: https://github.com/nathanielw/Material-Icons-for-Pencil
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
+
+[writing-bugs]: http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html
+[example-bug]: https://github.com/prikhi/pencil/issues/640
+[rst-quickref]: http://docutils.sourceforge.net/docs/user/rst/quickref.html
+
+[critical-issues]: https://github.com/prikhi/pencil/labels/Priority-Critical
+[milestones]: https://github.com/prikhi/pencil/milestones?state=open
+[extension-dev-env]: https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment
