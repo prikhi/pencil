@@ -26,7 +26,7 @@ main() {
     # Update Code
     echo "Checking out a release branch..."
     RELEASE_BRANCH="release-v$NEW_VERSION"
-    git checkout develop -b $RELEASE_BRANCH
+    git checkout develop -b $RELEASE_BRANCH || git checkout $RELEASE_BRANCH
 
     echo "Switching version numbers..."
     VERSION_FILES=("../docs/source/conf.py"
