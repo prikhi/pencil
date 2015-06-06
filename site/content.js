@@ -94,7 +94,7 @@ define(function() {
     // General Project Information
     projectName: "Pencil",
     tagLine: "An Open Source GUI Prototyping Tool Available for All Platforms.",
-    mainScreenshot: "/site/img/home-ss.jpg",
+    mainScreenshot: "./site/img/home-ss.jpg",
     shortDescription:
       "Pencil was created for the purpose of providing a free and open source " +
       "GUI prototyping & wireframing tool that people can easily install and " +
