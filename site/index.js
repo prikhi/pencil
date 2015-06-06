@@ -66,7 +66,7 @@ bs.jumbotron = function(state) {
     ]);
 };
 
-/* Create rows of features rendered in thumbnails */
+/* Create rows of features with the text & screenshot side-by-side  */
 bs.featureRows = function(features) {
   var cols =  features.map(function(feature) {
     return [
@@ -109,11 +109,6 @@ bs.downloadLink = function(linkLocation, systemName) {
 /* Create a Responsive Image */
 bs.responsiveImage = function(altText, imgLocation) {
   return h('img.img-responsive', {alt: altText, src: imgLocation});
-};
-
-/* Create a Thumbnail with custom content */
-bs.thumbnail = function(image, captionElements) {
-  return h('div.thumbnail', [image, h('div.caption', captionElements)]);
 };
 
 /* Split a string at newlines and turn each part into a <p> element */
