@@ -1,3 +1,7 @@
+/*
+Initializes a global Pencil object & sets up event listeners on boot-up.
+The Pencil object contains attributes linked to the application’s Controller, Rasterizer, etc.
+*/
 
 window.onerror = function (message, url, code) {
     //Console.dumpError(message);
@@ -259,6 +263,10 @@ Pencil.getCanvasList = function () {
     return r;
 };
 Pencil.setupCommands = function () {
+    /*
+    Activates/Deactivates commands via _enableCommand by passing an id-string (For id of  <command> XUL-Elements  in mainWindow.xul) and a boolean condition (could be a boolean value, an expression which evaluates to boolean or a function which returns a boolean)
+    */
+
     var canvas = Pencil.activeCanvas;
     var target = canvas ? canvas.currentController : null;
 
@@ -440,7 +448,7 @@ Pencil.handlePropertiesCommand = function () {
         if (!Pencil.controller._pageToEdit) {
             Pencil.controller._pageToEdit = Pencil.controller.getCurrentPage();
         }
-        
+
         Pencil.controller.editPageProperties(Pencil.controller._pageToEdit);
         Pencil.controller._pageToEdit = null;
     }
