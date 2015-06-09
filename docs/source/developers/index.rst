@@ -7,6 +7,8 @@ code to Pencil.
 If you'll be testing & debugging using Firefox, you will probably want to start
 off by setting up an `extension development environment`_.
 
+.. _extension development environment: https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment
+
 
 Code Overview
 -------------
@@ -40,6 +42,20 @@ clipboard to getting a file's extension from it's path.
 
 ``bindings/`` contains components like the color picker & font editor.
 ``stencils/`` contains the default Stencil Collections bundled with Pencil.
+
+
+Code Style
+----------
+
+Some things to keep in mind:
+
+* Wrap lines longer than ~80 characters
+* Indent using 4 spaces, never use tabs
+* Always use the strict equality operators ``===`` and ``!==``.
+* Run `jshint`_ on the changed files(this might generate a lot of errors on
+  some files).
+
+.. _jshint: http://jshint.com/
 
 
 Debugging
@@ -92,5 +108,3 @@ this usually happens in the ``prep()`` function).
 You can pass the ``clean`` argument to ``build.sh`` to remove all the outputs.
 You can use ``maintainer-clean`` to remove any XULRunner downloads as well.
 
-
-.. _extension development environment: https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment
