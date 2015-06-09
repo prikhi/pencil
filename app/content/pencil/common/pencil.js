@@ -1,6 +1,8 @@
 /*
 Initializes a global Pencil object & sets up event listeners on boot-up.
-The Pencil object contains attributes linked to the application’s Controller, Rasterizer, etc.
+
+The Pencil object contains attributes linked to the application’s Controller,
+Rasterizer, etc.
 */
 
 window.onerror = function (message, url, code) {

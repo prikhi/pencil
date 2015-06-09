@@ -1,5 +1,8 @@
 /*
-Is responsible for managing the Document & its Pages. The Controller object contains methods for creating new Documents/Pages, saving/loading Documents & moving/removing/duplicating Pages.
+Is responsible for managing the Document & its Pages.
+
+The Controller object contains methods for creating new Documents/Pages,
+saving/loading Documents & moving/removing/duplicating Pages.
 */
 
 function Controller(win) {
