@@ -1,5 +1,10 @@
-/*
-Loading and unloading Stencil Collections
+/*"""
+CollectionManager
+=================
+
+.. class:: CollectionManager
+
+    A namespace responsible for loading and unloading Stencil Collections.
 */
 
 

@@ -1,8 +1,7 @@
-/*
-Initializes a global Pencil object & sets up event listeners on boot-up.
-
-The Pencil object contains attributes linked to the application’s Controller,
-Rasterizer, etc.
+/*"""
+Pencil
+======
+Initializes a global Pencil namespace & sets up event listeners on boot.
 */
 
 window.onerror = function (message, url, code) {
@@ -12,6 +11,16 @@ window.onerror = function (message, url, code) {
     return false;
 };
 
+/*"""
+.. class:: Pencil
+
+    The Pencil namespace contains attributes linked to the application’s
+    Controller, Rasterizer, etc. as well as various helper functions.
+
+    .. attribute:: Pencil.controller
+
+      A :class:`Controller` initialized from the XUL window.
+*/
 var Pencil = {};
 
 pencilSandbox.Pencil = Pencil;
@@ -42,6 +51,13 @@ Pencil.registerDocumentExporter = function (exporter, defaultExporter) {
     if (defaultExporter) Pencil.defaultDocumentExporter = exporter;
 };
 Pencil.getDocumentExporterById = function (id) {
+  /*"""
+   .. function:: Pencil.getDocumentExporterById(id)
+
+      :param id: The id of a DocumentExporter.
+      :returns: The requested DocumentExporter or ``null`` if a matching
+                DocumentExporter cannot be found.
+  */
     for (var i = 0; i < Pencil.documentExporters.length; i ++) {
         if (Pencil.documentExporters[i].id == id) {
             return Pencil.documentExporters[i];
@@ -265,8 +281,16 @@ Pencil.getCanvasList = function () {
     return r;
 };
 Pencil.setupCommands = function () {
-    /*
-    Activates/Deactivates commands via _enableCommand by passing an id-string (For id of  <command> XUL-Elements  in mainWindow.xul) and a boolean condition (could be a boolean value, an expression which evaluates to boolean or a function which returns a boolean)
+    /*"""
+     .. function:: Pencil.setupCommands()
+
+         Activates & deactivates commands via the :func:`Pencil._enableCommand`
+         function along with the ids of the ``<command>`` XUL Elements from
+         ``mainWindow.xul``.
+
+         Whether a command is activated or deactivated depends on the state of
+         the application(if a document has been created, if there is an active
+         ``canvas`` element, etc.)
     */
 
     var canvas = Pencil.activeCanvas;
@@ -337,6 +361,13 @@ Pencil._setupUndoRedoCommand = function () {
     }
 };
 Pencil._enableCommand = function (name, condition) {
+    /*"""
+     .. function:: Pencil._enableCommand(name, condition)
+
+         :param string name: An ``id`` of a ``<command>`` XUL Element.
+         :param boolean condition: Determines whether the command is activated
+             or deactivated. A value of ``true`` activates the command.
+    */
     var command = document.getElementById(name);
     if (command) {
         if (condition) {

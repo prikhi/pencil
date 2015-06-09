@@ -32,7 +32,7 @@ on_readthedocs = os.environ.get("READTHEDOCS", None) == 'True'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.todo',
+    'sphinx.ext.todo', 'sphinxcontrib.autoanysrc',
 ]
 
 todo_include_todos = True

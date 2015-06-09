@@ -105,8 +105,8 @@ version in `Outputs/`.
 
 ### Documentation
 
-To build the docs locally you'll need [`Sphinx`][sphinx-doc] and the
-`sphinx_rtd_theme`, which are easily installable using `pip`:
+To build the docs locally you'll need [`Sphinx`][sphinx-doc] along with some
+plugins, which are easily installable using Python's [pip][pip] installer:
 
 
 ```bash
@@ -185,6 +185,7 @@ This fork is released under GPLv2 like it's parent codebase.
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
 
 [sphinx-doc]: http://sphinx-doc.org/
+[pip]: https://pip.pypa.io/
 [writing-bugs]: http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html
 [example-bug]: https://github.com/prikhi/pencil/issues/640
 [rst-quickref]: http://docutils.sourceforge.net/docs/user/rst/quickref.html

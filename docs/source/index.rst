@@ -12,6 +12,7 @@ adding user documentation.
 
    stencil-dev/index
    developers/index
+   developers/api
    maintainers/index
 
 

@@ -1,11 +1,24 @@
-/*
-Is responsible for managing the Document & its Pages.
+/*"""
+Controller
+==========
 
-The Controller object contains methods for creating new Documents/Pages,
-saving/loading Documents & moving/removing/duplicating Pages.
+The :class:`Controller` is responsible for managing the Document &
+its Pages. It is usually accesed via the global :data:`Pencil` object.
 */
 
 function Controller(win) {
+  /*"""
+    .. class:: Controller(win)
+
+        :param win: The window the controller should manipulate.
+
+        .. attribute:: Controller.mainView
+
+            The Element containing the application's main display window.
+
+        The Controller object contains methods for creating new Documents/Pages,
+        saving/loading Documents & moving/removing/duplicating Pages.
+   */
     this.window = win;
     this.doc = null;
     this.modified = false;
