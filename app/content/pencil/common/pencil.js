@@ -264,7 +264,8 @@ Pencil.invalidateSharedEditor = function() {
 Pencil.setPainterCommandChecked = function (v) {
     /*
     Checks if the format painter tool (used for copying formats of stencils on canvas) 
-    is active. 
+    is active; Removes the painter class from all canvas ("pages" in the GUI) if the
+    painter tool is inactive. 
     
     Called on click on stencils on canvas. 
     */
