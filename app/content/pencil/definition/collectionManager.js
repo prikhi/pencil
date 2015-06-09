@@ -1,3 +1,8 @@
+/*
+Loading and unloading Stencil Collections
+*/
+
+
 var ios = Components.classes["@mozilla.org/network/io-service;1"]
                     .getService(Components.interfaces.nsIIOService);
 
@@ -61,17 +66,17 @@ CollectionManager._loadDeveloperStencil = function () {
 			var file = Components.classes["@mozilla.org/file/local;1"].
 		    createInstance(Components.interfaces.nsILocalFile);
 			file.initWithPath(path);
-			
+
 			if (!file.exists()) return;
-			
+
 			var parser = new ShapeDefCollectionParser();
 			CollectionManager._loadStencil(file, parser, "isSystem");
 		}
-		
+
 	} catch (e) {
         Util.error("Failed to load developer stencil", ex.message + "\n" + definitionFile.path, Util.getMessage("button.cancel.close"));
 	}
-	
+
 	try {
 		var path = Config.get("dev.stencil.dir", "null");
 		if (!path || path == "none" || path == "null") {
@@ -80,9 +85,9 @@ CollectionManager._loadDeveloperStencil = function () {
 			var file = Components.classes["@mozilla.org/file/local;1"].
 		    createInstance(Components.interfaces.nsILocalFile);
 			file.initWithPath(path);
-			
+
 			if (!file.exists()) return;
-			
+
 			CollectionManager._loadUserDefinedStencilsIn(file, null, "isSystem");
 		}
 	} catch (e) {
@@ -122,7 +127,7 @@ CollectionManager._loadUserDefinedStencilsIn = function (stencilDir, excluded, i
             if (excluded && excluded.indexOf(definitionFile.leafName) >= 0) {
                 continue;
             }
-            
+
             CollectionManager._loadStencil(definitionFile, parser, isSystem ? true : false);
         }
     } catch (e) {
@@ -144,7 +149,7 @@ CollectionManager.loadStencils = function() {
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Gtk.GUI/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/WindowsXP-GUI/Definition.xml"));
     CollectionManager.addShapeDefCollection(parser.parseURL("chrome://pencil/content/stencil/Native.GUI/Definition.xml"));
-        
+
     if (navigator.userAgent.indexOf("Firefox") < 0) {
         CollectionManager._loadUserDefinedStencilsIn(CollectionManager.getSpecialDirs("CurProcD", "content/pencil/stencil"),
         "Common, Annotation, BasicWebElements, SketchyGUI, Gtk.GUI, WindowsXP-GUI, Native.GUI", "isSystem");
@@ -158,7 +163,7 @@ CollectionManager.loadStencils = function() {
     	return a.displayName > b.displayName ? 1 : (a.displayName < b.displayName ? -1 : 0);
     });
     CollectionManager._loadDeveloperStencil();
-    
+
     PrivateCollectionManager.loadPrivateCollections();
 
     Pencil.collectionPane.reloadCollections();
