@@ -31,9 +31,9 @@ Additional collections are available on the
 
 ## Prerequisites
 
-You will need version 36 or higher of `firefox` to run Pencil as a Firefox
+You will need version 36 or higher of [`firefox`](https://www.mozilla.org/firefox/) to run Pencil as a Firefox
 Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
-`xulrunner`. The Windows installer and OS X archive has everything you need
+[`xulrunner`](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/XULRunner). The Windows installer and OS X archive has everything you need
 built-in.
 
 
@@ -105,11 +105,11 @@ version in `Outputs/`.
 
 ### Documentation
 
-To build the docs locally you'll need `Sphinx` and the `sphinx_rtd_theme`,
+To build the docs locally you'll need [`Sphinx`](http://sphinx-doc.org/) and the `sphinx_rtd_theme`,
 which are easily installable using `pip`:
 
-```bash
 
+```bash
 cd docs/
 sudo pip install -r requirements.txt
 make html
@@ -126,34 +126,32 @@ You don't have to be a programmer to contribute! All feature requests & bug
 reports are appreciated.
 
 ### Users
-* File Bugs and Feature Requests. If you are unsure how to do this, read
+* **File Bugs** and Feature Requests. If you are unsure how to do this, read
   ["Writing Good Bug Reports"][writing-bugs].
-* Reproduce Bugs – there are many issues which have not been confirmed since
+* **Reproduce Bugs** – there are many issues which have not been confirmed since
   they were migrated from the original project. Try to reproduce the bug and
   state in a comment if you could reproduce it or not.  State your operating
   system and Pencil version ([example bug][example-bug]).
-* Report Duplicate Bugs - lots of imported bugs are duplicates and simply add
+* **Report Duplicate Bugs** - lots of imported bugs are duplicates and simply add
   noise to the issue tracker. If you notice a duplicate issue, please leave a
   comment on the issue & mention the issue that you think it duplicates.
-* Improve the [Documentation][docs]. The files are in the `docs` folder and
+* **Improve the [Documentation][docs]**. The files are in the `docs` folder and
   written in [reStructuredText][rst-quickref].
-* Just spread the word :)
+* **Just spread the word** :)
 
 ### Technical Users
-* Package Pencil for your distribution or OS.
-* Create a Stencil Collection for your favorite UI framework or improve
+* **Package Pencil** for your distribution or OS.
+* **Create a Stencil** Collection for your favorite UI framework or improve
   Pencil's default offering, as described in the
   [Stencil Developer Documentation][stencil-dev-docs].
 
 ### Developers
-There are many bugs to fix – if you could tackle one or two that would be
+* **There are many bugs to fix** – if you could tackle one or two that would be
 great! The most important bugs have a [Critical label][critical-issues]. The
 `stars` labels are a heritage of the old google code repository: Many stars =
 many people interested in the bug or feature. You can also check the
 [Milestones][milestones] for issues to tackle.
-
-Documenting undocumented code to ease the programming for others is also
-appreciated.
+* **Commenting and documenting** code to ease the programming for others – most of it is currently without comments and having them would help much. 
 
 If you make changes that affect users, please update `CHANGELOG.md`.
 
