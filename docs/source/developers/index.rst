@@ -16,7 +16,8 @@ The application code lives under ``app/content/pencil/``. ``mainWindow.xul`` &
 responsible for initializing the application.
 
 ``mainWindow.xul`` is responsible for specifying the application's base UI,
-including keybindings, menus, toolbars, panes, etc. ``mainWindow.js`` contains
+including keybindings, menus, toolbars, panes, and for including
+the application's JavaScript-Files.  ``mainWindow.js`` contains
 mostly helper functions used in the ``.xul`` file, along with post-boot code
 like parsing command-line arguments & building the ``Recent Documents`` menu.
 
