@@ -262,6 +262,12 @@ Pencil.invalidateSharedEditor = function() {
     }
 };
 Pencil.setPainterCommandChecked = function (v) {
+    /*
+    Checks if the format painter tool (used for copying formats of stencils on canvas) 
+    is active. 
+    
+    Called on click on stencils on canvas. 
+    */
     var painterCommand = document.getElementById("toolbarFormatPainterCommand");
     if (painterCommand) {
         painterCommand.checked = v;
