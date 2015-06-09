@@ -11,7 +11,12 @@ off by setting up an `extension development environment`_.
 Code Overview
 -------------
 
-The application code lives under ``app/content/pencil/``. ``mainWindow.xul`` &
+The application code lives under ``app/content/pencil/``. 
+
+Many of the files directly under ``app/content/pencil/`` are pairs of UI definitions and their JavaScript files (e.g. "exportWizard.xul" and "exportWizard.js")
+
+
+``mainWindow.xul`` &
 ``common/pencil.js`` are good places to start reading the code - they are
 responsible for initializing the application.
 
