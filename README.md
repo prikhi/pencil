@@ -2,7 +2,7 @@
 
 A GUI prototyping tool for Firefox, GNU/Linux, OS X & Windows.
 
-![Screenshot](http://i.imgur.com/DF715Nr.png)
+![Screenshot][screenshot]
 
 ### Status
 
@@ -31,10 +31,10 @@ Additional collections are available on the
 
 ## Prerequisites
 
-You will need version 36 or higher of [`firefox`](https://www.mozilla.org/firefox/) to run Pencil as a Firefox
-Extension. Linux users will need version 36 of either `firefox`, `iceweasel` or
-[`xulrunner`](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/XULRunner). The Windows installer and OS X archive has everything you need
-built-in.
+You will need version 36 or higher of [`firefox`][firefox] to run Pencil as a
+Firefox Extension. Linux users will need version 36 of either `firefox`,
+`iceweasel` or [`xulrunner`][xulrunner]. The Windows installer and OS X archive
+has everything you need built-in.
 
 
 ## Install
@@ -105,8 +105,8 @@ version in `Outputs/`.
 
 ### Documentation
 
-To build the docs locally you'll need [`Sphinx`](http://sphinx-doc.org/) and the `sphinx_rtd_theme`,
-which are easily installable using `pip`:
+To build the docs locally you'll need [`Sphinx`][sphinx-doc] and the
+`sphinx_rtd_theme`, which are easily installable using `pip`:
 
 
 ```bash
@@ -151,7 +151,8 @@ great! The most important bugs have a [Critical label][critical-issues]. The
 `stars` labels are a heritage of the old google code repository: Many stars =
 many people interested in the bug or feature. You can also check the
 [Milestones][milestones] for issues to tackle.
-* **Commenting and documenting** code to ease the programming for others – most of it is currently without comments and having them would help much. 
+* **Commenting and documenting** code to ease the programming for others – most
+  of it is currently without comments and having them would help much.
 
 If you make changes that affect users, please update `CHANGELOG.md`.
 
@@ -164,11 +165,15 @@ the [Developer's Documentation][dev-docs].
 This fork is released under GPLv2 like it's parent codebase.
 
 
+[screenshot]: http://i.imgur.com/DF715Nr.png
 [docs]: http://pencil-prototyping.rtfd.org/
 [google-group]: https://groups.google.com/forum/#!forum/pencil-user
 [evolus-page]: http://pencil.evolus.vn/
 [evolus-repo]: https://code.google.com/p/evoluspencil/
 [evolus-stencil-downloads]: https://code.google.com/p/evoluspencil/downloads/list?q=label:Stencil
+
+[firefox]: https://www.mozilla.org/firefox/
+[xulrunner]: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/XULRunner
 
 [releases]: https://github.com/prikhi/pencil/releases
 [aur-pkg]: https://aur.archlinux.org/packages/pencil/
@@ -179,6 +184,7 @@ This fork is released under GPLv2 like it's parent codebase.
 [material-collection]: https://github.com/nathanielw/Material-Icons-for-Pencil
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
 
+[sphinx-doc]: http://sphinx-doc.org/
 [writing-bugs]: http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html
 [example-bug]: https://github.com/prikhi/pencil/issues/640
 [rst-quickref]: http://docutils.sourceforge.net/docs/user/rst/quickref.html
