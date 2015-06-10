@@ -262,13 +262,19 @@ Pencil.invalidateSharedEditor = function() {
     }
 };
 Pencil.setPainterCommandChecked = function (v) {
-    /*
-    Checks if the format painter tool (used for copying formats of stencils on canvas) 
-    is active; Removes the painter class from all canvas ("pages" in the GUI) if the
-    painter tool is inactive. 
+    /*"""
+    .. function:: Pencil.setPainterCommandChecked(id)
     
-    Called on click on stencils on canvas. 
+    :param v: boolean; currently only as false; determines state of the format painter function.
+    :returns: undefined
+    
+    Side Effect: If passed value v is false, it deactivates the format painter tool (used for copying formats 
+    of stencils on canvas) 
+    Side Effect: If passed value v is false, it removes the painter class from all canvas ("pages" in the GUI) if passed value v is false. 
+    
+    Called on click on stencils on canvas or if the toolbarFormatPainterCommand button is clicked. 
     */
+
     var painterCommand = document.getElementById("toolbarFormatPainterCommand");
     if (painterCommand) {
         painterCommand.checked = v;
