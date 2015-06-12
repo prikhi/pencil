@@ -289,7 +289,7 @@ Pencil.setupCommands = function () {
          ``mainWindow.xul``.
          
          Called e.g. if an element is selected in order to provide applicable commands. 
-.........
+         
          Whether a command is activated or deactivated depends on the state of
          the application(if a document has been created, if there is an active
          ``canvas`` element, etc.) and the active element (e.g. a selected stencil)
