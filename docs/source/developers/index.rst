@@ -121,13 +121,16 @@ comment to the :doc:`api` page. For example:
     }
     SomeClass.prototype.someFunction = function() {
         /*"""
-        .. function:: someFunction(void) {
+         .. function:: someFunction(void) {
 
-            :returns: something
+             :returns: something
         */
         return this.arg;
         }
     }
+
+Note that the dots for the ``function`` annotation should be indented by one
+space, so they line up with the ``*`` of the ``/*``.
 
 .. _Sphinx: http://sphinx-doc.org/
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
