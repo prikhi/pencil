@@ -13,7 +13,7 @@ for BIN in $BINARIES; do
     BIN_PATH=$(which ${BIN} 2>/dev/null)
 
     if [ "$?" == "0" ]; then
-        OPTS="${APP_INI}" "$@"
+        OPTS="${APP_INI} $@"
 
         if [ "${BIN}" != "xulrunner" ]; then
             OPTS="--app ${OPTS}"
