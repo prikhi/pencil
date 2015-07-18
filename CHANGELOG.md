@@ -2,7 +2,14 @@ This file describes all user-facing changes, by version.
 
 # develop
 
-* Fix resizing a shape vertically causing it to resize and snap to the grid horizontally as well (#720).
+* Fix loading .ep files with non-xulrunner binaries(#724).
+* Correctly specify `multi-layer SVG` instead of `multi-page SVG` in the
+  warning text for SVG exports(#719).
+* Fix SVG exports so they use the height and width of the first page instead of
+  constants. It is recommended to only use SVG exports for Pencil Documents
+  with only one Page(#538).
+* Fix resizing a shape vertically causing it to resize and snap to the grid
+  horizontally as well (#720).
 
 # v2.0.11
 
