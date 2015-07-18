@@ -40,7 +40,9 @@
     <xsl:output method="xml"/>
 
     <xsl:template match="/">
-        <svg width="744.09448819" height="1052.3622047"
+        <!-- Use the dimensions of the first page! -->
+        <svg width="{/p:Document/p:Pages/p:Page/p:Properties/p:Property[@name='width']/text()}" 
+            height="{/p:Document/p:Pages/p:Page/p:Properties/p:Property[@name='height']/text()}"
             id="exportedSVG"
             version="1.1"
             pencil:version="1.2.2"
@@ -51,6 +53,9 @@
         </svg>
     </xsl:template>
     <xsl:template match="p:Page">
+        <!-- Multiple pages in the ep file end up as inkscape layers. 
+        The SVG standard does not support pages nor layers. 
+        All pages/layers are shown in a browser, if the background is transparant! -->
         <g inkscape:label="{p:Properties/p:Property[@name='name']/text()}"
            inkscape:groupmode="layer" id="layer_{p:Properties/p:Property[@name='fid']/text()}">
             <g>
