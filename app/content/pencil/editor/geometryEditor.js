@@ -261,7 +261,7 @@ GeometryEditor.prototype.handleMouseDown = function (event) {
     this._minY2 = r == 0 ? minY2 : (minY2 + grid.y - r);
 
     this._minDim = minDim;
-    
+
     try {
         var guides = this.canvas.currentController.getSnappingGuide();
         this._lastGuides = {
@@ -270,8 +270,8 @@ GeometryEditor.prototype.handleMouseDown = function (event) {
             bottom: null,
             right: null
         };
-        
-        
+
+
         for (var i = 0; i < guides.vertical.length; i ++) {
             var guide = guides.vertical[i];
             debug([guide.type, guide.pos]);
@@ -390,15 +390,17 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
 
     var controller = this.canvas.currentController;
     var bound = controller.getBounding();
-    
-    //HORIZONTAL
-    if (!locking.width) {
+
+    // Any resize that alters the width
+    if (!locking.width && (matrix.dw != 0 || matrix.dx != 0)) {
         dx = matrix.dx * mdx;
         dw = matrix.dw * mdx;
         //console.log([dx, dw]);
 
         //console.log(["before:  ", dx, dw]);
         if (matrix.dx != 0) {
+            // The resize requires the object to be shifted horizontally
+
             var newX = e + dx;
             var newXNormalized = locking.ratio ? newX : Util.gridNormalize(newX, grid.w);
             if (newXNormalized > this._maxX1) newXNormalized = this._maxX1;
@@ -433,6 +435,8 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
             dw -= delta;
             //console.log(["<--", e, newX, newXNormalized, delta, dx, dw]);
         } else {
+            // The resize doesn't shift the object's origin
+            
             var newX2 = e + this._w + dw;
             var newX2Normalized = locking.ratio ? newX2 : Util.gridNormalize(newX2, grid.w);
             if (newX2Normalized < this._minX2) newX2Normalized = this._minX2;
@@ -472,9 +476,13 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
         dy = Math.round(dx * this._minDim.h / this._minDim.w);
         dh = Math.round(dw * this._minDim.h / this._minDim.w);
     } else if (!locking.height && (matrix.dh != 0) ) {
+        // The resize changes the object's height
+
         dy = matrix.dy * mdy;
         dh = matrix.dh * mdy;
 
+        // Cases where the resizing requires the entire object to be moved
+        // vertically (i.e. the top handled have been used)
         if (matrix.dy != 0) {
             var newY = f + dy;
             var newYNormalized = locking.ratio ? newY : Util.gridNormalize(newY, grid.h);
@@ -554,7 +562,7 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
     //this.currentAnchor = null;
 
     newGeo.ctm = this.oGeo.ctm.translate(dx, dy);
-    
+
     if (locking.ratio && !locking.width && !locking.height) {
     	var r = this.oGeo.dim.w / this.oGeo.dim.h;
     	var w = 0, h = 0;
@@ -565,7 +573,7 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
     		h = this.oGeo.dim.h + dh;
     		w = h * r;
     	}
-    	
+
     	w = Math.round(w);
     	h = Math.round(h);
         newGeo.dim = new Dimension(w, h);
@@ -574,8 +582,8 @@ GeometryEditor.prototype.handleMouseMove = function (event) {
     } else {
         newGeo.dim = new Dimension(Math.round(this.oGeo.dim.w + dw), Math.round(this.oGeo.dim.h + dh));
     }
-    
-    
+
+
 
     var p = Svg.vectorInCTM(new Point(dx, dy), this.geo.ctm.inverse(), true);
     this.adx = p.x;
@@ -775,4 +783,3 @@ GeometryEditor.prototype.validateGeometry = function (geo, matrix, locking) {
 };
 
 Pencil.registerEditor(GeometryEditor);
-

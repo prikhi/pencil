@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Fix resizing a shape vertically causing it to resize and snap to the grid horizontally as well (#720).
+
 # v2.0.11
 
 * Add Support for Firefox/XULrunner v38.
