@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.12
+
 * Add Support for Firefox/XULrunner v39.
 * Fix loading .ep files with non-xulrunner binaries(#724).
 * Correctly specify `multi-layer SVG` instead of `multi-page SVG` in the

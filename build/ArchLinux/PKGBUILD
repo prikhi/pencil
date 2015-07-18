@@ -1,6 +1,6 @@
 # Maintainer: Pavan Rikhi <pavan.rikhi@gmail.com>
 pkgname=pencil
-pkgver=2.0.11
+pkgver=2.0.12
 pkgrel=1
 pkgdesc="Sketching and GUI prototyping/wireframing tool"
 arch=('any')
@@ -9,7 +9,7 @@ url="http://github.com/prikhi/pencil"
 install='pencil.install'
 
 source=("https://github.com/prikhi/pencil/releases/download/v$pkgver/Pencil-$pkgver-linux-pkg.tar.gz")
-sha256sums=('a35d1353de6665cbd4a5bd821dcdf7439f2a3c1fcbccee0f01ec8dd1bb67c4f3')
+sha256sums=('6f4cc1808faec42bd791e6d809131380b04a11d41db2fd9af83b115ae40a7165')
 depends=('xulrunner')
 optdepends=('pencil-android-lollipop-stencils-git: Android UI'
             'pencil-material-icons-git: Material Design Icons')
