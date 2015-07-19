@@ -131,7 +131,8 @@ comment to the :doc:`api` page. For example:
     }
 
 Note that the dots for the ``function`` annotation should be indented by one
-space, so they line up with the ``*`` of the ``/*``.
+space, so they line up with the ``*`` of the ``/*``. This will create the
+proper nesting in the final documentation.
 
 .. _Sphinx: http://sphinx-doc.org/
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
@@ -167,4 +168,3 @@ this usually happens in the ``prep()`` function).
 
 You can pass the ``clean`` argument to ``build.sh`` to remove all the outputs.
 You can use ``maintainer-clean`` to remove any XULRunner downloads as well.
-
