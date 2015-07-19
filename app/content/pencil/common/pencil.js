@@ -117,7 +117,9 @@ Pencil.boot = function (event) {
             DebuggerServer.init();
             DebuggerServer.addBrowserActors(windowtype);
         }
-        DebuggerServer.openListener(6000);
+        var listener = DebuggerServer.createListener();
+        listener.portOrPath = 6000;
+        listener.open()
         //DEBUG_END
 
         if (window.arguments) {

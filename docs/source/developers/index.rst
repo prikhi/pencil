@@ -76,11 +76,12 @@ If you set the ``DEBUG`` environmental variable when building Pencil, the
     firefox --app Outputs/Linux/application.ini -console -jsconsole -purgecaches
 
 Setting ``DEBUG`` will cause also Pencil to start a remote debugging server on
-port ``6000``. This lets you use Firefox's DOM Inspector to debug Pencil. You
-can connect Firefox to the debugging server by going to ``Firefox -> Tools ->
-Web Developer -> Connect...``. You may need to enable Remote Debugging under
-Firefox's ``Web Developer Tools`` Settings(``Ctrl-Shift-I`` then click the gear
-icon in the upper-right).
+port ``6000``. This lets you use Firefox's DOM Inspector to debug Pencil - but
+only when you run Pencil using ``xulrunner``. You can connect Firefox to the
+debugging server by going to ``Firefox -> Tools -> Web Developer ->
+Connect...``. You may need to enable Remote Debugging under Firefox's ``Web
+Developer Tools`` Settings(``Ctrl-Shift-I`` then click the gear icon in the
+upper-right).
 
 
 Writing Documentation
