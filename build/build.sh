@@ -244,9 +244,10 @@ mac() {
 
 
 ubuntu() {
-    PKG="pencil-${VERSION}"
+    PKG="pencil_${VERSION}"
     DIR_TARGET="./Outputs/Ubuntu"
     DIR_BASE="${DIR_TARGET}/${PKG}"
+    DIR_DEB="${DIR_BASE}/DEBIAN"
 
     echo "---------------------------------------------"
     echo "* Building Ubuntu amd 64                    *"
@@ -254,17 +255,38 @@ ubuntu() {
 
     rm -Rf ${DIR_TARGET}
 
-    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_BASE}/usr/share/applications"
-    run_task cp ./Linux/pencil ${DIR_BASE}/usr/bin/pencil
-    run_task cp ./Linux/pencil.desktop ${DIR_BASE}/usr/share/applications/pencil.desktop
-    run_task cp -r ./Outputs/Pencil ${DIR_BASE}/usr/share/pencil
-    run_task cp ./Ubuntu/deb ${DIR_BASE}/deb
+    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_BASE}/usr/share/applications" "${DIR_BASE}/usr/share/doc/pencil"
+    run_task cp ./Linux/pencil "${DIR_BASE}/usr/bin/pencil"
+    run_task cp ./Linux/pencil.desktop "${DIR_BASE}/usr/share/applications/pencil.desktop"
+    run_task cp -r ./Outputs/Pencil "${DIR_BASE}/usr/share/pencil"
+    run_task mkdir -p "${DIR_DEB}"
 
-    run_task cp ./Ubuntu/control ${DIR_BASE}/control
-    run_task cp ./Ubuntu/rules ${DIR_BASE}/rules
-    run_task cd ${DIR_BASE}
+    old_ifs="${IFS}"
+    IFS=$(echo -e "\n")
+    ctrl=$(cat Ubuntu/control)
+    copy=$(cat Ubuntu/copyright)
 
-    run_task sh ./deb
+    for line in $ctrl; do
+      line=$(echo $line | sed "s/{VERSION}/${VERSION}/g")
+      line=$(echo $line | sed "s/{MAINTAINER}/${MAINTAINER}/g")
+      line=$(echo $line | sed "s/{MIN_VERSION}/${MIN_VERSION}/g")
+      echo $line >> ${DIR_DEB}/control
+    done
+
+    for line in $copy; do
+      line=$(echo $line | sed "s/{MAINTAINER}/${MAINTAINER}/g")
+      echo $line >> ${DIR_BASE}/usr/share/doc/pencil/copyright
+    done
+
+    IFS="${old_ifs}"
+    run_task chown -R root ${DIR_BASE}
+    dpkg-deb --build ${DIR_BASE}
+
+    #~ run_task cp ./Ubuntu/control ${DIR_BASE}/control
+    #~ run_task cp ./Ubuntu/rules ${DIR_BASE}/rules
+    #~ run_task cd ${DIR_BASE}
+
+    #~ run_task sh ./deb
     #~ run_task mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
 }
 
