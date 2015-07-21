@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ./properties.sh
+. ./functions.sh
 
 prep() {
     rm -Rf ./Outputs/
@@ -241,30 +242,30 @@ mac() {
     cd ../..
 }
 
+
 ubuntu() {
+    PKG="pencil-${VERSION}"
+    DIR_TARGET="./Outputs/Ubuntu"
+    DIR_BASE="${DIR_TARGET}/${PKG}"
+
     echo "---------------------------------------------"
     echo "* Building Ubuntu amd 64                    *"
     echo "---------------------------------------------"
-    rm -Rf ./Outputs/Ubuntu/
-    mkdir ./Outputs/Ubuntu/
 
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/bin
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications
-    cp ./Ubuntu/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/bin/pencil
-    cp ./Ubuntu/pencil.desktop ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications/pencil.desktop
-    cp -r ./Ubuntu/share/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil
-    #curl -nc http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/15.0.1/runtimes/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2 -o ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
-    #tar xvfj ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
-    #cp -r ./xulrunner  ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil/xre
-    cp ./Ubuntu/deb ./Outputs/Ubuntu/pencil-2.0.2/deb
-    cp ./Ubuntu/control ./Outputs/Ubuntu/pencil-2.0.2/control
-    cp ./Ubuntu/rules ./Outputs/Ubuntu/pencil-2.0.2/rules
-    cd ./Outputs/Ubuntu/pencil-2.0.2
-    sh ./deb
-    mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
+    rm -Rf ${DIR_TARGET}
+
+    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_BASE}/usr/share/applications"
+    run_task cp ./Linux/pencil ${DIR_BASE}/usr/bin/pencil
+    run_task cp ./Linux/pencil.desktop ${DIR_BASE}/usr/share/applications/pencil.desktop
+    run_task cp -r ./Outputs/Pencil ${DIR_BASE}/usr/share/pencil
+    run_task cp ./Ubuntu/deb ${DIR_BASE}/deb
+
+    run_task cp ./Ubuntu/control ${DIR_BASE}/control
+    run_task cp ./Ubuntu/rules ${DIR_BASE}/rules
+    run_task cd ${DIR_BASE}
+
+    run_task sh ./deb
+    #~ run_task mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
 }
 
 clean() {
