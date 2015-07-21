@@ -284,6 +284,10 @@ ubuntu() {
     run_task cp ../CHANGELOG.md ${DIR_SHARE}/doc/pencil/changelog
     run_task gzip -9 ${DIR_SHARE}/doc/pencil/changelog
 
+    # Remove extra license files to avoid Lintian warning
+    rm ${DIR_SHARE}/pencil/content/pencil/license.txt
+    rm ${DIR_SHARE}/pencil/license.txt
+
     dpkg-deb --build ${DIR_BASE}
 
     #~ run_task cp ./Ubuntu/control ${DIR_BASE}/control
