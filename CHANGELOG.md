@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Add Support for Firefox/XULrunner v41.
+
 # v2.0.12
 
 * Add Support for Firefox/XULrunner v39.
