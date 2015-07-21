@@ -248,6 +248,7 @@ ubuntu() {
     DIR_TARGET="./Outputs/Ubuntu"
     DIR_BASE="${DIR_TARGET}/${PKG}"
     DIR_DEB="${DIR_BASE}/DEBIAN"
+    DIR_SHARE="${DIR_BASE}/usr/share"
 
     echo "---------------------------------------------"
     echo "* Building Ubuntu amd 64                    *"
@@ -255,9 +256,9 @@ ubuntu() {
 
     rm -Rf ${DIR_TARGET}
 
-    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_BASE}/usr/share/applications" "${DIR_BASE}/usr/share/doc/pencil"
+    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_SHARE}/applications" "${DIR_SHARE}/doc/pencil"
     run_task cp ./Linux/pencil "${DIR_BASE}/usr/bin/pencil"
-    run_task cp ./Linux/pencil.desktop "${DIR_BASE}/usr/share/applications/pencil.desktop"
+    run_task cp ./Linux/pencil.desktop "${DIR_SHARE}/applications/pencil.desktop"
     run_task cp -r ./Outputs/Pencil "${DIR_BASE}/usr/share/pencil"
     run_task mkdir -p "${DIR_DEB}"
 
@@ -275,11 +276,14 @@ ubuntu() {
 
     for line in $copy; do
       line=$(echo $line | sed "s/{MAINTAINER}/${MAINTAINER}/g")
-      echo $line >> ${DIR_BASE}/usr/share/doc/pencil/copyright
+      echo $line >> ${DIR_SHARE}/doc/pencil/copyright
     done
 
     IFS="${old_ifs}"
     run_task chown -R root ${DIR_BASE}
+    run_task cp ../CHANGELOG.md ${DIR_SHARE}/doc/pencil/changelog
+    run_task gzip ${DIR_SHARE}/doc/pencil/changelog
+
     dpkg-deb --build ${DIR_BASE}
 
     #~ run_task cp ./Ubuntu/control ${DIR_BASE}/control
