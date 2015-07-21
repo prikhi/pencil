@@ -282,7 +282,7 @@ ubuntu() {
     IFS="${old_ifs}"
     run_task chown -R root ${DIR_BASE}
     run_task cp ../CHANGELOG.md ${DIR_SHARE}/doc/pencil/changelog
-    run_task gzip ${DIR_SHARE}/doc/pencil/changelog
+    run_task gzip -9 ${DIR_SHARE}/doc/pencil/changelog
 
     dpkg-deb --build ${DIR_BASE}
 
