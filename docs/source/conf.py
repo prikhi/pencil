@@ -58,9 +58,9 @@ copyright = u'2015, Pencil Contributors'
 # built documents.
 #
 # The short X.Y version.
-version = '2.0.12'
+version = '2.0.13'
 # The full version, including alpha/beta/rc tags.
-release = '2.0.12'
+release = '2.0.13'
 
 primary_domain = 'js'
 
