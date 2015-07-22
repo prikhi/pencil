@@ -9,8 +9,8 @@
 <!ENTITY image.click.to.donate.alt               "Click to donate">
 <!ENTITY label.you.can.help.us.value             "Pencil is Free Software (GPL), but if you find it useful, you can support its development :)">
 <!ENTITY image.you.can.help.us.tooltiptext       "You can help us make Pencil even better. Consider making a small donation!">
-<!ENTITY label.copyright.value                   "Copyright (c) 2012 Evolus Co., Ltd">
-<!ENTITY label.evolus.pencil.value               "Evolus Pencil">
+<!ENTITY label.copyright.value                   "Copyright (c) 2012 Evolus Co., Ltd and contributers">
+<!ENTITY label.pencil.value                      "Pencil">
 <!ENTITY label.version.value                     "version">
 <!ENTITY label.build.value                       "build">
 <!ENTITY tab.credits.label                       "Credits">
