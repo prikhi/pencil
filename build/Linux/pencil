@@ -3,8 +3,8 @@
 # Target for application ini
 APP_INI="/usr/share/evolus-pencil/application.ini"
 
-# List of firefox binaries to search
-BINARIES="xulrunner iceweasel firefox firefox-bin"
+# List of firefox binaries to search in sequence of preference
+BINARIES="iceweasel firefox firefox-bin xulrunner"
 
 # Assembling run command
 RUN=""
