@@ -5,7 +5,7 @@ function handleOnload() {
         document.getElementById("licenseText").value = req.responseText;
     } catch (e) {
         Console.dumpError(e);
-        loadLicenseIn("file:///usr/share/doc/pencil-@VERSION@/COPYING");
+        loadLicenseIn("file:///usr/share/doc/pencil-@VERSION@/LICENSE");
     }
 };
 function loadLicenseIn(url) {
