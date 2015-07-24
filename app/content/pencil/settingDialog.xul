@@ -31,6 +31,8 @@
             name="pencil.config.edit.gridSize" type="int" instantApply="true" />
         <preference id="pencil-snapToGrid"
             name="pencil.config.edit.snap.grid" type="bool" instantApply="true" />
+        <preference id="pencil-gridAppearance"
+            name="pencil.config.edit.gridAppearance" type="string" instantApply="true" />
         <preference id="pencil-objectSnappingEnabled"
             name="pencil.config.object.snapping.enabled" type="bool" instantApply="true" />
         <preference id="pencil-objectSnappingBackground"
@@ -91,6 +93,12 @@
                                             preference="pencil-gridEnabled"/>
                                     <label value="&label.grid.size.value;" id="labelGridSize"/>
                                     <textbox id="textboxGridSize" size="1" type="number" min="1" max="256" preference="pencil-gridSize"/>
+                                    <menulist id="menuGridAppearance" preference="pencil-gridAppearance">
+                                      <menupopup>
+                                        <menuitem label="Dots" value="dots"/>
+                                        <menuitem label="Lines" value="lines"/>
+                                      </menupopup>
+                                    </menulist>
                                 </hbox>
                             </row>
                             <row align="center">

@@ -17,6 +17,8 @@ CanvasImpl.setupGrid = function () {
         var grid = Pencil.getGridSize();
         if (grid.w > 0 && grid.h > 0) {
             var z = this.zoom ? this.zoom : 1;
+            
+            if (Config.get("edit.gridAppearance") === 'dots') {
             for (var i = 1; i < this.width * z; i += grid.w * z) {
                 var line = document.createElementNS(PencilNamespaces.svg, "svg:line");
                 line.setAttribute("x1", i);
@@ -25,6 +27,25 @@ CanvasImpl.setupGrid = function () {
                 line.setAttribute("y2", this.height * z);
                 line.setAttribute("style", "stroke-dasharray: 1," + (grid.h - 1) * z + ";");
                 this.gridContainer.appendChild(line);
+                }
+            } else {
+                for (var i = 1; i < this.width * z; i += grid.w * z) {
+                    var line = document.createElementNS(PencilNamespaces.svg, "svg:line");
+                    line.setAttribute("x1", i);
+                    line.setAttribute("y1", 0);
+                    line.setAttribute("x2", i);
+                    line.setAttribute("y2", this.height * z);
+                    this.gridContainer.appendChild(line);
+                }
+
+                for (var i = 1; i < this.height * z; i += grid.h * z) {
+                    var line = document.createElementNS(PencilNamespaces.svg, "svg:line");
+                    line.setAttribute("x1", 0);
+                    line.setAttribute("y1", i);
+                    line.setAttribute("x2", this.width * z);
+                    line.setAttribute("y2", i);
+                    this.gridContainer.appendChild(line);
+                }
             }
         }
     }
