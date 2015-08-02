@@ -264,29 +264,38 @@ ExportWizard.validatePageSelection = function () {
 };
 ExportWizard.validateOptions = function () {
     var exporter = ExportWizard.getSelectedExporter();
+    var outputType = exporter.getOutputType();
 
-    if (exporter.getOutputType() != BaseExporter.OUTPUT_TYPE_NONE) {
-        // Display an error message if the given output directory/file is empty
+    if (outputType != BaseExporter.OUTPUT_TYPE_NONE) {
+        // Display an error message if the given output file/directory is empty
         if (!ExportWizard.targetFilePathText.value) {
-            var errorMessage =
-                (exporter.getOutputType() === BaseExporter.OUTPUT_TYPE_FILE) ?
-                    "please.select.the.target.file" :
-                    "please.select.the.target.directory";
+            var errorMessage = (outputType === BaseExporter.OUTPUT_TYPE_FILE) ?
+                                "please.select.the.target.file" :
+                                "please.select.the.target.directory";
             Util.error(Util.getMessage("error.title"),
-                Util.getMessage(errorMessage),
-                Util.getMessage("button.close.label"));
+                       Util.getMessage(errorMessage),
+                       Util.getMessage("button.close.label"));
             ExportWizard.targetFilePathText.focus();
             return false;
         }
 
+        // Create file instance to test properties
         var file = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
         file.initWithPath(ExportWizard.targetFilePathText.value);
 
-        if (!file.parent.exists()) {
-            Util.error(Util.getMessage("error.title"), Util.getMessage("the.specified.path.does.not.exists"), Util.getMessage("button.close.label"));
+        // Ensure the given path is valid
+        var isValidPath = file.parent.exists();
+        if (file.exists()) {
+            // Ensure the file/directory is the correct type if it exists
+            isValidPath &= (outputType === BaseExporter.OUTPUT_TYPE_FILE) ?
+                            file.isFile() : file.isDirectory();
+        }
+        if (!isValidPath) {
+            Util.error(Util.getMessage("error.title"),
+                       Util.getMessage("the.specified.path.is.invalid"),
+                       Util.getMessage("button.close.label"));
             ExportWizard.targetFilePathText.focus();
-
             return false;
         }
     }
