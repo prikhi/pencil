@@ -1,5 +1,6 @@
 pref("pencil.config.grid.enabled", true);
 pref("pencil.config.edit.gridSize", 8);
+pref("pencil.config.edit.gridAppearance", "dots");
 pref("pencil.config.edit.snap.grid", false);
 pref("pencil.config.object.snapping.enabled", true);
 pref("pencil.config.object.snapping.background", true);
