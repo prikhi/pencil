@@ -1,5 +1,5 @@
-
 var CanvasImpl = {};
+
 CanvasImpl.setupGrid = function () {
     if (this.gridContainer) {
         Dom.empty(this.gridContainer);
