@@ -26,14 +26,14 @@ ExportWizard.setup = function () {
     Dom.empty(ExportWizard.exporterRadioGroup);
 
     var selectedExporterRadioItem = null;
-    
+
     var selectedExporter = null;
     if (ExportWizard.dialogData.forcedExporterId) {
         selectedExporter = ExportWizard.Pencil.getDocumentExporterById(ExportWizard.dialogData.forcedExporterId);
     } else if (lastSelection.exporterId) {
         selectedExporter = ExportWizard.Pencil.getDocumentExporterById(lastSelection.exporterId);
     }
-    
+
     if (!selectedExporter) selectedExporter = ExportWizard.Pencil.defaultDocumentExporter;
 
     for (var i = 0; i < exporters.length; i ++) {
@@ -81,7 +81,7 @@ ExportWizard.setup = function () {
     window.setTimeout(ExportWizard.onPageSelectionChanged, 10);
 
     //Setup templates and other options
-    if (ExportWizard.getSelectedExporter().supportTemplating() && 
+    if (ExportWizard.getSelectedExporter().supportTemplating() &&
             lastSelection.templateId) {
         ExportWizard.templateMenu.value = lastSelection.templateId;
     }
@@ -94,7 +94,7 @@ ExportWizard.setup = function () {
 
     ExportWizard._setupFormatPageDone = true;
     window.sizeToContent();
-    
+
     if (ExportWizard.dialogData.forcedExporterId) {
         document.documentElement.advance();
     }
@@ -238,12 +238,12 @@ ExportWizard.browseTargetFile = function () {
     fp.appendFilter(Util.getMessage("filepicker.all.files"), "*");
 
     if (fp.show() == nsIFilePicker.returnCancel) return;
-    
+
     var path = fp.file.path;
     if (isChoosingFile && defaultExt && path.indexOf(".") < 0) {
         path = path + defaultExt;
     }
-    
+
     ExportWizard.targetFilePathText.value = path;
 };
 ExportWizard.validatePageSelection = function () {
@@ -264,22 +264,38 @@ ExportWizard.validatePageSelection = function () {
 };
 ExportWizard.validateOptions = function () {
     var exporter = ExportWizard.getSelectedExporter();
+    var outputType = exporter.getOutputType();
 
-    if (exporter.getOutputType() != BaseExporter.OUTPUT_TYPE_NONE) {
+    if (outputType != BaseExporter.OUTPUT_TYPE_NONE) {
+        // Display an error message if the given output file/directory is empty
         if (!ExportWizard.targetFilePathText.value) {
-            Util.error(Util.getMessage("error.title"), Util.getMessage("please.select.the.target.directory"), Util.getMessage("button.close.label"));
+            var errorMessage = (outputType === BaseExporter.OUTPUT_TYPE_FILE) ?
+                                "please.select.the.target.file" :
+                                "please.select.the.target.directory";
+            Util.error(Util.getMessage("error.title"),
+                       Util.getMessage(errorMessage),
+                       Util.getMessage("button.close.label"));
             ExportWizard.targetFilePathText.focus();
             return false;
         }
 
+        // Create file instance to test properties
         var file = Components.classes["@mozilla.org/file/local;1"]
                              .createInstance(Components.interfaces.nsILocalFile);
         file.initWithPath(ExportWizard.targetFilePathText.value);
 
-        if (!file.parent.exists()) {
-            Util.error(Util.getMessage("error.title"), Util.getMessage("the.specified.path.does.not.exists"), Util.getMessage("button.close.label"));
+        // Ensure the given path is valid
+        var isValidPath = file.parent.exists();
+        if (file.exists()) {
+            // Ensure the file/directory is the correct type if it exists
+            isValidPath &= (outputType === BaseExporter.OUTPUT_TYPE_FILE) ?
+                            file.isFile() : file.isDirectory();
+        }
+        if (!isValidPath) {
+            Util.error(Util.getMessage("error.title"),
+                       Util.getMessage("the.specified.path.is.invalid"),
+                       Util.getMessage("button.close.label"));
             ExportWizard.targetFilePathText.focus();
-
             return false;
         }
     }
@@ -330,4 +346,3 @@ window.onload = function () {
 window.onerror = function (msg, url, lineNumber) {
     error([msg, url, lineNumber]);
 };
-
