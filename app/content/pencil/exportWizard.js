@@ -267,11 +267,13 @@ ExportWizard.validateOptions = function () {
     var outputType = exporter.getOutputType();
 
     if (outputType != BaseExporter.OUTPUT_TYPE_NONE) {
+
+        var outputTypeIsFile = outputType === BaseExporter.OUTPUT_TYPE_FILE;
         // Display an error message if the given output file/directory is empty
         if (!ExportWizard.targetFilePathText.value) {
-            var errorMessage = (outputType === BaseExporter.OUTPUT_TYPE_FILE) ?
-                                "please.select.the.target.file" :
-                                "please.select.the.target.directory";
+            var errorMessage = outputTypeIsFile ?
+                               "please.select.the.target.file" :
+                               "please.select.the.target.directory";
             Util.error(Util.getMessage("error.title"),
                        Util.getMessage(errorMessage),
                        Util.getMessage("button.close.label"));
@@ -288,8 +290,7 @@ ExportWizard.validateOptions = function () {
         var isValidPath = file.parent.exists();
         if (file.exists()) {
             // Ensure the file/directory is the correct type if it exists
-            isValidPath &= (outputType === BaseExporter.OUTPUT_TYPE_FILE) ?
-                            file.isFile() : file.isDirectory();
+            isValidPath &= outputTypeIsFile ? file.isFile() : file.isDirectory();
         }
         if (!isValidPath) {
             Util.error(Util.getMessage("error.title"),
