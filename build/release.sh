@@ -89,7 +89,7 @@ main() {
     for f in ${BUILD_FILES[@]}; do
         echo "Uploading $f..."
         MIME_TYPE=`file --mime-type $f | cut -f2 -d' '`
-        FILE_UPLOAD_URL=`echo $UPLOAD_URL | sed "s/{?name}/?name=$f/"`
+        FILE_UPLOAD_URL=`echo $UPLOAD_URL | sed "s/{?name,label}/?name=$f/"`
         $BASE_CMD -o curl_tmp -H "Content-Type:$MIME_TYPE" --data-binary "@./Outputs/$f" $FILE_UPLOAD_URL
         rm -f curl_tmp
         echo ""
