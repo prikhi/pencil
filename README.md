@@ -53,6 +53,7 @@ For specific Linux distributions:
 * **Nix/NixOS** - Run `nix-env -iA pencil`. You'll need to be tracking
   [Unstable][nix-unstable].
 * **openSuse** - Available in the [graphics repository][graphics-repository].
+* **Ubuntu** - A .deb is available on the [Releases Page][releases].
 
 ## Build
 

@@ -16,6 +16,7 @@ run_task() {
   fi
 }
 
+
 prep() {
     rm -Rf ./Outputs/
     mkdir -p ./Outputs
@@ -257,15 +258,15 @@ mac() {
 
 
 ubuntu() {
-    PKG="pencil_${VERSION}"
+    PKG="pencil-${VERSION}-ubuntu-all"
     DIR_TARGET="./Outputs/Ubuntu"
     DIR_BASE="${DIR_TARGET}/${PKG}"
     DIR_DEB="${DIR_BASE}/DEBIAN"
     DIR_SHARE="${DIR_BASE}/usr/share"
 
-    echo "---------------------------------------------"
-    echo "* Building Ubuntu amd 64                    *"
-    echo "---------------------------------------------"
+    echo "-----------------------"
+    echo "* Building Ubuntu deb *"
+    echo "-----------------------"
 
     rm -Rf ${DIR_TARGET}
 
@@ -293,7 +294,6 @@ ubuntu() {
     done
 
     IFS="${old_ifs}"
-    # run_task chown -R root ${DIR_BASE}
     run_task cp ../CHANGELOG.md ${DIR_SHARE}/doc/pencil/changelog
     run_task gzip -9 ${DIR_SHARE}/doc/pencil/changelog
 
@@ -301,15 +301,17 @@ ubuntu() {
     rm ${DIR_SHARE}/pencil/content/pencil/license.txt
     rm ${DIR_SHARE}/pencil/license.txt
 
+    # Packages retain ownership, files should be owned by root
+    run_task sudo chown -R root ${DIR_BASE}
+
     run_task dpkg-deb --build ${DIR_BASE}
 
-    #~ run_task cp ./Ubuntu/control ${DIR_BASE}/control
-    #~ run_task cp ./Ubuntu/rules ${DIR_BASE}/rules
-    #~ run_task cd ${DIR_BASE}
+    run_task mv ${DIR_TARGET}/*.deb ./Outputs/
 
-    #~ run_task sh ./deb
-    #~ run_task mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
+    # Clean up the build dir now, while we still have sudo access
+    sudo rm -rf ${DIR_TARGET}
 }
+
 
 clean() {
     echo "------------------------"
@@ -381,6 +383,7 @@ case "$1" in
         mac
         linux
         linuxpkg
+        ubuntu
         ;;
 esac
 
