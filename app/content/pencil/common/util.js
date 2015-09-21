@@ -1100,34 +1100,7 @@ Util.preloadFonts = function (doc) {
     doc.documentElement.appendChild(menupopup);
     Util.fontList = menupopup;
 };
-Util.openDonate = function () {
-    var link = "http://pencil.evolus.vn/Donation.aspx";
-    try {
-        var mediator = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
-        var ioservice = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces.nsIIOService);
-        var protoservice = Components.classes['@mozilla.org/uriloader/external-protocol-service;1'].getService(Components.interfaces.nsIExternalProtocolService);
 
-        var enumerator = mediator.getEnumerator("navigator:browser");
-        while (enumerator.hasMoreElements()) {
-            var win = enumerator.getNext();
-            if (win) {
-                if ('delayedOpenTab' in win) {
-                    win.delayedOpenTab(link);
-                    return;
-                }
-                win.getBrowser().addTab(link);
-                return;
-            }
-        }
-    } catch (ex) {
-    }
-    try {
-        window.open(link);
-    } catch (ex) {
-        var uri = ioservice.newURI(link, null, null);
-        protoservice.loadUrl(uri);
-    }
-};
 Util.getMessage = function (msg, args) {
     try {
         if (!Util.bundle) {

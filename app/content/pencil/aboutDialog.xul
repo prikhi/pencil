@@ -21,15 +21,18 @@
 
     <vbox>
         <hbox flex="1" style="padding: 1ex;">
-            <vbox><image src="chrome://pencil/skin/images/pencil.png"/></vbox>
+            <vbox><image src="chrome://pencil/skin/icon.svg"/></vbox>
             <vbox flex="1">
-                <hbox class="Title"><label value="&label.evolus.pencil.value;"></label></hbox>
+                <hbox class="Title"><label value="&label.pencil.value;"></label></hbox>
+                 <hbox>
+                    <label value="&label.version.value; @VERSION@.@BUILD@"></label>
+                </hbox>
                 <hbox>
-                    <vbox flex="1"><label value="&label.copyright.value;"></label></vbox>
-                    <vbox><label value="&label.version.value; @VERSION@.@BUILD@"></label></vbox>
+                    <label value="&label.copyright.value;"></label>
                 </hbox>
             </vbox>
         </hbox>
+		<hbox><html:a href="http://github.com/prikhi/pencil/" style="color: -moz-hyperlinktext; text-decoration: underline; ">https://github.com/prikhi/pencil/</html:a></hbox>
         <hbox>
             <vbox flex="1">
                 <tabbox id="aboutBox">
@@ -52,7 +55,9 @@
                                     
                                     <label style="font-weight: bold;padding-top: 20px;">&tab.contributors.label;</label>
                                     <description>
-                                        Maxime Delorme
+                                        Pavan Rikhi
+										                    <html:br/>
+									                    	Maxime Delorme
                                         <html:br/>
                                         Frederic Vandaele
                                         <html:br/>
@@ -67,15 +72,6 @@
                                         Nguyễn Hồng Thái
                                     </description>
                                 </vbox>
-                                <separator />
-                                <hbox style="padding-top: 20px;">
-                                    <vbox flex="1" >
-                                        <label width="250">&label.you.can.help.us.value;</label>
-                                    </vbox>
-                                    <vbox>
-                                        <image style="cursor:pointer;" src="chrome://pencil/skin/images/paypal.png" alt="&image.click.to.donate.alt;" tooltiptext="&image.you.can.help.us.tooltiptext;" onclick="Util.openDonate();" />
-                                    </vbox>
-                                </hbox>
                             </vbox>
                         </tabpanel>
                         <tabpanel>
