@@ -15,7 +15,9 @@
 <!ENTITY label.build.value                       "build">
 <!ENTITY tab.credits.label                       "Credits">
 <!ENTITY tab.authors.label                       "Authors:">
+<!ENTITY tab.maintainers.label                   "Maintainers">
 <!ENTITY tab.contributors.label                  "Contributors:">
+<!ENTITY tab.githubcontributors.label            "Github Contributors">
 <!ENTITY tab.license.label                       "License">
 
 <!-- chrome://pencil/content/UI/CollectionPane.xbl -->

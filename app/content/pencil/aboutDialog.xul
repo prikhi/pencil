@@ -52,11 +52,16 @@
                                         <html:br/>
                                         Nguyễn Nữ Hải Anh
                                     </description>
-                                    
-                                    <label style="font-weight: bold;padding-top: 20px;">&tab.contributors.label;</label>
+
+                                    <label style="font-weight: bold;padding-top: 10px;">&tab.maintainers.label;</label>
                                     <description>
                                         Pavan Rikhi
-										                    <html:br/>
+                                    </description>
+
+                                    <label style="font-weight: bold;padding-top: 10px;">&tab.contributors.label;</label>
+                                    <description>
+                                        <html:a href="http://github.com/prikhi/pencil/graphs/contributors" style="color: -moz-hyperlinktext; text-decoration: underline; ">&tab.githubcontributors.label;</html:a>
+                                        <html:br/>
 									                    	Maxime Delorme
                                         <html:br/>
                                         Frederic Vandaele
