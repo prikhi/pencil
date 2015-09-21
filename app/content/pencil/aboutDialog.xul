@@ -32,7 +32,7 @@
                 </hbox>
             </vbox>
         </hbox>
-		<hbox><html:a href="http://github.com/prikhi/pencil/" style="color: -moz-hyperlinktext; text-decoration: underline; ">https://github.com/prikhi/pencil/</html:a></hbox>
+    <hbox><html:a href="http://github.com/prikhi/pencil/" style="color: -moz-hyperlinktext; text-decoration: underline; ">https://github.com/prikhi/pencil/</html:a></hbox>
         <hbox>
             <vbox flex="1">
                 <tabbox id="aboutBox">
@@ -62,7 +62,7 @@
                                     <description>
                                         <html:a href="http://github.com/prikhi/pencil/graphs/contributors" style="color: -moz-hyperlinktext; text-decoration: underline; ">&tab.githubcontributors.label;</html:a>
                                         <html:br/>
-									                    	Maxime Delorme
+                                        Maxime Delorme
                                         <html:br/>
                                         Frederic Vandaele
                                         <html:br/>
