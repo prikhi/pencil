@@ -85,7 +85,7 @@ distribution-specific packages.
 ### Windows
 
 You'll need `curl` installed so you can pull the Windows XULRunner runtime and
-`nsis` to compile the installer.
+[NSIS][nsis] to compile the installer.
 
 ```bash
 
@@ -190,6 +190,7 @@ This fork is released under GPLv2 like it's parent codebase.
 [material-collection]: https://github.com/nathanielw/Material-Icons-for-Pencil
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
 
+[nsis]: http://nsis.sourceforge.net/Main_Page
 [sphinx-doc]: http://sphinx-doc.org/
 [pip]: https://pip.pypa.io/
 [writing-bugs]: http://www.lee-dohm.com/2015/01/04/writing-good-bug-reports.html
