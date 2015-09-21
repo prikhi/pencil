@@ -33,26 +33,26 @@ prep() {
 
 
     echo "Copying base application files..."
-    cp -R ../app/* ./Outputs/Pencil/
+    run_task cp -R ../app/* ./Outputs/Pencil/
 
     echo "Copying icons..."
     mkdir -p ./Outputs/Pencil/chrome/icons/default/
-    cp ./Outputs/Pencil/skin/classic/pencil.ico ./Outputs/Pencil/chrome/icons/default/pencilMainWindow.ico
-    cp ./Outputs/Pencil/skin/classic/pencil.xpm ./Outputs/Pencil/chrome/icons/default/pencilMainWindow.xpm
+    run_task cp ./Outputs/Pencil/skin/classic/pencil.ico ./Outputs/Pencil/chrome/icons/default/pencilMainWindow.ico
+    run_task cp ./Outputs/Pencil/skin/classic/pencil.xpm ./Outputs/Pencil/chrome/icons/default/pencilMainWindow.xpm
 
     echo "Configuring application..."
-    ./replacer.sh ./Outputs/Pencil/application.ini
-    ./replacer.sh ./Outputs/Pencil/defaults/preferences/pencil.js
-    ./replacer.sh ./Outputs/Pencil/content/pencil/mainWindow.xul
-    ./replacer.sh ./Outputs/Pencil/content/pencil/aboutDialog.xul
-    ./replacer.sh ./Outputs/Pencil/content/pencil/aboutDialog.js
-    ./replacer.sh ./Outputs/Pencil/content/pencil/common/pencil.js
-    ./replacer.sh ./Outputs/Pencil/content/pencil/common/util.js
+    run_task ./replacer.sh ./Outputs/Pencil/application.ini
+    run_task ./replacer.sh ./Outputs/Pencil/defaults/preferences/pencil.js
+    run_task ./replacer.sh ./Outputs/Pencil/content/pencil/mainWindow.xul
+    run_task ./replacer.sh ./Outputs/Pencil/content/pencil/aboutDialog.xul
+    run_task ./replacer.sh ./Outputs/Pencil/content/pencil/aboutDialog.js
+    run_task ./replacer.sh ./Outputs/Pencil/content/pencil/common/pencil.js
+    run_task ./replacer.sh ./Outputs/Pencil/content/pencil/common/util.js
 
     if [ ! $DEBUG ]; then
         echo "Removing debugging files..."
-        rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
-        rm ./Outputs/Pencil/defaults/preferences/debug.js
+        run_task rm ./Outputs/Pencil/defaults/preferences/personal.js.xulrunner
+        run_task rm ./Outputs/Pencil/defaults/preferences/debug.js
     fi
 }
 
@@ -64,25 +64,25 @@ xpi() {
     rm -Rf $OUTPUT/
     mkdir -p $OUTPUT/
 
-    cp -R ./Outputs/Pencil/* $OUTPUT/
-    cp -R ./XPI/* $OUTPUT
+    run_task cp -R ./Outputs/Pencil/* $OUTPUT/
+    run_task cp -R ./XPI/* $OUTPUT
 
-    ./replacer.sh $OUTPUT/install.rdf
-    ./replacer.sh $OUTPUT/update.rdf
+    run_task ./replacer.sh $OUTPUT/install.rdf
+    run_task ./replacer.sh $OUTPUT/update.rdf
 
     echo "Configuring XPI-specific settings..."
-    cp -f ../app/defaults/preferences/pencil.js $OUTPUT/defaults/preferences/pencil.js
+    run_task cp -f ../app/defaults/preferences/pencil.js $OUTPUT/defaults/preferences/pencil.js
     export XULRUNNER_XUL=""
-    ./replacer.sh ./Outputs/XPI/defaults/preferences/pencil.js
+    run_task ./replacer.sh ./Outputs/XPI/defaults/preferences/pencil.js
 
     echo "Removing branding..."
-    sed -ni '/branding/!p' $OUTPUT/chrome.manifest
+    run_task sed -ni '/branding/!p' $OUTPUT/chrome.manifest
 
 
     echo "Compressing XPI file..."
     cd $OUTPUT/
     rm -f ../$XPI_NAME
-    zip -r ../$XPI_NAME * > /dev/null
+    run_task zip -r --quiet ../$XPI_NAME *
     export XPIHASH=`sha1sum ../$XPI_NAME | sed -e s^..../$XPI_NAME^^`
     echo 'XPI SHA1 hash: '$XPIHASH
     cd ../../
@@ -97,12 +97,12 @@ linux() {
     mkdir -p $OUTPUT
 
     echo "Copying common files..."
-    cp -R ./Outputs/Pencil/* $OUTPUT/
+    run_task cp -R ./Outputs/Pencil/* $OUTPUT/
 
     echo "Compressing..."
     cd ./Outputs
-    cp -R ../$OUTPUT $PKG_NAME
-    tar -czf ./Pencil-$VERSION-linux.tar.gz $PKG_NAME
+    run_task cp -R ../$OUTPUT $PKG_NAME
+    run_task tar -czf ./Pencil-$VERSION-linux.tar.gz $PKG_NAME
     rm -Rf $PKG_NAME
     cd ..
 }
@@ -119,17 +119,17 @@ linuxpkg() {
     mkdir -p $OUTPUT/usr/{bin,share/{$PKG_NAME,applications,mime/packages}}
 
     echo "Copying common files..."
-    cp -R ./Outputs/Pencil/* $OUTPUT/usr/share/$PKG_NAME/
+    run_task cp -R ./Outputs/Pencil/* $OUTPUT/usr/share/$PKG_NAME/
 
     echo "Copying executable and mime information..."
-    cp ./Linux/pencil $OUTPUT/usr/bin/
-    cp ./Linux/pencil.desktop $OUTPUT/usr/share/applications/
-    cp ./Linux/ep.xml $OUTPUT/usr/share/mime/packages/
+    run_task cp ./Linux/pencil $OUTPUT/usr/bin/
+    run_task cp ./Linux/pencil.desktop $OUTPUT/usr/share/applications/
+    run_task cp ./Linux/ep.xml $OUTPUT/usr/share/mime/packages/
 
     echo "Compressing..."
     cd ./Outputs
-    cp -R ../$OUTPUT $PKG_NAME
-    tar -czf ./Pencil-$VERSION-linux-pkg.tar.gz $PKG_NAME
+    run_task cp -R ../$OUTPUT $PKG_NAME
+    run_task tar -czf ./Pencil-$VERSION-linux-pkg.tar.gz $PKG_NAME
     echo "SHA256SUM: " `sha256sum ./Pencil-$VERSION-linux-pkg.tar.gz`
     rm -Rf $PKG_NAME
     cd ..
@@ -194,9 +194,9 @@ win32() {
         echo "* Downloading XULRunner *"
         echo "-------------------------"
         XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XUL_VERSION/runtimes/xulrunner-$XUL_VERSION.en-US.win32.zip"
-        curl $XUL_DL_URL -o temp.zip
-        unzip temp.zip -d Win32
-        rm temp.zip
+        run_task curl $XUL_DL_URL -o temp.zip
+        run_task unzip temp.zip -d Win32
+        run_task rm temp.zip
     fi
 
     echo "---------------------------------------------"
@@ -207,14 +207,14 @@ win32() {
     rm -Rf $OUTPUT/
     mkdir -p $OUTPUT/app
 
-    cp -R ./Outputs/Pencil/* $OUTPUT/app/
-    cp -R ./Win32/* $OUTPUT/
+    run_task cp -R ./Outputs/Pencil/* $OUTPUT/app/
+    run_task cp -R ./Win32/* $OUTPUT/
 
-    ./replacer.sh $OUTPUT/setup.nsi
+    run_task ./replacer.sh $OUTPUT/setup.nsi
 
     cd $OUTPUT
     echo "Compiling Windows Installer..."
-    makensis -V2 pencil.nsi && makensis -V2 setup.nsi
+    run_task makensis -V2 pencil.nsi && run_task makensis -V2 setup.nsi
     cd ../../
 }
 
@@ -224,9 +224,9 @@ mac() {
         echo "* Downloading XULRunner *"
         echo "-------------------------"
         XUL_DL_URL="http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/$XUL_VERSION/runtimes/xulrunner-$XUL_VERSION.en-US.mac.tar.bz2"
-        curl $XUL_DL_URL -o temp.tar.bz2
-        tar -jxvf temp.tar.bz2 -C Mac
-        rm temp.tar.bz2
+        run_task curl $XUL_DL_URL -o temp.tar.bz2
+        run_task tar -jxvf temp.tar.bz2 -C Mac
+        run_task rm temp.tar.bz2
     fi
     echo "------------------------------------------"
     echo "* Building Mac OS X App with Private XRE *"
@@ -237,21 +237,21 @@ mac() {
     rm -Rf $OUTPUT
     mkdir $OUTPUT
 
-    cp -R ./Mac/* $OUTPUT/
+    run_task cp -R ./Mac/* $OUTPUT/
 
     mkdir -p $OUTPUT/Pencil.app/Contents/Resources/
-    cp -R ./Outputs/Pencil/* $_
-    cp -RL $OUTPUT/XUL.framework/Versions/Current/* $OUTPUT/Pencil.app/Contents/MacOS/
-    mv $OUTPUT/Pencil.app/Contents/MacOS/dependentlibs.list $OUTPUT/Pencil.app/Contents/Resources/dependentlibs.list
-    cp ./Outputs/Pencil/application.ini $OUTPUT/Pencil.app/Contents/Resources/application.ini
+    run_task cp -R ./Outputs/Pencil/* $_
+    run_task cp -RL $OUTPUT/XUL.framework/Versions/Current/* $OUTPUT/Pencil.app/Contents/MacOS/
+    run_task mv $OUTPUT/Pencil.app/Contents/MacOS/dependentlibs.list $OUTPUT/Pencil.app/Contents/Resources/dependentlibs.list
+    run_task cp ./Outputs/Pencil/application.ini $OUTPUT/Pencil.app/Contents/Resources/application.ini
 
-    ./replacer.sh $OUTPUT/Pencil.app/Contents/Resources/application.ini
-    ./replacer.sh $OUTPUT/Pencil.app/Contents/Resources/defaults/preferences/pencil.js
-    ./replacer.sh $OUTPUT/Pencil.app/Contents/Info.plist
+    run_task ./replacer.sh $OUTPUT/Pencil.app/Contents/Resources/application.ini
+    run_task ./replacer.sh $OUTPUT/Pencil.app/Contents/Resources/defaults/preferences/pencil.js
+    run_task ./replacer.sh $OUTPUT/Pencil.app/Contents/Info.plist
 
     echo "Compressing..."
     cd $OUTPUT
-    zip -r ../Pencil-$VERSION-mac-osx.zip Pencil.app > /dev/null
+    run_task zip -r --quiet ../Pencil-$VERSION-mac-osx.zip Pencil.app
     cd ../..
 }
 
@@ -301,7 +301,7 @@ ubuntu() {
     rm ${DIR_SHARE}/pencil/content/pencil/license.txt
     rm ${DIR_SHARE}/pencil/license.txt
 
-    dpkg-deb --build ${DIR_BASE}
+    run_task dpkg-deb --build ${DIR_BASE}
 
     #~ run_task cp ./Ubuntu/control ${DIR_BASE}/control
     #~ run_task cp ./Ubuntu/rules ${DIR_BASE}/rules
