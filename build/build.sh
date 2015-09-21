@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ./properties.sh
+. ./functions.sh
 
 prep() {
     rm -Rf ./Outputs/
@@ -241,30 +242,60 @@ mac() {
     cd ../..
 }
 
+
 ubuntu() {
+    PKG="pencil_${VERSION}"
+    DIR_TARGET="./Outputs/Ubuntu"
+    DIR_BASE="${DIR_TARGET}/${PKG}"
+    DIR_DEB="${DIR_BASE}/DEBIAN"
+    DIR_SHARE="${DIR_BASE}/usr/share"
+
     echo "---------------------------------------------"
     echo "* Building Ubuntu amd 64                    *"
     echo "---------------------------------------------"
-    rm -Rf ./Outputs/Ubuntu/
-    mkdir ./Outputs/Ubuntu/
 
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/bin
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/
-    mkdir ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications
-    cp ./Ubuntu/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/bin/pencil
-    cp ./Ubuntu/pencil.desktop ./Outputs/Ubuntu/pencil-2.0.2/usr/share/applications/pencil.desktop
-    cp -r ./Ubuntu/share/pencil ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil
-    #curl -nc http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/15.0.1/runtimes/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2 -o ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
-    #tar xvfj ./Ubuntu/xulrunner-15.0.1.en-US.linux-x86_64.tar.bz2
-    #cp -r ./xulrunner  ./Outputs/Ubuntu/pencil-2.0.2/usr/share/pencil/xre
-    cp ./Ubuntu/deb ./Outputs/Ubuntu/pencil-2.0.2/deb
-    cp ./Ubuntu/control ./Outputs/Ubuntu/pencil-2.0.2/control
-    cp ./Ubuntu/rules ./Outputs/Ubuntu/pencil-2.0.2/rules
-    cd ./Outputs/Ubuntu/pencil-2.0.2
-    sh ./deb
-    mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
+    rm -Rf ${DIR_TARGET}
+
+    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_SHARE}/applications" "${DIR_SHARE}/doc/pencil"
+    run_task cp ./Linux/pencil "${DIR_BASE}/usr/bin/pencil"
+    run_task cp ./Linux/pencil.desktop "${DIR_SHARE}/applications/pencil.desktop"
+    run_task cp -r ./Outputs/Pencil "${DIR_BASE}/usr/share/pencil"
+    run_task mkdir -p "${DIR_DEB}"
+
+    old_ifs="${IFS}"
+    IFS=$(echo -e "\n")
+    ctrl=$(cat Ubuntu/control)
+    copy=$(cat Ubuntu/copyright)
+
+    for line in $ctrl; do
+      line=$(echo $line | sed "s/{VERSION}/${VERSION}/g")
+      line=$(echo $line | sed "s/{MAINTAINER}/${MAINTAINER}/g")
+      line=$(echo $line | sed "s/{MIN_VERSION}/${MIN_VERSION}/g")
+      echo $line >> ${DIR_DEB}/control
+    done
+
+    for line in $copy; do
+      line=$(echo $line | sed "s/{MAINTAINER}/${MAINTAINER}/g")
+      echo $line >> ${DIR_SHARE}/doc/pencil/copyright
+    done
+
+    IFS="${old_ifs}"
+    run_task chown -R root ${DIR_BASE}
+    run_task cp ../CHANGELOG.md ${DIR_SHARE}/doc/pencil/changelog
+    run_task gzip -9 ${DIR_SHARE}/doc/pencil/changelog
+
+    # Remove extra license files to avoid Lintian warning
+    rm ${DIR_SHARE}/pencil/content/pencil/license.txt
+    rm ${DIR_SHARE}/pencil/license.txt
+
+    dpkg-deb --build ${DIR_BASE}
+
+    #~ run_task cp ./Ubuntu/control ${DIR_BASE}/control
+    #~ run_task cp ./Ubuntu/rules ${DIR_BASE}/rules
+    #~ run_task cd ${DIR_BASE}
+
+    #~ run_task sh ./deb
+    #~ run_task mv ../evoluspencil_2.0.2_all.deb ../../evoluspencil_2.0.2_all.deb
 }
 
 clean() {
