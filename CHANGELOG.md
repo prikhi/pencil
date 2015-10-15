@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Reduce Angle of Arrowhead Lines(#753)
+
 # v2.0.14
 
 * Update the "About" Window(#731).
