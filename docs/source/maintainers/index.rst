@@ -8,16 +8,16 @@ Creating a New Release
 ----------------------
 
 There's a ``release.sh`` script that lives in the ``build/`` directory. This
-script automtes:
+script automates:
 
-# Creating a release branch
-# Updating the version number
-# Sectioning off the changelog
-# Updating distribution-specific files
-# Creating a release commit & tag
-# Pushing the branch to origin
-# Creating a release on Github
-# Uploading the built packages to the Github release
+#. Creating a release branch
+#. Updating the version number
+#. Sectioning off the changelog
+#. Updating distribution-specific files
+#. Creating a release commit & tag
+#. Pushing the branch to origin
+#. Creating a release on Github
+#. Uploading the built packages to the Github release
 
 You will need ``git``, ``curl``, ``sed`` and ``jshon``. Then you can just pass
 the new version number to the script::
