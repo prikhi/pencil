@@ -15,7 +15,7 @@
 <!ENTITY label.build.value                       "xây dựng">
 <!ENTITY tab.credits.label                       "Các tác giả">
 <!ENTITY tab.authors.label                       "Các tác giả">
-<!ENTITY tab.maintainers.label                   "Maintainers">
+<!ENTITY tab.maintainers.label                   "Maintainers:">
 <!ENTITY tab.contributors.label                  "Đóng góp">
 <!ENTITY tab.githubcontributors.label            "Github Contributors">
 <!ENTITY tab.license.label                       "Giấy phép">
