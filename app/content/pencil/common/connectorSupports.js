@@ -333,7 +333,7 @@ function arrowTo(startPoints, handle, w, VIA_LENGTH, supportUnconnected,
     if (typeof(withStartArrow) == "undefined") withStartArrow = true;
     if (typeof(withEndArrow) == "undefined") withEndArrow = true;
     
-    const ANGLE = Math.PI / 4;
+    const ANGLE = Math.PI / 8;
     const ARROW_WING_LENGTH = Math.max(w * 4, 6);
     
     if (startPoints[0].x == handle.x &&
