@@ -3,7 +3,7 @@ Version: {VERSION}
 Section: devel
 Priority: optional
 Architecture: amd64
-Depends: firefox (>= {MIN_VERSION})
+Depends: firefox (>= {MIN_VERSION}) | iceweasel (>= {MIN_VERSION})
 Installed-Size: 9216
 Maintainer: {MAINTAINER}
 Description: GUI Prototyping/Wireframing
