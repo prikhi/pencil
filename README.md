@@ -25,7 +25,7 @@ was abandoned around 2013. This fork was started for new development on March
 #### Extra Stencil Collections
 
 * [Android Lollipop][lollipop-collection] by [Nathanielw][nathanielw]
-* [Bootstrap (WIP)][bootstrap-collection] by [Nathanielw][nathanielw]
+* [Bootstrap][bootstrap-collection] by [Nathanielw][nathanielw]
 * [Material Design Icons][material-collection] by [Nathanielw][nathanielw]
 
 Additional collections are available on the
