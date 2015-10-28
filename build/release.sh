@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # This script creates a release on a new branch, it does not modify any
 # long-term branches.
