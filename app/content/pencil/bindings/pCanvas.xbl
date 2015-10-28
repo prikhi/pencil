@@ -1246,7 +1246,7 @@
                         event.preventDefault();
                         Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
 
-                    } else if (event.keyCode == event.DOM_VK_DELETE) {
+                    } else if (event.keyCode == event.DOM_VK_DELETE || event.keyCode == event.DOM_VK_BACK_SPACE) {
                         if (this.currentController) {
                             this.run(function () {
                                 this.currentController.deleteTarget();
