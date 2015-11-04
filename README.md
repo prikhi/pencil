@@ -52,7 +52,7 @@ For specific Linux distributions:
 * **Arch Linux** - Available in the [AUR][aur-pkg].
 * **Nix/NixOS** - Run `nix-env -iA pencil`. You'll need to be tracking
   [Unstable][nix-unstable].
-* **openSuse** - Available in the [graphics repository][graphics-repository].
+* **openSUSE** - Available in the [graphics repository][graphics-repository].
 * **Ubuntu** - A .deb is available on the [Releases Page][releases].
 
 ## Build
@@ -183,7 +183,7 @@ This fork is released under GPLv2 like it's parent codebase.
 [releases]: https://github.com/prikhi/pencil/releases
 [aur-pkg]: https://aur.archlinux.org/packages/pencil/
 [nix-unstable]: https://nixos.org/nixos/manual/sec-upgrading.html
-[graphics-repository]: http://download.opensuse.org/repositories/graphics/
+[graphics-repository]: https://software.opensuse.org/package/pencil
 
 [nathanielw]: https://github.com/nathanielw
 [lollipop-collection]: https://github.com/nathanielw/Android-Lollipop-Pencil-Stencils
