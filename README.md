@@ -26,6 +26,7 @@ was abandoned around 2013. This fork was started for new development on March
 
 * [Android Lollipop][lollipop-collection] by [Nathanielw][nathanielw]
 * [Bootstrap][bootstrap-collection] by [Nathanielw][nathanielw]
+* [Bootstrap Glyph Icons][bootstrap-icon-collection] by [Craig-Fisk][craigfisk]
 * [Material Design Icons][material-collection] by [Nathanielw][nathanielw]
 
 Additional collections are available on the
@@ -189,6 +190,8 @@ This fork is released under GPLv2 like it's parent codebase.
 [lollipop-collection]: https://github.com/nathanielw/Android-Lollipop-Pencil-Stencils
 [material-collection]: https://github.com/nathanielw/Material-Icons-for-Pencil
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
+[bootstrap-icon-collection]: https://github.com/Craig-Fisk/BootstrapGlyph-Pencil-Stencil
+[craigfisk]: https://github.com/Craig-Fisk
 
 [nsis]: http://nsis.sourceforge.net/Main_Page
 [sphinx-doc]: http://sphinx-doc.org/
