@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.15
+
 * Add Backspace as an Alternative to Delete Objects from a Document(#191).
 * Reduce Angle of Arrowhead Lines(#753)
 
