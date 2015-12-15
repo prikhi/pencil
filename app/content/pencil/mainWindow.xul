@@ -413,6 +413,7 @@
         modifiers=""
         keycode="VK_DELETE"/>
       <key id="selectAllKey"
+        command="selectAllCommand"
         modifiers="accel"
         key="A"/>
 
