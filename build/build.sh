@@ -240,6 +240,8 @@ mac() {
 
     run_task cp -R ./Mac/* $OUTPUT/
 
+    rm -Rf ~/Library/Caches/Pencil/
+
     mkdir -p $OUTPUT/Pencil.app/Contents/Resources/
     run_task cp -R ./Outputs/Pencil/* $_
     run_task cp -RL $OUTPUT/XUL.framework/Versions/Current/* $OUTPUT/Pencil.app/Contents/MacOS/
