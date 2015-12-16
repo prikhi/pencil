@@ -2,6 +2,7 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Change name to Pencil Prototyping for AMO(#749).
 * Add Support for Firefox/XULrunner v43(#775).
 * Fix Path to Icon in Linux(#764).
 

@@ -4,7 +4,7 @@
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 
   <Description about="urn:mozilla:install-manifest">
-    <em:id>pencil@evolus.vn</em:id>
+    <em:id>pencil@prikhi.github.io</em:id>
     <em:version>@VERSION@.@BUILD@</em:version>
     <em:type>2</em:type>
 
@@ -26,14 +26,6 @@
     <em:unpack>true</em:unpack>
     <em:iconURL>chrome://pencil/skin/pencil.png</em:iconURL>
     <em:icon64URL>chrome://pencil/content/pencil-64.png</em:icon64URL>
-    <em:homepageURL>http://pencil.evolus.vn/</em:homepageURL>
-    <em:updateURL>@UPDATE_URL@/Downloads/update.rdf</em:updateURL>
-    <em:updateKey>
-          MIGTMA0GCSqGSIb3DQEBBQUAA4GBAMO1O2gwSCCth1GwYMgscfaNakpN40PJfOWt
-          ub2HVdg8+OXMciF8d/9eVWm8eH/IxuxyZlmRZTs3O5tv9eWAY5uBCtqDf1WgTsGk
-          jrgZow1fITkZI7w0//C8eKdMLAtGueGfNs2IlTd5P/0KH/hf1rPc1wUqEqKCd4+L
-          BcVq13ad
-    </em:updateKey>
-
+    <em:homepageURL>http://github.com/prikhi/pencil</em:homepageURL>
   </Description>
 </RDF>
