@@ -2,10 +2,12 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Fix Path to Icon in Linux(#764).
+
 # v2.0.15
 
 * Add Backspace as an Alternative to Delete Objects from a Document(#191).
-* Reduce Angle of Arrowhead Lines(#753)
+* Reduce Angle of Arrowhead Lines(#753).
 
 # v2.0.14
 
