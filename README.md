@@ -46,6 +46,9 @@ has everything you need built-in.
 Windows, Linux, OS X & Firefox Packages are available for download from the
 [Releases Page][releases].
 
+You can also install the Firefox Add-on from the [Mozilla Add-on
+Repository](amo-pkg).
+
 To install the OS X package, unzip the archive and copy the `Pencil.app` folder
 to your `Applications` directory.
 
@@ -182,6 +185,7 @@ This fork is released under GPLv2 like it's parent codebase.
 [xulrunner]: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/XULRunner
 
 [releases]: https://github.com/prikhi/pencil/releases
+[amo-pkg]: https://addons.mozilla.org/en-US/firefox/addon/pencil-prototyping/
 [aur-pkg]: https://aur.archlinux.org/packages/pencil/
 [nix-unstable]: https://nixos.org/nixos/manual/sec-upgrading.html
 [graphics-repository]: https://software.opensuse.org/package/pencil
