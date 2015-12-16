@@ -2,6 +2,7 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Add Support for Firefox/XULrunner v43(#775).
 * Fix Path to Icon in Linux(#764).
 
 # v2.0.15
