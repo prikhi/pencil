@@ -217,6 +217,8 @@
         oncommand="Pencil.activeCanvas.doPaste();"/>
       <command id="deleteSelectedCommand"
         oncommand="Pencil.activeCanvas.deleteSelected();"/>
+      <command id="selectAllCommand"
+        oncommand="Pencil.activeCanvas.selectAll();"/>
 
       <command id="groupCommand"
         oncommand="Pencil.activeCanvas.doGroup();"/>
@@ -411,6 +413,7 @@
         modifiers=""
         keycode="VK_DELETE"/>
       <key id="selectAllKey"
+        command="selectAllCommand"
         modifiers="accel"
         key="A"/>
 
@@ -605,7 +608,7 @@
                 <menuitem class="menuitem-iconic select-all-menu"
                   label="&menu.select.all.label;"
                   key="selectAllKey"
-                  oncommand="Pencil.activeCanvas.selectAll();"/>
+                  command="selectAllCommand"/>
               </menupopup>
           </menu>
           <menu id="view-menu"
