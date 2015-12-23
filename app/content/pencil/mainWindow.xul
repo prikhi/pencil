@@ -219,7 +219,9 @@
         oncommand="Pencil.activeCanvas.deleteSelected();"/>
       <command id="selectAllCommand"
         oncommand="Pencil.activeCanvas.selectAll();"/>
-
+      <command id="duplicateCommand"
+        oncommand="Pencil.activeCanvas.doDuplicate();"/>
+        
       <command id="groupCommand"
         oncommand="Pencil.activeCanvas.doGroup();"/>
 
@@ -416,6 +418,10 @@
         command="selectAllCommand"
         modifiers="accel"
         key="A"/>
+      <key id="duplicateKey"
+        command="duplicateCommand"
+        modifiers="accel"
+        key="D"/>
 
       <key id="groupKey"
         command="groupCommand"
@@ -609,6 +615,10 @@
                   label="&menu.select.all.label;"
                   key="selectAllKey"
                   command="selectAllCommand"/>
+                <menuitem class="menuitem-iconic duplicate-menu"
+                  label="&menu.duplicate.label;"
+                  key="duplicateKey"
+                  command="duplicateCommand"/>
               </menupopup>
           </menu>
           <menu id="view-menu"
