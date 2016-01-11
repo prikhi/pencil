@@ -489,21 +489,52 @@ TargetSet.prototype.makeSameMinHeight = function () {
 
 
 TargetSet.prototype.bringForward = function () {
-    for (i in this.targets) this.targets[i].bringForward();
+    var orderedTargets = this.targets.slice(0).sort(compareTargetDocumentPosition); // slice(0) to create a copy of the array, then sort() to get the correct visual order of appearance.
+    var i = orderedTargets.length - 1;
+    for (; i >=0; i--) { // find the last index which will be actually brought forward, this will prevent an issue where the very last and one-but-last target unintentionally switch position
+        if (i == orderedTargets.length - 1) {
+            if (orderedTargets[i].svg.nextSibling) {
+                break;
+            }
+        } else if (orderedTargets[i].svg.nextSibling != orderedTargets[i + 1].svg) {
+            break;
+        }
+    }
+    for (; i >=0; i--) { // actually bring forward
+        orderedTargets[i].bringForward();
+    }
 };
 TargetSet.prototype.bringToFront = function () {
-    for (i in this.targets) this.targets[i].bringToFront();
+    var orderedTargets = this.targets.slice(0).sort(compareTargetDocumentPosition); // slice(0) to create a copy of the array, then sort() to get the correct visual order of appearance.
+    for (i in orderedTargets) orderedTargets[i].bringToFront(); // bring to front one by one, starting with the first target
 };
 TargetSet.prototype.sendBackward = function () {
-    for (i in this.targets) this.targets[i].sendBackward();
+    var orderedTargets = this.targets.slice(0).sort(compareTargetDocumentPosition); // slice(0) to create a copy of the array, then sort() to get the correct visual order of appearance.
+    var i = 0;
+    for (; i < orderedTargets.length; i++) { // find the first index which will be actually sent backward, this will prevent an issue where the first and second target unintentionally switch position
+        if (i == 0) {
+            if (orderedTargets[i].svg.previousSibling) {
+                break;
+            }
+        } else if (orderedTargets[i].svg.previousSibling != orderedTargets[i - 1].svg) {
+            break;
+        }
+    }
+    for (; i < orderedTargets.length; i++) { // actually send backward
+        orderedTargets[i].sendBackward();
+    }
 };
 TargetSet.prototype.sendToBack = function () {
-    for (i in this.targets) this.targets[i].sendToBack();
+    var orderedTargets = this.targets.slice(0).sort(compareTargetDocumentPosition); // slice(0) to create a copy of the array, then sort() to get the correct visual order of appearance.
+    for (var i = orderedTargets.length - 1; i >=0; i--) { // send to back one by one, starting with the last target
+        orderedTargets[i].sendToBack();
+    }
 };
 TargetSet.prototype.createTransferableData = function () {
     var node = this.canvas.ownerDocument.createElementNS(PencilNamespaces.svg, "g");
-    for (i in this.targets) node.appendChild(this.targets[i].createTransferableData().dataNode);
-
+    var orderedTargets = this.targets.slice(0).sort(compareTargetDocumentPosition); // slice(0) to create a copy of the array, then sort() to get the correct visual order of appearance.
+    for (i in orderedTargets) node.appendChild(orderedTargets[i].createTransferableData().dataNode);
+ 
     return {type: TargetSetXferHelper.MIME_TYPE,
             isSVG: true,
             dataNode: node
@@ -577,3 +608,12 @@ TargetSet.prototype.invalidateOutboundConnections = function () {
         this.targets[t].invalidateOutboundConnections();
     }
 };
+
+function compareTargetDocumentPosition(targetA, targetBb) {
+	var result = targetA.svg.compareDocumentPosition(targetBb.svg);
+	if (result & Node.DOCUMENT_POSITION_PRECEDING)
+		return 1
+	else if (result & Node.DOCUMENT_POSITION_FOLLOWING)
+		return -1;
+	return 0;
+}
