@@ -29,7 +29,7 @@ prep() {
     mkdir -p ./Outputs/Pencil/
 
     echo "Configuring build..."
-    PKG_NAME="evolus-pencil"
+    PKG_NAME="pencil"
     XUL_VERSION='36.0.1'        # The version of XULRunner for Private XREs
 
 
