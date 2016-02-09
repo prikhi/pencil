@@ -73,7 +73,7 @@ main() {
     # Upload AMO Release
     ADDON_ID="pencil@prikhi.github.io"
     ADDON_VERSION="$NEW_VERSION"."$(date +%Y%m%d)"
-    XPI_FILE="./Outputs/Pencil-$NEW_VERSION-firefox.xpi"
+    XPI_PATH="./Outputs/Pencil-$NEW_VERSION-firefox.xpi"
     TOKEN_TIMESTAMP=$(date -u +%s)
     JWT_TOKEN=$(python <<PYTHON
 import jwt, json, random
