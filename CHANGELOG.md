@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.16
+
 * Change the Ubuntu build's package and application names to Pencil
   Prototyping/pencil-prototyping(#781, #792, #764, #499).
 * Change name to Pencil Prototyping for AMO(#749).
