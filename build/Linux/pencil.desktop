@@ -8,6 +8,6 @@ Exec=/usr/bin/pencil %f
 Terminal=false
 Type=Application
 StartupNotify=true
-Icon=/usr/share/pencil/skin/classic/icon.svg
+Icon=/usr/share/evolus-pencil/skin/classic/icon.svg
 Categories=Graphics;2DGraphics;Development;
 MimeType=application/ep;

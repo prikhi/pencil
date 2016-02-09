@@ -1,4 +1,4 @@
-Package: pencil
+Package: {PKG_NAME}
 Version: {VERSION}
 Section: devel
 Priority: optional

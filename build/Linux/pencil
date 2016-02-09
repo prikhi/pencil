@@ -1,13 +1,7 @@
 #!/bin/bash
 
 # Target for application ini
-APP_INI="/usr/share/pencil/application.ini"
-
-# If it does not exist, try legacy one
-if [ ! -e "${APP_INI}" ]; then
-  APP_INI="/usr/share/evolus-pencil/application.ini"
-fi
-
+APP_INI="/usr/share/evolus-pencil/application.ini"
 
 # List of firefox binaries to search
 BINARIES="xulrunner iceweasel firefox firefox-bin"
