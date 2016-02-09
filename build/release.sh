@@ -82,7 +82,7 @@ main() {
     BUILD_FILES=("Pencil-$NEW_VERSION-firefox.xpi"
                  "Pencil-$NEW_VERSION-linux.tar.gz"
                  "Pencil-$NEW_VERSION-linux-pkg.tar.gz"
-                 "pencil-$NEW_VERSION-ubuntu-all.deb"
+                 "pencil-prototyping-$NEW_VERSION-ubuntu-all.deb"
                  "Pencil-$NEW_VERSION-mac-osx.zip"
                  "Pencil-$NEW_VERSION-win32.installer.exe")
 
