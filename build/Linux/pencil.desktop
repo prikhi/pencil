@@ -3,6 +3,7 @@ Encoding=UTF-8
 Name=Pencil
 Comment=Sketching and GUI prototyping tool
 Comment[cs]=Nástroj na kreslení a prototypování GUI
+Comment[es]=Herramienta de esbozado y prototipado de interfaces gráficas de usuario
 Comment[vi_VN]=Công cụ phát thảo giao diện Pencil
 Exec=/usr/bin/pencil %f
 Terminal=false
