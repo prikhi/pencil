@@ -1,5 +1,7 @@
 # Pencil
 
+* **[_DOWNLOAD_ PENCIL][releases]**
+
 [![Documentation Status](https://readthedocs.org/projects/pencil-prototyping/badge/?version=develop)](https://readthedocs.org/projects/pencil-prototyping/?badge=develop)
 [![Join the chat at https://gitter.im/prikhi/pencil](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prikhi/pencil?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -16,11 +18,11 @@ was abandoned around 2013. This fork was started for new development on March
 
 ### Links
 
-* [Downloads][releases]
 * [The documentation][docs]
 * [The discussion forum][google-group]
 * [The original project's homepage][evolus-page]
 * [The original repository][evolus-repo]
+* [Downloads][releases]
 
 #### Extra Stencil Collections
 
