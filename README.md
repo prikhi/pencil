@@ -15,7 +15,6 @@ This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
 13th, 2015.
 
-
 ### Links
 
 * [The documentation][docs]
@@ -34,6 +33,10 @@ was abandoned around 2013. This fork was started for new development on March
 Additional collections are available on the
 [Original Stencil Download Page][evolus-stencil-downloads].
 
+### Known Issues
+
+* The Native UI Stencil Collection does not load or export correctly, you
+  should avoid using this Stencil Collection for now(see #602).
 
 ## Prerequisites
 
