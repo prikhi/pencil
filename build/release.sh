@@ -71,6 +71,7 @@ main() {
 
 
     # Upload AMO Release
+    echo "Uploading XPI to addons.mozilla.org"
     ADDON_ID="pencil@prikhi.github.io"
     ADDON_VERSION="$NEW_VERSION"."$(date +%Y%m%d)"
     XPI_PATH="./Outputs/Pencil-$NEW_VERSION-firefox.xpi"
