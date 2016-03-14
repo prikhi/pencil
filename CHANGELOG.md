@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.17
+
 * Add Support for Palemoon v25 & v26(#743).
 * Modify Ubuntu package to allow installation by all architectures(#794).
 * Add Spanish Translation(#803).
