@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Add Spanish Translation(#803).
+
 # v2.0.16
 
 * Change the Ubuntu build's package and application names to Pencil
