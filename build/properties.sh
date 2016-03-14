@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export NAME='Pencil Prototyping'
-export VERSION='2.0.17'
+export VERSION='2.0.18'
 export BUILD=`date +%Y%m%d`
 export AUTHOR='Pavan Rikhi(pavan.rikhi@gmail.com) and Contributors'
 export MAINTAINER='Pavan Rikhi <pavan.rikhi@gmail.com>'
