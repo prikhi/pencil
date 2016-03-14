@@ -2,6 +2,7 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+* Modify Ubuntu package to allow installation by all architectures(#794).
 * Add Spanish Translation(#803).
 
 # v2.0.16
