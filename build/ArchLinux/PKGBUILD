@@ -9,7 +9,7 @@ url="http://github.com/prikhi/pencil"
 install='pencil.install'
 
 source=("https://github.com/prikhi/pencil/releases/download/v$pkgver/Pencil-$pkgver-linux-pkg.tar.gz")
-sha256sums=('797a8ccfd0acc028032161b89176ca27a942b84f29f9398795c6a37d506680bf')
+sha256sums=('8cce99f00cf725914567868cda2217b0d475e5841d990e287722282bd68a1374')
 depends=('xulrunner')
 optdepends=('pencil-android-lollipop-stencils-git: Android UI'
             'pencil-material-icons-git: Material Design Icons')
