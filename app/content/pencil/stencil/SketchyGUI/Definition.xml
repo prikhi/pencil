@@ -150,9 +150,9 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-                <path id="bg" style="stroke: #FFFFFF; stroke-opacity: 0; stroke-width: 8px; fill: none;"/>
-                <path id="line1" style="stroke-linejoin: round; fill: none;"/>
-            </g>
+    			<path id="bg" style="stroke: #FFFFFF; stroke-opacity: 0; stroke-width: 8px; fill: none;"/>
+    			<path id="line1" style="stroke-linejoin: round; fill: none;"/>
+    		</g>
         </p:Content>
     </Shape>
     <Shortcut displayName="Horizontal Line" icon="Icons/line.png" to="line">
@@ -216,9 +216,9 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-                <path id="line1" style="stroke-linejoin: round;"/>
-            </g>
-            <text id="text"/>
+    			<path id="line1" style="stroke-linejoin: round;"/>
+    		</g>
+    		<text id="text"/>
         </p:Content>
     </Shape>
     <Shortcut displayName="Password Field" icon="Icons/password-field.png" to="textbox">
@@ -519,9 +519,9 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-                <path id="line1" style="stroke-linejoin: round;"/>
-            </g>
-            <text id="text"/>
+    			<path id="line1" style="stroke-linejoin: round;"/>
+    		</g>
+    		<text id="text"/>
         </p:Content>
     </Shape>
     <Shape id="checkbox" displayName="Checkbox" icon="Icons/checkbox.png">
@@ -579,8 +579,8 @@
                     style="fill:none;"
                     d="m 5.0048894,5.0121168 1.88908,4.8033 3.3587596,-3.18198 c 2.28541,-4.02289 3.74045,-4.86056 5.126527,-8.83883"
                     id="cbTick"/>
-            </g>
-            <text id="text"/>
+    		</g>
+    		<text id="text"/>
         </p:Content>
     </Shape>
     <Shortcut displayName="Checked Checkbox" icon="Icons/checked-checkbox.png" to="checkbox">
@@ -743,8 +743,8 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-                <path id="line1" style="fill:#000000;fill-opacity:0;stroke-miterlimit:4;stroke-linejoin: round;"/>
-            </g>
+    			<path id="line1" style="fill:#000000;fill-opacity:0;stroke-miterlimit:4;stroke-linejoin: round;"/>
+    		</g>
             <foreignObject x="0" y="0" width="200" height="150" id="text">
                 <div xmlns="http://www.w3.org/1999/xhtml"></div>
             </foreignObject>
@@ -1556,7 +1556,7 @@ MenuItem]]></Property>
             </foreignObject>
         </p:Content>
     </Shape>
-    
+
     <Shape id="Lightbox" displayName="Lightbox" icon="Icons/lightbox.png">
         <Properties>
             <PropertyGroup>
@@ -1588,7 +1588,7 @@ MenuItem]]></Property>
                             skTo($box.w/2 - $box.w*2, $box.h/2 + $box.h*2),
                             z
                         ]
-                    } else { 
+                    } else {
                         []
                     }
                 </D>
