@@ -150,9 +150,9 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-    			<path id="bg" style="stroke: #FFFFFF; stroke-opacity: 0; stroke-width: 8px; fill: none;"/>
-    			<path id="line1" style="stroke-linejoin: round; fill: none;"/>
-    		</g>
+                <path id="bg" style="stroke: #FFFFFF; stroke-opacity: 0; stroke-width: 8px; fill: none;"/>
+                <path id="line1" style="stroke-linejoin: round; fill: none;"/>
+            </g>
         </p:Content>
     </Shape>
     <Shortcut displayName="Horizontal Line" icon="Icons/line.png" to="line">
@@ -216,9 +216,9 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-    			<path id="line1" style="stroke-linejoin: round;"/>
-    		</g>
-    		<text id="text"/>
+                <path id="line1" style="stroke-linejoin: round;"/>
+            </g>
+            <text id="text"/>
         </p:Content>
     </Shape>
     <Shortcut displayName="Password Field" icon="Icons/password-field.png" to="textbox">
@@ -519,9 +519,9 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-    			<path id="line1" style="stroke-linejoin: round;"/>
-    		</g>
-    		<text id="text"/>
+                <path id="line1" style="stroke-linejoin: round;"/>
+            </g>
+            <text id="text"/>
         </p:Content>
     </Shape>
     <Shape id="checkbox" displayName="Checkbox" icon="Icons/checkbox.png">
@@ -579,8 +579,8 @@
                     style="fill:none;"
                     d="m 5.0048894,5.0121168 1.88908,4.8033 3.3587596,-3.18198 c 2.28541,-4.02289 3.74045,-4.86056 5.126527,-8.83883"
                     id="cbTick"/>
-    		</g>
-    		<text id="text"/>
+            </g>
+            <text id="text"/>
         </p:Content>
     </Shape>
     <Shortcut displayName="Checked Checkbox" icon="Icons/checked-checkbox.png" to="checkbox">
@@ -743,8 +743,8 @@
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <g id="rect">
-    			<path id="line1" style="fill:#000000;fill-opacity:0;stroke-miterlimit:4;stroke-linejoin: round;"/>
-    		</g>
+                <path id="line1" style="fill:#000000;fill-opacity:0;stroke-miterlimit:4;stroke-linejoin: round;"/>
+            </g>
             <foreignObject x="0" y="0" width="200" height="150" id="text">
                 <div xmlns="http://www.w3.org/1999/xhtml"></div>
             </foreignObject>
@@ -1548,6 +1548,107 @@ MenuItem]]></Property>
             </For>
         </Behaviors>
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+            <path  id="body" style="fill:white;stroke:black"/>
+            <path  id="menu" style="fill:white;stroke:black"/>
+            <path  id="button" style="fill:white;stroke:black"/>
+            <foreignObject x="0" y="0" width="200" height="100" id="text">
+                <div xmlns="http://www.w3.org/1999/xhtml"></div>
+            </foreignObject>
+        </p:Content>
+    </Shape>
+    
+    <Shape id="Lightbox" displayName="Lightbox" icon="Icons/lightbox.png">
+        <Properties>
+            <PropertyGroup>
+                 <Property name="withFader" displayName="With faded Background" type="Bool">true</Property>
+                <Property name="fader" displayName="Size" type="Dimension">600,400</Property>
+            </PropertyGroup>
+            <PropertyGroup>
+                <Property name="box" displayName="Size" type="Dimension">300,200</Property>
+                <Property name="withCloseButton" displayName="With Close Button" type="Bool">true</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Background Color" type="Color"><E>$$fillColor</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Fader Color">
+                <Property name="faderColor" displayName="Fader Color" type="Color"><E>Color.fromString("#00000080")</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$strokeColor</E></Property>
+                <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="lbox">
+                <D>
+                    if($withFader.value) {
+                        [
+                            sk($box.w/2 - $box.w*2, $box.h/2 - $box.h*2,   $box.w/2 + $box.w*2, $box.h/2 - $box.h*2),
+                            skTo($box.w/2 + $box.w*2, $box.h/2 + $box.h*2),
+                            skTo($box.w/2 - $box.w*2, $box.h/2 + $box.h*2),
+                            z
+                        ]
+                    } else { 
+                        []
+                    }
+                </D>
+                <Fill>Color.fromString("#00000000")</Fill>
+                <StrokeStyle>0</StrokeStyle>
+                <Fill>$faderColor</Fill>
+            </For>
+            <For ref="body">
+                <D>
+                    [
+                        sk(0, 0, $box.w, 0),
+                        skTo($box.w , $box.h),
+                        skTo(0 , $box.h),
+                        z
+                    ]
+                </D>
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+                <Fill>$fillColor</Fill>
+            </For>
+            <For ref="menu">
+                <D>
+                    [
+                        sk(0, 0, $box.w, 0),
+                        skTo($box.w , 28),
+                        skTo(0, 28),
+                        z
+                    ]
+                </D>
+                <StrokeColor>Color.fromString("#ffffff00")</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+                <Fill>Color.fromString("#ffffff00")</Fill>
+            </For>
+            <For ref="button">
+                <D>
+                    var a = 40;
+                    var padding = 4;
+                    size = a - 2 * padding;
+                    var arr = new Array();
+                    var i = 1;
+                    var space = 5;
+
+                    //close button
+                    if($withCloseButton.value)
+                    {
+                        arr.push(sk( $box.w - size - padding, padding, $box.w - padding, padding ));
+                        arr.push(skTo($box.w - padding, a - padding));
+                        arr.push(skTo($box.w - size - padding, a - padding));
+                        arr.push(z);
+                        arr.push(sk( $box.w - size - padding + 4, padding + 4, $box.w - padding - 4, a - padding - 4 ));
+                        arr.push(sk( $box.w - padding - 4, padding + 4, $box.w - padding - size + 4, a - padding - 4 ));
+                        i++;
+                    }
+                    arr
+                </D>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+        </Behaviors>
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+            <path  id="lbox" style="fill:white;stroke:black"/>
             <path  id="body" style="fill:white;stroke:black"/>
             <path  id="menu" style="fill:white;stroke:black"/>
             <path  id="button" style="fill:white;stroke:black"/>
