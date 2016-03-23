@@ -1,4 +1,6 @@
 Package: {PKG_NAME}
+Replaces: evoluspencil (<< 2.0-6~)
+Breaks: evoluspencil (<< 2.0-6~)
 Version: {VERSION}
 Section: devel
 Priority: optional
