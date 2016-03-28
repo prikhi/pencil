@@ -2183,6 +2183,175 @@ MenuItem]]></Property>
             <text id="text"/>
         </p:Content>
     </Shape>
+
+    <Shape id="tooltip" displayName="Tooltip" icon="Icons/tooltip.png">
+        <Properties>
+            <PropertyGroup>
+                <Property name="box" displayName="Box" type="Dimension">90,25</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Background Color" type="Color"><E>$$textColor</E></Property>
+                <Property name="pointto" displayName="Point to" type="PlainText" p:readonly="true">top</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$strokeColor</E></Property>
+                <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Tooltip]]></Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$textFont</E></Property>
+                <Property name="textColor" displayName="Text Color" type="Color"><E>$$fillColor</E></Property>
+                <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+        </Properties>
+
+        <Behaviors>
+		    <For ref="text">
+			    <Font>$textFont</Font>
+			    <Fill>$textColor</Fill>
+			    <Color>$textColor</Color>
+			    <PlainTextContent>
+				    <Arg>$textContent</Arg>
+				    <Arg>Bound.fromBox($box, 6, 3)</Arg>
+				    <Arg>$textAlign</Arg>
+			    </PlainTextContent>
+		    </For>
+            <For ref="line1">
+                <D>
+                    [
+                        sk(0, 0, $box.w, 0),
+                        skTo($box.w, $box.h),
+                        skTo(0, $box.h),
+                        skTo(0, 0),
+                        z
+                    ]
+                </D>
+             </For>
+            <For ref="spike">
+                <D>
+                    var a = 8;
+                    var arr = new Array();
+
+                    if($pointto.value == "topleft")
+                    {
+                        arr.push(sk(a, 2, 2*a, -a));
+                        arr.push(skTo(3*a, 2));
+                        arr.push(skTo(a, 2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "top")
+                    {
+                        arr.push(sk($box.w/2-a, 2, $box.w/2, -a));
+                        arr.push(skTo($box.w/2+a, 2));
+                        arr.push(skTo($box.w/2-a, 2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "topright")
+                    {
+                        arr.push(sk($box.w-a, 2, $box.w-2*a, -a));
+                        arr.push(skTo($box.w-3*a, 2));
+                        arr.push(skTo($box.w-a, 2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "right")
+                    {
+                        arr.push(sk($box.w-2, $box.h/2-a, $box.w+a, $box.h/2));
+                        arr.push(skTo($box.w-2, $box.h/2+a));
+                        arr.push(skTo($box.w-2, $box.h/2-a));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "bottomright")
+                    {
+                        arr.push(sk($box.w-a, $box.h-2, $box.w-2*a, $box.h+a));
+                        arr.push(skTo($box.w-3*a, $box.h-2));
+                        arr.push(skTo($box.w-a, $box.h-2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "bottom")
+                    {
+                        arr.push(sk($box.w/2 - a, $box.h-2, $box.w/2, $box.h+a));
+                        arr.push(skTo($box.w/2 + a, $box.h-2));
+                        arr.push(skTo($box.w/2 - a, $box.h-2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "bottomleft")
+                    {
+                        arr.push(sk(a, $box.h-2, 2*a, $box.h+a));
+                        arr.push(skTo(3*a, $box.h-2));
+                        arr.push(skTo(a, $box.h-2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "left")
+                    {
+                        arr.push(sk(2, $box.h/2-a, -a, $box.h/2));
+                        arr.push(skTo(2, $box.h/2+a));
+                        arr.push(skTo(2, $box.h/2-a));
+                        arr.push(z);
+                    }
+
+                    arr
+                </D>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+        </Behaviors>
+
+        <Actions>
+            <Action id="topleft" displayName="Point to Top-Left">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "topleft"); ]]>
+                </Impl>
+            </Action>
+            <Action id="top" displayName="Point to Top">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "top"); ]]>
+                </Impl>
+            </Action>
+            <Action id="topright" displayName="Point to Top-Right">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "topright"); ]]>
+                </Impl>
+            </Action>
+            <Action id="right" displayName="Point to Right">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "right"); ]]>
+                </Impl>
+            </Action>
+            <Action id="bottomright" displayName="Point to Bottom-Right">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "bottomright"); ]]>
+                </Impl>
+            </Action>
+            <Action id="bottom" displayName="Point to Bottom">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "bottom"); ]]>
+                </Impl>
+            </Action>
+            <Action id="bottomleft" displayName="Point to Bottom-Left">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "bottomleft"); ]]>
+                </Impl>
+            </Action>
+            <Action id="left" displayName="Point to Left">
+                <Impl>
+                        <![CDATA[ this.setProperty("pointto", "left"); ]]>
+                </Impl>
+            </Action>
+        </Actions>
+
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+            <path id="line1" style="stroke-linejoin: round;"/>
+            <path id="spike" style="fill:black;stroke:black"/>
+    		<text id="text"/>
+        </p:Content>
+    </Shape>
+
     <Shape id="Pointer" displayName="Pointer/ Landmark" icon="Icons/pointer.png">
         <Properties>
             <PropertyGroup name="Common">
