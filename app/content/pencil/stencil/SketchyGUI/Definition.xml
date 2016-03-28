@@ -2191,7 +2191,10 @@ MenuItem]]></Property>
             </PropertyGroup>
             <PropertyGroup name="Background">
                 <Property name="fillColor" displayName="Background Color" type="Color"><E>$$textColor</E></Property>
-                <Property name="pointto" displayName="Point to" type="PlainText" p:readonly="true">top</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Style">
+                <Property name="pointto" displayName="Point to" type="Enum"
+				    p:enumValues="['topleft|Top-Left', 'top|Top', 'topright|Top-Right', 'right|Right', 'bottomright|Bottom-Right', 'bottom|Bottom', 'bottomleft|Bottom-Left', 'left|Left']">top</Property>
             </PropertyGroup>
             <PropertyGroup name="Border">
                 <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$strokeColor</E></Property>
@@ -2302,49 +2305,6 @@ MenuItem]]></Property>
             </For>
         </Behaviors>
 
-        <Actions>
-            <Action id="topleft" displayName="Point to Top-Left">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "topleft"); ]]>
-                </Impl>
-            </Action>
-            <Action id="top" displayName="Point to Top">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "top"); ]]>
-                </Impl>
-            </Action>
-            <Action id="topright" displayName="Point to Top-Right">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "topright"); ]]>
-                </Impl>
-            </Action>
-            <Action id="right" displayName="Point to Right">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "right"); ]]>
-                </Impl>
-            </Action>
-            <Action id="bottomright" displayName="Point to Bottom-Right">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "bottomright"); ]]>
-                </Impl>
-            </Action>
-            <Action id="bottom" displayName="Point to Bottom">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "bottom"); ]]>
-                </Impl>
-            </Action>
-            <Action id="bottomleft" displayName="Point to Bottom-Left">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "bottomleft"); ]]>
-                </Impl>
-            </Action>
-            <Action id="left" displayName="Point to Left">
-                <Impl>
-                        <![CDATA[ this.setProperty("pointto", "left"); ]]>
-                </Impl>
-            </Action>
-        </Actions>
-
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <path id="line1" style="stroke-linejoin: round;"/>
             <path id="spike" style="fill:black;stroke:black"/>
@@ -2354,9 +2314,12 @@ MenuItem]]></Property>
 
     <Shape id="Pointer" displayName="Pointer/ Landmark" icon="Icons/pointer.png">
         <Properties>
-            <PropertyGroup name="Common">
+            <PropertyGroup>
                 <Property name="box" type="Dimension" p:lockRatio="true">38,28</Property>
-                <Property name="angle" displayName="Rotation Angle" type="PlainText" p:readonly="true">45</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Style">
+                <Property name="angle" displayName="Rotation Angle" type="Enum"
+				    p:enumValues="['0|0', '45|45', '90|90', '135|135', '180|180', '225|225', '270|270', '315|315']">45</Property>
             </PropertyGroup>
             <PropertyGroup name="Background">
                 <Property name="fillColor" displayName="Color" type="Color">
@@ -2422,49 +2385,6 @@ MenuItem]]></Property>
                 </PlainTextContent>
             </For>
         </Behaviors>
-
-        <Actions>
-            <Action id="rot0" displayName="Rotation Angle 0">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 0); ]]>
-                </Impl>
-            </Action>
-            <Action id="rot45" displayName="Rotation Angle 45">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 45); ]]>
-                </Impl>
-            </Action>
-            <Action id="rot90" displayName="Rotation Angle 90">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 90); ]]>
-                </Impl>
-            </Action>
-            <Action id="rot135" displayName="Rotation Angle 135">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 135); ]]>
-                </Impl>
-            </Action>
-            <Action id="rot180" displayName="Rotation Angle 180">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 180); ]]>
-                </Impl>
-            </Action>
-            <Action id="rot225" displayName="Rotation Angle 225">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 225); ]]>
-                </Impl>
-            </Action>
-            <Action id="rot270" displayName="Rotation Angle 270">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 270); ]]>
-                </Impl>
-            </Action>
-            <Action id="rot315" displayName="Rotation Angle 315">
-                <Impl>
-                        <![CDATA[ this.setProperty("angle", 315); ]]>
-                </Impl>
-            </Action>
-        </Actions>
 
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <path id="path" style="stroke-linejoin:round;"
