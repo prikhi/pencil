@@ -8,6 +8,10 @@
 #       ./release.sh 2.0.11
 
 main() {
+    # AMO Credentials
+    read -p "Enter your AMO JWT Issuer: " AMO_API_KEY
+    read -s -p "Enter your AMO JWT Secret: " AMO_API_SECRET
+    echo ""
     # Github Credentials
     read -p "Enter your Github username: " GITHUB_USER
     read -s -p "Enter your Github password: " GITHUB_PASS
@@ -66,6 +70,29 @@ main() {
 
 
 
+    # Upload AMO Release
+    echo "Uploading XPI to addons.mozilla.org"
+    ADDON_ID="pencil@prikhi.github.io"
+    ADDON_VERSION="$NEW_VERSION"."$(date +%Y%m%d)"
+    XPI_PATH="./Outputs/Pencil-$NEW_VERSION-firefox.xpi"
+    TOKEN_TIMESTAMP=$(date -u +%s)
+    JWT_TOKEN=$(python <<PYTHON
+import jwt, json, random
+data = {
+    'iss': "${AMO_API_KEY}",
+    'jti': str(random.random()),
+    'iat': ${TOKEN_TIMESTAMP},
+    'exp': ${TOKEN_TIMESTAMP} + 59,
+}
+print(jwt.encode(data, "${AMO_API_SECRET}", algorithm='HS256').decode())
+PYTHON
+    )
+    curl "https://addons.mozilla.org/api/v3/addons/${ADDON_ID}/versions/${ADDON_VERSION}/"  \
+        -g -s -XPUT --form "upload=@${XPI_PATH}"   \
+        -H "Authorization: JWT ${JWT_TOKEN}"
+
+
+
     # Create Github Release & Upload Packages
     BASE_CMD="curl -u $GITHUB_USER:$GITHUB_PASS "
 
@@ -82,7 +109,7 @@ main() {
     BUILD_FILES=("Pencil-$NEW_VERSION-firefox.xpi"
                  "Pencil-$NEW_VERSION-linux.tar.gz"
                  "Pencil-$NEW_VERSION-linux-pkg.tar.gz"
-                 "pencil-$NEW_VERSION-ubuntu-all.deb"
+                 "pencil-prototyping-$NEW_VERSION-ubuntu-all.deb"
                  "Pencil-$NEW_VERSION-mac-osx.zip"
                  "Pencil-$NEW_VERSION-win32.installer.exe")
 

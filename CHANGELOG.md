@@ -2,8 +2,28 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.18
+
+* Fix Build.
+
+# v2.0.17
+
+* Add Support for Palemoon v25 & v26(#743).
+* Modify Ubuntu package to allow installation by all architectures(#794).
+* Add Spanish Translation(#803).
+
+# v2.0.16
+
+* Change the Ubuntu build's package and application names to Pencil
+  Prototyping/pencil-prototyping(#781, #792, #764, #499).
+* Change name to Pencil Prototyping for AMO(#749).
+* Add Support for Firefox/XULrunner v43(#775).
+* Fix Path to Icon in Linux(#764).
+
+# v2.0.15
+
 * Add Backspace as an Alternative to Delete Objects from a Document(#191).
-* Reduce Angle of Arrowhead Lines(#753)
+* Reduce Angle of Arrowhead Lines(#753).
 
 # v2.0.14
 

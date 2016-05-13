@@ -1,0 +1,482 @@
+
+<!-- Dialog Buttons -->
+<!ENTITY button.cancel.label.close                "Cerrar">
+<!ENTITY button.cancel.label.cancel               "Cancelar">
+<!ENTITY button.accept.label.apply                "Aplicar">
+
+<!-- chrome://pencil/content/UI/AboutDialog.xul -->
+<!ENTITY dialog.about.pencil.title               "Acerca de Pencil">
+<!ENTITY image.click.to.donate.alt               "Haga clic para donar">
+<!ENTITY label.you.can.help.us.value             "Pencil es Software Libre (GPL), pero si le resulta útil, puede apoyar su desarrollo :)">
+<!ENTITY image.you.can.help.us.tooltiptext       "Usted puede ayudarnos a hacer Pencil aún mejor. Considere hacer una pequeña donación!">
+<!ENTITY label.copyright.value                   "Copyright (c) 2012 Evolus Co., Ltd y colaboradores">
+<!ENTITY label.pencil.value                      "Pencil">
+<!ENTITY label.version.value                     "versión">
+<!ENTITY label.build.value                       "construir">
+<!ENTITY tab.credits.label                       "Créditos">
+<!ENTITY tab.authors.label                       "Autores:">
+<!ENTITY tab.maintainers.label                   "Mantenedores:">
+<!ENTITY tab.contributors.label                  "Colaboradores:">
+<!ENTITY tab.githubcontributors.label            "Colaboradores de Github">
+<!ENTITY tab.license.label                       "Licencia">
+
+<!-- chrome://pencil/content/UI/CollectionPane.xbl -->
+<!ENTITY menu.about.label                        "Acerca de...">
+<!ENTITY menu.collection.settings.label          "Configuración de la colección...">
+<!ENTITY menu.hide.this.collection.label         "Ocultar esta colección">
+<!ENTITY menu.install.new.collection.label       "Instalar nueva colección...">
+<!ENTITY menu.show.hidden.collections.label      "Mostrar colecciones ocultas">
+<!ENTITY menu.uninstall.this.collection.label    "Desinstalar esta colección">
+<!ENTITY textbox.shape.filter.emptytext          "Filtro de forma... (Ctrl + F)">
+
+<!-- chrome://pencil/content/UI/Window.xul -->
+<!ENTITY button.evaluate.label                   "Evaluar...">
+<!ENTITY menu.about.label                        "Acerca de...">
+<!ENTITY menu.advanced.config.label              "Configuraciones avanzadas">
+<!ENTITY menu.align.bottom.label                 "Alinear abajo">
+<!ENTITY menu.align.center.label                 "Alinear al centro">
+<!ENTITY menu.align.left.label                   "Alinear a la izquierda">
+<!ENTITY menu.align.middle.label                 "Alinear al medio">
+<!ENTITY menu.align.right.label                  "Alinear a la derecha">
+<!ENTITY menu.align.top.label                    "Alinear arriba">
+<!ENTITY menu.clipart.browser.label              "Navegador de imágenes prediseñadas...">
+<!ENTITY menu.collection.pane.label              "Panel de colección">
+<!ENTITY menu.copy.label                         "Copiar">
+<!ENTITY menu.cut.label                          "Cortar">
+<!ENTITY menu.document.accesskey                 "D">
+<!ENTITY menu.delete.label                       "Eliminar">
+<!ENTITY menu.document.label                     "Documento">
+<!ENTITY menu.dom.inspector.label                "Inspector DOM">
+<!ENTITY menu.duplicate.label                    "Duplicar">
+<!ENTITY menu.edit.accesskey                     "E">
+<!ENTITY menu.edit.label                         "Editar">
+<!ENTITY menu.edit.page.notes.label              "Editar notas de página...">
+<!ENTITY menu.exit.label                         "Salir">
+<!ENTITY menu.export.document.label              "Exportar documento...">
+<!ENTITY menu.export.page.as.png.label           "Exportar página como PNG...">
+<!ENTITY menu.export.sel.as.png.label            "Exportar selección como PNG...">
+<!ENTITY menu.print.document.label               "Imprimir...">
+<!ENTITY menu.goto.label                         "Ir a...">
+<!ENTITY menu.group.label                        "Agrupar">
+<!ENTITY menu.help.accesskey                     "U">
+<!ENTITY menu.help.label                         "Ayuda">
+<!ENTITY menu.hide.heavy.elements.label          "Ocultar elementos pesados">
+<!ENTITY menu.install.new.collection.label       "Instalar nueva colección...">
+<!ENTITY menu.make.same.height.label             "Hacer misma altura">
+<!ENTITY menu.make.same.mheight.label            "Hacer misma altura mínima">
+<!ENTITY menu.make.same.mwidth.label             "Hacer mismo ancho mínimo">
+<!ENTITY menu.make.same.width.label              "Hacer mismo ancho">
+<!ENTITY menu.manage.template.label              "Gestionar plantillas de exportación...">
+<!ENTITY menu.move.left.label                    "Mover a la izquierda">
+<!ENTITY menu.move.right.label                   "Mover a la derecha">
+<!ENTITY menu.new.document.label                 "Nuevo documento">
+<!ENTITY menu.new.page.label                     "Nueva página...">
+<!ENTITY menu.new.window.label                   "Nueva ventana">
+<!ENTITY menu.open.label                         "Abrir...">
+<!ENTITY menu.options.label                      "Opciones...">
+<!ENTITY menu.paste.label                        "Pegar">
+<!ENTITY menu.properties.label                   "Propiedades...">
+<!ENTITY menu.recent.documents.label             "Documentos recientes">
+<!ENTITY menu.redo.label                         "Rehacer">
+<!ENTITY menu.re.order.pages.label               "Reordenar páginas...">
+<!ENTITY menu.shape.accesskey                    "F">
+<!ENTITY menu.same.horiz.space.label             "Mismo espacio horizontal">
+<!ENTITY menu.same.vert.space.label              "Mismo espacio vertical">
+<!ENTITY menu.save.as.label                      "Guardar como...">
+<!ENTITY menu.save.label                         "Guardar">
+<!ENTITY menu.select.all.label                   "Seleccionar todo">
+<!ENTITY menu.settings.label                     "Configuración">
+<!ENTITY menu.shape.label                        "Forma">
+<!ENTITY menu.stencil.generator.label            "Generador de plantilla...">
+<!ENTITY menu.tools.accesskey                    "H">
+<!ENTITY menu.settings.accesskey                 "t">
+<!ENTITY menu.tools.label                        "Herramientas">
+<!ENTITY menu.undo.label                         "Deshacer">
+<!ENTITY menu.ungroup.label                      "Desagrupar">
+<!ENTITY menu.view.accesskey                     "V">
+<!ENTITY menu.view.label                         "Ver">
+<!ENTITY pencil.title                            "Pencil">
+<!ENTITY tab.collections.label                   "Colecciones">
+<!ENTITY tab.my.stuffs.label                     "Mis cosas">
+<!ENTITY toolbar.align.bottom.label              "Alinear abajo">
+<!ENTITY toolbar.align.bottom.tooltiptext        "Alinear abajo">
+<!ENTITY toolbar.align.center.label              "Alinear al centro">
+<!ENTITY toolbar.align.center.tooltiptext        "Alinear al centro">
+<!ENTITY toolbar.align.left.label                "Alinear a la izquierda">
+<!ENTITY toolbar.align.left.tooltiptext          "Alinear a la izquierda">
+<!ENTITY toolbar.align.middle.label              "Alinear al medio">
+<!ENTITY toolbar.align.middle.tooltiptext        "Alinear al medio">
+<!ENTITY toolbar.align.right.label               "Alinear a la derecha">
+<!ENTITY toolbar.align.right.tooltiptext         "Alinear a la derecha">
+<!ENTITY toolbar.align.top.label                 "Alinear arriba">
+<!ENTITY toolbar.align.top.tooltiptext           "Alinear arriba">
+<!ENTITY toolbar.bring.forward.label             "Traer adelante">
+<!ENTITY toolbar.bring.forward.tooltiptext       "Traer adelante">
+<!ENTITY toolbar.bring.to.front.label            "Traer al frente">
+<!ENTITY toolbar.bring.to.front.tooltiptext      "Traer al frente">
+<!ENTITY toolbar.cancel.zoom.label               "Cancelar el zoom">
+<!ENTITY toolbar.cancel.zooming.tooltiptext      "Cancelar el zoom">
+<!ENTITY toolbar.copy.format.tooltiptext         "Copiar formato de forma">
+<!ENTITY toolbar.create.doc.tooltiptext          "Crear nuevo documento">
+<!ENTITY toolbar.format.painter.label            "Copiar formato">
+<!ENTITY toolbar.make.same.horiz.tooltip         "Hacer mismo espacio horizontal">
+<!ENTITY toolbar.make.same.vert.tooltip          "Hacer mismo espacio vertical">
+<!ENTITY toolbar.new.document.label              "Nuevo documento">
+<!ENTITY toolbar.new.page.label                  "Nueva página...">
+<!ENTITY toolbar.open.doc.tooltiptext            "Abrir un documento existente">
+<!ENTITY toolbar.open.label                      "Abrir">
+<!ENTITY toolbar.save.label                      "Guardar">
+<!ENTITY toolbar.save.doc.as.tooltiptext         "Guardar este documento como ">
+<!ENTITY toolbar.save.doc.tooltiptext            "Guardar este documento">
+<!ENTITY toolbar.send.backward.label             "Enviar atrás">
+<!ENTITY toolbar.send.backward.tooltip           "Enviar atrás">
+<!ENTITY toolbar.send.to.back.label              "Enviar al fondo">
+<!ENTITY toolbar.send.to.back.tooltiptext        "Enviar al fondo">
+<!ENTITY toolbar.zoom.in.label                   "Ampliar">
+<!ENTITY toolbar.zoom.in.tooltiptext             "Ampliar">
+<!ENTITY toolbar.zoom.out.label                  "Reducir">
+<!ENTITY toolbar.zoom.out.tooltiptext            "Reducir">
+<!ENTITY toolbar.alignment.label                 "Alineación">
+<!ENTITY toolbar.alignment.tooltip               "Cambiar alineación">
+<!ENTITY toolbar.location.size.label             "Ubicación &amp; tamaño">
+<!ENTITY toolbar.location.size.tooltip           "Cambiar ubicación &amp; tamaño">
+
+
+<!ENTITY toolbar.undo.tooltiptext                "Deshacer">
+<!ENTITY toolbar.redo.tooltiptext                "Rehacer">
+<!ENTITY toolbar.cut.tooltiptext                 "Cortar">
+<!ENTITY toolbar.copy.tooltiptext                "Copiar">
+<!ENTITY toolbar.paste.tooltiptext               "Pegar">
+<!ENTITY toolbar.delete.tooltiptext              "Eliminar">
+<!ENTITY toolbar.export.document.tooltiptext     "Exportar documento">
+
+<!ENTITY toolbar.menubar.name                    "Barra de menús">
+<!ENTITY toolbar.navbar.name                     "Barra de herramientas principal">
+
+
+<!-- chrome://pencil/content/UI/ClipartBrowser.xul -->
+<!ENTITY clipart.browsing.title                  "Navegación por imágenes prediseñadas">
+<!ENTITY input.scale.image.value                 "Escalar imagen a un tamaño más pequeño antes de insertar.">
+<!ENTITY span.prev.results.value                 "&#171; Resultados anteriores">
+<!ENTITY span.more.results.value                 "Más resultados &#187;">
+<!ENTITY span.show.value                         "Mostrar">
+<!ENTITY span.results.per.page.value             "resultados por página">
+
+<!-- chrome://pencil/content/UI/ClipartBrowserPane.xbl -->
+<!ENTITY menu.copy.image.label                   "Copiar imagen">
+<!ENTITY menu.insert.image.label                 "Insertar imagen">
+
+<!-- chrome://pencil/content/UI/ColorToolOverlay.xul -->
+<!ENTITY label.color.value                       "Color:">
+<!ENTITY colorbutton.change.bgrfill.tooltip      "Cambiar el color de relleno del fondo">
+<!ENTITY colorbutton.change.stroke.tooltip       "Cambiar el color del trazo">
+<!ENTITY colorbutton.change.text.tooltip         "Cambiar el color del texto">
+<!ENTITY colorbutton.change.text.hili.tooltip    "Cambiar el color de resaltado del texto">
+
+<!-- chrome://pencil/content/UI/ExportTemplateManagementDialog.xul -->
+<!ENTITY export.template.management.title        "Gestión de plantillas de exportación ">
+<!ENTITY label.templates.for.value               "Plantillas para:">
+<!ENTITY menu.exporting.to.html.label            "Exportación a documentos HTML">
+<!ENTITY menu.exporting.to.print.label           "Impresión y exportación a PDF">
+<!ENTITY menu.exporting.to.text.label            "Exportación a documentos de texto (*.odt)">
+<!ENTITY treecol.author.label                    "Autor">
+<!ENTITY treecol.information.label               "Información">
+<!ENTITY treecol.template.label                  "Plantilla">
+<!ENTITY button.extra1.uninstall                 "Desinstalar">
+<!ENTITY button.extra2.install.new.template      "Instalar nueva plantilla...">
+<!ENTITY button.cancel.close                     "Cerrar">
+
+<!-- chrome://pencil/content/UI/ExportWizard.xul -->
+<!ENTITY button.browse.label                     "Examinar...">
+<!ENTITY checkbox.copy.links.bgr.label           "Copiar enlaces de páginas de fondo">
+<!ENTITY checkbox.copy.links.accesskey           "n">
+<!ENTITY document.export.wizard.title            "Asistente para exportación de documentos">
+<!ENTITY label.2.of.3.pages.selected.value       "2 de 3 páginas seleccionadas.">
+<!ENTITY label.destination.value                 "Destino:">
+<!ENTITY label.other.options.value               "Otras opciones:">
+<!ENTITY label.output.format.value               "Formato de salida:">
+<!ENTITY label.pages.to.export.value             "Páginas a exportar:">
+<!ENTITY label.template.value                    "Plantilla:">
+<!ENTITY label.manage.template.value             "Gestionar plantillas...">
+<!ENTITY radio.all.pages.accesskey               "T">
+<!ENTITY radio.all.pages.except.bgr.label        "Todas las páginas, excepto los fondos">
+<!ENTITY radio.all.pages.label                   "Todas las páginas en el documento">
+<!ENTITY radio.all.except.accesskey              "e">
+<!ENTITY radio.only.pages.accesskey              "S">
+<!ENTITY radio.only.pages.label                  "Sólo las siguientes páginas:">
+<!ENTITY wizard.select.output.description        "Seleccione el formato de salida">
+<!ENTITY wizard.select.export.description        "Seleccione las páginas que desea exportar">
+<!ENTITY wizard.select.options.description       "Seleccione la plantilla y las opciones de configuración">
+
+<!-- chrome://pencil/content/UI/Firefox-Overlay.xul -->
+<!ENTITY menu.pencil.sketching.label             "Esbozado Pencil...">
+<!ENTITY menu.send.page.to.pencil.label          "Enviar página al documento Pencil...">
+
+<!-- chrome://pencil/content/UI/PageDetailDialog.xul -->
+<!ENTITY checkbox.dim.background.label           "Fondo oscuro">
+<!ENTITY dialog.new.page.title                   "Nueva página">
+<!ENTITY label.pixels.value                      "(píxeles)">
+<!ENTITY label.background.value                  "Fondo">
+<!ENTITY label.create.new.page.value             "Crear nueva página">
+<!ENTITY label.page.size.value                   "Tamaño de la página">
+<!ENTITY label.page.title.value                  "Título de la página">
+<!ENTITY label.enter.page.prop.value             "Por favor, introduzca las propiedades de la página">
+<!ENTITY menu.960.web.page.label                 "Página web 960 (960x600)">
+<!ENTITY menu.960.web.page.long.label            "Página web 960 - larga (960x900)">
+<!ENTITY menu.a4.at.300dpi.label                 "A4 a 300dpi">
+<!ENTITY menu.a4.at.90dpi.label                  "A4 a 90dpi">
+<!ENTITY menu.background.color.label             "Color de fondo">
+<!ENTITY menu.compact.web.page.label             "Página web compacta (800x600)">
+<!ENTITY menu.custom.size.label                  "Tamaño personalizado...">
+<!ENTITY menu.fit.current.view.label             "Ajustar vista actual ()">
+<!ENTITY menu.large.web.page.label               "Página web grande (1280x800)">
+<!ENTITY menu.last.used.label                    "Último utilizado (800x600)">
+<!ENTITY menu.normal.web.page.label              "Página web normal (1024x768)">
+<!ENTITY menu.transparent.bgr.label              "Fondo transparente">
+<!ENTITY colorbutton.select.bgr.tooltiptext      "Seleccionar color de fondo">
+<!ENTITY html.config.size.value                  "Configurar tamaños...">
+
+<!-- chrome://pencil/content/UI/PageNoteDialog.xul -->
+<!ENTITY dialog.edit.page.note.title             "Editar nota de página - Evolus Pencil">
+<!ENTITY menu.address..label                     "Dirección ">
+<!ENTITY menu.block.format.label                 "Formato de bloque">
+<!ENTITY menu.formatted.label                    "Con formato ">
+<!ENTITY menu.heading.1.label                    "Encabezado 1 ">
+<!ENTITY menu.heading.2.label                    "Encabezado 2 ">
+<!ENTITY menu.heading.3.label                    "Encabezado 3 ">
+<!ENTITY menu.heading.4.label                    "Encabezado 4 ">
+<!ENTITY menu.heading.5.label                    "Encabezado 5 ">
+<!ENTITY menu.heading.6.label                    "Encabezado 6 ">
+<!ENTITY menu.normal.label                       "Normal">
+<!ENTITY menu.paragraph.label                    "Párrafo">
+<!ENTITY menu.text.font.label                    "Fuente de texto">
+<!ENTITY menu.text.size.label                    "Tamaño">
+<!ENTITY toolbar.bgr.color.tooltiptext           "Color de fondo">
+<!ENTITY toolbar.bold.tooltiptext                "Negrita">
+<!ENTITY toolbar.clear.format.tooltiptext        "Limpiar formato">
+<!ENTITY toolbar.indent.tooltiptext              "Aumentar sangría">
+<!ENTITY toolbar.insert.link.tooltiptext         "Insertar enlace">
+<!ENTITY toolbar.italic.tooltiptext              "Cursiva">
+<!ENTITY toolbar.ourdered.list.tooltiptext       "Lista ordenada">
+<!ENTITY toolbar.outdent.tooltiptext             "Reducir sangría">
+<!ENTITY toolbar.strike.through.tooltiptext      "Tachado">
+<!ENTITY toolbar.text.color.tooltiptext          "Color del texto">
+<!ENTITY toolbar.underline.tooltiptext           "Subrayado">
+<!ENTITY toolbar.unordered.list.tooltiptext      "Lista desordenada">
+
+<!-- chrome://pencil/content/UI/PCanvas.xbl -->
+<!ENTITY menu.add.to.my.stuffs.label             "Añadir a mis colecciones...">
+<!ENTITY menu.arrangement.label                  "Orden">
+<!ENTITY menu.bring.forward.label                "Traer adelante">
+<!ENTITY menu.bring.to.front.label               "Traer al frente">
+<!ENTITY menu.delete.label                       "Eliminar">
+<!ENTITY menu.fit.content.label                  "Ajustar contenido">
+<!ENTITY menu.fit.content.padding.label          "Ajustar contenido con relleno...">
+<!ENTITY menu.fit.bestfit.label                  "Ajustar pantalla">
+<!ENTITY menu.group.label                        "Agrupar">
+<!ENTITY menu.locked.label                       "Bloqueado">
+<!ENTITY menu.properties.label                   "Propiedades...">
+<!ENTITY menu.resize.canvas.label                "Redimensionar lienzo">
+<!ENTITY menu.send.backward.label                "Enviar atrás">
+<!ENTITY menu.send.to.back.label                 "Enviar al fondo">
+<!ENTITY menu.ungroup.label                      "Desagrupar">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionDialog.xul -->
+<!ENTITY caption.collection.infor.label          "Información de la colección">
+<!ENTITY dialog.edit.pri.collection.title        "Editar información de la colección privada">
+<!ENTITY label.author.value                      "Autor:">
+<!ENTITY label.description.value                 "Descripción:">
+<!ENTITY label.name.value                        "Nombre:">
+<!ENTITY label.website.value                     "Sitio web:">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionPane.xbl -->
+<!ENTITY menu.about.label                        "Acerca de...">
+<!ENTITY menu.delete.all.collections.label       "Eliminar todas las colecciones">
+<!ENTITY menu.delete.this.collection.label       "Eliminar esta colección">
+<!ENTITY menu.delete.this.shape.label            "Eliminar esta forma">
+<!ENTITY menu.edit.this.collection.label         "Editar esta colección...">
+<!ENTITY menu.edit.this.shape.label              "Editar esta forma...">
+<!ENTITY menu.export.this.collection.label       "Exportar esta colección...">
+<!ENTITY menu.import.pri.collection.label        "Importar nueva colección privada...">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionWizard.xul -->
+<!ENTITY button.browse.label                     "Examinar...">
+<!ENTITY caption.collection.infor.label          "Información de la colección">
+<!ENTITY caption.shape.definition.label          "Definición de forma">
+<!ENTITY checkbox.auto.generate.icon.label       "Generar automáticamente el icono">
+<!ENTITY create.pri.collection.wizard.title      "Asistente para crear una colección privada">
+<!ENTITY label.description.value                 "Descripción:">
+<!ENTITY label.icon.value                        "Icono:">
+<!ENTITY label.name.value                        "Nombre:">
+<!ENTITY label.select.pri.collection.value       "Seleccione la colección privada:">
+<!ENTITY listitem.create.pri.collection.label    "Crear nueva colección privada">
+<!ENTITY wizard.collection.infor.desc            "Por favor, introduzca la colección o la información de la forma.">
+<!ENTITY wizard.select.pcollection.desc          "Seleccione una colección privada existente o cree una nueva colección privada">
+
+<!-- chrome://pencil/content/UI/PrivateShapeDialog.xul -->
+<!ENTITY button.browse.label                     "Examinar...">
+<!ENTITY caption.shape.definition.label          "Definición de forma">
+<!ENTITY checkbox.change.icon.label              "Cambiar icono">
+<!ENTITY dialog.edit.shape.title                 "Editar información de forma privada">
+<!ENTITY label.icon.value                        "Icono:">
+<!ENTITY label.name.value                        "Nombre:">
+
+<!-- chrome://pencil/content/UI/PropertyDialog.xul -->
+<!ENTITY properties.title                        "Propiedades">
+
+<!-- chrome://pencil/content/UI/Search.xbl -->
+<!ENTITY image.search.tooltiptext                "Buscar">
+<!ENTITY menu.manage.search.engines.label        "Gestionar motores de búsqueda…">
+
+<!-- chrome://pencil/content/UI/SettingDialog.xul -->
+<!ENTITY caption.canvas.label                    "Lienzo">
+<!ENTITY caption.clipartbrowser.label            "Navegador de imágenes prediseñadas">
+<!ENTITY caption.document.exporter.label         "Exportador de documentos">
+<!ENTITY caption.edit.label                      "Editar">
+<!ENTITY caption.external.editor.label           "Editor externo">
+<!ENTITY checkbox.show.grid.label                "Mostrar cuadrícula">
+<!ENTITY cut.and.paste.same.place.label          "Cortar y pegar en el mismo lugar">
+<!ENTITY dock.objects.to.objects.label           "Acoplar objetos a objetos más grandes por debajo de estos.">
+<!ENTITY embed.images.when.dnd.label             "Incrustar imágenes al arrastrar &amp; soltar">
+<!ENTITY enable.undo.redo.label                  "Habilitar deshacer/rehacer">
+<!ENTITY label.filter.accesskey                  "F">
+<!ENTITY label.filter.value                      "Filtro:">
+<!ENTITY label.grid.size.value                   "Tamaño de la cuadrícula">
+<!ENTITY label.height.value                      "Alto">
+<!ENTITY label.openoffice.converter.value        "Conversor de OpenOffice">
+<!ENTITY label.external.bitmap.editor.value      "Ruta al editor de mapa de bits externo">
+<!ENTITY label.external.svg.editor.value         "Ruta al editor de SVG externo">
+<!ENTITY label.path.to.jod.converter.value       "Ruta al convertidor JOD">
+<!ENTITY label.path.to.uno.converter.value       "Ruta al convertidor UNO">
+<!ENTITY label.undo.level.value                  "Nivel a deshacer">
+<!ENTITY label.width.value                       "Ancho">
+<!ENTITY menu.modify.accesskey                   "M">
+<!ENTITY menu.boolean.accesskey                  "B">
+<!ENTITY menu.boolean.label                      "Booleano">
+<!ENTITY menu.copy.accesskey                     "C">
+<!ENTITY menu.copy.name.label                    "Copiar nombre">
+<!ENTITY menu.copy.label                         "Copiar">
+<!ENTITY menu.copy.value.label                   "Copiar valor.">
+<!ENTITY menu.integer.accesskey                  "E">
+<!ENTITY menu.integer.label                      "Entero">
+<!ENTITY menu.jod.online.converter.label         "Conversor en línea JOD">
+<!ENTITY menu.copy.name.accesskey                "N">
+<!ENTITY menu.new.label                          "Nuevo">
+<!ENTITY menu.reset.accesskey                    "R">
+<!ENTITY menu.reset.label                        "Reiniciar">
+<!ENTITY menu.string.accesskey                   "C">
+<!ENTITY menu.string.label                       "Cadena">
+<!ENTITY menu.copy.value.accesskey               "V">
+<!ENTITY menu.new.accesskey                      "o">
+<!ENTITY menu.modify.label                       "Modificar">
+<!ENTITY menu.uno.converter.label                "Conversor de línea de comandos local UNO">
+<!ENTITY pencil.settings.title                   "Configuración de Pencil">
+<!ENTITY prefpane.advanced.label                 "Avanzado">
+<!ENTITY prefpane.clipart.browser.label          "Navegador de imágenes prediseñadas">
+<!ENTITY prefpane.document.exporter.label        "Exportador de documentos">
+<!ENTITY prefpane.external.editor.label          "Editor externo">
+<!ENTITY prefpane.general.label                  "General">
+<!ENTITY scale.images.before.inserting.label     "Escalar imágenes a un tamaño más pequeño antes de insertar">
+<!ENTITY snap.objects.to.grid.label              "Ajustar objetos a la cuadrícula.">
+<!ENTITY snap.objects.to.objects.label           "Ajustar objetos a objetos.">
+<!ENTITY snap.objects.to.objects.bgr.label       "Ajustar objetos a objetos en el fondo de la página.">
+<!ENTITY start.text.editting.label               "Empezar a editar texto después de dejar formas en el lienzo.">
+<!ENTITY menu.toggle.accesskey                   "M">
+<!ENTITY menu.toggle.label                       "Modificar">
+<!ENTITY treecol.preference.name.label           "Nombre de la preferencia">
+<!ENTITY treecol.status.label                    "Estado">
+<!ENTITY treecol.type.label                      "Tipo">
+<!ENTITY treecol.value.label                     "Valor">
+
+<!-- chrome://pencil/content/UI/StencilGenerator.xul -->
+<!ENTITY button.browse.label                     "Examinar...">
+<!ENTITY caption.collection.definition.label     "Definición de la colección">
+<!ENTITY caption.options.label                   "Opciones">
+<!ENTITY caption.stencil.information.label       "Información de plantilla">
+<!ENTITY checkbox.detect.inkscape.label          "Detectar grupos de Inkscape">
+<!ENTITY label.author.value                      "* Autor">
+<!ENTITY label.description.value                 "* Descripción">
+<!ENTITY label.name.value                        "* Nombre">
+<!ENTITY label.drag.images.value                 "Arrastre las imágenes en el cuadro de lista de arriba.">
+<!ENTITY label.icon.value                        "Icono">
+<!ENTITY label.select.images.value               "Seleccionar imágenes">
+<!ENTITY label.website.value                     "Sitio web">
+<!ENTITY stencil.generator.title                 "Generador de plantilla">
+<!ENTITY wizardpage.collection.infor.desc        "Ingrese la información de la colección y haga clic en Siguiente para continuar.">
+<!ENTITY wizardpage.stencil.infor.desc           "Información de plantilla">
+
+<!-- chrome://pencil/content/UI/TextToolOverlay.xul -->
+<!ENTITY menu.address.label                      "Dirección ">
+<!ENTITY menu.block.format.label                 "Formato de bloque">
+<!ENTITY menu.default.label                      "Predeterminado">
+<!ENTITY menu.font.label                         "Fuente">
+<!ENTITY menu.formatted.label                    "Con formato ">
+<!ENTITY menu.heading.1.label                    "Encabezado 1 ">
+<!ENTITY menu.heading.2.label                    "Encabezado 2 ">
+<!ENTITY menu.heading.3.label                    "Encabezado 3 ">
+<!ENTITY menu.heading.4.label                    "Encabezado 4 ">
+<!ENTITY menu.heading.5.label                    "Encabezado 5 ">
+<!ENTITY menu.heading.6.label                    "Encabezado 6 ">
+<!ENTITY menu.normal.label                       "Normal">
+<!ENTITY menu.paragraph.label                    "Párrafo">
+<!ENTITY menu.size.label                         "Tamaño">
+<!ENTITY menu.text.font.label                    "Fuente de texto">
+<!ENTITY pcolorbutton.bgr.color.tooltip          "Cambiar el color de resaltado del texto">
+<!ENTITY pcolorbutton.text.color.tooltip         "Cambiar el color del texto">
+<!ENTITY toolbar.align.center.tooltiptext        "Alinear al centro">
+<!ENTITY toolbar.align.left.tooltiptext          "Alinear a la izquierda">
+<!ENTITY toolbar.align.right.tooltiptext         "Alinear a la derecha">
+<!ENTITY toolbar.bold.tooltiptext                "Negrita">
+<!ENTITY toolbar.clear.format.tooltiptext        "Limpiar formato">
+<!ENTITY toolbar.dec.font.size.tooltiptext       "Reducir tamaño de la fuente">
+<!ENTITY toolbar.inc.font.size.tooltiptext       "Aumentar tamaño de la fuente">
+<!ENTITY toolbar.indent.tooltiptext              "Aumentar sangría">
+<!ENTITY toolbar.insert.link.tooltiptext         "Insertar enlace">
+<!ENTITY toolbar.italic.tooltiptext              "Cursiva">
+<!ENTITY toolbar.ourdered.list.tooltiptext       "Lista ordenada">
+<!ENTITY toolbar.outdent.tooltiptext             "Reducir sangría">
+<!ENTITY toolbar.strike.through.tooltiptext      "Tachado">
+<!ENTITY toolbar.underline.tooltiptext           "Subrayado">
+<!ENTITY toolbar.unordered.list.tooltiptext      "Lista desordenada">
+
+<!-- chrome://pencil/content/PropertyType/Editor/AlignEditor.xbl -->
+<!ENTITY align.bottom.center.tooltiptext         "Abajo - Centro">
+<!ENTITY align.bottom.left.tooltiptext           "Abajo - Izquierda">
+<!ENTITY align.bottom.right.tooltiptext          "Abajo - Derecha">
+<!ENTITY align.middle.center.tooltiptext         "Medio - Centro">
+<!ENTITY align.middle.left.tooltiptext           "Medio - Izquierda">
+<!ENTITY align.middle.right.tooltiptext          "Medio - Derecha">
+<!ENTITY align.top.center.tooltiptext            "Arriba - Centro">
+<!ENTITY align.top.left.tooltiptext              "Arriba - Izquierda">
+<!ENTITY align.top.right.tooltiptext             "Arriba - Derecha">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ColorEditor.xbl -->
+<!ENTITY label.html.code.value                   "Código HTML">
+<!ENTITY label.opacity.value                     "Opacidad: 100">
+<!ENTITY label.preview.value                     "Vista previa">
+<!ENTITY advanced-mode.label                     "Modo avanzado">
+<!ENTITY recently-used-colors.label              "Colores usados recientemente">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ColorPickers.xbl -->
+<!ENTITY label.brightness.value                  "Brillo">
+<!ENTITY label.hue.value                         "Tono">
+<!ENTITY label.sat.value                         "Saturación">
+<!ENTITY toolbar.remove.color.tooltiptext        "Eliminar saturación, color en escala de grises">
+
+<!-- chrome://pencil/content/PropertyType/Editor/FontEditor.xbl -->
+<!ENTITY button.b.label                          "N">
+<!ENTITY button.i.label                          "C">
+<!ENTITY button.u.label                          "S">
+<!ENTITY label.family.value                      "Familia">
+<!ENTITY label.size.value                        "Tamaño">
+<!ENTITY label.style.weight.value                "Estilo &amp; Ancho">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ShadowStyleEditor.xbl -->
+<!ENTITY label.blur.size.value                   "Tamaño de desenfoque:">
+<!ENTITY label.x.offset.value                    "Desplazamiento X:">
+<!ENTITY label.y.offset.value                    "Desplazamiento Y:">
+
+<!-- chrome://pencil/content/PropertyType/Editor/StrokeEditor.xbl -->
+<!ENTITY label.style.value                       "Estilo">
+<!ENTITY label.width.value                       "Ancho">
+

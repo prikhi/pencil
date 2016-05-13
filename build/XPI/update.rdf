@@ -7,12 +7,22 @@
       <r:li>
         <r:Description>
           <version>@VERSION@.@BUILD@</version>
+          <!-- Firefox -->
           <targetApplication>
             <r:Description>
               <id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</id>
               <minVersion>@MIN_VERSION@</minVersion>
               <maxVersion>@MAX_VERSION@</maxVersion>
-              <updateLink>@UPDATE_URL@/Downloads/@XPI_NAME@</updateLink>
+              <updateInfoURL>https://github.com/prikhi/pencil/blob/master/CHANGELOG.md</updateInfoURL>
+            </r:Description>
+          </targetApplication>
+          <!-- Pale Moon -->
+          <targetApplication>
+            <r:Description>
+              <id>{8de7fcbb-c55c-4fbe-bfc5-fc555c87dbc4}</id>
+              <minVersion>25.0</minVersion>
+              <maxVersion>26.*</maxVersion>
+              <updateInfoURL>https://github.com/prikhi/pencil/blob/master/CHANGELOG.md</updateInfoURL>
             </r:Description>
           </targetApplication>
         </r:Description>

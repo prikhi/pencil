@@ -1,5 +1,7 @@
 # Pencil
 
+**Download Pencil from [Github][releases] or [Mozilla][amo-pkg]**
+
 [![Documentation Status](https://readthedocs.org/projects/pencil-prototyping/badge/?version=develop)](https://readthedocs.org/projects/pencil-prototyping/?badge=develop)
 [![Join the chat at https://gitter.im/prikhi/pencil](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prikhi/pencil?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -13,24 +15,28 @@ This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
 13th, 2015.
 
-
 ### Links
 
-* [Downloads][releases]
 * [The documentation][docs]
 * [The discussion forum][google-group]
 * [The original project's homepage][evolus-page]
 * [The original repository][evolus-repo]
+* [Downloads][releases]
 
 #### Extra Stencil Collections
 
 * [Android Lollipop][lollipop-collection] by [Nathanielw][nathanielw]
 * [Bootstrap][bootstrap-collection] by [Nathanielw][nathanielw]
+* [Bootstrap Glyph Icons][bootstrap-icon-collection] by [Craig-Fisk][craigfisk]
 * [Material Design Icons][material-collection] by [Nathanielw][nathanielw]
 
 Additional collections are available on the
 [Original Stencil Download Page][evolus-stencil-downloads].
 
+### Known Issues
+
+* The Native UI Stencil Collection does not load or export correctly, you
+  should avoid using this Stencil Collection for now(see #602).
 
 ## Prerequisites
 
@@ -45,6 +51,9 @@ has everything you need built-in.
 Windows, Linux, OS X & Firefox Packages are available for download from the
 [Releases Page][releases].
 
+You can also install the Firefox Add-on from the [Mozilla Add-on
+Repository][amo-pkg].
+
 To install the OS X package, unzip the archive and copy the `Pencil.app` folder
 to your `Applications` directory.
 
@@ -52,7 +61,7 @@ For specific Linux distributions:
 * **Arch Linux** - Available in the [AUR][aur-pkg].
 * **Nix/NixOS** - Run `nix-env -iA pencil`. You'll need to be tracking
   [Unstable][nix-unstable].
-* **openSuse** - Available in the [graphics repository][graphics-repository].
+* **openSUSE** - Available in the [graphics repository][graphics-repository].
 * **Ubuntu** - A .deb is available on the [Releases Page][releases].
 
 ## Build
@@ -181,14 +190,17 @@ This fork is released under GPLv2 like it's parent codebase.
 [xulrunner]: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/XULRunner
 
 [releases]: https://github.com/prikhi/pencil/releases
+[amo-pkg]: https://addons.mozilla.org/en-US/firefox/addon/pencil-prototyping/
 [aur-pkg]: https://aur.archlinux.org/packages/pencil/
 [nix-unstable]: https://nixos.org/nixos/manual/sec-upgrading.html
-[graphics-repository]: http://download.opensuse.org/repositories/graphics/
+[graphics-repository]: https://software.opensuse.org/package/pencil
 
 [nathanielw]: https://github.com/nathanielw
 [lollipop-collection]: https://github.com/nathanielw/Android-Lollipop-Pencil-Stencils
 [material-collection]: https://github.com/nathanielw/Material-Icons-for-Pencil
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
+[bootstrap-icon-collection]: https://github.com/Craig-Fisk/BootstrapGlyph-Pencil-Stencil
+[craigfisk]: https://github.com/Craig-Fisk
 
 [nsis]: http://nsis.sourceforge.net/Main_Page
 [sphinx-doc]: http://sphinx-doc.org/

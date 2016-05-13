@@ -258,7 +258,8 @@ mac() {
 
 
 ubuntu() {
-    PKG="pencil-${VERSION}-ubuntu-all"
+    ALT_PKG_NAME='pencil-prototyping'
+    PKG="${ALT_PKG_NAME}-${VERSION}-ubuntu-all"
     DIR_TARGET="./Outputs/Ubuntu"
     DIR_BASE="${DIR_TARGET}/${PKG}"
     DIR_DEB="${DIR_BASE}/DEBIAN"
@@ -270,10 +271,14 @@ ubuntu() {
 
     rm -Rf ${DIR_TARGET}
 
-    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_SHARE}/applications" "${DIR_SHARE}/doc/pencil"
-    run_task cp ./Linux/pencil "${DIR_BASE}/usr/bin/pencil"
-    run_task cp ./Linux/pencil.desktop "${DIR_SHARE}/applications/pencil.desktop"
-    run_task cp -r ./Outputs/Pencil "${DIR_BASE}/usr/share/pencil"
+    run_task mkdir -p "${DIR_BASE}/usr/bin" "${DIR_SHARE}/applications" "${DIR_SHARE}/doc/${ALT_PKG_NAME}"
+    sed -e "s|${PKG_NAME}|${ALT_PKG_NAME}|" ./Linux/pencil > "${DIR_BASE}/usr/bin/${ALT_PKG_NAME}"
+    run_task chmod +x "${DIR_BASE}/usr/bin/${ALT_PKG_NAME}"
+    sed -e "s|${PKG_NAME}|${ALT_PKG_NAME}|" -e "s|/usr/bin/pencil|/usr/bin/${ALT_PKG_NAME}|" \
+        -e "s|Pencil|Pencil Prototyping|" \
+        ./Linux/pencil.desktop > "${DIR_SHARE}/applications/${ALT_PKG_NAME}.desktop"
+    run_task cp -r ./Outputs/Pencil "${DIR_SHARE}/${ALT_PKG_NAME}"
+    sed -i "s|Pencil|Pencil Prototyping|" "${DIR_SHARE}/${ALT_PKG_NAME}/application.ini"
     run_task mkdir -p "${DIR_DEB}"
 
     old_ifs="${IFS}"
@@ -283,6 +288,7 @@ ubuntu() {
 
     for line in $ctrl; do
       line=$(echo $line | sed "s/{VERSION}/${VERSION}/g")
+      line=$(echo $line | sed "s/{PKG_NAME}/${ALT_PKG_NAME}/g")
       line=$(echo $line | sed "s/{MAINTAINER}/${MAINTAINER}/g")
       line=$(echo $line | sed "s/{MIN_VERSION}/${MIN_VERSION}/g")
       echo $line >> ${DIR_DEB}/control
@@ -290,19 +296,19 @@ ubuntu() {
 
     for line in $copy; do
       line=$(echo $line | sed "s/{MAINTAINER}/${MAINTAINER}/g")
-      echo $line >> ${DIR_SHARE}/doc/pencil/copyright
+      echo $line >> ${DIR_SHARE}/doc/${ALT_PKG_NAME}/copyright
     done
 
     IFS="${old_ifs}"
-    run_task cp ../CHANGELOG.md ${DIR_SHARE}/doc/pencil/changelog
-    run_task gzip -9 ${DIR_SHARE}/doc/pencil/changelog
+    run_task cp ../CHANGELOG.md ${DIR_SHARE}/doc/${ALT_PKG_NAME}/changelog
+    run_task gzip -n -9 ${DIR_SHARE}/doc/${ALT_PKG_NAME}/changelog
 
     # Remove extra license files to avoid Lintian warning
-    rm ${DIR_SHARE}/pencil/content/pencil/license.txt
-    rm ${DIR_SHARE}/pencil/license.txt
+    rm ${DIR_SHARE}/${ALT_PKG_NAME}/content/pencil/license.txt
+    rm ${DIR_SHARE}/${ALT_PKG_NAME}/license.txt
 
     # Packages retain ownership, files should be owned by root
-    run_task sudo chown -R root ${DIR_BASE}
+    run_task sudo chown -R root:root ${DIR_BASE}
 
     run_task dpkg-deb --build ${DIR_BASE}
 

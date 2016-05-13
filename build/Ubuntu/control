@@ -1,8 +1,10 @@
-Package: pencil
+Package: {PKG_NAME}
+Replaces: evoluspencil (<< 2.0-6~)
+Breaks: evoluspencil (<< 2.0-6~)
 Version: {VERSION}
 Section: devel
 Priority: optional
-Architecture: amd64
+Architecture: all
 Depends: firefox (>= {MIN_VERSION}) | iceweasel (>= {MIN_VERSION})
 Installed-Size: 9216
 Maintainer: {MAINTAINER}
