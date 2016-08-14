@@ -1,0 +1,482 @@
+
+<!-- Dialog Buttons -->
+<!ENTITY button.cancel.label.close                "Keluar">
+<!ENTITY button.cancel.label.cancel               "Batal">
+<!ENTITY button.accept.label.apply                "Apply">
+
+<!-- chrome://pencil/content/UI/AboutDialog.xul -->
+<!ENTITY dialog.about.pencil.title               "Tentang Pencil">
+<!ENTITY image.click.to.donate.alt               "Klik untuk donasi">
+<!ENTITY label.you.can.help.us.value             "Pencil is Free Software (GPL), but if you find it useful, you can support its development :)">
+<!ENTITY image.you.can.help.us.tooltiptext       "You can help us make Pencil even better. Consider making a small donation!">
+<!ENTITY label.copyright.value                   "Hak cipta (c) 2012 Evolus Co., Ltd dan kontributor">
+<!ENTITY label.pencil.value                      "Pencil">
+<!ENTITY label.version.value                     "versi">
+<!ENTITY label.build.value                       "build">
+<!ENTITY tab.credits.label                       "Credits">
+<!ENTITY tab.authors.label                       "Kreator:">
+<!ENTITY tab.maintainers.label                   "Pengelola:">
+<!ENTITY tab.contributors.label                  "Kontributor:">
+<!ENTITY tab.githubcontributors.label            "Github Kontributor">
+<!ENTITY tab.license.label                       "Lisensi">
+
+<!-- chrome://pencil/content/UI/CollectionPane.xbl -->
+<!ENTITY menu.about.label                        "Ihwal...">
+<!ENTITY menu.collection.settings.label          "Collection settings...">
+<!ENTITY menu.hide.this.collection.label         "Hide this collection">
+<!ENTITY menu.install.new.collection.label       "Install new collection...">
+<!ENTITY menu.show.hidden.collections.label      "Show hidden collections">
+<!ENTITY menu.uninstall.this.collection.label    "Uninstall this collection">
+<!ENTITY textbox.shape.filter.emptytext          "Shape filter... (Ctrl + F)">
+
+<!-- chrome://pencil/content/UI/Window.xul -->
+<!ENTITY button.evaluate.label                   "Evaluate...">
+<!ENTITY menu.about.label                        "Tentang...">
+<!ENTITY menu.advanced.config.label              "Konfigirasi Lanjutan">
+<!ENTITY menu.align.bottom.label                 "Rata Bawah">
+<!ENTITY menu.align.center.label                 "Rata Pusat">
+<!ENTITY menu.align.left.label                   "Rata Kiri">
+<!ENTITY menu.align.middle.label                 "Rata Tengah">
+<!ENTITY menu.align.right.label                  "Rata Kanan">
+<!ENTITY menu.align.top.label                    "Rata Atas">
+<!ENTITY menu.clipart.browser.label              "Clipart Browser...">
+<!ENTITY menu.collection.pane.label              "Collection Pane">
+<!ENTITY menu.copy.label                         "Salin">
+<!ENTITY menu.cut.label                          "Potong">
+<!ENTITY menu.document.accesskey                 "D">
+<!ENTITY menu.delete.label                       "Hapus">
+<!ENTITY menu.document.label                     "Dokumen">
+<!ENTITY menu.dom.inspector.label                "DOM Inspector">
+<!ENTITY menu.duplicate.label                    "Duplikasi">
+<!ENTITY menu.edit.accesskey                     "n">
+<!ENTITY menu.edit.label                         "Sunting">
+<!ENTITY menu.edit.page.notes.label              "Edit page notes...">
+<!ENTITY menu.exit.label                         "Keluar">
+<!ENTITY menu.export.document.label              "Ekspor Dokumen...">
+<!ENTITY menu.export.page.as.png.label           "Ekspor halaman sebagai PNG...">
+<!ENTITY menu.export.sel.as.png.label            "Ekspor Seleksi sebagai PNG...">
+<!ENTITY menu.print.document.label               "Cetak...">
+<!ENTITY menu.goto.label                         "Goto...">
+<!ENTITY menu.group.label                        "Kelompok">
+<!ENTITY menu.help.accesskey                     "u">
+<!ENTITY menu.help.label                         "Bantuan">
+<!ENTITY menu.hide.heavy.elements.label          "Hide Heavy Elements">
+<!ENTITY menu.install.new.collection.label       "Install New Collection...">
+<!ENTITY menu.make.same.height.label             "Samakan Tinggi">
+<!ENTITY menu.make.same.mheight.label            "Samakan Tinggi Min">
+<!ENTITY menu.make.same.mwidth.label             "Samakan Lebar Min">
+<!ENTITY menu.make.same.width.label              "Samakan Lebar">
+<!ENTITY menu.manage.template.label              "Manage Export Template...">
+<!ENTITY menu.move.left.label                    "Pindah ke kiri">
+<!ENTITY menu.move.right.label                   "Pindah ke kanan">
+<!ENTITY menu.new.document.label                 "Dokumen Baru">
+<!ENTITY menu.new.page.label                     "Halaman Baru...">
+<!ENTITY menu.new.window.label                   "Jendela Baru">
+<!ENTITY menu.open.label                         "Buka...">
+<!ENTITY menu.options.label                      "Opsi...">
+<!ENTITY menu.paste.label                        "Tempel">
+<!ENTITY menu.properties.label                   "Properti...">
+<!ENTITY menu.recent.documents.label             "Dokumen Sebelumnya">
+<!ENTITY menu.redo.label                         "Lakukan Lagi">
+<!ENTITY menu.re.order.pages.label               "Re-order Halaman...">
+<!ENTITY menu.shape.accesskey                    "S">
+<!ENTITY menu.same.horiz.space.label             "Samakan Horiz. Space">
+<!ENTITY menu.same.vert.space.label              "Samakan Vert. Space">
+<!ENTITY menu.save.as.label                      "Simpan Sebagai...">
+<!ENTITY menu.save.label                         "Simpan">
+<!ENTITY menu.select.all.label                   "Pilih semua">
+<!ENTITY menu.settings.label                     "Settings">
+<!ENTITY menu.shape.label                        "Shape">
+<!ENTITY menu.stencil.generator.label            "Stencil Generator...">
+<!ENTITY menu.tools.accesskey                    "P">
+<!ENTITY menu.settings.accesskey                 "t">
+<!ENTITY menu.tools.label                        "Perkakas">
+<!ENTITY menu.undo.label                         "Batalkan">
+<!ENTITY menu.ungroup.label                      "Batalkan kelompok">
+<!ENTITY menu.view.accesskey                     "L">
+<!ENTITY menu.view.label                         "Lihat">
+<!ENTITY pencil.title                            "Pencil">
+<!ENTITY tab.collections.label                   "Collections">
+<!ENTITY tab.my.stuffs.label                     "My Stuff">
+<!ENTITY toolbar.align.bottom.label              "Rata bawah">
+<!ENTITY toolbar.align.bottom.tooltiptext        "Rata bawah">
+<!ENTITY toolbar.align.center.label              "Rata pusat">
+<!ENTITY toolbar.align.center.tooltiptext        "Rata pusat">
+<!ENTITY toolbar.align.left.label                "Rata kiri">
+<!ENTITY toolbar.align.left.tooltiptext          "Rata kiri">
+<!ENTITY toolbar.align.middle.label              "Rata tengah">
+<!ENTITY toolbar.align.middle.tooltiptext        "Rata tengah">
+<!ENTITY toolbar.align.right.label               "Rata kanan">
+<!ENTITY toolbar.align.right.tooltiptext         "Rata kanan">
+<!ENTITY toolbar.align.top.label                 "Rata atas">
+<!ENTITY toolbar.align.top.tooltiptext           "Rata atas">
+<!ENTITY toolbar.bring.forward.label             "Bring Forward">
+<!ENTITY toolbar.bring.forward.tooltiptext       "Bring Forward">
+<!ENTITY toolbar.bring.to.front.label            "Bring to Front">
+<!ENTITY toolbar.bring.to.front.tooltiptext      "Bring to Front">
+<!ENTITY toolbar.cancel.zoom.label               "Batalkan zoom">
+<!ENTITY toolbar.cancel.zooming.tooltiptext      "Batalkan zooming">
+<!ENTITY toolbar.copy.format.tooltiptext         "Salin format shape">
+<!ENTITY toolbar.create.doc.tooltiptext          "Buat dokumen baru">
+<!ENTITY toolbar.format.painter.label            "Format painter">
+<!ENTITY toolbar.make.same.horiz.tooltip         "Samakan Horizontal Space">
+<!ENTITY toolbar.make.same.vert.tooltip          "Samakan Vertical Space">
+<!ENTITY toolbar.new.document.label              "Dokumen Baru">
+<!ENTITY toolbar.new.page.label                  "Halaman Baru...">
+<!ENTITY toolbar.open.doc.tooltiptext            "Buka dokumen sebelumnya">
+<!ENTITY toolbar.open.label                      "Buka">
+<!ENTITY toolbar.save.label                      "Simpan">
+<!ENTITY toolbar.save.doc.as.tooltiptext         "Simpan dukumen sebagai ">
+<!ENTITY toolbar.save.doc.tooltiptext            "Simpan dokumen">
+<!ENTITY toolbar.send.backward.label             "Send Backward">
+<!ENTITY toolbar.send.backward.tooltip           "Send Backward">
+<!ENTITY toolbar.send.to.back.label              "Send to Back">
+<!ENTITY toolbar.send.to.back.tooltiptext        "Send to Back">
+<!ENTITY toolbar.zoom.in.label                   "Perbesar">
+<!ENTITY toolbar.zoom.in.tooltiptext             "Perbesar">
+<!ENTITY toolbar.zoom.out.label                  "Perkecil">
+<!ENTITY toolbar.zoom.out.tooltiptext            "Perkecil">
+<!ENTITY toolbar.alignment.label                 "Alignment">
+<!ENTITY toolbar.alignment.tooltip               "Change alignment">
+<!ENTITY toolbar.location.size.label             "Lokasi &amp; ukuran">
+<!ENTITY toolbar.location.size.tooltip           "Terapkan lokasi &amp; ukuran">
+
+
+<!ENTITY toolbar.undo.tooltiptext                "Batalkan">
+<!ENTITY toolbar.redo.tooltiptext                "Lakukan Lagi">
+<!ENTITY toolbar.cut.tooltiptext                 "Potong">
+<!ENTITY toolbar.copy.tooltiptext                "Salin">
+<!ENTITY toolbar.paste.tooltiptext               "Tempel">
+<!ENTITY toolbar.delete.tooltiptext              "Hapus">
+<!ENTITY toolbar.export.document.tooltiptext     "Ekspor dokumen">
+
+<!ENTITY toolbar.menubar.name                    "Menu Bar">
+<!ENTITY toolbar.navbar.name                     "Main Toolbar">
+
+
+<!-- chrome://pencil/content/UI/ClipartBrowser.xul -->
+<!ENTITY clipart.browsing.title                  "Clipart Browsing">
+<!ENTITY input.scale.image.value                 "Scale image to smaller size before inserting.">
+<!ENTITY span.prev.results.value                 "&#171; Hasil sebelumnya">
+<!ENTITY span.more.results.value                 "More results &#187;">
+<!ENTITY span.show.value                         "Show">
+<!ENTITY span.results.per.page.value             "hasil per halaman">
+
+<!-- chrome://pencil/content/UI/ClipartBrowserPane.xbl -->
+<!ENTITY menu.copy.image.label                   "Salin gambar">
+<!ENTITY menu.insert.image.label                 "Sisipkan gambar">
+
+<!-- chrome://pencil/content/UI/ColorToolOverlay.xul -->
+<!ENTITY label.color.value                       "Warna:">
+<!ENTITY colorbutton.change.bgrfill.tooltip      "Change background fill color">
+<!ENTITY colorbutton.change.stroke.tooltip       "Change stroke color">
+<!ENTITY colorbutton.change.text.tooltip         "Terapkan warna text">
+<!ENTITY colorbutton.change.text.hili.tooltip    "Terapkan warna text highlight">
+
+<!-- chrome://pencil/content/UI/ExportTemplateManagementDialog.xul -->
+<!ENTITY export.template.management.title        "Export Template Management">
+<!ENTITY label.templates.for.value               "Templates for:">
+<!ENTITY menu.exporting.to.html.label            "Exporting to HTML Documents">
+<!ENTITY menu.exporting.to.print.label           "Printing and exporting to PDF">
+<!ENTITY menu.exporting.to.text.label            "Exporting to Text Documents (*.odt)">
+<!ENTITY treecol.author.label                    "Penulis">
+<!ENTITY treecol.information.label               "Informasi">
+<!ENTITY treecol.template.label                  "Template">
+<!ENTITY button.extra1.uninstall                 "Uninstall">
+<!ENTITY button.extra2.install.new.template      "Install New Template...">
+<!ENTITY button.cancel.close                     "Keluar">
+
+<!-- chrome://pencil/content/UI/ExportWizard.xul -->
+<!ENTITY button.browse.label                     "Browse...">
+<!ENTITY checkbox.copy.links.bgr.label           "Copy links from background pages">
+<!ENTITY checkbox.copy.links.accesskey           "k">
+<!ENTITY document.export.wizard.title            "Document Export Wizard">
+<!ENTITY label.2.of.3.pages.selected.value       "2 of 3 pages selected.">
+<!ENTITY label.destination.value                 "Destination:">
+<!ENTITY label.other.options.value               "Other options:">
+<!ENTITY label.output.format.value               "Output format:">
+<!ENTITY label.pages.to.export.value             "Pages to export:">
+<!ENTITY label.template.value                    "Template:">
+<!ENTITY label.manage.template.value             "Manage Templates...">
+<!ENTITY radio.all.pages.accesskey               "A">
+<!ENTITY radio.all.pages.except.bgr.label        "All pages, except backgrounds">
+<!ENTITY radio.all.pages.label                   "All pages in the document">
+<!ENTITY radio.all.except.accesskey              "e">
+<!ENTITY radio.only.pages.accesskey              "O">
+<!ENTITY radio.only.pages.label                  "Only the following pages:">
+<!ENTITY wizard.select.output.description        "Select output format">
+<!ENTITY wizard.select.export.description        "Select pages that you want to export">
+<!ENTITY wizard.select.options.description       "Select the template and setting up options">
+
+<!-- chrome://pencil/content/UI/Firefox-Overlay.xul -->
+<!ENTITY menu.pencil.sketching.label             "Pencil Sketching...">
+<!ENTITY menu.send.page.to.pencil.label          "Send Page to Pencil Document...">
+
+<!-- chrome://pencil/content/UI/PageDetailDialog.xul -->
+<!ENTITY checkbox.dim.background.label           "Dim background">
+<!ENTITY dialog.new.page.title                   "Halaman Baru">
+<!ENTITY label.pixels.value                      "(pixels)">
+<!ENTITY label.background.value                  "Latar Belakang">
+<!ENTITY label.create.new.page.value             "Buat halaman baru">
+<!ENTITY label.page.size.value                   "Ukuran halaman">
+<!ENTITY label.page.title.value                  "Judul halaman">
+<!ENTITY label.enter.page.prop.value             "Please enter the page properties">
+<!ENTITY menu.960.web.page.label                 "960 Web page (960x600)">
+<!ENTITY menu.960.web.page.long.label            "960 Web page - long (960x900)">
+<!ENTITY menu.a4.at.300dpi.label                 "A4 at 300dpi">
+<!ENTITY menu.a4.at.90dpi.label                  "A4 at 90dpi">
+<!ENTITY menu.background.color.label             "Background Color">
+<!ENTITY menu.compact.web.page.label             "Compact Web page (800x600)">
+<!ENTITY menu.custom.size.label                  "Custom size...">
+<!ENTITY menu.fit.current.view.label             "Fit current view ()">
+<!ENTITY menu.large.web.page.label               "Large Web page (1280x800)">
+<!ENTITY menu.last.used.label                    "Last used (800x600)">
+<!ENTITY menu.normal.web.page.label              "Normal Web page (1024x768)">
+<!ENTITY menu.transparent.bgr.label              "Transparent Background">
+<!ENTITY colorbutton.select.bgr.tooltiptext      "Select background color">
+<!ENTITY html.config.size.value                  "Configure sizes...">
+
+<!-- chrome://pencil/content/UI/PageNoteDialog.xul -->
+<!ENTITY dialog.edit.page.note.title             "Edit Page's Note - Evolus Pencil">
+<!ENTITY menu.address..label                     "Address ">
+<!ENTITY menu.block.format.label                 "Block format">
+<!ENTITY menu.formatted.label                    "Formatted ">
+<!ENTITY menu.heading.1.label                    "Heading 1 ">
+<!ENTITY menu.heading.2.label                    "Heading 2 ">
+<!ENTITY menu.heading.3.label                    "Heading 3 ">
+<!ENTITY menu.heading.4.label                    "Heading 4 ">
+<!ENTITY menu.heading.5.label                    "Heading 5 ">
+<!ENTITY menu.heading.6.label                    "Heading 6 ">
+<!ENTITY menu.normal.label                       "Normal">
+<!ENTITY menu.paragraph.label                    "Paragraph">
+<!ENTITY menu.text.font.label                    "Text font">
+<!ENTITY menu.text.size.label                    "Size">
+<!ENTITY toolbar.bgr.color.tooltiptext           "Background color">
+<!ENTITY toolbar.bold.tooltiptext                "Bold">
+<!ENTITY toolbar.clear.format.tooltiptext        "Clear format">
+<!ENTITY toolbar.indent.tooltiptext              "Indent">
+<!ENTITY toolbar.insert.link.tooltiptext         "Insert link">
+<!ENTITY toolbar.italic.tooltiptext              "Italic">
+<!ENTITY toolbar.ourdered.list.tooltiptext       "Ourdered list">
+<!ENTITY toolbar.outdent.tooltiptext             "Outdent">
+<!ENTITY toolbar.strike.through.tooltiptext      "Strike through">
+<!ENTITY toolbar.text.color.tooltiptext          "Text color">
+<!ENTITY toolbar.underline.tooltiptext           "Underline">
+<!ENTITY toolbar.unordered.list.tooltiptext      "Unordered list">
+
+<!-- chrome://pencil/content/UI/PCanvas.xbl -->
+<!ENTITY menu.add.to.my.stuffs.label             "Add to My Collections...">
+<!ENTITY menu.arrangement.label                  "Arrangement">
+<!ENTITY menu.bring.forward.label                "Bring Forward">
+<!ENTITY menu.bring.to.front.label               "Bring to Front">
+<!ENTITY menu.delete.label                       "Delete">
+<!ENTITY menu.fit.content.label                  "Fit Content">
+<!ENTITY menu.fit.content.padding.label          "Fit Content with Padding...">
+<!ENTITY menu.fit.bestfit.label                  "Fit Screen">
+<!ENTITY menu.group.label                        "Kelompok">
+<!ENTITY menu.locked.label                       "Locked">
+<!ENTITY menu.properties.label                   "Properties...">
+<!ENTITY menu.resize.canvas.label                "Resize Canvas">
+<!ENTITY menu.send.backward.label                "Send Backward">
+<!ENTITY menu.send.to.back.label                 "Send to Back">
+<!ENTITY menu.ungroup.label                      "Batalkan Kelompok">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionDialog.xul -->
+<!ENTITY caption.collection.infor.label          "Collection information">
+<!ENTITY dialog.edit.pri.collection.title        "Edit private collection information">
+<!ENTITY label.author.value                      "Author:">
+<!ENTITY label.description.value                 "Deskripsi:">
+<!ENTITY label.name.value                        "Nama:">
+<!ENTITY label.website.value                     "Website:">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionPane.xbl -->
+<!ENTITY menu.about.label                        "Tentang...">
+<!ENTITY menu.delete.all.collections.label       "Delete all collections">
+<!ENTITY menu.delete.this.collection.label       "Delete this collection">
+<!ENTITY menu.delete.this.shape.label            "Delete this shape">
+<!ENTITY menu.edit.this.collection.label         "Edit this collection...">
+<!ENTITY menu.edit.this.shape.label              "Edit this shape...">
+<!ENTITY menu.export.this.collection.label       "Export this collection...">
+<!ENTITY menu.import.pri.collection.label        "Import new private collection...">
+
+<!-- chrome://pencil/content/UI/PrivateCollectionWizard.xul -->
+<!ENTITY button.browse.label                     "Browse...">
+<!ENTITY caption.collection.infor.label          "Collection information">
+<!ENTITY caption.shape.definition.label          "Shape definition">
+<!ENTITY checkbox.auto.generate.icon.label       "Auto generate icon">
+<!ENTITY create.pri.collection.wizard.title      "Create Private Collection Wizard">
+<!ENTITY label.description.value                 "Deskripsi:">
+<!ENTITY label.icon.value                        "Icon:">
+<!ENTITY label.name.value                        "Nama:">
+<!ENTITY label.select.pri.collection.value       "Select private collection:">
+<!ENTITY listitem.create.pri.collection.label    "Create new private collection">
+<!ENTITY wizard.collection.infor.desc            "Please enter collection or shape information.">
+<!ENTITY wizard.select.pcollection.desc          "Select an existing private collection or create new private collection">
+
+<!-- chrome://pencil/content/UI/PrivateShapeDialog.xul -->
+<!ENTITY button.browse.label                     "Browse...">
+<!ENTITY caption.shape.definition.label          "Shape definition">
+<!ENTITY checkbox.change.icon.label              "Change icon">
+<!ENTITY dialog.edit.shape.title                 "Edit private shape information">
+<!ENTITY label.icon.value                        "Icon:">
+<!ENTITY label.name.value                        "Nama:">
+
+<!-- chrome://pencil/content/UI/PropertyDialog.xul -->
+<!ENTITY properties.title                        "Properties">
+
+<!-- chrome://pencil/content/UI/Search.xbl -->
+<!ENTITY image.search.tooltiptext                "Pencarian">
+<!ENTITY menu.manage.search.engines.label        "Kelola Mesin Pencari…">
+
+<!-- chrome://pencil/content/UI/SettingDialog.xul -->
+<!ENTITY caption.canvas.label                    "Canvas">
+<!ENTITY caption.clipartbrowser.label            "ClipartBrowser">
+<!ENTITY caption.document.exporter.label         "Document Exporter">
+<!ENTITY caption.edit.label                      "Sunting">
+<!ENTITY caption.external.editor.label           "External Editor">
+<!ENTITY checkbox.show.grid.label                "Tampilkan grid">
+<!ENTITY cut.and.paste.same.place.label          "Cut and Paste at the same place">
+<!ENTITY dock.objects.to.objects.label           "Dock objects to larger objects below it.">
+<!ENTITY embed.images.when.dnd.label             "Embed images when drag &amp; drop">
+<!ENTITY enable.undo.redo.label                  "Enable Undo/Redo">
+<!ENTITY label.filter.accesskey                  "F">
+<!ENTITY label.filter.value                      "Filter:">
+<!ENTITY label.grid.size.value                   "Grid size">
+<!ENTITY label.height.value                      "Height">
+<!ENTITY label.openoffice.converter.value        "OpenOffice converter">
+<!ENTITY label.external.bitmap.editor.value      "Path to external Bitmap editor">
+<!ENTITY label.external.svg.editor.value         "Path to external SVG editor">
+<!ENTITY label.path.to.jod.converter.value       "Path to JOD converter">
+<!ENTITY label.path.to.uno.converter.value       "Path to UNO converter">
+<!ENTITY label.undo.level.value                  "Undo level">
+<!ENTITY label.width.value                       "Lebar">
+<!ENTITY menu.modify.accesskey                   "M">
+<!ENTITY menu.boolean.accesskey                  "B">
+<!ENTITY menu.boolean.label                      "Boolean">
+<!ENTITY menu.copy.accesskey                     "C">
+<!ENTITY menu.copy.name.label                    "Salin Nama">
+<!ENTITY menu.copy.label                         "Salin">
+<!ENTITY menu.copy.value.label                   "Salin Value.">
+<!ENTITY menu.integer.accesskey                  "I">
+<!ENTITY menu.integer.label                      "Integer">
+<!ENTITY menu.jod.online.converter.label         "JOD Online converter">
+<!ENTITY menu.copy.name.accesskey                "N">
+<!ENTITY menu.new.label                          "Baru">
+<!ENTITY menu.reset.accesskey                    "R">
+<!ENTITY menu.reset.label                        "Reset">
+<!ENTITY menu.string.accesskey                   "S">
+<!ENTITY menu.string.label                       "String">
+<!ENTITY menu.copy.value.accesskey               "V">
+<!ENTITY menu.new.accesskey                      "w">
+<!ENTITY menu.modify.label                       "Modify">
+<!ENTITY menu.uno.converter.label                "UNO Local commandline converter">
+<!ENTITY pencil.settings.title                   "Pencil Settings">
+<!ENTITY prefpane.advanced.label                 "Advanced">
+<!ENTITY prefpane.clipart.browser.label          "Clipart Browser">
+<!ENTITY prefpane.document.exporter.label        "Document Exporter">
+<!ENTITY prefpane.external.editor.label          "External Editor">
+<!ENTITY prefpane.general.label                  "General">
+<!ENTITY scale.images.before.inserting.label     "Scale images to smaller size before inserting">
+<!ENTITY snap.objects.to.grid.label              "Snap objects to grid.">
+<!ENTITY snap.objects.to.objects.label           "Snap objects to objects.">
+<!ENTITY snap.objects.to.objects.bgr.label       "Snap objects to objects in background page.">
+<!ENTITY start.text.editting.label               "Start text editting after dropping shapes into the canvas.">
+<!ENTITY menu.toggle.accesskey                   "T">
+<!ENTITY menu.toggle.label                       "Toggle">
+<!ENTITY treecol.preference.name.label           "Preference Name">
+<!ENTITY treecol.status.label                    "Status">
+<!ENTITY treecol.type.label                      "Type">
+<!ENTITY treecol.value.label                     "Value">
+
+<!-- chrome://pencil/content/UI/StencilGenerator.xul -->
+<!ENTITY button.browse.label                     "Browse...">
+<!ENTITY caption.collection.definition.label     "Collection definition">
+<!ENTITY caption.options.label                   "Opsi">
+<!ENTITY caption.stencil.information.label       "Stencil information">
+<!ENTITY checkbox.detect.inkscape.label          "Detect Inkscape groups">
+<!ENTITY label.author.value                      "* Author">
+<!ENTITY label.description.value                 "* Deskripsi">
+<!ENTITY label.name.value                        "* Nama">
+<!ENTITY label.drag.images.value                 "Drag images into the listbox above.">
+<!ENTITY label.icon.value                        "Icon">
+<!ENTITY label.select.images.value               "Select images">
+<!ENTITY label.website.value                     "Website">
+<!ENTITY stencil.generator.title                 "Stencil Generator">
+<!ENTITY wizardpage.collection.infor.desc        "Enter collection information and click Next to continue.">
+<!ENTITY wizardpage.stencil.infor.desc           "Stencil information">
+
+<!-- chrome://pencil/content/UI/TextToolOverlay.xul -->
+<!ENTITY menu.address.label                      "Address ">
+<!ENTITY menu.block.format.label                 "Block format">
+<!ENTITY menu.default.label                      "Default">
+<!ENTITY menu.font.label                         "Font">
+<!ENTITY menu.formatted.label                    "Formatted ">
+<!ENTITY menu.heading.1.label                    "Heading 1 ">
+<!ENTITY menu.heading.2.label                    "Heading 2 ">
+<!ENTITY menu.heading.3.label                    "Heading 3 ">
+<!ENTITY menu.heading.4.label                    "Heading 4 ">
+<!ENTITY menu.heading.5.label                    "Heading 5 ">
+<!ENTITY menu.heading.6.label                    "Heading 6 ">
+<!ENTITY menu.normal.label                       "Normal">
+<!ENTITY menu.paragraph.label                    "Paragraph">
+<!ENTITY menu.size.label                         "Ukuran">
+<!ENTITY menu.text.font.label                    "Text font">
+<!ENTITY pcolorbutton.bgr.color.tooltip          "Change text highlight color">
+<!ENTITY pcolorbutton.text.color.tooltip         "Change text color">
+<!ENTITY toolbar.align.center.tooltiptext        "Rata center">
+<!ENTITY toolbar.align.left.tooltiptext          "Rata left">
+<!ENTITY toolbar.align.right.tooltiptext         "Rata right">
+<!ENTITY toolbar.bold.tooltiptext                "Bold">
+<!ENTITY toolbar.clear.format.tooltiptext        "Clear format">
+<!ENTITY toolbar.dec.font.size.tooltiptext       "Decrease font size">
+<!ENTITY toolbar.inc.font.size.tooltiptext       "Increase font size">
+<!ENTITY toolbar.indent.tooltiptext              "Indent">
+<!ENTITY toolbar.insert.link.tooltiptext         "Insert link">
+<!ENTITY toolbar.italic.tooltiptext              "Italic">
+<!ENTITY toolbar.ourdered.list.tooltiptext       "Ourdered list">
+<!ENTITY toolbar.outdent.tooltiptext             "Outdent">
+<!ENTITY toolbar.strike.through.tooltiptext      "Strike through">
+<!ENTITY toolbar.underline.tooltiptext           "Underline">
+<!ENTITY toolbar.unordered.list.tooltiptext      "Unordered list">
+
+<!-- chrome://pencil/content/PropertyType/Editor/AlignEditor.xbl -->
+<!ENTITY align.bottom.center.tooltiptext         "Bawah - Tengah">
+<!ENTITY align.bottom.left.tooltiptext           "Bawah - Kiri">
+<!ENTITY align.bottom.right.tooltiptext          "Bawah - Kanan">
+<!ENTITY align.middle.center.tooltiptext         "Tengah - Tengah">
+<!ENTITY align.middle.left.tooltiptext           "Tengah - Kiri">
+<!ENTITY align.middle.right.tooltiptext          "Tengah - Kanan">
+<!ENTITY align.top.center.tooltiptext            "Atas - Tengah">
+<!ENTITY align.top.left.tooltiptext              "Atas - Kiri">
+<!ENTITY align.top.right.tooltiptext             "Atas - Kanan">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ColorEditor.xbl -->
+<!ENTITY label.html.code.value                   "HTML code">
+<!ENTITY label.opacity.value                     "Opacity: 100">
+<!ENTITY label.preview.value                     "Preview">
+<!ENTITY advanced-mode.label                     "Advanced mode">
+<!ENTITY recently-used-colors.label              "Recently used colors">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ColorPickers.xbl -->
+<!ENTITY label.brightness.value                  "Brightness">
+<!ENTITY label.hue.value                         "Hue">
+<!ENTITY label.sat.value                         "Sat">
+<!ENTITY toolbar.remove.color.tooltiptext        "Remove saturation, gray scale color">
+
+<!-- chrome://pencil/content/PropertyType/Editor/FontEditor.xbl -->
+<!ENTITY button.b.label                          "B">
+<!ENTITY button.i.label                          "I">
+<!ENTITY button.u.label                          "U">
+<!ENTITY label.family.value                      "Family">
+<!ENTITY label.size.value                        "Size">
+<!ENTITY label.style.weight.value                "Style &amp; Weight">
+
+<!-- chrome://pencil/content/PropertyType/Editor/ShadowStyleEditor.xbl -->
+<!ENTITY label.blur.size.value                   "Blur size:">
+<!ENTITY label.x.offset.value                    "X offset:">
+<!ENTITY label.y.offset.value                    "Y offset:">
+
+<!-- chrome://pencil/content/PropertyType/Editor/StrokeEditor.xbl -->
+<!ENTITY label.style.value                       "Style">
+<!ENTITY label.width.value                       "Lebar">
+
