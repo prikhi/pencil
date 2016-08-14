@@ -9,6 +9,7 @@ locale  branding    en-US       locale/branding/
 locale  pencil      en-US       locale/en-US/
 locale  pencil      es          locale/es/
 locale  pencil      vi          locale/vi/
+locale  pencil      id          locale/id/
 
 
 overlay chrome://browser/content/browser.xul    chrome://pencil/content/firefoxOverlay.xul
