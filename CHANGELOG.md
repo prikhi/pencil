@@ -2,6 +2,8 @@ This file describes all user-facing changes, by version.
 
 # develop
 
+# v2.0.19
+
 # v2.0.18
 
 * Fix Build.
