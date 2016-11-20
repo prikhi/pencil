@@ -11,6 +11,8 @@ A GUI prototyping tool for Firefox, GNU/Linux, OS X & Windows.
 
 ### Status
 
+#### [Pencil v3][pencil3] is in development by Evolus, future work on this fork will be minimal.
+
 This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
 13th, 2015.
@@ -180,6 +182,7 @@ This fork is released under GPLv2 like it's parent codebase.
 
 
 [screenshot]: http://i.imgur.com/DF715Nr.png
+[pencil3]: https://github.com/evolus/pencil/
 [docs]: http://pencil-prototyping.rtfd.org/
 [google-group]: https://groups.google.com/forum/#!forum/pencil-user
 [evolus-page]: http://pencil.evolus.vn/
