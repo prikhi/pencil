@@ -100,7 +100,7 @@ ExternalEditorSupports.editImageData = function (imageData, ext, ownerObject) {
                 persist.progressListener = new PersistProgressListener(callback);
 
                 // save the canvas data to the file
-                persist.saveURI(source, null, null, null, null, file);
+                Compat.saveUri(persist, source, null, file);
             }
         }, {
             update: function (file) {

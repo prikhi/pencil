@@ -1529,7 +1529,7 @@ Net.downloadAsync = function(url, destPath, listener) {
         // do something
       }
     }*/
-    persist.saveURI(obj_URI, null, null, null, "", file);
+    Compat.saveUri(persist, obj_URI, "", file);
 };
 Util.goDoCommand = function (command, doc) {
     var dom = doc ? doc : document;

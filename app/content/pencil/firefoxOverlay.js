@@ -118,7 +118,7 @@ PencilOverlay.saveURI = function (url, filePath, callback)
               createInstance(Components.interfaces.nsIWebBrowserPersist);
 
     persist.progressListener = persistListener;
-    persist.saveURI(uri, null, null, null, null, localFile);
+    Compat.saveUri(persist, uri, null, localFile);
 };
 
 function PersistProgressListener(callback)

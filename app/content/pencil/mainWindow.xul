@@ -37,6 +37,7 @@
     <script src="chrome://pencil/content/common/base64.js"/>
     <script src="chrome://pencil/content/common/dockingManager.js"/>
 
+    <script src="chrome://pencil/content/common/compat.js"/>
     <script src="chrome://pencil/content/common/config.js"/>
 
     <script src="chrome://pencil/content/canvasHelper/canvasCareTaker.js"/>
