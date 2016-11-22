@@ -39,6 +39,9 @@ Additional collections are available on the
 
 * The Native UI Stencil Collection does not load or export correctly, you
   should avoid using this Stencil Collection for now(see #602).
+* Dragging stencils onto the workspace does not work in newer version of
+  Firefox, either use Pale Moon, Xulrunner, an older version of Firefox, or
+  launch Pencil using `firefox --app /path/to/application.ini` (see #802).
 
 ## Prerequisites
 
