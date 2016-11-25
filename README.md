@@ -31,6 +31,7 @@ was abandoned around 2013. This fork was started for new development on March
 * [Bootstrap][bootstrap-collection] by [Nathanielw][nathanielw]
 * [Bootstrap Glyph Icons][bootstrap-icon-collection] by [Craig-Fisk][craigfisk]
 * [Material Design Icons][material-collection] by [Nathanielw][nathanielw]
+* [Polymer Iron Icons][iron-icons-collection] by [MercMobily][mercmobily]
 
 Additional collections are available on the
 [Original Stencil Download Page][evolus-stencil-downloads].
@@ -207,6 +208,8 @@ This fork is released under GPLv2 like it's parent codebase.
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
 [bootstrap-icon-collection]: https://github.com/Craig-Fisk/BootstrapGlyph-Pencil-Stencil
 [craigfisk]: https://github.com/Craig-Fisk
+[iron-icons-collection]: https://github.com/mercmobily/pencil-iron-icons
+[mercmobily]: https://github.com/mercmobily
 
 [nsis]: http://nsis.sourceforge.net/Main_Page
 [sphinx-doc]: http://sphinx-doc.org/
