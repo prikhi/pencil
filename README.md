@@ -46,9 +46,10 @@ Additional collections are available on the
 
 ## Prerequisites
 
-You will need version 36 or higher of [`firefox`][firefox] to run Pencil as a
-Firefox Extension. Linux users will need version 36 of either `firefox`,
-`iceweasel` or [`xulrunner`][xulrunner]. The Windows installer and OS X archive
+You will need version 4 or higher of [`firefox`][firefox] to run Pencil as a
+Firefox Extension. Linux users will need version 4 or higher of either `firefox`,
+`iceweasel` or [`xulrunner`][xulrunner], or version 25 or higher of
+[`palemoon`][palemoon]. The Windows installer and OS X archive
 has everything you need built-in.
 
 
@@ -195,6 +196,7 @@ This fork is released under GPLv2 like it's parent codebase.
 
 [firefox]: https://www.mozilla.org/firefox/
 [xulrunner]: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/XULRunner
+[palemoon]: https://www.palemoon.org/
 
 [releases]: https://github.com/prikhi/pencil/releases
 [amo-pkg]: https://addons.mozilla.org/en-US/firefox/addon/pencil-prototyping/
