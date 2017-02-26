@@ -2,6 +2,8 @@
 
 **Download Pencil from [Github][releases] or [Mozilla][amo-pkg]**
 
+**Checkout [Pencil v3][pencil3] from Evolus - But Backup Your Data First!**
+
 [![Documentation Status](https://readthedocs.org/projects/pencil-prototyping/badge/?version=develop)](https://readthedocs.org/projects/pencil-prototyping/?badge=develop)
 [![Join the chat at https://gitter.im/prikhi/pencil](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prikhi/pencil?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -12,6 +14,7 @@ A GUI prototyping tool for Firefox, GNU/Linux, OS X & Windows.
 ### Status
 
 #### [Pencil v3][pencil3] is in development by Evolus, future work on this fork will be minimal.
+#### Pencil v3 files are not backwards compatible, be sure to backup your data!
 
 This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
