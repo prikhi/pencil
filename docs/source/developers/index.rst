@@ -168,3 +168,8 @@ this usually happens in the ``prep()`` function).
 
 You can pass the ``clean`` argument to ``build.sh`` to remove all the outputs.
 You can use ``maintainer-clean`` to remove any XULRunner downloads as well.
+
+Dependencies for the build process
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The only dependency which is not installed on a normal Linux distribution is the *Nullsoft Scriptable Install System* (NSIS) which is needed if you want to build for MS Windows. 
+
