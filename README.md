@@ -203,7 +203,7 @@ This fork is released under GPLv2 like it's parent codebase.
 
 [releases]: https://github.com/prikhi/pencil/releases
 [amo-pkg]: https://addons.mozilla.org/en-US/firefox/addon/pencil-prototyping/
-[aur-pkg]: https://aur.archlinux.org/packages/pencil/
+[aur-pkg]: https://aur.archlinux.org/packages/pencil-v2/
 [nix-unstable]: https://nixos.org/nixos/manual/sec-upgrading.html
 [graphics-repository]: https://software.opensuse.org/package/pencil
 
