@@ -1631,7 +1631,7 @@
                 ]]>
                 </body>
             </method>
-            <method name="doCopy">
+            <method name="getTransferableData">
                 <body>
                 <![CDATA[
 
@@ -1651,12 +1651,12 @@
 
                     var systemString   = Components.classes["@mozilla.org/supports-string;1"].
                                             createInstance(Components.interfaces.nsISupportsString);
-                    if (!systemString) return false;
+                    if (!systemString) return;
                     systemString.data  = textualData;
 
                     var trans = Components.classes["@mozilla.org/widget/transferable;1"].
                                             createInstance(Components.interfaces.nsITransferable);
-                    if (!trans) return false;
+                    if (!trans) return;
 
                     trans.addDataFlavor("text/unicode");
                     trans.setTransferData("text/unicode", systemString, textualData.length * 2);
@@ -1678,7 +1678,7 @@
 
                             var svgXMLSS   = Components.classes["@mozilla.org/supports-string;1"].
                                                     createInstance(Components.interfaces.nsISupportsString);
-                            if (!svgXMLSS) return false;
+                            if (!svgXMLSS) return;
                             svgXMLSS.data = svgXML;
 
                             trans.addDataFlavor("image/svg+xml");
@@ -1687,6 +1687,15 @@
                     } catch (e) {
                         Console.dumpError(e);
                     }
+					return trans;
+                ]]>
+                </body>
+            </method>
+            <method name="doCopy">
+                <body>
+                <![CDATA[
+					var trans = this.getTransferableData();
+                    if (!trans) return false;
 
                     var clipId = Components.interfaces.nsIClipboard;
                     var clip   = Components.classes["@mozilla.org/widget/clipboard;1"].getService(clipId);
@@ -1727,6 +1736,32 @@
                         }
                     }
 
+                ]]>
+                </body>
+            </method>
+            <method name="doDuplicate">
+                <body>
+                <![CDATA[
+					var trans = this.getTransferableData();
+                    if (!trans) return false;
+
+                    for (i in this.xferHelpers) {
+                        var helper = this.xferHelpers[i];
+
+                        var data = new Object();
+                        var length = new Object();
+
+                        try {
+                            trans.getTransferData(helper.type, data, length);
+                        } catch (e) {
+                            continue;
+                        }
+
+                        if (data && length && data.value && length.value) {
+                            helper.handleData(data.value, length.value);
+                            break;
+                        }
+                    }
                 ]]>
                 </body>
             </method>

@@ -353,6 +353,7 @@ Pencil.setupCommands = function () {
     Pencil._enableCommand("cutCommand", canvas && canvas.doCopy && target);
     Pencil._enableCommand("pasteCommand", canvas && canvas.doPaste);
     Pencil._enableCommand("deleteSelectedCommand", target != null);
+    Pencil._enableCommand("duplicateCommand", canvas && canvas.doDuplicate && target);
 
     Pencil._enableCommand("groupCommand", target && target.constructor == TargetSet);
     Pencil._enableCommand("unGroupCommand", target && target.constructor == Group);
