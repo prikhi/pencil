@@ -177,7 +177,7 @@ Pencil.selectDeveloperStencilDir = function () {
     var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
     fp.init(window, "Select Developer Stencil 'Definition.xml' file", nsIFilePicker.modeGetFile);
-    fp.appendFilter("Definition.xml", "Definition.xml");
+    fp.appendFilter("Definition.xml", "*.xml");
 
     if (fp.show() != nsIFilePicker.returnOK) return;
 
