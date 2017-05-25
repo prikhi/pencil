@@ -400,6 +400,56 @@
         </p:Content>
     </Shape>
 
+    <Shape id="badge" displayName="Badge" icon="Icons/badge.png">
+	    <Properties>
+		    <PropertyGroup>
+			    <Property name="box" type="Dimension">32,20</Property>
+			    <Property name="radius" displayName="Corner Radius" type="Handle" p:lockY="true" p:minX="0" p:maxX="$box.h / 2" p:noScale="true">100,0</Property>
+		    </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Background Color" type="Color"><E>$$textColor</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$strokeColor</E></Property>
+                <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[5]]></Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$textFont</E></Property>
+                <Property name="textColor" displayName="Text Color" type="Color"><E>$$fillColor</E></Property>
+                <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+	    </Properties>
+	    <Behaviors>
+		    <For ref="bg">
+			    <Box>$box</Box>
+			    <Radius>
+				    <Arg>$radius.x</Arg>
+				    <Arg>$radius.x</Arg>
+			    </Radius>
+			    <Fill>$fillColor</Fill>
+			    <StrokeColor>$strokeColor</StrokeColor>
+			    <StrokeStyle>$strokeStyle</StrokeStyle>
+		    </For>
+		    <For ref="text">
+			    <Font>$textFont</Font>
+			    <Fill>$textColor</Fill>
+			    <Color>$textColor</Color>
+			    <PlainTextContent>
+				    <Arg>$textContent</Arg>
+				    <Arg>Bound.fromBox($box, 6, 3)</Arg>
+				    <Arg>$textAlign</Arg>
+			    </PlainTextContent>
+		    </For>
+	    </Behaviors>
+
+	    <p:Content	xmlns:p="http://www.evolus.vn/Namespace/Pencil"
+									    xmlns="http://www.w3.org/2000/svg">
+		    <rect id="bg" />
+		    <text id="text"/>
+	    </p:Content>
+    </Shape>
+
     <Shape id="breadCrumb" displayName="Bread Crumb" icon="Icons/bread.png">
         <Properties>
             <PropertyGroup name="Text">
@@ -1557,6 +1607,107 @@ MenuItem]]></Property>
         </p:Content>
     </Shape>
 
+    <Shape id="Lightbox" displayName="Lightbox" icon="Icons/lightbox.png">
+        <Properties>
+            <PropertyGroup>
+                 <Property name="withFader" displayName="With faded Background" type="Bool">true</Property>
+                <Property name="fader" displayName="Size" type="Dimension">600,400</Property>
+            </PropertyGroup>
+            <PropertyGroup>
+                <Property name="box" displayName="Size" type="Dimension">300,200</Property>
+                <Property name="withCloseButton" displayName="With Close Button" type="Bool">true</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Background Color" type="Color"><E>$$fillColor</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Fader Color">
+                <Property name="faderColor" displayName="Fader Color" type="Color"><E>Color.fromString("#00000080")</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$strokeColor</E></Property>
+                <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
+            </PropertyGroup>
+        </Properties>
+        <Behaviors>
+            <For ref="lbox">
+                <D>
+                    if($withFader.value) {
+                        [
+                            sk($box.w/2 - $box.w*2, $box.h/2 - $box.h*2,   $box.w/2 + $box.w*2, $box.h/2 - $box.h*2),
+                            skTo($box.w/2 + $box.w*2, $box.h/2 + $box.h*2),
+                            skTo($box.w/2 - $box.w*2, $box.h/2 + $box.h*2),
+                            z
+                        ]
+                    } else {
+                        []
+                    }
+                </D>
+                <Fill>Color.fromString("#00000000")</Fill>
+                <StrokeStyle>0</StrokeStyle>
+                <Fill>$faderColor</Fill>
+            </For>
+            <For ref="body">
+                <D>
+                    [
+                        sk(0, 0, $box.w, 0),
+                        skTo($box.w , $box.h),
+                        skTo(0 , $box.h),
+                        z
+                    ]
+                </D>
+                <StrokeColor>$strokeColor</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+                <Fill>$fillColor</Fill>
+            </For>
+            <For ref="menu">
+                <D>
+                    [
+                        sk(0, 0, $box.w, 0),
+                        skTo($box.w , 28),
+                        skTo(0, 28),
+                        z
+                    ]
+                </D>
+                <StrokeColor>Color.fromString("#ffffff00")</StrokeColor>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+                <Fill>Color.fromString("#ffffff00")</Fill>
+            </For>
+            <For ref="button">
+                <D>
+                    var a = 40;
+                    var padding = 4;
+                    size = a - 2 * padding;
+                    var arr = new Array();
+                    var i = 1;
+                    var space = 5;
+
+                    //close button
+                    if($withCloseButton.value)
+                    {
+                        arr.push(sk( $box.w - size - padding, padding, $box.w - padding, padding ));
+                        arr.push(skTo($box.w - padding, a - padding));
+                        arr.push(skTo($box.w - size - padding, a - padding));
+                        arr.push(z);
+                        arr.push(sk( $box.w - size - padding + 4, padding + 4, $box.w - padding - 4, a - padding - 4 ));
+                        arr.push(sk( $box.w - padding - 4, padding + 4, $box.w - padding - size + 4, a - padding - 4 ));
+                        i++;
+                    }
+                    arr
+                </D>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+        </Behaviors>
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+            <path  id="lbox" style="fill:white;stroke:black"/>
+            <path  id="body" style="fill:white;stroke:black"/>
+            <path  id="menu" style="fill:white;stroke:black"/>
+            <path  id="button" style="fill:white;stroke:black"/>
+            <foreignObject x="0" y="0" width="200" height="100" id="text">
+                <div xmlns="http://www.w3.org/1999/xhtml"></div>
+            </foreignObject>
+        </p:Content>
+    </Shape>
+
     <Shape id="table" displayName="Table" icon="Icons/table.png">
         <Properties>
             <PropertyGroup name="Sizing">
@@ -2032,11 +2183,143 @@ MenuItem]]></Property>
             <text id="text"/>
         </p:Content>
     </Shape>
-    <Shape id="Pointer" displayName="Pointer" icon="Icons/pointer.png">
+
+    <Shape id="tooltip" displayName="Tooltip" icon="Icons/tooltip.png">
         <Properties>
-            <PropertyGroup name="Common">
+            <PropertyGroup>
+                <Property name="box" displayName="Box" type="Dimension">90,25</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Background">
+                <Property name="fillColor" displayName="Background Color" type="Color"><E>$$textColor</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Style">
+                <Property name="pointto" displayName="Point to" type="Enum"
+				    p:enumValues="['topleft|Top-Left', 'top|Top', 'topright|Top-Right', 'right|Right', 'bottomright|Bottom-Right', 'bottom|Bottom', 'bottomleft|Bottom-Left', 'left|Left']">top</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Border">
+                <Property name="strokeColor" displayName="Border Color" type="Color"><E>$$strokeColor</E></Property>
+                <Property name="strokeStyle" displayName="Border Style" type="StrokeStyle"><E>$$strokeStyle</E></Property>
+            </PropertyGroup>
+            <PropertyGroup name="Text">
+                <Property name="textContent" displayName="Text Content" type="PlainText"><![CDATA[Tooltip]]></Property>
+                <Property name="textFont" displayName="Default Font" type="Font"><E>$$textFont</E></Property>
+                <Property name="textColor" displayName="Text Color" type="Color"><E>$$fillColor</E></Property>
+                <Property name="textAlign" displayName="Text Alignment" type="Alignment">1,1</Property>
+            </PropertyGroup>
+        </Properties>
+
+        <Behaviors>
+		    <For ref="text">
+			    <Font>$textFont</Font>
+			    <Fill>$textColor</Fill>
+			    <Color>$textColor</Color>
+			    <PlainTextContent>
+				    <Arg>$textContent</Arg>
+				    <Arg>Bound.fromBox($box, 6, 3)</Arg>
+				    <Arg>$textAlign</Arg>
+			    </PlainTextContent>
+		    </For>
+            <For ref="line1">
+                <D>
+                    [
+                        sk(0, 0, $box.w, 0),
+                        skTo($box.w, $box.h),
+                        skTo(0, $box.h),
+                        skTo(0, 0),
+                        z
+                    ]
+                </D>
+             </For>
+            <For ref="spike">
+                <D>
+                    var a = 8;
+                    var arr = new Array();
+
+                    if($pointto.value == "topleft")
+                    {
+                        arr.push(sk(a, 2, 2*a, -a));
+                        arr.push(skTo(3*a, 2));
+                        arr.push(skTo(a, 2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "top")
+                    {
+                        arr.push(sk($box.w/2-a, 2, $box.w/2, -a));
+                        arr.push(skTo($box.w/2+a, 2));
+                        arr.push(skTo($box.w/2-a, 2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "topright")
+                    {
+                        arr.push(sk($box.w-a, 2, $box.w-2*a, -a));
+                        arr.push(skTo($box.w-3*a, 2));
+                        arr.push(skTo($box.w-a, 2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "right")
+                    {
+                        arr.push(sk($box.w-2, $box.h/2-a, $box.w+a, $box.h/2));
+                        arr.push(skTo($box.w-2, $box.h/2+a));
+                        arr.push(skTo($box.w-2, $box.h/2-a));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "bottomright")
+                    {
+                        arr.push(sk($box.w-a, $box.h-2, $box.w-2*a, $box.h+a));
+                        arr.push(skTo($box.w-3*a, $box.h-2));
+                        arr.push(skTo($box.w-a, $box.h-2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "bottom")
+                    {
+                        arr.push(sk($box.w/2 - a, $box.h-2, $box.w/2, $box.h+a));
+                        arr.push(skTo($box.w/2 + a, $box.h-2));
+                        arr.push(skTo($box.w/2 - a, $box.h-2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "bottomleft")
+                    {
+                        arr.push(sk(a, $box.h-2, 2*a, $box.h+a));
+                        arr.push(skTo(3*a, $box.h-2));
+                        arr.push(skTo(a, $box.h-2));
+                        arr.push(z);
+                    }
+
+                    if($pointto.value == "left")
+                    {
+                        arr.push(sk(2, $box.h/2-a, -a, $box.h/2));
+                        arr.push(skTo(2, $box.h/2+a));
+                        arr.push(skTo(2, $box.h/2-a));
+                        arr.push(z);
+                    }
+
+                    arr
+                </D>
+                <StrokeStyle>$strokeStyle</StrokeStyle>
+            </For>
+        </Behaviors>
+
+        <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
+            <path id="line1" style="stroke-linejoin: round;"/>
+            <path id="spike" style="fill:black;stroke:black"/>
+    		<text id="text"/>
+        </p:Content>
+    </Shape>
+
+    <Shape id="Pointer" displayName="Pointer/ Landmark" icon="Icons/pointer.png">
+        <Properties>
+            <PropertyGroup>
                 <Property name="box" type="Dimension" p:lockRatio="true">38,28</Property>
-                <Property name="angle" type="PlainText" p:readonly="true">45</Property>
+            </PropertyGroup>
+            <PropertyGroup name="Style">
+                <Property name="angle" displayName="Rotation Angle" type="Enum"
+				    p:enumValues="['0|0', '45|45', '90|90', '135|135', '180|180', '225|225', '270|270', '315|315']">45</Property>
             </PropertyGroup>
             <PropertyGroup name="Background">
                 <Property name="fillColor" displayName="Color" type="Color">
@@ -2102,9 +2385,10 @@ MenuItem]]></Property>
                 </PlainTextContent>
             </For>
         </Behaviors>
+
         <p:Content xmlns:p="http://www.evolus.vn/Namespace/Pencil" xmlns="http://www.w3.org/2000/svg">
             <path id="path" style="stroke-linejoin:round;"
-                    d="M 115.16242,135.0524 C 99.441333,146.0604 80.746673,146.47208 63.230283,143.73702 45.713894,141.00197 26.54735,137.94861 15.539353,122.22754 4.5313381,106.50645 8.7158499,72.255446 11.804461,54.739062 14.893073,37.222678 20.421317,30.076951 36.142397,19.068936 48.109263,10.689649 64.002155,4.2019066 78.480832,6.8535552 92.959509,9.5052038 120.87321,19.882029 132.84008,28.261314 l 35.40381,32.708176 38.23224,31.293962 -51.31371,19.273158 z" />
+                d="M 115.16242,135.0524 C 99.441333,146.0604 80.746673,146.47208 63.230283,143.73702 45.713894,141.00197 26.54735,137.94861 15.539353,122.22754 4.5313381,106.50645 8.7158499,72.255446 11.804461,54.739062 14.893073,37.222678 20.421317,30.076951 36.142397,19.068936 48.109263,10.689649 64.002155,4.2019066 78.480832,6.8535552 92.959509,9.5052038 120.87321,19.882029 132.84008,28.261314 l 35.40381,32.708176 38.23224,31.293962 -51.31371,19.273158 z" />
             <text id="text"/>
         </p:Content>
     </Shape>
