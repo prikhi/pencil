@@ -16,6 +16,7 @@ handleOnLoad = function () {
     document.getElementById("undoEnabled").checked = Config.get("view.undoLevel") > 0;
     document.getElementById("labelGridSize").disabled = Config.get("grid.enabled") == false;
     document.getElementById("textboxGridSize").disabled = Config.get("grid.enabled") == false;
+    document.getElementById("menuGridAppearance").disabled = Config.get("grid.enabled") == false;
 
     document.getElementById("enableSnappingBackground").disabled = Config.get("object.snapping.enabled") == false;
 
