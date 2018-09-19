@@ -4,7 +4,15 @@ This file describes all user-facing changes, by version.
 
 # v2.0.21
 
+* Fix FF/XUL Max Version.
+
 # v2.0.19
+
+* Add Support for FF/XUL v52.
+* Add Support for older versions of FF/XUL(v4+).
+* Add French Translation.
+* Add Indonesian Translation.
+* Fix Debian Packages.
 
 # v2.0.18
 

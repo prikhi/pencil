@@ -2,6 +2,8 @@
 
 **Download Pencil from [Github][releases] or [Mozilla][amo-pkg]**
 
+**Checkout [Pencil v3][pencil3] from Evolus - But Backup Your Data First!**
+
 [![Documentation Status](https://readthedocs.org/projects/pencil-prototyping/badge/?version=develop)](https://readthedocs.org/projects/pencil-prototyping/?badge=develop)
 [![Join the chat at https://gitter.im/prikhi/pencil](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prikhi/pencil?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -12,6 +14,7 @@ A GUI prototyping tool for Firefox, GNU/Linux, OS X & Windows.
 ### Status
 
 #### [Pencil v3][pencil3] is in development by Evolus, future work on this fork will be minimal.
+#### Pencil v3 files are not backwards compatible, be sure to backup your data!
 
 This project was originally hosted on https://code.google.com/p/evoluspencil/ &
 was abandoned around 2013. This fork was started for new development on March
@@ -31,6 +34,7 @@ was abandoned around 2013. This fork was started for new development on March
 * [Bootstrap][bootstrap-collection] by [Nathanielw][nathanielw]
 * [Bootstrap Glyph Icons][bootstrap-icon-collection] by [Craig-Fisk][craigfisk]
 * [Material Design Icons][material-collection] by [Nathanielw][nathanielw]
+* [Polymer Iron Icons][iron-icons-collection] by [MercMobily][mercmobily]
 
 Additional collections are available on the
 [Original Stencil Download Page][evolus-stencil-downloads].
@@ -39,12 +43,16 @@ Additional collections are available on the
 
 * The Native UI Stencil Collection does not load or export correctly, you
   should avoid using this Stencil Collection for now(see #602).
+* Dragging stencils onto the workspace does not work in newer version of
+  Firefox, either use Pale Moon, Xulrunner, an older version of Firefox, or
+  launch Pencil using `firefox --app /path/to/application.ini` (see #802).
 
 ## Prerequisites
 
-You will need version 36 or higher of [`firefox`][firefox] to run Pencil as a
-Firefox Extension. Linux users will need version 36 of either `firefox`,
-`iceweasel` or [`xulrunner`][xulrunner]. The Windows installer and OS X archive
+You will need version 4 or higher of [`firefox`][firefox] to run Pencil as a
+Firefox Extension. Linux users will need version 4 or higher of either `firefox`,
+`iceweasel` or [`xulrunner`][xulrunner], or version 25 or higher of
+[`palemoon`][palemoon]. The Windows installer and OS X archive
 has everything you need built-in.
 
 
@@ -191,10 +199,11 @@ This fork is released under GPLv2 like it's parent codebase.
 
 [firefox]: https://www.mozilla.org/firefox/
 [xulrunner]: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/XULRunner
+[palemoon]: https://www.palemoon.org/
 
 [releases]: https://github.com/prikhi/pencil/releases
 [amo-pkg]: https://addons.mozilla.org/en-US/firefox/addon/pencil-prototyping/
-[aur-pkg]: https://aur.archlinux.org/packages/pencil/
+[aur-pkg]: https://aur.archlinux.org/packages/pencil-v2/
 [nix-unstable]: https://nixos.org/nixos/manual/sec-upgrading.html
 [graphics-repository]: https://software.opensuse.org/package/pencil
 
@@ -204,6 +213,8 @@ This fork is released under GPLv2 like it's parent codebase.
 [bootstrap-collection]: https://github.com/nathanielw/Bootstrap-Pencil-Stencils
 [bootstrap-icon-collection]: https://github.com/Craig-Fisk/BootstrapGlyph-Pencil-Stencil
 [craigfisk]: https://github.com/Craig-Fisk
+[iron-icons-collection]: https://github.com/mercmobily/pencil-iron-icons
+[mercmobily]: https://github.com/mercmobily
 
 [nsis]: http://nsis.sourceforge.net/Main_Page
 [sphinx-doc]: http://sphinx-doc.org/
